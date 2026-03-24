@@ -1,13 +1,15 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Navbar from "@/components/Navbar";
 
 interface Client {
   id: string;
   name: string;
   email: string;
+  phone: string | null;
+  address: string | null;
 }
 
 interface LineItem {
@@ -18,12 +20,16 @@ interface LineItem {
 
 export default function NewInvoicePage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const preselectedClientId = searchParams.get("clientId") || "";
+
   const [clients, setClients] = useState<Client[]>([]);
-  const [clientId, setClientId] = useState("");
+  const [clientId, setClientId] = useState(preselectedClientId);
+  const [invoiceNumber, setInvoiceNumber] = useState("");
   const [description, setDescription] = useState("");
   const [dueDate, setDueDate] = useState(() => {
     const d = new Date();
-    d.setDate(d.getDate() + 14);
+    d.setDate(d.getDate() + 30);
     return d.toISOString().split("T")[0];
   });
   const [serviceDate, setServiceDate] = useState("");
@@ -39,13 +45,28 @@ export default function NewInvoicePage() {
   const [showNewClient, setShowNewClient] = useState(false);
   const [newClientName, setNewClientName] = useState("");
   const [newClientEmail, setNewClientEmail] = useState("");
+  const [newClientPhone, setNewClientPhone] = useState("");
+  const [newClientAddress, setNewClientAddress] = useState("");
+
+  // Selected client details
+  const selectedClient = clients.find((c) => c.id === clientId);
 
   useEffect(() => {
     fetch("/api/clients")
       .then((r) => r.json())
-      .then(setClients)
+      .then((data) => {
+        setClients(data);
+        if (preselectedClientId) {
+          setClientId(preselectedClientId);
+        }
+      })
       .catch(() => {});
-  }, []);
+
+    fetch("/api/invoices/next-number")
+      .then((r) => r.json())
+      .then((data) => setInvoiceNumber(data.nextNumber))
+      .catch(() => {});
+  }, [preselectedClientId]);
 
   function addLineItem() {
     setLineItems([...lineItems, { description: "", quantity: 1, unitPrice: 0 }]);
@@ -74,7 +95,12 @@ export default function NewInvoicePage() {
     const res = await fetch("/api/clients", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name: newClientName, email: newClientEmail }),
+      body: JSON.stringify({
+        name: newClientName,
+        email: newClientEmail,
+        phone: newClientPhone || null,
+        address: newClientAddress || null,
+      }),
     });
     if (res.ok) {
       const client = await res.json();
@@ -83,6 +109,8 @@ export default function NewInvoicePage() {
       setShowNewClient(false);
       setNewClientName("");
       setNewClientEmail("");
+      setNewClientPhone("");
+      setNewClientAddress("");
     }
   }
 
@@ -101,6 +129,7 @@ export default function NewInvoicePage() {
           taxRate,
           serviceDate: serviceDate || null,
           paymentNotes: paymentNotes || null,
+          invoiceNumber: invoiceNumber || null,
           lineItems: lineItems.filter((item) => item.description && item.unitPrice > 0),
         }),
       });
@@ -127,13 +156,27 @@ export default function NewInvoicePage() {
   const formatEur = (n: number) =>
     new Intl.NumberFormat("en-IE", { style: "currency", currency: "EUR" }).format(n);
 
+  const isValid = clientId && lineItems.some((i) => i.description && i.unitPrice > 0);
+
   return (
     <div className="min-h-screen bg-gray-950">
       <Navbar />
       <div className="max-w-3xl mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold text-white mb-8">
-          Create Invoice
-        </h1>
+        <div className="flex items-center justify-between mb-8">
+          <h1 className="text-3xl font-bold text-white">
+            Create Invoice
+          </h1>
+          {invoiceNumber && (
+            <div className="flex items-center gap-2">
+              <label className="text-sm text-gray-400">Invoice #</label>
+              <input
+                value={invoiceNumber}
+                onChange={(e) => setInvoiceNumber(e.target.value)}
+                className="w-36 px-3 py-2 rounded-lg border border-gray-600 text-base font-mono focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white text-center"
+              />
+            </div>
+          )}
+        </div>
 
         {error && (
           <div className="bg-red-900/50 text-red-400 p-4 rounded-xl mb-6">
@@ -161,6 +204,35 @@ export default function NewInvoicePage() {
                     </option>
                   ))}
                 </select>
+
+                {/* Show selected client details */}
+                {selectedClient && (
+                  <div className="bg-gray-900/60 rounded-xl p-4 border border-gray-700/50">
+                    <div className="grid grid-cols-2 gap-2 text-sm">
+                      <div>
+                        <span className="text-gray-500">Name:</span>{" "}
+                        <span className="text-gray-300">{selectedClient.name}</span>
+                      </div>
+                      <div>
+                        <span className="text-gray-500">Email:</span>{" "}
+                        <span className="text-gray-300">{selectedClient.email}</span>
+                      </div>
+                      {selectedClient.phone && (
+                        <div>
+                          <span className="text-gray-500">Phone:</span>{" "}
+                          <span className="text-gray-300">{selectedClient.phone}</span>
+                        </div>
+                      )}
+                      {selectedClient.address && (
+                        <div>
+                          <span className="text-gray-500">Address:</span>{" "}
+                          <span className="text-gray-300">{selectedClient.address}</span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+
                 <button
                   type="button"
                   onClick={() => setShowNewClient(true)}
@@ -171,19 +243,33 @@ export default function NewInvoicePage() {
               </div>
             ) : (
               <div className="space-y-3">
-                <input
-                  placeholder="Client name"
-                  value={newClientName}
-                  onChange={(e) => setNewClientName(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-600 text-lg focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white placeholder-gray-500"
-                />
-                <input
-                  placeholder="Client email"
-                  type="email"
-                  value={newClientEmail}
-                  onChange={(e) => setNewClientEmail(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-600 text-lg focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white placeholder-gray-500"
-                />
+                <div className="grid grid-cols-2 gap-3">
+                  <input
+                    placeholder="Client name *"
+                    value={newClientName}
+                    onChange={(e) => setNewClientName(e.target.value)}
+                    className="px-4 py-3 rounded-xl border border-gray-600 text-lg focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white placeholder-gray-500"
+                  />
+                  <input
+                    placeholder="Client email *"
+                    type="email"
+                    value={newClientEmail}
+                    onChange={(e) => setNewClientEmail(e.target.value)}
+                    className="px-4 py-3 rounded-xl border border-gray-600 text-lg focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white placeholder-gray-500"
+                  />
+                  <input
+                    placeholder="Phone (optional)"
+                    value={newClientPhone}
+                    onChange={(e) => setNewClientPhone(e.target.value)}
+                    className="px-4 py-3 rounded-xl border border-gray-600 text-lg focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white placeholder-gray-500"
+                  />
+                  <input
+                    placeholder="Address (optional)"
+                    value={newClientAddress}
+                    onChange={(e) => setNewClientAddress(e.target.value)}
+                    className="px-4 py-3 rounded-xl border border-gray-600 text-lg focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white placeholder-gray-500"
+                  />
+                </div>
                 <div className="flex gap-2">
                   <button
                     type="button"
@@ -238,6 +324,7 @@ export default function NewInvoicePage() {
                   onChange={(e) => setDueDate(e.target.value)}
                   className="w-full px-4 py-3 rounded-xl border border-gray-600 text-lg focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white"
                 />
+                <p className="text-xs text-gray-500 mt-1">Default: 30 days from today</p>
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-400 mb-1">
@@ -262,7 +349,7 @@ export default function NewInvoicePage() {
             </h2>
             <p className="text-sm text-gray-500 mb-4">Bank account, payment instructions, or other notes shown on the invoice</p>
             <textarea
-              placeholder="e.g. IBAN: NL91 ABNA 0417 1643 00&#10;Please include invoice number as reference"
+              placeholder={"e.g. IBAN: NL91 ABNA 0417 1643 00\nPlease include invoice number as reference"}
               value={paymentNotes}
               onChange={(e) => setPaymentNotes(e.target.value)}
               rows={3}
@@ -353,21 +440,27 @@ export default function NewInvoicePage() {
             </div>
           </div>
 
-          {/* Actions */}
-          <div className="flex gap-4">
+          {/* Actions - Save as Draft is now primary/prominent */}
+          <div className="space-y-3">
             <button
               onClick={() => handleSubmit(false)}
-              disabled={loading || !clientId || !lineItems.some((i) => i.description && i.unitPrice > 0)}
-              className="flex-1 bg-gray-800 text-gray-300 py-4 rounded-xl font-semibold text-lg hover:bg-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed border border-gray-700"
+              disabled={loading || !isValid}
+              className="w-full bg-amber-500 text-gray-950 py-4 rounded-xl font-semibold text-lg hover:bg-amber-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
-              Save as Draft
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+              </svg>
+              {loading ? "Saving..." : "Save as Draft"}
             </button>
+            <p className="text-center text-xs text-gray-500">
+              Save now and finish later — you can send it when you're ready
+            </p>
             <button
               onClick={() => handleSubmit(true)}
-              disabled={loading || !clientId || !lineItems.some((i) => i.description && i.unitPrice > 0)}
-              className="flex-1 bg-amber-500 text-gray-950 py-4 rounded-xl font-semibold text-lg hover:bg-amber-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={loading || !isValid}
+              className="w-full bg-gray-800 text-gray-300 py-3 rounded-xl font-medium text-base hover:bg-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed border border-gray-700"
             >
-              {loading ? "Creating..." : "Create & Send"}
+              {loading ? "Creating..." : "Create & Send Now"}
             </button>
           </div>
         </div>
