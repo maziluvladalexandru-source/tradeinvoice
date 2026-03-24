@@ -19,6 +19,8 @@ interface User {
   businessName: string | null;
   businessAddress: string | null;
   businessPhone: string | null;
+  kvkNumber: string | null;
+  vatNumber: string | null;
   plan: string;
   invoiceCount: number;
 }
@@ -37,6 +39,8 @@ function SettingsContent() {
   const [businessName, setBusinessName] = useState("");
   const [businessAddress, setBusinessAddress] = useState("");
   const [businessPhone, setBusinessPhone] = useState("");
+  const [kvkNumber, setKvkNumber] = useState("");
+  const [vatNumber, setVatNumber] = useState("");
 
   useEffect(() => {
     fetch("/api/user")
@@ -50,6 +54,8 @@ function SettingsContent() {
         setBusinessName(u.businessName || "");
         setBusinessAddress(u.businessAddress || "");
         setBusinessPhone(u.businessPhone || "");
+        setKvkNumber(u.kvkNumber || "");
+        setVatNumber(u.vatNumber || "");
       })
       .catch(() => router.push("/auth/login"))
       .finally(() => setLoading(false));
@@ -61,7 +67,7 @@ function SettingsContent() {
     const res = await fetch("/api/user", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, businessName, businessAddress, businessPhone }),
+      body: JSON.stringify({ name, businessName, businessAddress, businessPhone, kvkNumber, vatNumber }),
     });
     if (res.ok) {
       const updated = await res.json();
@@ -192,6 +198,30 @@ function SettingsContent() {
               value={businessPhone}
               onChange={(e) => setBusinessPhone(e.target.value)}
               placeholder="+353 1 234 5678"
+              className="w-full px-4 py-3 rounded-xl border border-gray-600 text-lg focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white placeholder-gray-500"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-400 mb-1">
+              KVK Number <span className="text-gray-500">(optional, shown on invoices)</span>
+            </label>
+            <input
+              value={kvkNumber}
+              onChange={(e) => setKvkNumber(e.target.value)}
+              placeholder="12345678"
+              className="w-full px-4 py-3 rounded-xl border border-gray-600 text-lg focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white placeholder-gray-500"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-400 mb-1">
+              BTW / VAT Number <span className="text-gray-500">(optional, required for VAT-registered businesses)</span>
+            </label>
+            <input
+              value={vatNumber}
+              onChange={(e) => setVatNumber(e.target.value)}
+              placeholder="NL123456789B01"
               className="w-full px-4 py-3 rounded-xl border border-gray-600 text-lg focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white placeholder-gray-500"
             />
           </div>
