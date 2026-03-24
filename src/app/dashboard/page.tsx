@@ -28,11 +28,12 @@ export default async function DashboardPage() {
     )
     .reduce((sum, i) => sum + i.total, 0);
 
-  const overdueAmount = invoices
-    .filter((i) => i.status === "overdue")
-    .reduce((sum, i) => sum + i.total, 0);
+  const overdueCount = invoices.filter((i) => i.status === "overdue").length;
 
   const recentInvoices = invoices.slice(0, 5);
+
+  const fmtDate = (d: Date | string) =>
+    new Date(d).toLocaleDateString("en-IE", { day: "numeric", month: "short" });
 
   const statusColors: Record<string, string> = {
     draft: "bg-gray-500/20 text-gray-300 ring-1 ring-gray-500/40",
@@ -89,10 +90,10 @@ export default async function DashboardPage() {
           </div>
           <div className="bg-gray-800/60 rounded-2xl p-6 border border-gray-700">
             <p className="text-sm font-medium text-gray-400 mb-1">
-              Overdue Amount
+              Overdue Invoices
             </p>
             <p className="text-3xl font-bold text-red-400">
-              {formatCurrency(overdueAmount)}
+              {overdueCount}
             </p>
           </div>
         </div>
@@ -134,15 +135,21 @@ export default async function DashboardPage() {
           </div>
 
           {recentInvoices.length === 0 ? (
-            <div className="p-12 text-center">
-              <p className="text-gray-400 text-lg mb-4">
-                No invoices yet. Create your first one!
+            <div className="p-16 text-center">
+              <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-amber-500/10 flex items-center justify-center">
+                <svg className="w-8 h-8 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-semibold text-white mb-2">No invoices yet</h3>
+              <p className="text-gray-400 mb-6 max-w-sm mx-auto">
+                Create your first invoice to start tracking payments and getting paid faster.
               </p>
               <Link
                 href="/invoices/new"
-                className="inline-block bg-amber-500 text-gray-950 px-6 py-3 rounded-xl font-semibold hover:bg-amber-400"
+                className="inline-block bg-amber-500 text-gray-950 px-8 py-3 rounded-xl font-semibold text-lg hover:bg-amber-400 transition-colors"
               >
-                + Create Invoice
+                Create Your First Invoice
               </Link>
             </div>
           ) : (
@@ -156,7 +163,7 @@ export default async function DashboardPage() {
                     href={`/invoices/${invoice.id}`}
                     className="flex items-center gap-4 flex-1 min-w-0"
                   >
-                    <div>
+                    <div className="flex-1 min-w-0">
                       <p className="font-medium text-white">
                         {invoice.invoiceNumber}
                       </p>
@@ -164,6 +171,9 @@ export default async function DashboardPage() {
                         {invoice.client.name}
                       </p>
                     </div>
+                    <p className="text-xs text-gray-500 hidden sm:block">
+                      Due {fmtDate(invoice.dueDate)}
+                    </p>
                   </Link>
                   <div className="flex items-center gap-3">
                     <span
