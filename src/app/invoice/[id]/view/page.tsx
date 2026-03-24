@@ -52,6 +52,12 @@ export default async function PublicInvoicePage({
                   </p>
                 )}
                 <p className="text-gray-500 text-sm">{invoice.user.email}</p>
+                {invoice.user.kvkNumber && (
+                  <p className="text-gray-500 text-sm">KVK: {invoice.user.kvkNumber}</p>
+                )}
+                {invoice.user.vatNumber && (
+                  <p className="text-gray-500 text-sm">BTW: {invoice.user.vatNumber}</p>
+                )}
               </div>
               <div className="text-right">
                 <p className="text-sm text-gray-500">INVOICE</p>
@@ -88,6 +94,11 @@ export default async function PublicInvoicePage({
               <p className="text-gray-600">
                 Issued: {formatDate(invoice.createdAt)}
               </p>
+              {invoice.serviceDate && (
+                <p className="text-gray-600">
+                  Service: {formatDate(invoice.serviceDate)}
+                </p>
+              )}
               <p className="text-gray-600">
                 Due: {formatDate(invoice.dueDate)}
               </p>
@@ -146,6 +157,21 @@ export default async function PublicInvoicePage({
               </div>
             </div>
           </div>
+
+          {/* Payment Notes & Bank Details */}
+          {(invoice.paymentNotes || invoice.user.bankDetails) && (
+            <div className="p-8 border-t border-gray-100">
+              <h3 className="text-xs uppercase tracking-wide text-gray-500 mb-3">
+                Payment Information
+              </h3>
+              {invoice.user.bankDetails && (
+                <p className="text-gray-700 whitespace-pre-line mb-2">{invoice.user.bankDetails}</p>
+              )}
+              {invoice.paymentNotes && (
+                <p className="text-gray-600 whitespace-pre-line text-sm">{invoice.paymentNotes}</p>
+              )}
+            </div>
+          )}
 
           <div className="p-6 text-center text-gray-400 text-sm">
             Powered by TradeInvoice

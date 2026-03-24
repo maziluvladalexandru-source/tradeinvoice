@@ -26,6 +26,8 @@ export default function NewInvoicePage() {
     d.setDate(d.getDate() + 14);
     return d.toISOString().split("T")[0];
   });
+  const [serviceDate, setServiceDate] = useState("");
+  const [paymentNotes, setPaymentNotes] = useState("");
   const [taxRate, setTaxRate] = useState(0);
   const [lineItems, setLineItems] = useState<LineItem[]>([
     { description: "", quantity: 1, unitPrice: 0 },
@@ -97,6 +99,8 @@ export default function NewInvoicePage() {
           description,
           dueDate,
           taxRate,
+          serviceDate: serviceDate || null,
+          paymentNotes: paymentNotes || null,
           lineItems: lineItems.filter((item) => item.description && item.unitPrice > 0),
         }),
       });
@@ -200,18 +204,30 @@ export default function NewInvoicePage() {
             )}
           </div>
 
-          {/* Job Description */}
+          {/* Job Details */}
           <div className="bg-gray-800/60 rounded-2xl p-6 border border-gray-700">
-            <h2 className="text-lg font-semibold text-white mb-4">
+            <h2 className="text-lg font-semibold text-white mb-1">
               Job Details
             </h2>
+            <p className="text-sm text-gray-500 mb-4">Describe the work and set dates</p>
             <input
               placeholder="e.g. Bathroom renovation, boiler repair..."
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               className="w-full px-4 py-3 rounded-xl border border-gray-600 text-lg focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white placeholder-gray-500 mb-4"
             />
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-3 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-400 mb-1">
+                  Service Date
+                </label>
+                <input
+                  type="date"
+                  value={serviceDate}
+                  onChange={(e) => setServiceDate(e.target.value)}
+                  className="w-full px-4 py-3 rounded-xl border border-gray-600 text-lg focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white"
+                />
+              </div>
               <div>
                 <label className="block text-sm font-medium text-gray-400 mb-1">
                   Due Date
@@ -237,6 +253,21 @@ export default function NewInvoicePage() {
                 />
               </div>
             </div>
+          </div>
+
+          {/* Payment Notes */}
+          <div className="bg-gray-800/60 rounded-2xl p-6 border border-gray-700">
+            <h2 className="text-lg font-semibold text-white mb-1">
+              Payment Notes
+            </h2>
+            <p className="text-sm text-gray-500 mb-4">Bank account, payment instructions, or other notes shown on the invoice</p>
+            <textarea
+              placeholder="e.g. IBAN: NL91 ABNA 0417 1643 00&#10;Please include invoice number as reference"
+              value={paymentNotes}
+              onChange={(e) => setPaymentNotes(e.target.value)}
+              rows={3}
+              className="w-full px-4 py-3 rounded-xl border border-gray-600 text-base focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white placeholder-gray-500 resize-none"
+            />
           </div>
 
           {/* Line Items */}

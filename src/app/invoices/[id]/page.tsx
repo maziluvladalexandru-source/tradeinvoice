@@ -20,6 +20,8 @@ interface Invoice {
   viewedAt: string | null;
   paidAt: string | null;
   createdAt: string;
+  paymentNotes: string | null;
+  serviceDate: string | null;
   client: { id: string; name: string; email: string; phone: string | null; address: string | null };
   lineItems: { id: string; description: string; quantity: number; unitPrice: number; total: number }[];
   user: { businessName: string | null; email: string };
@@ -152,6 +154,18 @@ export default function InvoiceDetailPage() {
           >
             View PDF
           </a>
+          <button
+            onClick={() => {
+              const w = window.open(`/api/invoices/${invoice.id}/pdf`, '_blank');
+              if (w) setTimeout(() => w.print(), 500);
+            }}
+            className="bg-purple-600 text-white px-6 py-3 rounded-xl font-semibold text-lg hover:bg-purple-700 flex items-center gap-2"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            Download PDF
+          </button>
           {invoice.status === "draft" && (
             <button
               onClick={deleteInvoice}
@@ -185,6 +199,9 @@ export default function InvoiceDetailPage() {
                 <h3 className="text-xs uppercase tracking-wide text-gray-500 mb-2">
                   Details
                 </h3>
+                {invoice.serviceDate && (
+                  <p className="text-gray-600">Service: {fmtDate(invoice.serviceDate)}</p>
+                )}
                 <p className="text-gray-600">Due: {fmtDate(invoice.dueDate)}</p>
                 {invoice.description && (
                   <p className="text-gray-600 mt-1">{invoice.description}</p>
@@ -257,6 +274,16 @@ export default function InvoiceDetailPage() {
               </div>
             </div>
           </div>
+
+          {/* Payment Notes */}
+          {invoice.paymentNotes && (
+            <div className="p-6 border-t border-gray-100">
+              <h3 className="text-xs uppercase tracking-wide text-gray-500 mb-2">
+                Payment Notes
+              </h3>
+              <p className="text-gray-700 whitespace-pre-line">{invoice.paymentNotes}</p>
+            </div>
+          )}
         </div>
       </div>
     </div>

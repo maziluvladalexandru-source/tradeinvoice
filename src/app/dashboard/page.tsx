@@ -140,12 +140,14 @@ export default async function DashboardPage() {
           ) : (
             <div className="divide-y divide-gray-700">
               {recentInvoices.map((invoice) => (
-                <Link
+                <div
                   key={invoice.id}
-                  href={`/invoices/${invoice.id}`}
                   className="flex items-center justify-between p-4 hover:bg-gray-700/50 transition-colors"
                 >
-                  <div className="flex items-center gap-4">
+                  <Link
+                    href={`/invoices/${invoice.id}`}
+                    className="flex items-center gap-4 flex-1 min-w-0"
+                  >
                     <div>
                       <p className="font-medium text-white">
                         {invoice.invoiceNumber}
@@ -154,8 +156,8 @@ export default async function DashboardPage() {
                         {invoice.client.name}
                       </p>
                     </div>
-                  </div>
-                  <div className="flex items-center gap-4">
+                  </Link>
+                  <div className="flex items-center gap-3">
                     <span
                       className={`px-3 py-1 rounded-full text-xs font-medium capitalize ${statusColors[invoice.status] || ""}`}
                     >
@@ -164,8 +166,18 @@ export default async function DashboardPage() {
                     <p className="font-semibold text-white w-28 text-right">
                       {formatCurrency(invoice.total)}
                     </p>
+                    <a
+                      href={`/api/invoices/${invoice.id}/pdf`}
+                      target="_blank"
+                      className="p-2 rounded-lg text-gray-400 hover:text-amber-500 hover:bg-gray-700 transition-colors"
+                      title="Download PDF"
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                      </svg>
+                    </a>
                   </div>
-                </Link>
+                </div>
               ))}
             </div>
           )}

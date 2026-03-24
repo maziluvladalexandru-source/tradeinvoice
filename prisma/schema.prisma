@@ -16,6 +16,7 @@ model User {
   businessPhone String?
   kvkNumber     String?
   vatNumber     String?
+  bankDetails   String?   // IBAN + bank name for invoices
   plan          String    @default("free") // free | pro
   stripeCustomerId String?
   stripeSubscriptionId String?
@@ -59,6 +60,8 @@ model Invoice {
   clientId      String
   invoiceNumber String
   description   String?
+  paymentNotes  String?   // bank account, payment instructions
+  serviceDate   DateTime? // date service was performed
   status        String   @default("draft") // draft | sent | viewed | paid | overdue
   subtotal      Float    @default(0)
   taxRate       Float    @default(0)

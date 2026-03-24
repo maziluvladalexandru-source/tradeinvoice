@@ -21,6 +21,7 @@ interface User {
   businessPhone: string | null;
   kvkNumber: string | null;
   vatNumber: string | null;
+  bankDetails: string | null;
   plan: string;
   invoiceCount: number;
 }
@@ -41,6 +42,7 @@ function SettingsContent() {
   const [businessPhone, setBusinessPhone] = useState("");
   const [kvkNumber, setKvkNumber] = useState("");
   const [vatNumber, setVatNumber] = useState("");
+  const [bankDetails, setBankDetails] = useState("");
 
   useEffect(() => {
     fetch("/api/user")
@@ -56,6 +58,7 @@ function SettingsContent() {
         setBusinessPhone(u.businessPhone || "");
         setKvkNumber(u.kvkNumber || "");
         setVatNumber(u.vatNumber || "");
+        setBankDetails(u.bankDetails || "");
       })
       .catch(() => router.push("/auth/login"))
       .finally(() => setLoading(false));
@@ -67,7 +70,7 @@ function SettingsContent() {
     const res = await fetch("/api/user", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, businessName, businessAddress, businessPhone, kvkNumber, vatNumber }),
+      body: JSON.stringify({ name, businessName, businessAddress, businessPhone, kvkNumber, vatNumber, bankDetails }),
     });
     if (res.ok) {
       const updated = await res.json();
@@ -131,7 +134,7 @@ function SettingsContent() {
                 disabled={upgrading}
                 className="bg-amber-500 text-gray-950 px-6 py-3 rounded-xl font-semibold text-lg hover:bg-amber-400 disabled:opacity-50"
               >
-                {upgrading ? "Loading..." : "Upgrade to Pro - €15/mo"}
+                {upgrading ? "Loading..." : "Upgrade to Pro - ï¿½15/mo"}
               </button>
             )}
             {user?.plan === "pro" && (
@@ -223,6 +226,19 @@ function SettingsContent() {
               onChange={(e) => setVatNumber(e.target.value)}
               placeholder="NL123456789B01"
               className="w-full px-4 py-3 rounded-xl border border-gray-600 text-lg focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white placeholder-gray-500"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-400 mb-1">
+              Bank Details <span className="text-gray-500">(IBAN + bank name, shown on all invoices)</span>
+            </label>
+            <textarea
+              value={bankDetails}
+              onChange={(e) => setBankDetails(e.target.value)}
+              placeholder={"IBAN: NL91 ABNA 0417 1643 00\nBank: ABN AMRO"}
+              rows={3}
+              className="w-full px-4 py-3 rounded-xl border border-gray-600 text-base focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white placeholder-gray-500 resize-none"
             />
           </div>
 
