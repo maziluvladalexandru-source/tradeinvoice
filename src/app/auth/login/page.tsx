@@ -2,6 +2,7 @@
 
 import { useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
+import Link from "next/link";
 
 export default function LoginPage() {
   return (
@@ -17,25 +18,19 @@ function LoginContent() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const searchParams = useSearchParams();
-
   const errorParam = searchParams.get("error");
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
     setError("");
-
     try {
       const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
       });
-
-      if (!res.ok) {
-        throw new Error("Failed to send magic link");
-      }
-
+      if (!res.ok) throw new Error("Failed to send magic link");
       setSent(true);
     } catch {
       setError("Something went wrong. Please try again.");
@@ -46,34 +41,19 @@ function LoginContent() {
 
   if (sent) {
     return (
-      <div className="min-h-screen flex items-center justify-center px-4">
+      <div className="min-h-screen bg-gray-950 flex items-center justify-center px-4">
         <div className="max-w-md w-full text-center">
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
-            <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <svg
-                className="w-8 h-8 text-blue-600"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                />
+          <div className="bg-gray-800/60 border border-gray-700 rounded-2xl p-10">
+            <div className="w-16 h-16 bg-amber-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg className="w-8 h-8 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
               </svg>
             </div>
-            <h1 className="text-2xl font-bold text-gray-900 mb-2">
-              Check Your Email
-            </h1>
-            <p className="text-gray-600 text-lg">
-              We sent a sign-in link to <strong>{email}</strong>
+            <h1 className="text-2xl font-bold text-white mb-2">Check Your Email</h1>
+            <p className="text-gray-400 text-lg">
+              We sent a sign-in link to <span className="text-amber-400 font-medium">{email}</span>
             </p>
-            <p className="text-gray-500 mt-4 text-sm">
-              Click the link in the email to sign in. The link expires in 15
-              minutes.
-            </p>
+            <p className="text-gray-500 mt-4 text-sm">Click the link to sign in. Expires in 15 minutes.</p>
           </div>
         </div>
       </div>
@@ -81,32 +61,25 @@ function LoginContent() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4">
+    <div className="min-h-screen bg-gray-950 flex items-center justify-center px-4">
       <div className="max-w-md w-full">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-blue-700 mb-2">
-            TradeInvoice
-          </h1>
-          <p className="text-gray-600 text-lg">Sign in to your account</p>
+          <Link href="/" className="text-2xl font-bold text-amber-400">TradeInvoice</Link>
+          <p className="text-gray-400 mt-2">Sign in to your account</p>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+        <div className="bg-gray-800/60 border border-gray-700 rounded-2xl p-8">
           {(errorParam || error) && (
-            <div className="bg-red-50 text-red-700 p-4 rounded-xl mb-6 text-sm">
-              {errorParam === "invalid_token"
-                ? "This link has expired. Please request a new one."
-                : errorParam === "missing_token"
-                  ? "Invalid sign-in link."
-                  : error}
+            <div className="bg-red-500/10 border border-red-500/30 text-red-400 p-4 rounded-xl mb-6 text-sm">
+              {errorParam === "invalid_token" ? "This link has expired. Please request a new one."
+                : errorParam === "missing_token" ? "Invalid sign-in link."
+                : error}
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium text-gray-700 mb-2"
-              >
+              <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
                 Email Address
               </label>
               <input
@@ -116,14 +89,14 @@ function LoginContent() {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
                 required
-                className="w-full px-4 py-3 rounded-xl border border-gray-300 text-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                className="w-full px-4 py-3 rounded-xl bg-gray-900 border border-gray-600 text-white placeholder-gray-500 text-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none"
               />
             </div>
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-blue-600 text-white py-4 rounded-xl font-semibold text-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-amber-500 text-gray-900 py-4 rounded-xl font-bold text-lg hover:bg-amber-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? "Sending..." : "Send Magic Link"}
             </button>
@@ -133,6 +106,13 @@ function LoginContent() {
             No password needed. We&apos;ll email you a sign-in link.
           </p>
         </div>
+
+        <p className="text-center text-gray-600 text-sm mt-6">
+          Don&apos;t have an account?{" "}
+          <Link href="/auth/login" className="text-amber-400 hover:text-amber-300">
+            Sign up free
+          </Link>
+        </p>
       </div>
     </div>
   );
