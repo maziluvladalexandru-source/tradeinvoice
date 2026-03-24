@@ -18,7 +18,7 @@ export const PLANS = {
   free: {
     name: "Free",
     price: 0,
-    invoicesPerMonth: 3,
+    invoicesPerMonth: 5,
     priceId: null,
   },
   pro: {
@@ -36,3 +36,4 @@ export function canCreateInvoice(
   if (plan === "pro") return true;
   return invoiceCount < PLANS.free.invoicesPerMonth;
 }
+
