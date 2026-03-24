@@ -3,6 +3,8 @@ import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { formatCurrency } from "@/lib/utils";
 import Navbar from "@/components/Navbar";
+import OnboardingChecklist from "@/components/OnboardingChecklist";
+import NewInvoiceButton from "@/components/NewInvoiceButton";
 import Link from "next/link";
 
 export default async function DashboardPage() {
@@ -31,6 +33,11 @@ export default async function DashboardPage() {
   const overdueCount = invoices.filter((i) => i.status === "overdue").length;
 
   const recentInvoices = invoices.slice(0, 5);
+
+  // Onboarding data
+  const hasBusinessName = !!user.businessName;
+  const hasSentInvoice = invoices.some((i) => i.sentAt !== null);
+  const isNewUser = invoices.length === 0 && !hasBusinessName;
 
   const fmtDate = (d: Date | string) =>
     new Date(d).toLocaleDateString("en-IE", { day: "numeric", month: "short" });
@@ -62,13 +69,15 @@ export default async function DashboardPage() {
               Welcome back{user.name ? `, ${user.name}` : ""}
             </p>
           </div>
-          <Link
-            href="/invoices/new"
-            className="bg-amber-500 text-gray-950 px-6 py-3 rounded-xl font-semibold text-lg hover:bg-amber-400 transition-colors"
-          >
-            + New Invoice
-          </Link>
+          <NewInvoiceButton isNewUser={isNewUser} />
         </div>
+
+        {/* Onboarding checklist */}
+        <OnboardingChecklist
+          hasBusinessName={hasBusinessName}
+          invoiceCount={invoices.length}
+          hasSentInvoice={hasSentInvoice}
+        />
 
         {/* Stats */}
         <div className="grid md:grid-cols-3 gap-6 mb-8">
