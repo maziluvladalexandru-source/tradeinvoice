@@ -41,7 +41,7 @@ export default function Home() {
           {[
             {
               icon: "⚡",
-              text: "Your money in 2 business days. Guaranteed.",
+              text: "Fast Stripe payouts to your bank account.",
             },
             {
               icon: "♾️",
@@ -245,4 +245,5 @@ export default function Home() {
     </div>
   );
 }
+
 
