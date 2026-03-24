@@ -240,6 +240,15 @@ export default function Home() {
       </section>
 
       <footer className="border-t border-gray-800 py-8 text-center text-gray-600 text-sm">
+        <div className="flex items-center justify-center gap-4 mb-2">
+          <Link href="/terms" className="hover:text-gray-400 transition-colors">
+            Terms of Service
+          </Link>
+          <span>·</span>
+          <Link href="/privacy" className="hover:text-gray-400 transition-colors">
+            Privacy Policy
+          </Link>
+        </div>
         © {new Date().getFullYear()} TradeInvoice. All rights reserved.
       </footer>
     </div>
