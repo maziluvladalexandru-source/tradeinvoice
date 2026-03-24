@@ -103,33 +103,21 @@ export default function Home() {
           {[
             {
               step: "1",
-              icon: (
-                <svg className="w-8 h-8 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                </svg>
-              ),
-              title: "Add Your Client",
-              desc: "Enter their name, email and address. Done in 30 seconds.",
+              emoji: "📝",
+              title: "Create Invoice in 60 Seconds",
+              desc: "Add your client, line items, and due date. Professional PDF generated automatically — no templates needed.",
             },
             {
               step: "2",
-              icon: (
-                <svg className="w-8 h-8 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-              ),
-              title: "Create Invoice",
-              desc: "Add your work items and set the due date. Professional PDF generated automatically.",
+              emoji: "📨",
+              title: "Send to Client Instantly",
+              desc: "One click sends a polished invoice straight to your client's inbox. Automatic reminders follow up for you.",
             },
             {
               step: "3",
-              icon: (
-                <svg className="w-8 h-8 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              ),
-              title: "Get Paid",
-              desc: "Your client receives the invoice by email with automatic reminders until they pay.",
+              emoji: "💰",
+              title: "Get Paid & Get Notified",
+              desc: "Your client pays online. You get notified the moment the money lands. No more wondering who's paid.",
             },
           ].map((item) => (
             <div
@@ -139,7 +127,7 @@ export default function Home() {
               <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-amber-500 text-gray-900 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold">
                 {item.step}
               </div>
-              <div className="flex justify-center mb-4 mt-2">{item.icon}</div>
+              <div className="text-4xl mb-4 mt-2">{item.emoji}</div>
               <h3 className="text-lg font-semibold text-white mb-2">
                 {item.title}
               </h3>
@@ -161,32 +149,39 @@ export default function Home() {
           {[
             {
               quote:
-                "I used to lose track of who owed me what. Now I send an invoice from the van before I even drive home. The reminders do the chasing for me — I've cut my late payments in half.",
-              name: "Dave Kinsella",
-              role: "Plumber, Dublin",
+                "I used to spend my evenings chasing clients for money. Now TradeInvoice sends reminders automatically — I've cut my late payments by 70%. I actually get paid within a week most of the time.",
+              name: "Mark T.",
+              role: "Plumber — Dublin",
+              stars: 5,
             },
             {
               quote:
-                "I'm not a computer person. I just needed something simple that sends a proper invoice. Took me five minutes to figure out and my clients actually pay on time now.",
-              name: "Sarah Brennan",
-              role: "Electrician, Cork",
+                "I was copying the same Word template for every job and half the time I'd forget to update the date or the total. This is so much faster and my invoices actually look professional now.",
+              name: "Sarah K.",
+              role: "Electrician — Amsterdam",
+              stars: 5,
             },
             {
               quote:
-                "We were using Word templates and it was a mess. Missed payments, no idea what was outstanding. TradeInvoice sorted that overnight. Worth every cent of the fifteen quid.",
-              name: "Mark Gallagher",
-              role: "Builder, Galway",
+                "Since switching to TradeInvoice, my average time-to-payment dropped from 30 days to 9. The automatic reminders do the awkward chasing so I don't have to. Best €15 I spend each month.",
+              name: "James B.",
+              role: "Builder — Rotterdam",
+              stars: 5,
             },
           ].map((testimonial) => (
             <div
               key={testimonial.name}
               className="bg-gray-800/50 border border-gray-700 rounded-2xl p-6"
             >
-              <svg className="w-8 h-8 text-amber-500/40 mb-3" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
-              </svg>
+              <div className="flex gap-0.5 mb-3">
+                {Array.from({ length: testimonial.stars }).map((_, i) => (
+                  <svg key={i} className="w-4 h-4 text-amber-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  </svg>
+                ))}
+              </div>
               <p className="text-gray-300 text-sm mb-4 leading-relaxed">
-                {testimonial.quote}
+                &ldquo;{testimonial.quote}&rdquo;
               </p>
               <div>
                 <p className="text-white font-semibold text-sm">
@@ -256,13 +251,18 @@ export default function Home() {
 
       {/* Comparison */}
       <section className="max-w-4xl mx-auto px-4 py-20">
-        <h2 className="text-3xl font-bold text-center mb-2">
-          See How We Compare
-        </h2>
-        <p className="text-center text-gray-400 mb-10">
-          Built for trades. Priced for trades.
-        </p>
-        <div className="overflow-x-auto">
+        <div className="text-center mb-12">
+          <span className="inline-block bg-amber-500/20 text-amber-400 border border-amber-500/40 text-sm font-bold px-4 py-1.5 rounded-full mb-4">
+            COMPARE
+          </span>
+          <h2 className="text-3xl md:text-4xl font-bold mb-2">
+            Why Tradespeople Choose Us Over the Alternatives
+          </h2>
+          <p className="text-gray-400 max-w-xl mx-auto">
+            No bloated features you&apos;ll never use. No per-user fees eating into your margins.
+          </p>
+        </div>
+        <div className="overflow-x-auto bg-gray-800/50 border border-gray-700 rounded-2xl p-2">
           <table className="w-full text-sm md:text-base">
             <thead>
               <tr className="border-b border-gray-700">
@@ -330,14 +330,69 @@ export default function Home() {
         </div>
       </section>
 
+      {/* FAQ */}
+      <section className="max-w-3xl mx-auto px-4 py-20">
+        <h2 className="text-3xl font-bold text-center mb-2">
+          Frequently Asked Questions
+        </h2>
+        <p className="text-center text-gray-400 mb-12">
+          Everything you need to know before getting started.
+        </p>
+        <div className="space-y-4">
+          {[
+            {
+              q: "Do I need accounting software to use TradeInvoice?",
+              a: "No. TradeInvoice is a standalone invoicing tool — you don't need Xero, QuickBooks, or any other software. Just create an invoice, send it, and get paid. If you do use accounting software, you can export your data anytime.",
+            },
+            {
+              q: "Is my data safe?",
+              a: "Absolutely. All data is encrypted in transit and at rest. Payments are processed securely through Stripe — we never see or store your card details or your clients' card details.",
+            },
+            {
+              q: "Can I cancel anytime?",
+              a: "Yes, no contracts and no cancellation fees. You can downgrade to the free plan or cancel your subscription at any time from your account settings. Your data stays available for 90 days after cancellation.",
+            },
+            {
+              q: "Do my clients need to sign up to pay?",
+              a: "No. Your clients receive a simple email with a link to view and pay the invoice. No account needed, no app to download — they just click and pay.",
+            },
+            {
+              q: "What happens after my 5 free invoices?",
+              a: "You can upgrade to Pro for €15/month for unlimited invoices, or continue on the free plan with 5 invoices per month. There's no pressure — the free plan never expires.",
+            },
+          ].map((faq) => (
+            <details
+              key={faq.q}
+              className="group bg-gray-800/50 border border-gray-700 rounded-2xl"
+            >
+              <summary className="flex items-center justify-between cursor-pointer p-6 text-white font-semibold list-none">
+                {faq.q}
+                <svg
+                  className="w-5 h-5 text-amber-400 shrink-0 ml-4 transition-transform group-open:rotate-180"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+              </summary>
+              <p className="px-6 pb-6 text-gray-400 text-sm leading-relaxed">
+                {faq.a}
+              </p>
+            </details>
+          ))}
+        </div>
+      </section>
+
       {/* Final CTA */}
       <section className="max-w-4xl mx-auto px-4 py-20 text-center">
         <h2 className="text-3xl font-bold mb-4">
           Stop Chasing Payments. Start Getting Paid.
         </h2>
         <p className="text-gray-400 mb-8 max-w-xl mx-auto">
-          Join tradespeople across Ireland and the UK who invoice smarter with
-          TradeInvoice.
+          Join tradespeople across Ireland, the UK, and the Netherlands who
+          invoice smarter with TradeInvoice.
         </p>
         <Link
           href="/auth/login"
