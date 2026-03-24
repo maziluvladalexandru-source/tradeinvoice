@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { sendPaymentReminder } from "@/lib/resend";
+import { sendPaymentReminder, sendOverdueInvoiceEmail } from "@/lib/resend";
 import { formatCurrency, appUrl } from "@/lib/utils";
 
 export async function GET(req: NextRequest) {
@@ -18,7 +18,7 @@ export async function GET(req: NextRequest) {
     where: {
       status: { in: ["sent", "viewed"] },
     },
-    include: { client: true },
+    include: { client: true, user: true },
   });
 
   for (const invoice of invoices) {
@@ -72,15 +72,19 @@ export async function GET(req: NextRequest) {
       results.reminded3++;
     }
 
-    // Overdue reminder
+    // Overdue reminder — use the urgent overdue template
     if (daysUntilDue < 0 && !invoice.reminderOverdueSent) {
-      await sendPaymentReminder(
+      const daysOverdue = Math.abs(daysUntilDue);
+      const dueDateFormatted = dueDate.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+      await sendOverdueInvoiceEmail(
         invoice.client.email,
         invoice.client.name,
         invoice.invoiceNumber,
         totalFormatted,
-        "Payment is overdue",
-        viewUrl
+        dueDateFormatted,
+        daysOverdue,
+        viewUrl,
+        invoice.user.businessName || undefined
       );
       await prisma.invoice.update({
         where: { id: invoice.id },

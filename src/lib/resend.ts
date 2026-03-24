@@ -8,38 +8,45 @@ function getFromEmail() {
   return process.env.FROM_EMAIL || "TradeInvoice <noreply@tradeinvoice.com>";
 }
 
-/** Shared email wrapper for consistent branding */
-function emailLayout(businessName: string, content: string) {
+/** Professional email layout with dark/amber branding */
+function emailLayout(businessName: string, content: string, accentColor?: string) {
+  const accent = accentColor || "#f59e0b";
   return `
 <!DOCTYPE html>
 <html lang="en">
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
-<body style="margin: 0; padding: 0; background-color: #f3f4f6; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
-  <table role="presentation" cellpadding="0" cellspacing="0" style="width: 100%; background-color: #f3f4f6;">
+<body style="margin: 0; padding: 0; background-color: #0c0a09; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <table role="presentation" cellpadding="0" cellspacing="0" style="width: 100%; background-color: #0c0a09;">
     <tr>
-      <td style="padding: 32px 16px;">
-        <table role="presentation" cellpadding="0" cellspacing="0" style="max-width: 560px; margin: 0 auto; width: 100%;">
-          <!-- Logo -->
+      <td style="padding: 40px 16px;">
+        <table role="presentation" cellpadding="0" cellspacing="0" style="max-width: 580px; margin: 0 auto; width: 100%;">
+          <!-- Header with logo area -->
           <tr>
-            <td style="padding: 0 0 24px; text-align: center;">
-              <table role="presentation" cellpadding="0" cellspacing="0" style="margin: 0 auto;">
+            <td style="padding: 0 0 32px;">
+              <table role="presentation" cellpadding="0" cellspacing="0" style="width: 100%;">
                 <tr>
-                  <td style="width: 36px; height: 36px; background-color: #0f172a; border-radius: 8px; text-align: center; vertical-align: middle; font-size: 18px; font-weight: 700; color: #ffffff;">
-                    ${businessName.charAt(0).toUpperCase()}
-                  </td>
-                  <td style="padding-left: 10px; font-size: 16px; font-weight: 700; color: #111827;">
-                    ${businessName}
+                  <td>
+                    <table role="presentation" cellpadding="0" cellspacing="0">
+                      <tr>
+                        <td style="width: 44px; height: 44px; background-color: ${accent}; border-radius: 12px; text-align: center; vertical-align: middle; font-size: 20px; font-weight: 800; color: #0c0a09;">
+                          ${businessName.charAt(0).toUpperCase()}
+                        </td>
+                        <td style="padding-left: 14px;">
+                          <p style="margin: 0; font-size: 18px; font-weight: 800; color: #ffffff; letter-spacing: -0.01em;">${businessName}</p>
+                        </td>
+                      </tr>
+                    </table>
                   </td>
                 </tr>
               </table>
             </td>
           </tr>
-          <!-- Card -->
+          <!-- Main Card -->
           <tr>
             <td>
-              <table role="presentation" cellpadding="0" cellspacing="0" style="width: 100%; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.08);">
+              <table role="presentation" cellpadding="0" cellspacing="0" style="width: 100%; background-color: #1c1917; border-radius: 16px; overflow: hidden; border: 1px solid #292524;">
                 <tr>
-                  <td style="padding: 32px 32px 28px;">
+                  <td style="padding: 36px 36px 32px;">
                     ${content}
                   </td>
                 </tr>
@@ -48,9 +55,12 @@ function emailLayout(businessName: string, content: string) {
           </tr>
           <!-- Footer -->
           <tr>
-            <td style="padding: 24px 0 0; text-align: center;">
-              <p style="margin: 0; font-size: 12px; color: #9ca3af;">
-                Sent via <a href="https://tradeinvoice.com" style="color: #9ca3af; font-weight: 600; text-decoration: none;">TradeInvoice</a>
+            <td style="padding: 28px 0 0; text-align: center;">
+              <p style="margin: 0 0 6px; font-size: 12px; color: #57534e;">
+                Sent via <a href="https://tradeinvoice.com" style="color: ${accent}; font-weight: 600; text-decoration: none;">TradeInvoice</a>
+              </p>
+              <p style="margin: 0; font-size: 11px; color: #44403c;">
+                Professional invoicing for freelancers &amp; small businesses
               </p>
             </td>
           </tr>
@@ -68,17 +78,17 @@ export async function sendMagicLink(email: string, url: string) {
     to: email,
     subject: "Sign in to TradeInvoice",
     html: emailLayout("TradeInvoice", `
-      <p style="margin: 0 0 20px; font-size: 16px; color: #374151; line-height: 1.5;">Click the button below to sign in:</p>
+      <p style="margin: 0 0 20px; font-size: 16px; color: #d6d3d1; line-height: 1.5;">Click the button below to sign in:</p>
       <table role="presentation" cellpadding="0" cellspacing="0" style="margin: 0 auto 20px;">
         <tr>
-          <td style="background-color: #2563eb; border-radius: 8px; text-align: center;">
-            <a href="${url}" style="display: inline-block; padding: 14px 32px; color: #ffffff; font-size: 16px; font-weight: 700; text-decoration: none;">
+          <td style="background-color: #f59e0b; border-radius: 10px; text-align: center;">
+            <a href="${url}" style="display: inline-block; padding: 14px 32px; color: #0c0a09; font-size: 16px; font-weight: 700; text-decoration: none;">
               Sign In
             </a>
           </td>
         </tr>
       </table>
-      <p style="margin: 0; font-size: 13px; color: #9ca3af;">This link expires in 15 minutes. If you didn&rsquo;t request this, you can safely ignore this email.</p>
+      <p style="margin: 0; font-size: 13px; color: #78716c;">This link expires in 15 minutes. If you didn&rsquo;t request this, you can safely ignore this email.</p>
     `),
   });
 }
@@ -98,37 +108,49 @@ export async function sendInvoiceEmail(
     to,
     subject: `Invoice ${invoiceNumber} — ${total} from ${from}`,
     html: emailLayout(from, `
-      <p style="margin: 0 0 20px; font-size: 16px; color: #374151; line-height: 1.5;">Hi ${clientName},</p>
-      <p style="margin: 0 0 24px; font-size: 16px; color: #374151; line-height: 1.5;">
-        You have received a new invoice from <strong>${from}</strong>.
+      <p style="margin: 0 0 8px; font-size: 16px; color: #d6d3d1; line-height: 1.5;">Hi ${clientName},</p>
+      <p style="margin: 0 0 28px; font-size: 16px; color: #a8a29e; line-height: 1.5;">
+        You have received a new invoice from <strong style="color: #ffffff;">${from}</strong>.
       </p>
 
-      <!-- Invoice Summary Card -->
-      <table role="presentation" cellpadding="0" cellspacing="0" style="width: 100%; background-color: #f9fafb; border: 1px solid #e5e7eb; border-radius: 10px; margin: 0 0 28px;">
+      <!-- Amount Highlight -->
+      <table role="presentation" cellpadding="0" cellspacing="0" style="width: 100%; background-color: #292524; border-radius: 12px; margin: 0 0 20px; border: 1px solid #3f3f46;">
         <tr>
-          <td style="padding: 20px 24px;">
+          <td style="padding: 28px 24px; text-align: center;">
+            <p style="margin: 0 0 4px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: #78716c; font-weight: 600;">Amount Due</p>
+            <p style="margin: 0; font-size: 38px; font-weight: 800; color: #f59e0b; letter-spacing: -0.02em;">${total}</p>
+          </td>
+        </tr>
+      </table>
+
+      <!-- Invoice Details -->
+      <table role="presentation" cellpadding="0" cellspacing="0" style="width: 100%; margin: 0 0 28px;">
+        <tr>
+          <td style="padding: 14px 0; border-bottom: 1px solid #292524;">
             <table role="presentation" cellpadding="0" cellspacing="0" style="width: 100%;">
               <tr>
-                <td style="vertical-align: top;">
-                  <p style="margin: 0; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: #9ca3af; font-weight: 600;">Invoice</p>
-                  <p style="margin: 4px 0 0; font-size: 15px; font-weight: 700; color: #111827; font-family: 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace;">${invoiceNumber}</p>
-                </td>
-                ${dueDate ? `<td style="vertical-align: top; text-align: right;">
-                  <p style="margin: 0; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: #9ca3af; font-weight: 600;">Due Date</p>
-                  <p style="margin: 4px 0 0; font-size: 15px; font-weight: 700; color: #111827;">${dueDate}</p>
-                </td>` : ""}
+                <td style="font-size: 13px; color: #78716c; font-weight: 500;">Invoice Number</td>
+                <td style="text-align: right; font-size: 14px; font-weight: 700; color: #ffffff; font-family: 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace;">${invoiceNumber}</td>
               </tr>
             </table>
           </td>
         </tr>
-        <tr>
-          <td style="padding: 0 24px 20px;">
-            <table role="presentation" cellpadding="0" cellspacing="0" style="width: 100%; border-top: 1px solid #e5e7eb;">
+        ${dueDate ? `<tr>
+          <td style="padding: 14px 0; border-bottom: 1px solid #292524;">
+            <table role="presentation" cellpadding="0" cellspacing="0" style="width: 100%;">
               <tr>
-                <td style="padding-top: 16px;">
-                  <p style="margin: 0; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: #9ca3af; font-weight: 600;">Amount Due</p>
-                  <p style="margin: 6px 0 0; font-size: 30px; font-weight: 800; color: #111827; letter-spacing: -0.02em;">${total}</p>
-                </td>
+                <td style="font-size: 13px; color: #78716c; font-weight: 500;">Due Date</td>
+                <td style="text-align: right; font-size: 14px; font-weight: 700; color: #fbbf24;">${dueDate}</td>
+              </tr>
+            </table>
+          </td>
+        </tr>` : ""}
+        <tr>
+          <td style="padding: 14px 0;">
+            <table role="presentation" cellpadding="0" cellspacing="0" style="width: 100%;">
+              <tr>
+                <td style="font-size: 13px; color: #78716c; font-weight: 500;">From</td>
+                <td style="text-align: right; font-size: 14px; font-weight: 600; color: #d6d3d1;">${from}</td>
               </tr>
             </table>
           </td>
@@ -141,8 +163,8 @@ export async function sendInvoiceEmail(
           <td style="text-align: center;">
             <table role="presentation" cellpadding="0" cellspacing="0" style="margin: 0 auto;">
               <tr>
-                <td style="background-color: #0f172a; border-radius: 10px; text-align: center;">
-                  <a href="${viewUrl}" style="display: inline-block; padding: 16px 44px; color: #ffffff; font-size: 16px; font-weight: 700; text-decoration: none; letter-spacing: 0.01em;">
+                <td style="background-color: #f59e0b; border-radius: 12px; text-align: center;">
+                  <a href="${viewUrl}" style="display: inline-block; padding: 16px 48px; color: #0c0a09; font-size: 16px; font-weight: 800; text-decoration: none; letter-spacing: 0.01em;">
                     View &amp; Pay Invoice
                   </a>
                 </td>
@@ -152,11 +174,112 @@ export async function sendInvoiceEmail(
         </tr>
       </table>
 
-      <p style="margin: 0; font-size: 13px; color: #9ca3af; text-align: center; line-height: 1.5;">
+      <p style="margin: 0; font-size: 12px; color: #57534e; text-align: center; line-height: 1.5;">
         Or copy this link:<br>
-        <a href="${viewUrl}" style="color: #6b7280; word-break: break-all; font-size: 12px;">${viewUrl}</a>
+        <a href="${viewUrl}" style="color: #78716c; word-break: break-all; font-size: 11px;">${viewUrl}</a>
       </p>
     `),
+  });
+}
+
+export async function sendOverdueInvoiceEmail(
+  to: string,
+  clientName: string,
+  invoiceNumber: string,
+  total: string,
+  dueDate: string,
+  daysOverdue: number,
+  viewUrl: string,
+  businessName?: string
+) {
+  const from = businessName || "TradeInvoice";
+  await getResend().emails.send({
+    from: getFromEmail(),
+    to,
+    subject: `OVERDUE: Invoice ${invoiceNumber} — ${total} was due ${dueDate}`,
+    html: emailLayout(from, `
+      <!-- Urgent Banner -->
+      <table role="presentation" cellpadding="0" cellspacing="0" style="width: 100%; background-color: #451a03; border-radius: 10px; margin: 0 0 24px; border: 1px solid #92400e;">
+        <tr>
+          <td style="padding: 16px 20px; text-align: center;">
+            <p style="margin: 0; font-size: 13px; font-weight: 800; color: #fbbf24; text-transform: uppercase; letter-spacing: 0.08em;">
+              Payment Overdue — ${daysOverdue} day${daysOverdue !== 1 ? "s" : ""} past due
+            </p>
+          </td>
+        </tr>
+      </table>
+
+      <p style="margin: 0 0 8px; font-size: 16px; color: #d6d3d1; line-height: 1.5;">Hi ${clientName},</p>
+      <p style="margin: 0 0 24px; font-size: 16px; color: #a8a29e; line-height: 1.5;">
+        This is an urgent reminder that payment for the following invoice is now <strong style="color: #ef4444;">overdue</strong>. Please arrange payment at your earliest convenience to avoid any disruption.
+      </p>
+
+      <!-- Amount Highlight -->
+      <table role="presentation" cellpadding="0" cellspacing="0" style="width: 100%; background-color: #292524; border-radius: 12px; margin: 0 0 20px; border: 1px solid #dc2626;">
+        <tr>
+          <td style="padding: 28px 24px; text-align: center;">
+            <p style="margin: 0 0 4px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: #ef4444; font-weight: 600;">Overdue Amount</p>
+            <p style="margin: 0; font-size: 38px; font-weight: 800; color: #ef4444; letter-spacing: -0.02em;">${total}</p>
+          </td>
+        </tr>
+      </table>
+
+      <!-- Invoice Details -->
+      <table role="presentation" cellpadding="0" cellspacing="0" style="width: 100%; margin: 0 0 28px;">
+        <tr>
+          <td style="padding: 14px 0; border-bottom: 1px solid #292524;">
+            <table role="presentation" cellpadding="0" cellspacing="0" style="width: 100%;">
+              <tr>
+                <td style="font-size: 13px; color: #78716c; font-weight: 500;">Invoice Number</td>
+                <td style="text-align: right; font-size: 14px; font-weight: 700; color: #ffffff; font-family: 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace;">${invoiceNumber}</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding: 14px 0; border-bottom: 1px solid #292524;">
+            <table role="presentation" cellpadding="0" cellspacing="0" style="width: 100%;">
+              <tr>
+                <td style="font-size: 13px; color: #78716c; font-weight: 500;">Due Date</td>
+                <td style="text-align: right; font-size: 14px; font-weight: 700; color: #ef4444;">${dueDate} (${daysOverdue} day${daysOverdue !== 1 ? "s" : ""} ago)</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding: 14px 0;">
+            <table role="presentation" cellpadding="0" cellspacing="0" style="width: 100%;">
+              <tr>
+                <td style="font-size: 13px; color: #78716c; font-weight: 500;">From</td>
+                <td style="text-align: right; font-size: 14px; font-weight: 600; color: #d6d3d1;">${from}</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+
+      <!-- CTA Button -->
+      <table role="presentation" cellpadding="0" cellspacing="0" style="width: 100%; margin: 0 0 24px;">
+        <tr>
+          <td style="text-align: center;">
+            <table role="presentation" cellpadding="0" cellspacing="0" style="margin: 0 auto;">
+              <tr>
+                <td style="background-color: #ef4444; border-radius: 12px; text-align: center;">
+                  <a href="${viewUrl}" style="display: inline-block; padding: 16px 48px; color: #ffffff; font-size: 16px; font-weight: 800; text-decoration: none; letter-spacing: 0.01em;">
+                    Pay Now
+                  </a>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+
+      <p style="margin: 0; font-size: 13px; color: #78716c; text-align: center; line-height: 1.6;">
+        If you&rsquo;ve already sent payment, please disregard this reminder.<br>
+        For questions, reply directly to this email.
+      </p>
+    `, "#ef4444"),
   });
 }
 
@@ -175,7 +298,7 @@ export async function sendInvoiceViewedNotification(
           <td style="text-align: center; padding: 8px 0 20px;">
             <table role="presentation" cellpadding="0" cellspacing="0" style="margin: 0 auto;">
               <tr>
-                <td style="width: 48px; height: 48px; background-color: #eff6ff; border-radius: 50%; text-align: center; vertical-align: middle;">
+                <td style="width: 48px; height: 48px; background-color: #1e3a5f; border-radius: 50%; text-align: center; vertical-align: middle;">
                   <span style="font-size: 22px;">&#128065;</span>
                 </td>
               </tr>
@@ -184,11 +307,11 @@ export async function sendInvoiceViewedNotification(
         </tr>
         <tr>
           <td style="text-align: center;">
-            <h2 style="margin: 0 0 8px; font-size: 18px; font-weight: 700; color: #111827;">Invoice Viewed</h2>
-            <p style="margin: 0 0 4px; font-size: 15px; color: #374151; line-height: 1.5;">
-              <strong>${clientName}</strong> has viewed invoice <strong style="font-family: monospace;">${invoiceNumber}</strong>.
+            <h2 style="margin: 0 0 8px; font-size: 18px; font-weight: 700; color: #ffffff;">Invoice Viewed</h2>
+            <p style="margin: 0 0 4px; font-size: 15px; color: #d6d3d1; line-height: 1.5;">
+              <strong style="color: #ffffff;">${clientName}</strong> has viewed invoice <strong style="font-family: monospace; color: #f59e0b;">${invoiceNumber}</strong>.
             </p>
-            <p style="margin: 0; font-size: 13px; color: #9ca3af;">Just now</p>
+            <p style="margin: 0; font-size: 13px; color: #78716c;">Just now</p>
           </td>
         </tr>
       </table>
@@ -211,7 +334,7 @@ export async function sendInvoicePaidNotification(
           <td style="text-align: center; padding: 8px 0 20px;">
             <table role="presentation" cellpadding="0" cellspacing="0" style="margin: 0 auto;">
               <tr>
-                <td style="width: 48px; height: 48px; background-color: #ecfdf5; border-radius: 50%; text-align: center; vertical-align: middle;">
+                <td style="width: 48px; height: 48px; background-color: #052e16; border-radius: 50%; text-align: center; vertical-align: middle;">
                   <span style="font-size: 22px;">&#9989;</span>
                 </td>
               </tr>
@@ -220,9 +343,9 @@ export async function sendInvoicePaidNotification(
         </tr>
         <tr>
           <td style="text-align: center;">
-            <h2 style="margin: 0 0 8px; font-size: 18px; font-weight: 700; color: #059669;">Payment Received!</h2>
-            <p style="margin: 0; font-size: 15px; color: #374151; line-height: 1.5;">
-              <strong>${clientName}</strong> has paid invoice <strong style="font-family: monospace;">${invoiceNumber}</strong>.
+            <h2 style="margin: 0 0 8px; font-size: 18px; font-weight: 700; color: #4ade80;">Payment Received!</h2>
+            <p style="margin: 0; font-size: 15px; color: #d6d3d1; line-height: 1.5;">
+              <strong style="color: #ffffff;">${clientName}</strong> has paid invoice <strong style="font-family: monospace; color: #f59e0b;">${invoiceNumber}</strong>.
             </p>
           </td>
         </tr>
@@ -244,16 +367,16 @@ export async function sendPaymentReminder(
     to,
     subject: `Payment Reminder: Invoice ${invoiceNumber} - ${daysMessage}`,
     html: emailLayout("TradeInvoice", `
-      <p style="margin: 0 0 20px; font-size: 16px; color: #374151; line-height: 1.5;">Hi ${clientName},</p>
-      <p style="margin: 0 0 24px; font-size: 16px; color: #374151; line-height: 1.5;">This is a friendly reminder about an outstanding invoice.</p>
+      <p style="margin: 0 0 20px; font-size: 16px; color: #d6d3d1; line-height: 1.5;">Hi ${clientName},</p>
+      <p style="margin: 0 0 24px; font-size: 16px; color: #a8a29e; line-height: 1.5;">This is a friendly reminder about an outstanding invoice.</p>
 
       <!-- Reminder Card -->
-      <table role="presentation" cellpadding="0" cellspacing="0" style="width: 100%; background-color: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; margin: 0 0 28px;">
+      <table role="presentation" cellpadding="0" cellspacing="0" style="width: 100%; background-color: #292524; border-radius: 12px; margin: 0 0 28px; border: 1px solid #f59e0b;">
         <tr>
-          <td style="padding: 20px 24px; border-left: 4px solid #f59e0b; border-radius: 10px 0 0 10px;">
-            <p style="margin: 0 0 4px; font-size: 14px; font-weight: 700; color: #92400e;">${daysMessage}</p>
-            <p style="margin: 0 0 2px; font-size: 13px; color: #78716c;">Invoice: <strong style="font-family: monospace;">${invoiceNumber}</strong></p>
-            <p style="margin: 8px 0 0; font-size: 26px; font-weight: 800; color: #111827; letter-spacing: -0.02em;">${total}</p>
+          <td style="padding: 20px 24px; border-left: 4px solid #f59e0b; border-radius: 12px;">
+            <p style="margin: 0 0 4px; font-size: 14px; font-weight: 700; color: #fbbf24;">${daysMessage}</p>
+            <p style="margin: 0 0 2px; font-size: 13px; color: #78716c;">Invoice: <strong style="font-family: monospace; color: #d6d3d1;">${invoiceNumber}</strong></p>
+            <p style="margin: 8px 0 0; font-size: 26px; font-weight: 800; color: #ffffff; letter-spacing: -0.02em;">${total}</p>
           </td>
         </tr>
       </table>
@@ -264,8 +387,8 @@ export async function sendPaymentReminder(
           <td style="text-align: center;">
             <table role="presentation" cellpadding="0" cellspacing="0" style="margin: 0 auto;">
               <tr>
-                <td style="background-color: #0f172a; border-radius: 10px; text-align: center;">
-                  <a href="${viewUrl}" style="display: inline-block; padding: 14px 36px; color: #ffffff; font-size: 16px; font-weight: 700; text-decoration: none;">
+                <td style="background-color: #f59e0b; border-radius: 12px; text-align: center;">
+                  <a href="${viewUrl}" style="display: inline-block; padding: 14px 36px; color: #0c0a09; font-size: 16px; font-weight: 700; text-decoration: none;">
                     View &amp; Pay Invoice
                   </a>
                 </td>
