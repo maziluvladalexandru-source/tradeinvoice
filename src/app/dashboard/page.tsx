@@ -35,27 +35,27 @@ export default async function DashboardPage() {
   const recentInvoices = invoices.slice(0, 5);
 
   const statusColors: Record<string, string> = {
-    draft: "bg-gray-100 text-gray-800",
-    sent: "bg-blue-100 text-blue-800",
-    viewed: "bg-yellow-100 text-yellow-800",
-    paid: "bg-green-100 text-green-800",
-    overdue: "bg-red-100 text-red-800",
+    draft: "bg-gray-700 text-gray-300",
+    sent: "bg-blue-900/50 text-blue-400",
+    viewed: "bg-yellow-900/50 text-yellow-400",
+    paid: "bg-green-900/50 text-green-400",
+    overdue: "bg-red-900/50 text-red-400",
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gray-950">
       <Navbar />
       <div className="max-w-6xl mx-auto px-4 py-8">
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-            <p className="text-gray-500 mt-1">
+            <h1 className="text-3xl font-bold text-white">Dashboard</h1>
+            <p className="text-gray-400 mt-1">
               Welcome back{user.name ? `, ${user.name}` : ""}
             </p>
           </div>
           <Link
             href="/invoices/new"
-            className="bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold text-lg hover:bg-blue-700 transition-colors"
+            className="bg-amber-500 text-gray-950 px-6 py-3 rounded-xl font-semibold text-lg hover:bg-amber-400 transition-colors"
           >
             + New Invoice
           </Link>
@@ -63,27 +63,27 @@ export default async function DashboardPage() {
 
         {/* Stats */}
         <div className="grid md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
-            <p className="text-sm font-medium text-gray-500 mb-1">
+          <div className="bg-gray-800/60 rounded-2xl p-6 border border-gray-700">
+            <p className="text-sm font-medium text-gray-400 mb-1">
               Total Outstanding
             </p>
-            <p className="text-3xl font-bold text-gray-900">
+            <p className="text-3xl font-bold text-white">
               {formatCurrency(totalOutstanding)}
             </p>
           </div>
-          <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
-            <p className="text-sm font-medium text-gray-500 mb-1">
+          <div className="bg-gray-800/60 rounded-2xl p-6 border border-gray-700">
+            <p className="text-sm font-medium text-gray-400 mb-1">
               Paid This Month
             </p>
-            <p className="text-3xl font-bold text-green-600">
+            <p className="text-3xl font-bold text-green-400">
               {formatCurrency(paidThisMonth)}
             </p>
           </div>
-          <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
-            <p className="text-sm font-medium text-gray-500 mb-1">
+          <div className="bg-gray-800/60 rounded-2xl p-6 border border-gray-700">
+            <p className="text-sm font-medium text-gray-400 mb-1">
               Overdue Amount
             </p>
-            <p className="text-3xl font-bold text-red-600">
+            <p className="text-3xl font-bold text-red-400">
               {formatCurrency(overdueAmount)}
             </p>
           </div>
@@ -91,18 +91,18 @@ export default async function DashboardPage() {
 
         {/* Plan info */}
         {user.plan === "free" && (
-          <div className="bg-blue-50 border border-blue-100 rounded-2xl p-4 mb-8 flex items-center justify-between">
+          <div className="bg-amber-500/10 border border-amber-500/30 rounded-2xl p-4 mb-8 flex items-center justify-between">
             <div>
-              <p className="font-medium text-blue-900">
-                Free Plan: {user.invoiceCount}/3 invoices used this month
+              <p className="font-medium text-amber-400">
+                Free Plan: {user.invoiceCount}/5 invoices used this month
               </p>
-              <p className="text-sm text-blue-700">
+              <p className="text-sm text-amber-500/70">
                 Upgrade to Pro for unlimited invoices
               </p>
             </div>
             <Link
               href="/settings"
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium text-sm hover:bg-blue-700"
+              className="bg-amber-500 text-gray-950 px-4 py-2 rounded-lg font-medium text-sm hover:bg-amber-400"
             >
               Upgrade
             </Link>
@@ -110,15 +110,15 @@ export default async function DashboardPage() {
         )}
 
         {/* Recent invoices */}
-        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm">
-          <div className="p-6 border-b border-gray-100 flex items-center justify-between">
-            <h2 className="text-xl font-semibold text-gray-900">
+        <div className="bg-gray-800/60 rounded-2xl border border-gray-700">
+          <div className="p-6 border-b border-gray-700 flex items-center justify-between">
+            <h2 className="text-xl font-semibold text-white">
               Recent Invoices
             </h2>
             {invoices.length > 5 && (
               <Link
                 href="/invoices/new"
-                className="text-blue-600 font-medium text-sm"
+                className="text-amber-500 font-medium text-sm"
               >
                 View all
               </Link>
@@ -127,30 +127,30 @@ export default async function DashboardPage() {
 
           {recentInvoices.length === 0 ? (
             <div className="p-12 text-center">
-              <p className="text-gray-500 text-lg mb-4">
+              <p className="text-gray-400 text-lg mb-4">
                 No invoices yet. Create your first one!
               </p>
               <Link
                 href="/invoices/new"
-                className="inline-block bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-blue-700"
+                className="inline-block bg-amber-500 text-gray-950 px-6 py-3 rounded-xl font-semibold hover:bg-amber-400"
               >
                 + Create Invoice
               </Link>
             </div>
           ) : (
-            <div className="divide-y divide-gray-100">
+            <div className="divide-y divide-gray-700">
               {recentInvoices.map((invoice) => (
                 <Link
                   key={invoice.id}
                   href={`/invoices/${invoice.id}`}
-                  className="flex items-center justify-between p-4 hover:bg-gray-50 transition-colors"
+                  className="flex items-center justify-between p-4 hover:bg-gray-700/50 transition-colors"
                 >
                   <div className="flex items-center gap-4">
                     <div>
-                      <p className="font-medium text-gray-900">
+                      <p className="font-medium text-white">
                         {invoice.invoiceNumber}
                       </p>
-                      <p className="text-sm text-gray-500">
+                      <p className="text-sm text-gray-400">
                         {invoice.client.name}
                       </p>
                     </div>
@@ -161,7 +161,7 @@ export default async function DashboardPage() {
                     >
                       {invoice.status}
                     </span>
-                    <p className="font-semibold text-gray-900 w-28 text-right">
+                    <p className="font-semibold text-white w-28 text-right">
                       {formatCurrency(invoice.total)}
                     </p>
                   </div>

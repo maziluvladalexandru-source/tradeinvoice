@@ -124,23 +124,23 @@ export default function NewInvoicePage() {
     new Intl.NumberFormat("en-IE", { style: "currency", currency: "EUR" }).format(n);
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gray-950">
       <Navbar />
       <div className="max-w-3xl mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-8">
+        <h1 className="text-3xl font-bold text-white mb-8">
           Create Invoice
         </h1>
 
         {error && (
-          <div className="bg-red-50 text-red-700 p-4 rounded-xl mb-6">
+          <div className="bg-red-900/50 text-red-400 p-4 rounded-xl mb-6">
             {error}
           </div>
         )}
 
         <div className="space-y-6">
           {/* Client */}
-          <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">
+          <div className="bg-gray-800/60 rounded-2xl p-6 border border-gray-700">
+            <h2 className="text-lg font-semibold text-white mb-4">
               Client
             </h2>
             {!showNewClient ? (
@@ -148,7 +148,7 @@ export default function NewInvoicePage() {
                 <select
                   value={clientId}
                   onChange={(e) => setClientId(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-300 text-lg focus:ring-2 focus:ring-blue-500 outline-none bg-white"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-600 text-lg focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white"
                 >
                   <option value="">Select a client...</option>
                   {clients.map((c) => (
@@ -160,7 +160,7 @@ export default function NewInvoicePage() {
                 <button
                   type="button"
                   onClick={() => setShowNewClient(true)}
-                  className="text-blue-600 font-medium text-sm hover:underline"
+                  className="text-amber-500 font-medium text-sm hover:underline"
                 >
                   + Add new client
                 </button>
@@ -171,27 +171,27 @@ export default function NewInvoicePage() {
                   placeholder="Client name"
                   value={newClientName}
                   onChange={(e) => setNewClientName(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-300 text-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-600 text-lg focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white placeholder-gray-500"
                 />
                 <input
                   placeholder="Client email"
                   type="email"
                   value={newClientEmail}
                   onChange={(e) => setNewClientEmail(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-300 text-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-600 text-lg focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white placeholder-gray-500"
                 />
                 <div className="flex gap-2">
                   <button
                     type="button"
                     onClick={handleNewClient}
-                    className="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium"
+                    className="bg-amber-500 text-gray-950 px-4 py-2 rounded-lg font-medium"
                   >
                     Save Client
                   </button>
                   <button
                     type="button"
                     onClick={() => setShowNewClient(false)}
-                    className="text-gray-500 px-4 py-2"
+                    className="text-gray-400 px-4 py-2"
                   >
                     Cancel
                   </button>
@@ -201,30 +201,30 @@ export default function NewInvoicePage() {
           </div>
 
           {/* Job Description */}
-          <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">
+          <div className="bg-gray-800/60 rounded-2xl p-6 border border-gray-700">
+            <h2 className="text-lg font-semibold text-white mb-4">
               Job Details
             </h2>
             <input
               placeholder="e.g. Bathroom renovation, boiler repair..."
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border border-gray-300 text-lg focus:ring-2 focus:ring-blue-500 outline-none mb-4"
+              className="w-full px-4 py-3 rounded-xl border border-gray-600 text-lg focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white placeholder-gray-500 mb-4"
             />
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-400 mb-1">
                   Due Date
                 </label>
                 <input
                   type="date"
                   value={dueDate}
                   onChange={(e) => setDueDate(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-300 text-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-600 text-lg focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-400 mb-1">
                   Tax Rate (%)
                 </label>
                 <input
@@ -233,15 +233,15 @@ export default function NewInvoicePage() {
                   max="100"
                   value={taxRate}
                   onChange={(e) => setTaxRate(Number(e.target.value))}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-300 text-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-600 text-lg focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white"
                 />
               </div>
             </div>
           </div>
 
           {/* Line Items */}
-          <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">
+          <div className="bg-gray-800/60 rounded-2xl p-6 border border-gray-700">
+            <h2 className="text-lg font-semibold text-white mb-4">
               Line Items
             </h2>
             <div className="space-y-3">
@@ -253,7 +253,7 @@ export default function NewInvoicePage() {
                     onChange={(e) =>
                       updateLineItem(index, "description", e.target.value)
                     }
-                    className="flex-1 px-4 py-3 rounded-xl border border-gray-300 text-base focus:ring-2 focus:ring-blue-500 outline-none"
+                    className="flex-1 px-4 py-3 rounded-xl border border-gray-600 text-base focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white placeholder-gray-500"
                   />
                   <input
                     type="number"
@@ -263,7 +263,7 @@ export default function NewInvoicePage() {
                     onChange={(e) =>
                       updateLineItem(index, "quantity", Number(e.target.value))
                     }
-                    className="w-20 px-3 py-3 rounded-xl border border-gray-300 text-base text-center focus:ring-2 focus:ring-blue-500 outline-none"
+                    className="w-20 px-3 py-3 rounded-xl border border-gray-600 text-base text-center focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white"
                   />
                   <input
                     type="number"
@@ -278,12 +278,12 @@ export default function NewInvoicePage() {
                         Number(e.target.value)
                       )
                     }
-                    className="w-28 px-3 py-3 rounded-xl border border-gray-300 text-base text-right focus:ring-2 focus:ring-blue-500 outline-none"
+                    className="w-28 px-3 py-3 rounded-xl border border-gray-600 text-base text-right focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white"
                   />
                   <button
                     type="button"
                     onClick={() => removeLineItem(index)}
-                    className="p-3 text-red-400 hover:text-red-600"
+                    className="p-3 text-red-400 hover:text-red-300"
                     title="Remove"
                   >
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -296,26 +296,26 @@ export default function NewInvoicePage() {
             <button
               type="button"
               onClick={addLineItem}
-              className="mt-4 text-blue-600 font-medium hover:underline"
+              className="mt-4 text-amber-500 font-medium hover:underline"
             >
               + Add Line Item
             </button>
           </div>
 
           {/* Totals */}
-          <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
+          <div className="bg-gray-800/60 rounded-2xl p-6 border border-gray-700">
             <div className="space-y-2 text-right">
-              <div className="flex justify-between text-gray-600">
+              <div className="flex justify-between text-gray-400">
                 <span>Subtotal</span>
                 <span>{formatEur(subtotal)}</span>
               </div>
               {taxRate > 0 && (
-                <div className="flex justify-between text-gray-600">
+                <div className="flex justify-between text-gray-400">
                   <span>Tax ({taxRate}%)</span>
                   <span>{formatEur(tax)}</span>
                 </div>
               )}
-              <div className="flex justify-between text-xl font-bold text-gray-900 pt-2 border-t">
+              <div className="flex justify-between text-xl font-bold text-white pt-2 border-t border-gray-700">
                 <span>Total</span>
                 <span>{formatEur(total)}</span>
               </div>
@@ -327,14 +327,14 @@ export default function NewInvoicePage() {
             <button
               onClick={() => handleSubmit(false)}
               disabled={loading || !clientId || !lineItems.some((i) => i.description && i.unitPrice > 0)}
-              className="flex-1 bg-gray-100 text-gray-700 py-4 rounded-xl font-semibold text-lg hover:bg-gray-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex-1 bg-gray-800 text-gray-300 py-4 rounded-xl font-semibold text-lg hover:bg-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed border border-gray-700"
             >
               Save as Draft
             </button>
             <button
               onClick={() => handleSubmit(true)}
               disabled={loading || !clientId || !lineItems.some((i) => i.description && i.unitPrice > 0)}
-              className="flex-1 bg-blue-600 text-white py-4 rounded-xl font-semibold text-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex-1 bg-amber-500 text-gray-950 py-4 rounded-xl font-semibold text-lg hover:bg-amber-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? "Creating..." : "Create & Send"}
             </button>

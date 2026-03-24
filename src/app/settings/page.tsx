@@ -82,54 +82,54 @@ function SettingsContent() {
 
   if (loading) {
     return (
-      <div className="min-h-screen">
+      <div className="min-h-screen bg-gray-950">
         <Navbar />
         <div className="flex items-center justify-center py-20">
-          <p className="text-gray-500">Loading...</p>
+          <p className="text-gray-400">Loading...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gray-950">
       <Navbar />
       <div className="max-w-3xl mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-8">Settings</h1>
+        <h1 className="text-3xl font-bold text-white mb-8">Settings</h1>
 
         {upgraded && (
-          <div className="bg-green-50 text-green-700 p-4 rounded-xl mb-6 font-medium">
+          <div className="bg-green-900/50 text-green-400 p-4 rounded-xl mb-6 font-medium">
             You&apos;ve been upgraded to Pro! Enjoy unlimited invoices.
           </div>
         )}
 
         {/* Subscription */}
-        <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm mb-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">
+        <div className="bg-gray-800/60 rounded-2xl p-6 border border-gray-700 mb-6">
+          <h2 className="text-lg font-semibold text-white mb-4">
             Subscription
           </h2>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-lg font-medium text-gray-900">
+              <p className="text-lg font-medium text-white">
                 {user?.plan === "pro" ? "Pro Plan" : "Free Plan"}
               </p>
-              <p className="text-gray-500">
+              <p className="text-gray-400">
                 {user?.plan === "pro"
                   ? "Unlimited invoices per month"
-                  : `${user?.invoiceCount || 0}/3 invoices used this month`}
+                  : `${user?.invoiceCount || 0}/5 invoices used this month`}
               </p>
             </div>
             {user?.plan !== "pro" && (
               <button
                 onClick={handleUpgrade}
                 disabled={upgrading}
-                className="bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold text-lg hover:bg-blue-700 disabled:opacity-50"
+                className="bg-amber-500 text-gray-950 px-6 py-3 rounded-xl font-semibold text-lg hover:bg-amber-400 disabled:opacity-50"
               >
                 {upgrading ? "Loading..." : "Upgrade to Pro - \u20AC12/mo"}
               </button>
             )}
             {user?.plan === "pro" && (
-              <span className="bg-green-100 text-green-800 px-4 py-2 rounded-full font-medium">
+              <span className="bg-green-900/50 text-green-400 px-4 py-2 rounded-full font-medium">
                 Active
               </span>
             )}
@@ -139,67 +139,67 @@ function SettingsContent() {
         {/* Profile */}
         <form
           onSubmit={handleSave}
-          className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm space-y-4"
+          className="bg-gray-800/60 rounded-2xl p-6 border border-gray-700 space-y-4"
         >
-          <h2 className="text-lg font-semibold text-gray-900 mb-2">
+          <h2 className="text-lg font-semibold text-white mb-2">
             Business Details
           </h2>
-          <p className="text-sm text-gray-500 mb-4">
+          <p className="text-sm text-gray-400 mb-4">
             These details appear on your invoices.
           </p>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-400 mb-1">
               Your Name
             </label>
             <input
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="John Murphy"
-              className="w-full px-4 py-3 rounded-xl border border-gray-300 text-lg focus:ring-2 focus:ring-blue-500 outline-none"
+              className="w-full px-4 py-3 rounded-xl border border-gray-600 text-lg focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white placeholder-gray-500"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-400 mb-1">
               Business Name
             </label>
             <input
               value={businessName}
               onChange={(e) => setBusinessName(e.target.value)}
               placeholder="Murphy Plumbing Ltd"
-              className="w-full px-4 py-3 rounded-xl border border-gray-300 text-lg focus:ring-2 focus:ring-blue-500 outline-none"
+              className="w-full px-4 py-3 rounded-xl border border-gray-600 text-lg focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white placeholder-gray-500"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-400 mb-1">
               Business Address
             </label>
             <input
               value={businessAddress}
               onChange={(e) => setBusinessAddress(e.target.value)}
               placeholder="123 Main St, Dublin"
-              className="w-full px-4 py-3 rounded-xl border border-gray-300 text-lg focus:ring-2 focus:ring-blue-500 outline-none"
+              className="w-full px-4 py-3 rounded-xl border border-gray-600 text-lg focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white placeholder-gray-500"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-400 mb-1">
               Business Phone
             </label>
             <input
               value={businessPhone}
               onChange={(e) => setBusinessPhone(e.target.value)}
               placeholder="+353 1 234 5678"
-              className="w-full px-4 py-3 rounded-xl border border-gray-300 text-lg focus:ring-2 focus:ring-blue-500 outline-none"
+              className="w-full px-4 py-3 rounded-xl border border-gray-600 text-lg focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white placeholder-gray-500"
             />
           </div>
 
           <button
             type="submit"
             disabled={saving}
-            className="bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold text-lg hover:bg-blue-700 disabled:opacity-50"
+            className="bg-amber-500 text-gray-950 px-6 py-3 rounded-xl font-semibold text-lg hover:bg-amber-400 disabled:opacity-50"
           >
             {saving ? "Saving..." : "Save Changes"}
           </button>
