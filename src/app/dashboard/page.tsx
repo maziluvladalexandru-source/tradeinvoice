@@ -35,11 +35,19 @@ export default async function DashboardPage() {
   const recentInvoices = invoices.slice(0, 5);
 
   const statusColors: Record<string, string> = {
-    draft: "bg-gray-700 text-gray-300",
-    sent: "bg-blue-900/50 text-blue-400",
-    viewed: "bg-yellow-900/50 text-yellow-400",
-    paid: "bg-green-900/50 text-green-400",
-    overdue: "bg-red-900/50 text-red-400",
+    draft: "bg-gray-500/20 text-gray-300 ring-1 ring-gray-500/40",
+    sent: "bg-blue-500/20 text-blue-300 ring-1 ring-blue-400/40",
+    viewed: "bg-yellow-500/20 text-yellow-300 ring-1 ring-yellow-400/40",
+    paid: "bg-green-500/20 text-green-300 ring-1 ring-green-400/40",
+    overdue: "bg-red-500/20 text-red-300 ring-1 ring-red-400/40",
+  };
+
+  const statusDot: Record<string, string> = {
+    draft: "bg-gray-400",
+    sent: "bg-blue-400",
+    viewed: "bg-yellow-400",
+    paid: "bg-green-400",
+    overdue: "bg-red-400 animate-pulse",
   };
 
   return (
@@ -159,9 +167,16 @@ export default async function DashboardPage() {
                   </Link>
                   <div className="flex items-center gap-3">
                     <span
-                      className={`px-3 py-1 rounded-full text-xs font-medium capitalize ${statusColors[invoice.status] || ""}`}
+                      className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold capitalize ${statusColors[invoice.status] || ""}`}
                     >
+                      <span className={`w-1.5 h-1.5 rounded-full ${statusDot[invoice.status] || ""}`} />
                       {invoice.status}
+                      {invoice.status === "viewed" && (
+                        <svg className="w-3.5 h-3.5 ml-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                      )}
                     </span>
                     <p className="font-semibold text-white w-28 text-right">
                       {formatCurrency(invoice.total)}
