@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import Navbar from "@/components/Navbar";
 
 interface Client {
@@ -124,9 +125,17 @@ export default function ClientsPage() {
                   <p className="font-medium text-white">{client.name}</p>
                   <p className="text-sm text-gray-400">{client.email}</p>
                 </div>
-                <div className="text-right text-sm text-gray-400">
-                  {client.phone && <p>{client.phone}</p>}
-                  {client.address && <p>{client.address}</p>}
+                <div className="flex items-center gap-4">
+                  <div className="text-right text-sm text-gray-400">
+                    {client.phone && <p>{client.phone}</p>}
+                    {client.address && <p>{client.address}</p>}
+                  </div>
+                  <Link
+                    href={`/invoices/new?clientId=${client.id}`}
+                    className="bg-amber-500/10 text-amber-500 px-3 py-1.5 rounded-lg text-sm font-medium hover:bg-amber-500/20 transition-colors whitespace-nowrap"
+                  >
+                    Create Invoice
+                  </Link>
                 </div>
               </div>
             ))}

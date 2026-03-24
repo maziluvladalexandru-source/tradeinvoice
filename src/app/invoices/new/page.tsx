@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Navbar from "@/components/Navbar";
 
@@ -19,6 +19,14 @@ interface LineItem {
 }
 
 export default function NewInvoicePage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-gray-950"><Navbar /><div className="max-w-3xl mx-auto px-4 py-8"><p className="text-gray-400">Loading...</p></div></div>}>
+      <NewInvoiceForm />
+    </Suspense>
+  );
+}
+
+function NewInvoiceForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const preselectedClientId = searchParams.get("clientId") || "";
@@ -453,7 +461,7 @@ export default function NewInvoicePage() {
               {loading ? "Saving..." : "Save as Draft"}
             </button>
             <p className="text-center text-xs text-gray-500">
-              Save now and finish later — you can send it when you're ready
+              Save now and finish later — you can send it when you&apos;re ready
             </p>
             <button
               onClick={() => handleSubmit(true)}
