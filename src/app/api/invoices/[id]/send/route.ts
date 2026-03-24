@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { requireUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { sendInvoiceEmail } from "@/lib/resend";
-import { formatCurrency, appUrl } from "@/lib/utils";
+import { formatCurrency, formatDate, appUrl } from "@/lib/utils";
 
 export async function POST(
   req: NextRequest,
@@ -27,7 +27,9 @@ export async function POST(
       invoice.client.name,
       invoice.invoiceNumber,
       formatCurrency(invoice.total, invoice.currency),
-      viewUrl
+      viewUrl,
+      user.businessName || undefined,
+      formatDate(invoice.dueDate)
     );
 
     await prisma.invoice.update({

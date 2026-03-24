@@ -46,8 +46,25 @@ export default async function PublicInvoicePage({
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Status Banner */}
-      <StatusBanner status={effectiveStatus} dueDate={invoice.dueDate} />
+      {/* Paid Banner — prominent, full-width */}
+      {isPaid && (
+        <div className="bg-green-600 text-white">
+          <div className="max-w-2xl mx-auto px-4 py-4 sm:py-5 flex items-center justify-center gap-3">
+            <svg className="w-7 h-7 flex-shrink-0" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <div>
+              <p className="font-bold text-lg leading-tight">This invoice has been paid</p>
+              {invoice.paidAt && (
+                <p className="text-green-100 text-sm">Payment received on {formatDate(invoice.paidAt)}</p>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Status Banner (non-paid states) */}
+      {!isPaid && <StatusBanner status={effectiveStatus} dueDate={invoice.dueDate} />}
 
       <div className="max-w-2xl mx-auto px-4 py-8 sm:py-12">
         {/* Business Header */}
@@ -57,7 +74,7 @@ export default async function PublicInvoicePage({
               {businessName.charAt(0).toUpperCase()}
             </span>
           </div>
-          <h1 className="text-xl sm:text-2xl font-semibold text-gray-900">
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-900">
             {businessName}
           </h1>
           <div className="mt-1.5 text-gray-500 text-sm space-y-0.5">
@@ -100,9 +117,9 @@ export default async function PublicInvoicePage({
                 : `Due ${formatDate(invoice.dueDate)}`}
             </p>
           )}
-          {isPaid && invoice.paidAt && (
+          {isPaid && (
             <p className="mt-2 text-sm text-green-600 font-medium">
-              Paid on {formatDate(invoice.paidAt)}
+              Thank you for your payment
             </p>
           )}
 
@@ -242,7 +259,7 @@ export default async function PublicInvoicePage({
               </div>
               {invoice.taxRate > 0 && (
                 <div className="flex justify-between text-gray-500">
-                  <span>Tax ({invoice.taxRate}%)</span>
+                  <span>VAT ({invoice.taxRate}%)</span>
                   <span>{formatCurrency(invoice.taxAmount, invoice.currency)}</span>
                 </div>
               )}
@@ -313,18 +330,28 @@ export default async function PublicInvoicePage({
           </a>
         </div>
 
-        {/* Trust Badge Footer */}
+        {/* Professional Footer */}
         <footer className="pb-8">
-          <div className="flex items-center justify-center gap-2 py-4 border-t border-gray-200">
-            <svg className="w-4 h-4 text-green-600" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
-            </svg>
-            <span className="text-gray-400 text-sm">Secured by</span>
-            <span className="text-gray-600 text-sm font-semibold">TradeInvoice</span>
+          <div className="border-t border-gray-200 pt-6 space-y-3">
+            <div className="flex items-center justify-center gap-2">
+              <svg className="w-4 h-4 text-green-600" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+              </svg>
+              <span className="text-gray-400 text-xs">
+                This invoice was generated and delivered securely.
+              </span>
+            </div>
+            <p className="text-center">
+              <a
+                href="https://tradeinvoice.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-300 hover:text-gray-400 text-xs transition-colors"
+              >
+                Powered by <span className="font-semibold">TradeInvoice</span>
+              </a>
+            </p>
           </div>
-          <p className="text-gray-400 text-xs text-center mt-1">
-            This invoice was generated and delivered securely.
-          </p>
         </footer>
       </div>
     </div>
@@ -342,13 +369,6 @@ function StatusBanner({
     string,
     { bg: string; text: string; icon: string; label: string; sublabel?: string }
   > = {
-    paid: {
-      bg: "bg-green-50 border-green-200",
-      text: "text-green-700",
-      icon: "M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z",
-      label: "Paid",
-      sublabel: "This invoice has been paid. Thank you!",
-    },
     overdue: {
       bg: "bg-red-50 border-red-200",
       text: "text-red-700",
