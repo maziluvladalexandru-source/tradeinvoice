@@ -14,12 +14,20 @@ export default async function PublicInvoicePage({
 
   if (!invoice) notFound();
 
-  // Mark as viewed
+  // Mark as viewed and notify contractor
   if (invoice.status === "sent") {
     await prisma.invoice.update({
       where: { id: invoice.id },
       data: { status: "viewed", viewedAt: new Date() },
     });
+
+    // Fire-and-forget notification to contractor
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+    fetch(`${appUrl}/api/notify`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ invoiceId: invoice.id, type: "viewed" }),
+    }).catch(() => {});
   }
 
   const statusColors: Record<string, string> = {

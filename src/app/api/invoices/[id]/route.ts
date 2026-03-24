@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { requireUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { sendInvoicePaidNotification } from "@/lib/resend";
 
 export async function GET(
   req: NextRequest,
@@ -42,8 +43,17 @@ export async function PATCH(
     const updated = await prisma.invoice.update({
       where: { id: params.id },
       data,
-      include: { client: true, lineItems: true },
+      include: { client: true, lineItems: true, user: true },
     });
+
+    // Notify contractor when invoice is marked as paid
+    if (data.status === "paid" && updated.user) {
+      sendInvoicePaidNotification(
+        updated.user.email,
+        updated.invoiceNumber,
+        updated.client.name
+      ).catch(() => {});
+    }
 
     return NextResponse.json(updated);
   } catch {

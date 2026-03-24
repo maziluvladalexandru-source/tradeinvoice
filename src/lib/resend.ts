@@ -57,6 +57,42 @@ export async function sendInvoiceEmail(
   });
 }
 
+export async function sendInvoiceViewedNotification(
+  contractorEmail: string,
+  invoiceNumber: string,
+  clientName: string
+) {
+  await getResend().emails.send({
+    from: getFromEmail(),
+    to: contractorEmail,
+    subject: `Invoice ${invoiceNumber} was viewed`,
+    html: `
+      <div style="font-family: sans-serif; max-width: 500px; margin: 0 auto; padding: 20px;">
+        <h1 style="color: #1e40af; font-size: 24px;">TradeInvoice</h1>
+        <p style="font-size: 16px; color: #374151;">Your invoice ${invoiceNumber} to ${clientName} was viewed just now.</p>
+      </div>
+    `,
+  });
+}
+
+export async function sendInvoicePaidNotification(
+  contractorEmail: string,
+  invoiceNumber: string,
+  clientName: string
+) {
+  await getResend().emails.send({
+    from: getFromEmail(),
+    to: contractorEmail,
+    subject: `Invoice ${invoiceNumber} has been paid!`,
+    html: `
+      <div style="font-family: sans-serif; max-width: 500px; margin: 0 auto; padding: 20px;">
+        <h1 style="color: #1e40af; font-size: 24px;">TradeInvoice</h1>
+        <p style="font-size: 16px; color: #374151;">Great news! Invoice ${invoiceNumber} from ${clientName} has been paid.</p>
+      </div>
+    `,
+  });
+}
+
 export async function sendPaymentReminder(
   to: string,
   clientName: string,

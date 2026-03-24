@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getStripeClient } from "@/lib/stripe";
 import { prisma } from "@/lib/prisma";
+import { sendInvoicePaidNotification } from "@/lib/resend";
 import Stripe from "stripe";
 
 export async function POST(req: NextRequest) {
@@ -51,6 +52,23 @@ export async function POST(req: NextRequest) {
             stripeSubscriptionId: null,
           },
         });
+      }
+      break;
+    }
+    case "invoice.paid": {
+      const stripeInvoice = event.data.object as Stripe.Invoice;
+      const invoiceId = stripeInvoice.metadata?.invoiceId;
+      if (invoiceId) {
+        const invoice = await prisma.invoice.update({
+          where: { id: invoiceId },
+          data: { status: "paid", paidAt: new Date() },
+          include: { client: true, user: true },
+        });
+        await sendInvoicePaidNotification(
+          invoice.user.email,
+          invoice.invoiceNumber,
+          invoice.client.name
+        );
       }
       break;
     }
