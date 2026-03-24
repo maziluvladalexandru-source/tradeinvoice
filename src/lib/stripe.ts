@@ -23,7 +23,7 @@ export const PLANS = {
   },
   pro: {
     name: "Pro",
-    price: 12,
+    price: 15,
     invoicesPerMonth: Infinity,
     priceId: process.env.STRIPE_PRO_PRICE_ID,
   },
@@ -36,4 +36,5 @@ export function canCreateInvoice(
   if (plan === "pro") return true;
   return invoiceCount < PLANS.free.invoicesPerMonth;
 }
+
 

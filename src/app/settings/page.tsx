@@ -131,7 +131,7 @@ function SettingsContent() {
                 disabled={upgrading}
                 className="bg-amber-500 text-gray-950 px-6 py-3 rounded-xl font-semibold text-lg hover:bg-amber-400 disabled:opacity-50"
               >
-                {upgrading ? "Loading..." : "Upgrade to Pro - \u20AC12/mo"}
+                {upgrading ? "Loading..." : "Upgrade to Pro - €15/mo"}
               </button>
             )}
             {user?.plan === "pro" && (
@@ -238,3 +238,4 @@ function SettingsContent() {
     </div>
   );
 }
+
