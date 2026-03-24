@@ -136,10 +136,10 @@ export default function PrivacyPolicy() {
             <p className="mt-3">
               To exercise any of these rights, contact us at{" "}
               <a
-                href="mailto:support@tradeinvoice.app"
+                href="mailto:privacy@tradeinvoice.com"
                 className="text-amber-400 hover:text-amber-300 underline"
               >
-                support@tradeinvoice.app
+                privacy@tradeinvoice.com
               </a>
               . We will respond within 30 days.
             </p>
@@ -179,15 +179,36 @@ export default function PrivacyPolicy() {
 
           <section>
             <h2 className="text-xl font-semibold text-white mb-3">
-              9. Contact
+              9. Supervisory Authority
+            </h2>
+            <p>
+              If you are not satisfied with how we handle your personal data,
+              you have the right to lodge a complaint with the Dutch Data
+              Protection Authority (Autoriteit Persoonsgegevens). You can reach
+              them at{" "}
+              <a
+                href="https://autoriteitpersoonsgegevens.nl"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-amber-400 hover:text-amber-300 underline"
+              >
+                autoriteitpersoonsgegevens.nl
+              </a>
+              .
+            </p>
+          </section>
+
+          <section>
+            <h2 className="text-xl font-semibold text-white mb-3">
+              10. Contact
             </h2>
             <p>
               For privacy-related questions, contact us at{" "}
               <a
-                href="mailto:support@tradeinvoice.app"
+                href="mailto:privacy@tradeinvoice.com"
                 className="text-amber-400 hover:text-amber-300 underline"
               >
-                support@tradeinvoice.app
+                privacy@tradeinvoice.com
               </a>
               .
             </p>
