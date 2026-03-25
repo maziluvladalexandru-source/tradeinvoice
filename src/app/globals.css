@@ -5,3 +5,35 @@
 body {
   background-color: #f9fafb;
 }
+
+/* Fix date inputs on mobile - ensure full date is visible */
+input[type="date"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  min-width: 0;
+  font-size: 16px; /* Prevents iOS zoom on focus */
+}
+
+/* Ensure date input text is visible in dark mode on all browsers */
+input[type="date"]::-webkit-datetime-edit {
+  padding: 0;
+  color: inherit;
+}
+
+input[type="date"]::-webkit-datetime-edit-fields-wrapper {
+  padding: 0;
+}
+
+input[type="date"]::-webkit-datetime-edit-text,
+input[type="date"]::-webkit-datetime-edit-month-field,
+input[type="date"]::-webkit-datetime-edit-day-field,
+input[type="date"]::-webkit-datetime-edit-year-field {
+  color: inherit;
+}
+
+/* Style the placeholder state (empty date) */
+input[type="date"]:invalid::-webkit-datetime-edit,
+input[type="date"][value=""]::-webkit-datetime-edit {
+  color: #6b7280;
+}

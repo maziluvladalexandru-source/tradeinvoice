@@ -334,7 +334,7 @@ function NewInvoiceForm() {
               </div>
             ) : (
               <div className="space-y-3">
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <input
                     placeholder="Client name *"
                     value={newClientName}
@@ -393,17 +393,21 @@ function NewInvoiceForm() {
               onChange={(e) => setDescription(e.target.value)}
               className="w-full px-4 py-3 rounded-xl border border-gray-600 text-lg focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white placeholder-gray-500 mb-4"
             />
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-400 mb-1">
-                  Service Date
+                  Service Date <span className="text-gray-600">(optional)</span>
                 </label>
                 <input
                   type="date"
                   value={serviceDate}
                   onChange={(e) => setServiceDate(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-600 text-lg focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-600 text-base focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white appearance-none [color-scheme:dark] [&::-webkit-calendar-picker-indicator]:opacity-70 [&::-webkit-calendar-picker-indicator]:invert"
+                  style={{ minHeight: '50px' }}
                 />
+                {!serviceDate && (
+                  <p className="text-xs text-gray-500 mt-1">No date set</p>
+                )}
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-400 mb-1">
@@ -413,7 +417,8 @@ function NewInvoiceForm() {
                   type="date"
                   value={dueDate}
                   onChange={(e) => setDueDate(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-600 text-lg focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-600 text-base focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white appearance-none [color-scheme:dark] [&::-webkit-calendar-picker-indicator]:opacity-70 [&::-webkit-calendar-picker-indicator]:invert"
+                  style={{ minHeight: '50px' }}
                 />
                 <p className="text-xs text-gray-500 mt-1">Default: 30 days from today</p>
               </div>
@@ -427,7 +432,8 @@ function NewInvoiceForm() {
                   max="100"
                   value={taxRate}
                   onChange={(e) => setTaxRate(Number(e.target.value))}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-600 text-lg focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-600 text-base focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white"
+                  style={{ minHeight: '50px' }}
                 />
               </div>
             </div>
@@ -470,50 +476,52 @@ function NewInvoiceForm() {
             </h2>
             <div className="space-y-3">
               {lineItems.map((item, index) => (
-                <div key={index} className="flex gap-3 items-start">
+                <div key={index} className="flex flex-wrap sm:flex-nowrap gap-3 items-start bg-gray-900/40 sm:bg-transparent rounded-xl p-3 sm:p-0 border border-gray-700/50 sm:border-0">
                   <input
                     placeholder="Description"
                     value={item.description}
                     onChange={(e) =>
                       updateLineItem(index, "description", e.target.value)
                     }
-                    className="flex-1 px-4 py-3 rounded-xl border border-gray-600 text-base focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white placeholder-gray-500"
+                    className="w-full sm:flex-1 px-4 py-3 rounded-xl border border-gray-600 text-base focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white placeholder-gray-500"
                   />
-                  <input
-                    type="number"
-                    min="1"
-                    placeholder="Qty"
-                    value={item.quantity}
-                    onChange={(e) =>
-                      updateLineItem(index, "quantity", Number(e.target.value))
-                    }
-                    className="w-20 px-3 py-3 rounded-xl border border-gray-600 text-base text-center focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white"
-                  />
-                  <input
-                    type="number"
-                    min="0"
-                    step="0.01"
-                    placeholder="Price"
-                    value={item.unitPrice || ""}
-                    onChange={(e) =>
-                      updateLineItem(
-                        index,
-                        "unitPrice",
-                        Number(e.target.value)
-                      )
-                    }
-                    className="w-28 px-3 py-3 rounded-xl border border-gray-600 text-base text-right focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => removeLineItem(index)}
-                    className="p-3 text-red-400 hover:text-red-300"
-                    title="Remove"
-                  >
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                    </svg>
-                  </button>
+                  <div className="flex gap-3 items-start w-full sm:w-auto">
+                    <input
+                      type="number"
+                      min="1"
+                      placeholder="Qty"
+                      value={item.quantity}
+                      onChange={(e) =>
+                        updateLineItem(index, "quantity", Number(e.target.value))
+                      }
+                      className="w-20 px-3 py-3 rounded-xl border border-gray-600 text-base text-center focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white"
+                    />
+                    <input
+                      type="number"
+                      min="0"
+                      step="0.01"
+                      placeholder="Price"
+                      value={item.unitPrice || ""}
+                      onChange={(e) =>
+                        updateLineItem(
+                          index,
+                          "unitPrice",
+                          Number(e.target.value)
+                        )
+                      }
+                      className="flex-1 sm:w-28 sm:flex-none px-3 py-3 rounded-xl border border-gray-600 text-base text-right focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => removeLineItem(index)}
+                      className="p-3 text-red-400 hover:text-red-300"
+                      title="Remove"
+                    >
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                      </svg>
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
