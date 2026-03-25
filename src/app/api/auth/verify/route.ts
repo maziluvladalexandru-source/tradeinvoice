@@ -29,9 +29,10 @@ export async function GET(req: NextRequest) {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
-    maxAge: 30 * 24 * 60 * 60, // 30 days
+    maxAge: 90 * 24 * 60 * 60, // 90 days
     path: "/",
   });
 
   return response;
 }
+

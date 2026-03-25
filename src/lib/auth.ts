@@ -28,7 +28,7 @@ export async function verifyMagicLinkToken(
 
 export async function createSession(userId: string): Promise<string> {
   const token = uuid();
-  const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000); // 30 days
+  const expiresAt = new Date(Date.now() + 90 * 24 * 60 * 60 * 1000); // 30 days
 
   await prisma.session.create({
     data: { userId, token, expiresAt },
@@ -67,3 +67,4 @@ export async function requireUser() {
   }
   return user;
 }
+
