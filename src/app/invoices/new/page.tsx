@@ -47,6 +47,10 @@ function NewInvoiceForm() {
   const [lineItems, setLineItems] = useState<LineItem[]>([
     { description: "", quantity: 1, unitPrice: 0 },
   ]);
+  const [currency, setCurrency] = useState("EUR");
+  const [invoiceType, setInvoiceType] = useState("invoice");
+  const [isRecurring, setIsRecurring] = useState(false);
+  const [recurringInterval, setRecurringInterval] = useState("monthly");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -140,6 +144,10 @@ function NewInvoiceForm() {
           paymentNotes: paymentNotes || null,
           notesToClient: notesToClient || null,
           invoiceNumber: invoiceNumber || null,
+          currency,
+          type: invoiceType,
+          isRecurring,
+          recurringInterval: isRecurring ? recurringInterval : null,
           lineItems: lineItems.filter((item) => item.description && item.unitPrice > 0),
         }),
       });
@@ -163,8 +171,8 @@ function NewInvoiceForm() {
     }
   }
 
-  const formatEur = (n: number) =>
-    new Intl.NumberFormat("en-IE", { style: "currency", currency: "EUR" }).format(n);
+  const formatAmount = (n: number) =>
+    new Intl.NumberFormat("en-IE", { style: "currency", currency }).format(n);
 
   const isValid = clientId && lineItems.some((i) => i.description && i.unitPrice > 0);
 
@@ -174,7 +182,7 @@ function NewInvoiceForm() {
       <div className="max-w-3xl mx-auto px-4 py-8">
         <div className="flex items-center justify-between mb-8">
           <h1 className="text-3xl font-bold text-white">
-            Create Invoice
+            Create {invoiceType === "quote" ? "Quote" : "Invoice"}
           </h1>
           {invoiceNumber && (
             <div className="flex items-center gap-2">
@@ -195,6 +203,75 @@ function NewInvoiceForm() {
         )}
 
         <div className="space-y-6">
+          {/* Type & Currency */}
+          <div className="bg-gray-800/60 rounded-2xl p-6 border border-gray-700">
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-400 mb-1">Type</label>
+                <select
+                  value={invoiceType}
+                  onChange={(e) => setInvoiceType(e.target.value)}
+                  className="w-full px-4 py-3 rounded-xl border border-gray-600 text-lg focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white"
+                >
+                  <option value="invoice">Invoice</option>
+                  <option value="quote">Quote / Estimate</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-400 mb-1">Currency</label>
+                <select
+                  value={currency}
+                  onChange={(e) => setCurrency(e.target.value)}
+                  className="w-full px-4 py-3 rounded-xl border border-gray-600 text-lg focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white"
+                >
+                  <option value="EUR">EUR - Euro</option>
+                  <option value="GBP">GBP - British Pound</option>
+                  <option value="USD">USD - US Dollar</option>
+                  <option value="RON">RON - Romanian Leu</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Recurring Toggle */}
+            {invoiceType === "invoice" && (
+              <div className="mt-4 pt-4 border-t border-gray-700">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-white">Make Recurring</p>
+                    <p className="text-xs text-gray-500 mt-0.5">Automatically create new invoices on a schedule</p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setIsRecurring(!isRecurring)}
+                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                      isRecurring ? "bg-amber-500" : "bg-gray-600"
+                    }`}
+                  >
+                    <span
+                      className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                        isRecurring ? "translate-x-6" : "translate-x-1"
+                      }`}
+                    />
+                  </button>
+                </div>
+                {isRecurring && (
+                  <div className="mt-3">
+                    <label className="block text-sm font-medium text-gray-400 mb-1">Recurring Interval</label>
+                    <select
+                      value={recurringInterval}
+                      onChange={(e) => setRecurringInterval(e.target.value)}
+                      className="w-full px-4 py-3 rounded-xl border border-gray-600 text-lg focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white"
+                    >
+                      <option value="weekly">Weekly</option>
+                      <option value="monthly">Monthly</option>
+                      <option value="quarterly">Quarterly</option>
+                    </select>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+
           {/* Client */}
           <div className="bg-gray-800/60 rounded-2xl p-6 border border-gray-700">
             <h2 className="text-lg font-semibold text-white mb-4">
@@ -450,17 +527,17 @@ function NewInvoiceForm() {
             <div className="space-y-2 text-right">
               <div className="flex justify-between text-gray-400">
                 <span>Subtotal</span>
-                <span>{formatEur(subtotal)}</span>
+                <span>{formatAmount(subtotal)}</span>
               </div>
               {taxRate > 0 && (
                 <div className="flex justify-between text-gray-400">
                   <span>Tax ({taxRate}%)</span>
-                  <span>{formatEur(tax)}</span>
+                  <span>{formatAmount(tax)}</span>
                 </div>
               )}
               <div className="flex justify-between text-xl font-bold text-white pt-2 border-t border-gray-700">
                 <span>Total</span>
-                <span>{formatEur(total)}</span>
+                <span>{formatAmount(total)}</span>
               </div>
             </div>
           </div>
@@ -475,7 +552,7 @@ function NewInvoiceForm() {
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
               </svg>
-              {loading ? "Saving..." : "Save as Draft"}
+              {loading ? "Saving..." : `Save ${invoiceType === "quote" ? "Quote" : "Invoice"} as Draft`}
             </button>
             <p className="text-center text-xs text-gray-500">
               Save now and finish later — you can send it when you&apos;re ready
@@ -485,7 +562,7 @@ function NewInvoiceForm() {
               disabled={loading || !isValid}
               className="w-full bg-gray-800 text-gray-300 py-3 rounded-xl font-medium text-base hover:bg-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed border border-gray-700"
             >
-              {loading ? "Creating..." : "Create & Send Now"}
+              {loading ? "Creating..." : `Create & Send ${invoiceType === "quote" ? "Quote" : "Invoice"} Now`}
             </button>
           </div>
         </div>

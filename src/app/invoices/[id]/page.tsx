@@ -9,6 +9,7 @@ interface Invoice {
   id: string;
   invoiceNumber: string;
   description: string | null;
+  type: string;
   status: string;
   subtotal: number;
   taxRate: number;
@@ -24,6 +25,8 @@ interface Invoice {
   notesToClient: string | null;
   serviceDate: string | null;
   remindersEnabled: boolean;
+  isRecurring: boolean;
+  recurringInterval: string | null;
   client: { id: string; name: string; email: string; phone: string | null; address: string | null };
   lineItems: { id: string; description: string; quantity: number; unitPrice: number; total: number }[];
   user: { businessName: string | null; email: string };
@@ -39,6 +42,7 @@ export default function InvoiceDetailPage() {
   const [showPaidModal, setShowPaidModal] = useState(false);
   const [paidDate, setPaidDate] = useState(() => new Date().toISOString().split("T")[0]);
   const [duplicating, setDuplicating] = useState(false);
+  const [converting, setConverting] = useState(false);
 
   useEffect(() => {
     fetch(`/api/invoices/${params.id}`)
@@ -97,6 +101,24 @@ export default function InvoiceDetailPage() {
     setDuplicating(false);
   }
 
+  async function convertToInvoice() {
+    if (!invoice) return;
+    setConverting(true);
+    try {
+      const res = await fetch(`/api/invoices/${invoice.id}/convert`, { method: "POST" });
+      if (res.ok) {
+        const updated = await res.json();
+        setInvoice({ ...invoice, type: "invoice", invoiceNumber: updated.invoiceNumber });
+      } else {
+        const data = await res.json();
+        alert(data.error || "Failed to convert");
+      }
+    } catch {
+      alert("Failed to convert quote to invoice");
+    }
+    setConverting(false);
+  }
+
   async function deleteInvoice() {
     if (!invoice || !confirm("Delete this invoice?")) return;
     const res = await fetch(`/api/invoices/${invoice.id}`, { method: "DELETE" });
@@ -117,7 +139,7 @@ export default function InvoiceDetailPage() {
   }
 
   const fmt = (n: number) =>
-    new Intl.NumberFormat("en-IE", { style: "currency", currency: "EUR" }).format(n);
+    new Intl.NumberFormat("en-IE", { style: "currency", currency: invoice?.currency || "EUR" }).format(n);
   const fmtDate = (d: string) =>
     new Date(d).toLocaleDateString("en-IE", { day: "numeric", month: "short", year: "numeric" });
   const fmtDateTime = (d: string) =>
@@ -172,9 +194,21 @@ export default function InvoiceDetailPage() {
 
         <div className="flex items-start justify-between mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-white">
-              {invoice.invoiceNumber}
-            </h1>
+            <div className="flex items-center gap-3">
+              <h1 className="text-3xl font-bold text-white">
+                {invoice.invoiceNumber}
+              </h1>
+              {invoice.type === "quote" && (
+                <span className="bg-purple-500/20 text-purple-300 ring-1 ring-purple-400/40 px-3 py-1 rounded-full text-xs font-semibold uppercase">
+                  Quote
+                </span>
+              )}
+              {invoice.isRecurring && (
+                <span className="bg-cyan-500/20 text-cyan-300 ring-1 ring-cyan-400/40 px-3 py-1 rounded-full text-xs font-semibold capitalize">
+                  Recurring ({invoice.recurringInterval})
+                </span>
+              )}
+            </div>
             <p className="text-gray-400 mt-1">
               {invoice.client.name} &middot; {fmtDate(invoice.createdAt)}
             </p>
@@ -207,6 +241,18 @@ export default function InvoiceDetailPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
               Mark as Paid
+            </button>
+          )}
+          {invoice.type === "quote" && (
+            <button
+              onClick={convertToInvoice}
+              disabled={converting}
+              className="bg-green-500 text-white px-6 py-3 rounded-xl font-semibold text-lg hover:bg-green-400 disabled:opacity-50 transition-colors flex items-center gap-2"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+              {converting ? "Converting..." : "Convert to Invoice"}
             </button>
           )}
           <button

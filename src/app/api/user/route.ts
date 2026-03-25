@@ -14,7 +14,7 @@ export async function GET() {
 export async function PATCH(req: NextRequest) {
   try {
     const user = await requireUser();
-    const { name, businessName, businessAddress, businessPhone, kvkNumber, vatNumber, bankDetails } =
+    const { name, businessName, businessAddress, businessPhone, kvkNumber, vatNumber, bankDetails, logoUrl } =
       await req.json();
 
     const updated = await prisma.user.update({
@@ -27,6 +27,7 @@ export async function PATCH(req: NextRequest) {
         kvkNumber: kvkNumber || null,
         vatNumber: vatNumber || null,
         bankDetails: bankDetails || null,
+        ...(logoUrl !== undefined ? { logoUrl: logoUrl || null } : {}),
       },
     });
 

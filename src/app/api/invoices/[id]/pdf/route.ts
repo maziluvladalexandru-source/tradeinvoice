@@ -41,13 +41,17 @@ export async function GET(
   const bankDetails = invoice.user.bankDetails || null;
 
   const businessName = escapeHtml(invoice.user.businessName || "TradeInvoice");
+  const isQuote = invoice.type === "quote";
+  const docLabel = isQuote ? "Quote" : "Invoice";
+  const docLabelUpper = isQuote ? "QUOTE" : "INVOICE";
+  const logoUrl = invoice.user.logoUrl || null;
 
   const html = `
     <!DOCTYPE html>
     <html>
     <head>
       <meta charset="utf-8">
-      <title>Invoice ${escapeHtml(invoice.invoiceNumber)}</title>
+      <title>${docLabel} ${escapeHtml(invoice.invoiceNumber)}</title>
       <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Helvetica Neue', Arial, sans-serif; color: #1f2937; background: white; font-size: 14px; line-height: 1.5; }
@@ -115,6 +119,7 @@ export async function GET(
         <!-- Header -->
         <div class="header">
           <div>
+            ${logoUrl ? `<img src="${logoUrl}" alt="Logo" style="max-height: 60px; max-width: 200px; margin-bottom: 8px;" />` : ""}
             <div class="brand">${businessName}</div>
             <div class="brand-details">
               ${invoice.user.businessAddress ? `${escapeHtml(invoice.user.businessAddress)}<br>` : ""}
@@ -125,7 +130,7 @@ export async function GET(
             </div>
           </div>
           <div style="text-align: right;">
-            <div class="invoice-title">Invoice</div>
+            <div class="invoice-title">${docLabelUpper}</div>
             <div class="invoice-number">${escapeHtml(invoice.invoiceNumber)}</div>
             <span class="status status-${invoice.status}">${invoice.status}</span>
           </div>
@@ -153,7 +158,7 @@ export async function GET(
         <div class="meta-grid">
           <div class="meta-table">
             <div class="meta-row">
-              <div class="meta-label">Invoice Date</div>
+              <div class="meta-label">${docLabel} Date</div>
               <div class="meta-value">${formatDate(invoice.createdAt)}</div>
             </div>
             ${invoice.serviceDate ? `<div class="meta-row">

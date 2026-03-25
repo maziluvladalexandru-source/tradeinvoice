@@ -20,19 +20,24 @@ export default async function DashboardPage() {
   const now = new Date();
   const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
 
-  const totalOutstanding = invoices
+  // Separate invoices and quotes
+  const actualInvoices = invoices.filter((i) => i.type !== "quote");
+  const quotes = invoices.filter((i) => i.type === "quote");
+
+  const totalOutstanding = actualInvoices
     .filter((i) => ["sent", "viewed", "overdue"].includes(i.status))
     .reduce((sum, i) => sum + i.total, 0);
 
-  const paidThisMonth = invoices
+  const paidThisMonth = actualInvoices
     .filter(
       (i) => i.status === "paid" && i.paidAt && new Date(i.paidAt) >= monthStart
     )
     .reduce((sum, i) => sum + i.total, 0);
 
-  const overdueCount = invoices.filter((i) => i.status === "overdue").length;
+  const overdueCount = actualInvoices.filter((i) => i.status === "overdue").length;
 
-  const recentInvoices = invoices.slice(0, 5);
+  const recentInvoices = actualInvoices.slice(0, 5);
+  const recentQuotes = quotes.slice(0, 5);
 
   // Onboarding data
   const hasBusinessName = !!user.businessName;
@@ -198,7 +203,7 @@ export default async function DashboardPage() {
                       )}
                     </span>
                     <p className="font-semibold text-white w-28 text-right">
-                      {formatCurrency(invoice.total)}
+                      {formatCurrency(invoice.total, invoice.currency)}
                     </p>
                     <a
                       href={`/api/invoices/${invoice.id}/pdf`}
@@ -216,6 +221,55 @@ export default async function DashboardPage() {
             </div>
           )}
         </div>
+        {/* Recent Quotes */}
+        {recentQuotes.length > 0 && (
+          <div className="bg-gray-800/60 rounded-2xl border border-gray-700 mt-8">
+            <div className="p-6 border-b border-gray-700 flex items-center justify-between">
+              <h2 className="text-xl font-semibold text-white flex items-center gap-2">
+                Recent Quotes
+                <span className="bg-purple-500/20 text-purple-300 ring-1 ring-purple-400/40 px-2 py-0.5 rounded-full text-xs font-semibold">
+                  {quotes.length}
+                </span>
+              </h2>
+            </div>
+            <div className="divide-y divide-gray-700">
+              {recentQuotes.map((quote) => (
+                <div
+                  key={quote.id}
+                  className="flex items-center justify-between p-4 hover:bg-gray-700/50 transition-colors"
+                >
+                  <Link
+                    href={`/invoices/${quote.id}`}
+                    className="flex items-center gap-4 flex-1 min-w-0"
+                  >
+                    <div className="flex-1 min-w-0">
+                      <p className="font-medium text-white">
+                        {quote.invoiceNumber}
+                      </p>
+                      <p className="text-sm text-gray-400">
+                        {quote.client.name}
+                      </p>
+                    </div>
+                    <p className="text-xs text-gray-500 hidden sm:block">
+                      {fmtDate(quote.createdAt)}
+                    </p>
+                  </Link>
+                  <div className="flex items-center gap-3">
+                    <span
+                      className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold capitalize ${statusColors[quote.status] || ""}`}
+                    >
+                      <span className={`w-1.5 h-1.5 rounded-full ${statusDot[quote.status] || ""}`} />
+                      {quote.status}
+                    </span>
+                    <p className="font-semibold text-white w-28 text-right">
+                      {formatCurrency(quote.total, quote.currency)}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

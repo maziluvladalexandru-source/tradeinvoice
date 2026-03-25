@@ -38,6 +38,9 @@ export default async function PublicInvoicePage({
   const businessName = invoice.user.businessName || "TradeInvoice";
   const contactEmail = invoice.user.email;
   const hasBankDetails = !!invoice.user.bankDetails;
+  const isQuote = invoice.type === "quote";
+  const docLabel = isQuote ? "Quote" : "Invoice";
+  const logoUrl = invoice.user.logoUrl || null;
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -96,12 +99,15 @@ export default async function PublicInvoicePage({
           <header className="px-6 sm:px-10 pt-8 sm:pt-10 pb-6 sm:pb-8 border-b border-gray-100">
             <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-5">
               <div className="flex items-center gap-4">
-                {/* Logo Placeholder */}
-                <div className="w-14 h-14 rounded-xl bg-slate-900 flex items-center justify-center flex-shrink-0 shadow-sm">
-                  <span className="text-2xl font-bold text-white leading-none">
-                    {businessName.charAt(0).toUpperCase()}
-                  </span>
-                </div>
+                {logoUrl ? (
+                  <img src={logoUrl} alt="Logo" className="w-14 h-14 rounded-xl object-contain flex-shrink-0 shadow-sm" />
+                ) : (
+                  <div className="w-14 h-14 rounded-xl bg-slate-900 flex items-center justify-center flex-shrink-0 shadow-sm">
+                    <span className="text-2xl font-bold text-white leading-none">
+                      {businessName.charAt(0).toUpperCase()}
+                    </span>
+                  </div>
+                )}
                 <div>
                   <h2 className="text-xl font-bold text-gray-900">{businessName}</h2>
                   <div className="text-gray-500 text-sm mt-0.5 space-y-0.5">
@@ -129,7 +135,7 @@ export default async function PublicInvoicePage({
             <div className="flex flex-col sm:flex-row sm:justify-between gap-6 sm:gap-10">
               {/* Invoice Meta */}
               <div className="flex-1">
-                <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-1.5">Invoice</p>
+                <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-1.5">{docLabel}</p>
                 <p className="text-2xl sm:text-3xl font-bold text-gray-900 font-mono tracking-tight mb-1">
                   {invoice.invoiceNumber}
                 </p>
@@ -376,11 +382,15 @@ export default async function PublicInvoicePage({
         {/* Footer */}
         <footer className="text-center py-8">
           <div className="flex items-center justify-center gap-3 mb-3">
-            <div className="w-7 h-7 rounded-lg bg-slate-900 flex items-center justify-center flex-shrink-0">
-              <span className="text-xs font-bold text-white leading-none">
-                {businessName.charAt(0).toUpperCase()}
-              </span>
-            </div>
+            {logoUrl ? (
+              <img src={logoUrl} alt="Logo" className="w-7 h-7 rounded-lg object-contain flex-shrink-0" />
+            ) : (
+              <div className="w-7 h-7 rounded-lg bg-slate-900 flex items-center justify-center flex-shrink-0">
+                <span className="text-xs font-bold text-white leading-none">
+                  {businessName.charAt(0).toUpperCase()}
+                </span>
+              </div>
+            )}
             <span className="text-sm font-semibold text-gray-600">{businessName}</span>
           </div>
           <div className="flex items-center justify-center gap-3 text-xs text-gray-400">

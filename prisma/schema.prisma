@@ -17,6 +17,7 @@ model User {
   kvkNumber     String?
   vatNumber     String?
   bankDetails   String?   // IBAN + bank name for invoices
+  logoUrl       String?   // base64 encoded logo image
   plan          String    @default("free") // free | pro
   stripeCustomerId String?
   stripeSubscriptionId String?
@@ -63,6 +64,7 @@ model Invoice {
   paymentNotes  String?   // bank account, payment instructions
   notesToClient String?   // visible note shown to client on invoice
   serviceDate   DateTime? // date service was performed
+  type          String   @default("invoice") // invoice | quote
   status        String   @default("draft") // draft | sent | viewed | paid | overdue
   subtotal      Float    @default(0)
   taxRate       Float    @default(0)
@@ -73,6 +75,9 @@ model Invoice {
   sentAt        DateTime?
   viewedAt      DateTime?
   paidAt        DateTime?
+  isRecurring   Boolean  @default(false)
+  recurringInterval String? // weekly | monthly | quarterly
+  recurringNextDate DateTime?
   remindersEnabled Boolean @default(true)
   reminder7Sent Boolean  @default(false)
   reminder3Sent Boolean  @default(false)

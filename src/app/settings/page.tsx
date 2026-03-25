@@ -22,6 +22,7 @@ interface User {
   kvkNumber: string | null;
   vatNumber: string | null;
   bankDetails: string | null;
+  logoUrl: string | null;
   plan: string;
   invoiceCount: number;
 }
@@ -43,6 +44,8 @@ function SettingsContent() {
   const [kvkNumber, setKvkNumber] = useState("");
   const [vatNumber, setVatNumber] = useState("");
   const [bankDetails, setBankDetails] = useState("");
+  const [logoUrl, setLogoUrl] = useState("");
+  const [logoUploading, setLogoUploading] = useState(false);
 
   useEffect(() => {
     fetch("/api/user")
@@ -59,6 +62,7 @@ function SettingsContent() {
         setKvkNumber(u.kvkNumber || "");
         setVatNumber(u.vatNumber || "");
         setBankDetails(u.bankDetails || "");
+        setLogoUrl(u.logoUrl || "");
       })
       .catch(() => router.push("/auth/login"))
       .finally(() => setLoading(false));
@@ -87,6 +91,51 @@ function SettingsContent() {
       window.location.href = url;
     }
     setUpgrading(false);
+  }
+
+  async function handleLogoUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.match(/^image\/(jpeg|png)$/)) {
+      alert("Please upload a JPG or PNG image");
+      return;
+    }
+    if (file.size > 2 * 1024 * 1024) {
+      alert("Logo must be under 2MB");
+      return;
+    }
+
+    setLogoUploading(true);
+    const reader = new FileReader();
+    reader.onload = async () => {
+      const base64 = reader.result as string;
+      const res = await fetch("/api/user", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ logoUrl: base64 }),
+      });
+      if (res.ok) {
+        setLogoUrl(base64);
+        const updated = await res.json();
+        setUser(updated);
+      }
+      setLogoUploading(false);
+    };
+    reader.readAsDataURL(file);
+  }
+
+  async function removeLogo() {
+    const res = await fetch("/api/user", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ logoUrl: "" }),
+    });
+    if (res.ok) {
+      setLogoUrl("");
+      const updated = await res.json();
+      setUser(updated);
+    }
   }
 
   if (loading) {
@@ -142,6 +191,50 @@ function SettingsContent() {
                 Active
               </span>
             )}
+          </div>
+        </div>
+
+        {/* Logo Upload */}
+        <div className="bg-gray-800/60 rounded-2xl p-6 border border-gray-700 mb-6">
+          <h2 className="text-lg font-semibold text-white mb-2">Invoice Logo</h2>
+          <p className="text-sm text-gray-400 mb-4">
+            Upload your business logo to display on invoices and client views. JPG or PNG, max 2MB.
+          </p>
+          <div className="flex items-center gap-6">
+            {logoUrl ? (
+              <div className="relative">
+                <img src={logoUrl} alt="Logo" className="w-20 h-20 rounded-xl object-contain border border-gray-600 bg-white p-1" />
+                <button
+                  type="button"
+                  onClick={removeLogo}
+                  className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-400"
+                  title="Remove logo"
+                >
+                  &times;
+                </button>
+              </div>
+            ) : (
+              <div className="w-20 h-20 rounded-xl border-2 border-dashed border-gray-600 flex items-center justify-center">
+                <svg className="w-8 h-8 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0022.5 18.75V5.25A2.25 2.25 0 0020.25 3H3.75A2.25 2.25 0 001.5 5.25v13.5A2.25 2.25 0 003.75 21z" />
+                </svg>
+              </div>
+            )}
+            <div>
+              <label className="cursor-pointer bg-amber-500 text-gray-950 px-4 py-2 rounded-lg font-medium text-sm hover:bg-amber-400 inline-block">
+                {logoUploading ? "Uploading..." : "Upload Logo"}
+                <input
+                  type="file"
+                  accept="image/jpeg,image/png"
+                  onChange={handleLogoUpload}
+                  className="hidden"
+                  disabled={logoUploading}
+                />
+              </label>
+              {logoUrl && (
+                <p className="text-xs text-gray-500 mt-2">Logo will appear on all your invoices</p>
+              )}
+            </div>
           </div>
         </div>
 

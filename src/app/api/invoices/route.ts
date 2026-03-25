@@ -47,7 +47,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const { clientId, description, dueDate, lineItems, taxRate, paymentNotes, notesToClient, serviceDate, invoiceNumber } =
+    const { clientId, description, dueDate, lineItems, taxRate, paymentNotes, notesToClient, serviceDate, invoiceNumber, type, currency, isRecurring, recurringInterval } =
       await req.json();
 
     if (!clientId || !lineItems?.length || !dueDate) {
@@ -65,20 +65,37 @@ export async function POST(req: NextRequest) {
     const tax = taxRate ? subtotal * (taxRate / 100) : 0;
     const total = subtotal + tax;
 
+    // Calculate recurring next date
+    let recurringNextDate: Date | null = null;
+    if (isRecurring && recurringInterval) {
+      recurringNextDate = new Date(dueDate);
+      if (recurringInterval === "weekly") recurringNextDate.setDate(recurringNextDate.getDate() + 7);
+      else if (recurringInterval === "monthly") recurringNextDate.setMonth(recurringNextDate.getMonth() + 1);
+      else if (recurringInterval === "quarterly") recurringNextDate.setMonth(recurringNextDate.getMonth() + 3);
+    }
+
+    const invoiceType = type === "quote" ? "quote" : "invoice";
+    const invoiceNum = invoiceNumber || generateInvoiceNumber();
+
     const invoice = await prisma.invoice.create({
       data: {
         userId: user.id,
         clientId,
-        invoiceNumber: invoiceNumber || generateInvoiceNumber(),
+        invoiceNumber: invoiceType === "quote" ? invoiceNum.replace("INV-", "QTE-") : invoiceNum,
         description: description || null,
         paymentNotes: paymentNotes || null,
         notesToClient: notesToClient || null,
         serviceDate: serviceDate ? new Date(serviceDate) : null,
+        type: invoiceType,
+        currency: currency || "EUR",
         dueDate: new Date(dueDate),
         subtotal,
         taxRate: taxRate || 0,
         taxAmount: tax,
         total,
+        isRecurring: !!isRecurring,
+        recurringInterval: isRecurring ? recurringInterval : null,
+        recurringNextDate,
         lineItems: {
           create: lineItems.map(
             (item: {
