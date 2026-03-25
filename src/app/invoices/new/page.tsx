@@ -228,6 +228,8 @@ function NewInvoiceForm() {
                   <option value="GBP">GBP - British Pound</option>
                   <option value="USD">USD - US Dollar</option>
                   <option value="RON">RON - Romanian Leu</option>
+                  <option value="PLN">PLN - Polish Zloty</option>
+                  <option value="CHF">CHF - Swiss Franc</option>
                 </select>
               </div>
             </div>
@@ -265,6 +267,7 @@ function NewInvoiceForm() {
                       <option value="weekly">Weekly</option>
                       <option value="monthly">Monthly</option>
                       <option value="quarterly">Quarterly</option>
+                      <option value="yearly">Yearly</option>
                     </select>
                   </div>
                 )}

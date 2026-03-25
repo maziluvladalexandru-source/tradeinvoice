@@ -72,6 +72,7 @@ export async function POST(req: NextRequest) {
       if (recurringInterval === "weekly") recurringNextDate.setDate(recurringNextDate.getDate() + 7);
       else if (recurringInterval === "monthly") recurringNextDate.setMonth(recurringNextDate.getMonth() + 1);
       else if (recurringInterval === "quarterly") recurringNextDate.setMonth(recurringNextDate.getMonth() + 3);
+      else if (recurringInterval === "yearly") recurringNextDate.setFullYear(recurringNextDate.getFullYear() + 1);
     }
 
     const invoiceType = type === "quote" ? "quote" : "invoice";

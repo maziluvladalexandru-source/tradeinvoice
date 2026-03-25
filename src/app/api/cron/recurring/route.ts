@@ -27,6 +27,7 @@ export async function GET(req: NextRequest) {
     if (invoice.recurringInterval === "weekly") dueDate.setDate(dueDate.getDate() + 7);
     else if (invoice.recurringInterval === "monthly") dueDate.setMonth(dueDate.getMonth() + 1);
     else if (invoice.recurringInterval === "quarterly") dueDate.setMonth(dueDate.getMonth() + 3);
+    else if (invoice.recurringInterval === "yearly") dueDate.setFullYear(dueDate.getFullYear() + 1);
     else dueDate.setMonth(dueDate.getMonth() + 1);
 
     await prisma.invoice.create({
@@ -60,6 +61,7 @@ export async function GET(req: NextRequest) {
     if (invoice.recurringInterval === "weekly") nextDate.setDate(nextDate.getDate() + 7);
     else if (invoice.recurringInterval === "monthly") nextDate.setMonth(nextDate.getMonth() + 1);
     else if (invoice.recurringInterval === "quarterly") nextDate.setMonth(nextDate.getMonth() + 3);
+    else if (invoice.recurringInterval === "yearly") nextDate.setFullYear(nextDate.getFullYear() + 1);
     else nextDate.setMonth(nextDate.getMonth() + 1);
 
     await prisma.invoice.update({
