@@ -112,7 +112,7 @@ export default async function DashboardPage() {
           <div className="bg-amber-500/10 border border-amber-500/30 rounded-2xl p-4 mb-8 flex items-center justify-between">
             <div>
               <p className="font-medium text-amber-400">
-                Free Plan: {user.invoiceCount}/5 invoices used this month
+                Free Plan: {user.invoiceCount}/20 invoices used this month
               </p>
               <p className="text-sm text-amber-500/70">
                 Upgrade to Pro for unlimited invoices

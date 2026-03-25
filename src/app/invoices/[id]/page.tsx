@@ -34,6 +34,7 @@ export default function InvoiceDetailPage() {
   const [loading, setLoading] = useState(true);
   const [sending, setSending] = useState(false);
   const [markingPaid, setMarkingPaid] = useState(false);
+  const [duplicating, setDuplicating] = useState(false);
 
   useEffect(() => {
     fetch(`/api/invoices/${params.id}`)
@@ -70,6 +71,24 @@ export default function InvoiceDetailPage() {
       setInvoice({ ...invoice, status: "paid", paidAt: new Date().toISOString() });
     }
     setMarkingPaid(false);
+  }
+
+  async function duplicateInvoice() {
+    if (!invoice) return;
+    setDuplicating(true);
+    try {
+      const res = await fetch(`/api/invoices/${invoice.id}/duplicate`, { method: "POST" });
+      if (res.ok) {
+        const dup = await res.json();
+        router.push(`/invoices/${dup.id}`);
+      } else {
+        const data = await res.json();
+        alert(data.error || "Failed to duplicate invoice");
+      }
+    } catch {
+      alert("Failed to duplicate invoice");
+    }
+    setDuplicating(false);
   }
 
   async function deleteInvoice() {
@@ -172,6 +191,16 @@ export default function InvoiceDetailPage() {
               {markingPaid ? "Updating..." : "Mark as Paid"}
             </button>
           )}
+          <button
+            onClick={duplicateInvoice}
+            disabled={duplicating}
+            className="bg-amber-500/15 text-amber-400 px-6 py-3 rounded-xl font-semibold text-lg hover:bg-amber-500/25 ring-1 ring-amber-500/30 transition-colors flex items-center gap-2 disabled:opacity-50"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+            </svg>
+            {duplicating ? "Duplicating..." : "Duplicate"}
+          </button>
           <a
             href={`/api/invoices/${invoice.id}/pdf`}
             target="_blank"

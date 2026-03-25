@@ -18,7 +18,7 @@ export const PLANS = {
   free: {
     name: "Free",
     price: 0,
-    invoicesPerMonth: 5,
+    invoicesPerMonth: 20,
     priceId: null,
   },
   pro: {

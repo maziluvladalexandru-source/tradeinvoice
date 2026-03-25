@@ -225,10 +225,22 @@ export default function ClientsPage() {
         {loading ? (
           <p className="text-gray-400 text-center py-12">Loading...</p>
         ) : clients.length === 0 ? (
-          <div className="bg-gray-800/60 rounded-2xl p-12 border border-gray-700 text-center">
-            <p className="text-gray-400 text-lg">
-              No clients yet. Add your first client to get started.
+          <div className="bg-gray-800/60 rounded-2xl p-16 border border-gray-700 text-center">
+            <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-amber-500/10 flex items-center justify-center">
+              <svg className="w-8 h-8 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+            </div>
+            <h3 className="text-xl font-semibold text-white mb-2">No clients yet</h3>
+            <p className="text-gray-400 mb-6 max-w-sm mx-auto">
+              Add your first client to start sending invoices and tracking payments.
             </p>
+            <button
+              onClick={() => setShowForm(true)}
+              className="inline-block bg-amber-500 text-gray-950 px-8 py-3 rounded-xl font-semibold text-lg hover:bg-amber-400 transition-colors"
+            >
+              Add Your First Client
+            </button>
           </div>
         ) : filtered.length === 0 ? (
           <div className="bg-gray-800/60 rounded-2xl p-12 border border-gray-700 text-center">

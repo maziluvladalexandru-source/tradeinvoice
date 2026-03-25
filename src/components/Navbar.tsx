@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
+import OfflineBanner from "./OfflineBanner";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -23,6 +24,8 @@ export default function Navbar() {
   }
 
   return (
+    <>
+    <OfflineBanner />
     <nav className="bg-gray-900 border-b border-gray-700">
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex items-center justify-between h-16">
@@ -78,5 +81,6 @@ export default function Navbar() {
         </div>
       </div>
     </nav>
+    </>
   );
 }

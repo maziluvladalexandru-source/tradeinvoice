@@ -30,10 +30,10 @@ export default function Home() {
           href="/auth/login"
           className="inline-block bg-amber-500 text-gray-900 px-8 py-4 rounded-xl font-bold text-xl hover:bg-amber-400 transition-colors shadow-lg shadow-amber-500/20"
         >
-          Start Free – 5 Invoices on Us
+          Start Free – 20 Invoices/Month
         </Link>
         <p className="mt-4 text-gray-500">
-          No credit card required.
+          No credit card required. Most generous free tier in the industry.
         </p>
 
         {/* Trust badges */}
@@ -214,7 +214,7 @@ export default function Home() {
             <p className="text-4xl font-extrabold mb-1">€0</p>
             <p className="text-gray-500 text-sm mb-6">/month</p>
             <ul className="text-gray-400 text-sm space-y-2 mb-8 text-left">
-              <li>✓ 5 invoices per month</li>
+              <li>✓ 20 invoices per month</li>
               <li>✓ Payment reminders</li>
               <li>✓ Unlimited team members</li>
             </ul>
@@ -357,8 +357,8 @@ export default function Home() {
               a: "No. Your clients receive a simple email with a link to view and pay the invoice. No account needed, no app to download — they just click and pay.",
             },
             {
-              q: "What happens after my 5 free invoices?",
-              a: "You can upgrade to Pro for €15/month for unlimited invoices, or continue on the free plan with 5 invoices per month. There's no pressure — the free plan never expires.",
+              q: "What happens after my 20 free invoices?",
+              a: "You can upgrade to Pro for €15/month for unlimited invoices, or continue on the free plan with 20 invoices per month. There's no pressure — the free plan never expires.",
             },
           ].map((faq) => (
             <details
@@ -398,7 +398,7 @@ export default function Home() {
           href="/auth/login"
           className="inline-block bg-amber-500 text-gray-900 px-8 py-4 rounded-xl font-bold text-xl hover:bg-amber-400 transition-colors shadow-lg shadow-amber-500/20"
         >
-          Start Free – 5 Invoices on Us
+          Start Free – 20 Invoices/Month
         </Link>
       </section>
 

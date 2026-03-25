@@ -125,7 +125,7 @@ function SettingsContent() {
               <p className="text-gray-400">
                 {user?.plan === "pro"
                   ? "Unlimited invoices per month"
-                  : `${user?.invoiceCount || 0}/5 invoices used this month`}
+                  : `${user?.invoiceCount || 0}/20 invoices used this month`}
               </p>
             </div>
             {user?.plan !== "pro" && (
