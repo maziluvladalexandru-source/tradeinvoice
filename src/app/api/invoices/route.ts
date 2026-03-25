@@ -47,7 +47,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const { clientId, description, dueDate, lineItems, taxRate, paymentNotes, serviceDate, invoiceNumber } =
+    const { clientId, description, dueDate, lineItems, taxRate, paymentNotes, notesToClient, serviceDate, invoiceNumber } =
       await req.json();
 
     if (!clientId || !lineItems?.length || !dueDate) {
@@ -72,6 +72,7 @@ export async function POST(req: NextRequest) {
         invoiceNumber: invoiceNumber || generateInvoiceNumber(),
         description: description || null,
         paymentNotes: paymentNotes || null,
+        notesToClient: notesToClient || null,
         serviceDate: serviceDate ? new Date(serviceDate) : null,
         dueDate: new Date(dueDate),
         subtotal,

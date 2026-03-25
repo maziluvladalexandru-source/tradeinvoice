@@ -61,6 +61,7 @@ model Invoice {
   invoiceNumber String
   description   String?
   paymentNotes  String?   // bank account, payment instructions
+  notesToClient String?   // visible note shown to client on invoice
   serviceDate   DateTime? // date service was performed
   status        String   @default("draft") // draft | sent | viewed | paid | overdue
   subtotal      Float    @default(0)
@@ -72,6 +73,7 @@ model Invoice {
   sentAt        DateTime?
   viewedAt      DateTime?
   paidAt        DateTime?
+  remindersEnabled Boolean @default(true)
   reminder7Sent Boolean  @default(false)
   reminder3Sent Boolean  @default(false)
   reminderOverdueSent Boolean @default(false)

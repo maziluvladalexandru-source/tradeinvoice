@@ -164,10 +164,20 @@ export async function GET(
               <div class="meta-label">Due Date</div>
               <div class="meta-value">${formatDate(invoice.dueDate)}</div>
             </div>
+            ${invoice.paidAt ? `<div class="meta-row">
+              <div class="meta-label">Paid Date</div>
+              <div class="meta-value" style="color: #065f46; font-weight: 600;">${formatDate(invoice.paidAt)}</div>
+            </div>` : ""}
           </div>
         </div>
 
         ${invoice.description ? `<p style="margin-bottom: 24px; color: #6b7280; font-size: 14px;"><strong>Description:</strong> ${escapeHtml(invoice.description)}</p>` : ""}
+
+        ${invoice.notesToClient ? `
+        <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 16px 20px; margin-bottom: 24px;">
+          <p style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: #1e40af; font-weight: 700; margin-bottom: 8px;">Note to Client</p>
+          <p style="font-size: 14px; color: #1e3a5f; line-height: 1.7; white-space: pre-line;">${escapeHtml(invoice.notesToClient)}</p>
+        </div>` : ""}
 
         <!-- Line Items -->
         <table>

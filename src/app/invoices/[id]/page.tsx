@@ -21,7 +21,9 @@ interface Invoice {
   paidAt: string | null;
   createdAt: string;
   paymentNotes: string | null;
+  notesToClient: string | null;
   serviceDate: string | null;
+  remindersEnabled: boolean;
   client: { id: string; name: string; email: string; phone: string | null; address: string | null };
   lineItems: { id: string; description: string; quantity: number; unitPrice: number; total: number }[];
   user: { businessName: string | null; email: string };
@@ -34,6 +36,8 @@ export default function InvoiceDetailPage() {
   const [loading, setLoading] = useState(true);
   const [sending, setSending] = useState(false);
   const [markingPaid, setMarkingPaid] = useState(false);
+  const [showPaidModal, setShowPaidModal] = useState(false);
+  const [paidDate, setPaidDate] = useState(() => new Date().toISOString().split("T")[0]);
   const [duplicating, setDuplicating] = useState(false);
 
   useEffect(() => {
@@ -62,13 +66,15 @@ export default function InvoiceDetailPage() {
   async function markPaid() {
     if (!invoice) return;
     setMarkingPaid(true);
+    const paidAt = new Date(paidDate + "T12:00:00").toISOString();
     const res = await fetch(`/api/invoices/${invoice.id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ status: "paid", paidAt: new Date().toISOString() }),
+      body: JSON.stringify({ status: "paid", paidAt }),
     });
     if (res.ok) {
-      setInvoice({ ...invoice, status: "paid", paidAt: new Date().toISOString() });
+      setInvoice({ ...invoice, status: "paid", paidAt });
+      setShowPaidModal(false);
     }
     setMarkingPaid(false);
   }
@@ -95,6 +101,19 @@ export default function InvoiceDetailPage() {
     if (!invoice || !confirm("Delete this invoice?")) return;
     const res = await fetch(`/api/invoices/${invoice.id}`, { method: "DELETE" });
     if (res.ok) router.push("/dashboard");
+  }
+
+  async function toggleReminders() {
+    if (!invoice) return;
+    const newVal = !invoice.remindersEnabled;
+    const res = await fetch(`/api/invoices/${invoice.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ remindersEnabled: newVal }),
+    });
+    if (res.ok) {
+      setInvoice({ ...invoice, remindersEnabled: newVal });
+    }
   }
 
   const fmt = (n: number) =>
@@ -181,14 +200,13 @@ export default function InvoiceDetailPage() {
           )}
           {["sent", "viewed", "overdue"].includes(invoice.status) && (
             <button
-              onClick={markPaid}
-              disabled={markingPaid}
-              className="bg-green-500 text-white px-6 py-3 rounded-xl font-semibold text-lg hover:bg-green-400 disabled:opacity-50 transition-colors flex items-center gap-2"
+              onClick={() => { setPaidDate(new Date().toISOString().split("T")[0]); setShowPaidModal(true); }}
+              className="bg-green-500 text-white px-6 py-3 rounded-xl font-semibold text-lg hover:bg-green-400 transition-colors flex items-center gap-2"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
-              {markingPaid ? "Updating..." : "Mark as Paid"}
+              Mark as Paid
             </button>
           )}
           <button
@@ -257,6 +275,9 @@ export default function InvoiceDetailPage() {
                   <p className="text-gray-400">Service: {fmtDate(invoice.serviceDate)}</p>
                 )}
                 <p className="text-gray-400">Due: {fmtDate(invoice.dueDate)}</p>
+                {invoice.paidAt && (
+                  <p className="text-green-400 font-medium">Paid: {fmtDate(invoice.paidAt)}</p>
+                )}
                 {invoice.description && (
                   <p className="text-gray-400 mt-1">{invoice.description}</p>
                 )}
@@ -321,6 +342,40 @@ export default function InvoiceDetailPage() {
                 Payment Notes
               </h3>
               <p className="text-gray-300 whitespace-pre-line">{invoice.paymentNotes}</p>
+            </div>
+          )}
+
+          {/* Notes to Client */}
+          {invoice.notesToClient && (
+            <div className="p-6 border-t border-gray-800">
+              <h3 className="text-xs uppercase tracking-wide text-gray-500 mb-2">
+                Notes to Client
+              </h3>
+              <p className="text-gray-300 whitespace-pre-line">{invoice.notesToClient}</p>
+            </div>
+          )}
+
+          {/* Reminder Toggle */}
+          {invoice.status !== "paid" && invoice.status !== "draft" && (
+            <div className="p-6 border-t border-gray-800">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-sm font-medium text-white">Payment Reminders</h3>
+                  <p className="text-xs text-gray-500 mt-0.5">Automatically remind client before due date</p>
+                </div>
+                <button
+                  onClick={toggleReminders}
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                    invoice.remindersEnabled ? "bg-amber-500" : "bg-gray-600"
+                  }`}
+                >
+                  <span
+                    className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                      invoice.remindersEnabled ? "translate-x-6" : "translate-x-1"
+                    }`}
+                  />
+                </button>
+              </div>
             </div>
           )}
         </div>
@@ -397,6 +452,37 @@ export default function InvoiceDetailPage() {
           </div>
         </div>
       </div>
+
+        {/* Mark as Paid Modal */}
+        {showPaidModal && (
+          <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+            <div className="bg-gray-900 rounded-2xl border border-gray-700 p-6 w-full max-w-sm shadow-2xl">
+              <h3 className="text-lg font-semibold text-white mb-1">Mark as Paid</h3>
+              <p className="text-sm text-gray-400 mb-5">Select the date payment was received</p>
+              <input
+                type="date"
+                value={paidDate}
+                onChange={(e) => setPaidDate(e.target.value)}
+                className="w-full px-4 py-3 rounded-xl border border-gray-600 text-lg focus:ring-2 focus:ring-green-500 outline-none bg-gray-800 text-white mb-5"
+              />
+              <div className="flex gap-3">
+                <button
+                  onClick={markPaid}
+                  disabled={markingPaid || !paidDate}
+                  className="flex-1 bg-green-500 text-white py-3 rounded-xl font-semibold hover:bg-green-400 disabled:opacity-50 transition-colors"
+                >
+                  {markingPaid ? "Saving..." : "Confirm Payment"}
+                </button>
+                <button
+                  onClick={() => setShowPaidModal(false)}
+                  className="px-4 py-3 rounded-xl text-gray-400 hover:text-white hover:bg-gray-800 transition-colors"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
     </div>
   );
 }

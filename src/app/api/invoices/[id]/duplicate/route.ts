@@ -52,6 +52,7 @@ export async function POST(
         invoiceNumber: generateInvoiceNumber(),
         description: original.description,
         paymentNotes: original.paymentNotes,
+        notesToClient: original.notesToClient,
         serviceDate: null,
         dueDate,
         subtotal: original.subtotal,

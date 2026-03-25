@@ -29,6 +29,7 @@ export async function GET(req: NextRequest) {
     const viewUrl = appUrl(`/invoice/${invoice.id}`);
     const totalFormatted = formatCurrency(invoice.total, invoice.currency);
 
+    // Skip reminders if disabled (still mark overdue for status tracking)
     // Mark overdue
     if (daysUntilDue < 0 && invoice.status !== "overdue") {
       await prisma.invoice.update({
@@ -38,59 +39,62 @@ export async function GET(req: NextRequest) {
       results.markedOverdue++;
     }
 
-    // 7-day reminder
-    if (daysUntilDue <= 7 && daysUntilDue > 3 && !invoice.reminder7Sent) {
-      await sendPaymentReminder(
-        invoice.client.email,
-        invoice.client.name,
-        invoice.invoiceNumber,
-        totalFormatted,
-        "Payment due in 7 days",
-        viewUrl
-      );
-      await prisma.invoice.update({
-        where: { id: invoice.id },
-        data: { reminder7Sent: true },
-      });
-      results.reminded7++;
-    }
+    // Only send reminders if enabled for this invoice
+    if (invoice.remindersEnabled) {
+      // 7-day reminder
+      if (daysUntilDue <= 7 && daysUntilDue > 3 && !invoice.reminder7Sent) {
+        await sendPaymentReminder(
+          invoice.client.email,
+          invoice.client.name,
+          invoice.invoiceNumber,
+          totalFormatted,
+          "Payment due in 7 days",
+          viewUrl
+        );
+        await prisma.invoice.update({
+          where: { id: invoice.id },
+          data: { reminder7Sent: true },
+        });
+        results.reminded7++;
+      }
 
-    // 3-day reminder
-    if (daysUntilDue <= 3 && daysUntilDue > 0 && !invoice.reminder3Sent) {
-      await sendPaymentReminder(
-        invoice.client.email,
-        invoice.client.name,
-        invoice.invoiceNumber,
-        totalFormatted,
-        "Payment due in 3 days",
-        viewUrl
-      );
-      await prisma.invoice.update({
-        where: { id: invoice.id },
-        data: { reminder3Sent: true },
-      });
-      results.reminded3++;
-    }
+      // 3-day reminder
+      if (daysUntilDue <= 3 && daysUntilDue > 0 && !invoice.reminder3Sent) {
+        await sendPaymentReminder(
+          invoice.client.email,
+          invoice.client.name,
+          invoice.invoiceNumber,
+          totalFormatted,
+          "Payment due in 3 days",
+          viewUrl
+        );
+        await prisma.invoice.update({
+          where: { id: invoice.id },
+          data: { reminder3Sent: true },
+        });
+        results.reminded3++;
+      }
 
-    // Overdue reminder — use the urgent overdue template
-    if (daysUntilDue < 0 && !invoice.reminderOverdueSent) {
-      const daysOverdue = Math.abs(daysUntilDue);
-      const dueDateFormatted = dueDate.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
-      await sendOverdueInvoiceEmail(
-        invoice.client.email,
-        invoice.client.name,
-        invoice.invoiceNumber,
-        totalFormatted,
-        dueDateFormatted,
-        daysOverdue,
-        viewUrl,
-        invoice.user.businessName || undefined
-      );
-      await prisma.invoice.update({
-        where: { id: invoice.id },
-        data: { reminderOverdueSent: true },
-      });
-      results.remindedOverdue++;
+      // Overdue reminder — use the urgent overdue template
+      if (daysUntilDue < 0 && !invoice.reminderOverdueSent) {
+        const daysOverdue = Math.abs(daysUntilDue);
+        const dueDateFormatted = dueDate.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+        await sendOverdueInvoiceEmail(
+          invoice.client.email,
+          invoice.client.name,
+          invoice.invoiceNumber,
+          totalFormatted,
+          dueDateFormatted,
+          daysOverdue,
+          viewUrl,
+          invoice.user.businessName || undefined
+        );
+        await prisma.invoice.update({
+          where: { id: invoice.id },
+          data: { reminderOverdueSent: true },
+        });
+        results.remindedOverdue++;
+      }
     }
   }
 

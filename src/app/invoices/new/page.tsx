@@ -42,6 +42,7 @@ function NewInvoiceForm() {
   });
   const [serviceDate, setServiceDate] = useState("");
   const [paymentNotes, setPaymentNotes] = useState("");
+  const [notesToClient, setNotesToClient] = useState("");
   const [taxRate, setTaxRate] = useState(0);
   const [lineItems, setLineItems] = useState<LineItem[]>([
     { description: "", quantity: 1, unitPrice: 0 },
@@ -137,6 +138,7 @@ function NewInvoiceForm() {
           taxRate,
           serviceDate: serviceDate || null,
           paymentNotes: paymentNotes || null,
+          notesToClient: notesToClient || null,
           invoiceNumber: invoiceNumber || null,
           lineItems: lineItems.filter((item) => item.description && item.unitPrice > 0),
         }),
@@ -360,6 +362,21 @@ function NewInvoiceForm() {
               placeholder={"e.g. IBAN: NL91 ABNA 0417 1643 00\nPlease include invoice number as reference"}
               value={paymentNotes}
               onChange={(e) => setPaymentNotes(e.target.value)}
+              rows={3}
+              className="w-full px-4 py-3 rounded-xl border border-gray-600 text-base focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white placeholder-gray-500 resize-none"
+            />
+          </div>
+
+          {/* Notes to Client */}
+          <div className="bg-gray-800/60 rounded-2xl p-6 border border-gray-700">
+            <h2 className="text-lg font-semibold text-white mb-1">
+              Notes to Client
+            </h2>
+            <p className="text-sm text-gray-500 mb-4">Optional message displayed prominently on the invoice for your client</p>
+            <textarea
+              placeholder={"e.g. Thank you for your business! Work completed as agreed."}
+              value={notesToClient}
+              onChange={(e) => setNotesToClient(e.target.value)}
               rows={3}
               className="w-full px-4 py-3 rounded-xl border border-gray-600 text-base focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white placeholder-gray-500 resize-none"
             />
