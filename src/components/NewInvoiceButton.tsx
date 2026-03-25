@@ -25,7 +25,13 @@ export default function NewInvoiceButton({ isNewUser }: NewInvoiceButtonProps) {
   }
 
   return (
-    <div className="relative">
+    <div className="relative flex items-center gap-3">
+      <Link
+        href="/invoices/new?type=quote"
+        className="bg-purple-500/15 text-purple-300 px-5 py-3 rounded-xl font-semibold text-base hover:bg-purple-500/25 ring-1 ring-purple-500/30 transition-colors inline-block"
+      >
+        + New Quote
+      </Link>
       <Link
         href="/invoices/new"
         onClick={dismissTip}

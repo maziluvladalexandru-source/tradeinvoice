@@ -76,7 +76,7 @@ model Invoice {
   viewedAt      DateTime?
   paidAt        DateTime?
   isRecurring   Boolean  @default(false)
-  recurringInterval String? // weekly | monthly | quarterly
+  recurringInterval String? // weekly | monthly | quarterly | yearly
   recurringNextDate DateTime?
   remindersEnabled Boolean @default(true)
   reminder7Sent Boolean  @default(false)

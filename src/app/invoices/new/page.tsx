@@ -30,6 +30,7 @@ function NewInvoiceForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const preselectedClientId = searchParams.get("clientId") || "";
+  const preselectedType = searchParams.get("type") || "invoice";
 
   const [clients, setClients] = useState<Client[]>([]);
   const [clientId, setClientId] = useState(preselectedClientId);
@@ -48,7 +49,7 @@ function NewInvoiceForm() {
     { description: "", quantity: 1, unitPrice: 0 },
   ]);
   const [currency, setCurrency] = useState("EUR");
-  const [invoiceType, setInvoiceType] = useState("invoice");
+  const [invoiceType, setInvoiceType] = useState(preselectedType === "quote" ? "quote" : "invoice");
   const [isRecurring, setIsRecurring] = useState(false);
   const [recurringInterval, setRecurringInterval] = useState("monthly");
   const [loading, setLoading] = useState(false);
