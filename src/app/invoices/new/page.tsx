@@ -502,7 +502,7 @@ function NewInvoiceForm() {
             )}
             <div className="space-y-3">
               {lineItems.map((item, index) => (
-                <div key={index} className="flex flex-wrap sm:flex-nowrap gap-3 items-start bg-gray-900/40 sm:bg-transparent rounded-xl p-3 sm:p-0 border border-gray-700/50 sm:border-0">
+                <div key={index} className="bg-gray-900/40 sm:bg-transparent rounded-xl p-3 sm:p-0 border border-gray-700/50 sm:border-0 space-y-3 sm:space-y-0 sm:flex sm:gap-3 sm:items-start">
                   <input
                     placeholder="Description"
                     value={item.description}
@@ -511,7 +511,7 @@ function NewInvoiceForm() {
                     }
                     className="w-full sm:flex-1 px-4 py-3 rounded-xl border border-gray-600 text-base focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white placeholder-gray-500"
                   />
-                  <div className="flex gap-3 items-start w-full sm:w-auto">
+                  <div className="flex gap-3 items-start">
                     <input
                       type="number"
                       min="1"
@@ -520,7 +520,7 @@ function NewInvoiceForm() {
                       onChange={(e) =>
                         updateLineItem(index, "quantity", Number(e.target.value))
                       }
-                      className="w-20 px-3 py-3 rounded-xl border border-gray-600 text-base text-center focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white"
+                      className="w-20 shrink-0 px-3 py-3 rounded-xl border border-gray-600 text-base text-center focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white"
                     />
                     <input
                       type="number"
@@ -535,12 +535,12 @@ function NewInvoiceForm() {
                           Number(e.target.value)
                         )
                       }
-                      className="flex-1 sm:w-28 sm:flex-none px-3 py-3 rounded-xl border border-gray-600 text-base text-right focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white"
+                      className="min-w-0 flex-1 sm:w-28 sm:flex-none px-3 py-3 rounded-xl border border-gray-600 text-base text-right focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white"
                     />
                     <button
                       type="button"
                       onClick={() => removeLineItem(index)}
-                      className="p-3 text-red-400 hover:text-red-300"
+                      className="p-3 shrink-0 text-red-400 hover:text-red-300"
                       title="Remove"
                     >
                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
