@@ -210,12 +210,13 @@ function SettingsContent() {
           <div className="flex items-center gap-6">
             {logoUrl ? (
               <div className="relative">
-                <img src={logoUrl} alt="Logo" className="w-20 h-20 rounded-xl object-contain border border-gray-600 bg-white p-1" />
+                <img src={logoUrl} alt="Business logo" className="w-20 h-20 rounded-xl object-contain border border-gray-600 bg-white p-1" />
                 <button
                   type="button"
                   onClick={removeLogo}
                   className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-400"
                   title="Remove logo"
+                  aria-label="Remove logo"
                 >
                   &times;
                 </button>
@@ -350,6 +351,21 @@ function SettingsContent() {
             {saving ? "Saving..." : "Save Changes"}
           </button>
         </form>
+        {/* Data Export */}
+        <div className="bg-gray-800/60 rounded-2xl p-6 border border-gray-700 mt-6">
+          <h2 className="text-lg font-semibold text-white mb-2">Data Export</h2>
+          <p className="text-sm text-gray-400 mb-4">
+            Download all your data (profile, clients, invoices) as a JSON file. This is your right under GDPR Article 20.
+          </p>
+          <a
+            href="/api/user/export"
+            download
+            className="inline-block bg-amber-500 text-gray-950 px-6 py-3 rounded-xl font-semibold hover:bg-amber-400 transition-colors"
+          >
+            Export My Data
+          </a>
+        </div>
+
         {/* Delete Account */}
         <div className="bg-gray-800/60 rounded-2xl p-6 border border-red-900/50 mt-6">
           <h2 className="text-lg font-semibold text-red-400 mb-2">Danger Zone</h2>

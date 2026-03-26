@@ -65,16 +65,46 @@ export default function TermsOfService() {
               euros (€).
             </p>
             <p>
-              Monthly subscription fees are non-refundable. You may cancel your
-              subscription at any time, and you will retain access to Pro
-              features until the end of your current billing period. No partial
-              refunds will be issued for unused portions of a billing cycle.
+              You may cancel your subscription at any time, and you will retain
+              access to Pro features until the end of your current billing
+              period. Outside of the 14-day cooling-off period described below,
+              no partial refunds will be issued for unused portions of a billing
+              cycle.
             </p>
           </section>
 
           <section>
             <h2 className="text-xl font-semibold text-white mb-3">
-              4. User Responsibilities
+              4. Right of Withdrawal (EU Cooling-Off Period)
+            </h2>
+            <p className="mb-3">
+              Under EU consumer protection law, you have the right to withdraw
+              from your Pro subscription within 14 days of purchase, without
+              giving any reason. To exercise this right, contact us at{" "}
+              <a
+                href="mailto:support@tradeinvoice.app"
+                className="text-amber-400 hover:text-amber-300 underline"
+              >
+                support@tradeinvoice.app
+              </a>
+              . We will refund your payment within 14 days of receiving your
+              withdrawal request.
+            </p>
+            <p className="mb-3">
+              If you have actively used the Pro features during the 14-day
+              period, we may deduct a proportional amount for the service
+              already provided.
+            </p>
+            <p>
+              After the 14-day cooling-off period, the standard cancellation
+              policy applies: cancel anytime, retain access until the end of
+              your billing period, no partial refunds.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="text-xl font-semibold text-white mb-3">
+              5. User Responsibilities
             </h2>
             <ul className="list-disc list-inside space-y-2 ml-2">
               <li>
@@ -98,7 +128,7 @@ export default function TermsOfService() {
 
           <section>
             <h2 className="text-xl font-semibold text-white mb-3">
-              5. Data Handling
+              6. Data Handling
             </h2>
             <p>
               We store your data securely and use it solely to provide and
@@ -116,7 +146,7 @@ export default function TermsOfService() {
 
           <section>
             <h2 className="text-xl font-semibold text-white mb-3">
-              6. Limitation of Liability
+              7. Limitation of Liability
             </h2>
             <p>
               TradeInvoice is provided &quot;as is&quot; without warranties of
@@ -129,7 +159,7 @@ export default function TermsOfService() {
 
           <section>
             <h2 className="text-xl font-semibold text-white mb-3">
-              7. Termination
+              8. Termination
             </h2>
             <p>
               We may suspend or terminate your account if you violate these
@@ -141,7 +171,7 @@ export default function TermsOfService() {
 
           <section>
             <h2 className="text-xl font-semibold text-white mb-3">
-              8. Governing Law
+              9. Governing Law
             </h2>
             <p>
               These terms are governed by and construed in accordance with the
@@ -152,7 +182,7 @@ export default function TermsOfService() {
 
           <section>
             <h2 className="text-xl font-semibold text-white mb-3">
-              9. Contact
+              10. Contact
             </h2>
             <p>
               If you have questions about these terms, contact us at{" "}
