@@ -203,7 +203,7 @@ function NewInvoiceForm() {
               <label className="text-sm text-gray-400">Invoice # <span className="text-red-500">*</span></label>
               <input
                 value={invoiceNumber}
-                onChange={(e) => { setInvoiceNumber(e.target.value); setFieldErrors((prev) => { const { invoiceNumber: _, ...rest } = prev; return rest; }); }}
+                onChange={(e) => { setInvoiceNumber(e.target.value); setFieldErrors((prev) => { const next = {...prev}; delete next.invoiceNumber; return next; }); }}
                 className={`w-36 px-3 py-2 rounded-lg border text-base font-mono focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white text-center ${fieldErrors.invoiceNumber ? "border-red-500" : "border-gray-600"}`}
               />
               {fieldErrors.invoiceNumber && (
@@ -301,7 +301,7 @@ function NewInvoiceForm() {
               <div className="space-y-3">
                 <select
                   value={clientId}
-                  onChange={(e) => { setClientId(e.target.value); setFieldErrors((prev) => { const { clientId: _, ...rest } = prev; return rest; }); }}
+                  onChange={(e) => { setClientId(e.target.value); setFieldErrors((prev) => { const next = {...prev}; delete next.clientId; return next; }); }}
                   className={`w-full px-4 py-3 rounded-xl border text-lg focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white ${fieldErrors.clientId ? "border-red-500" : "border-gray-600"}`}
                 >
                   <option value="">Select a client...</option>
@@ -435,7 +435,7 @@ function NewInvoiceForm() {
                 <input
                   type="date"
                   value={dueDate}
-                  onChange={(e) => { setDueDate(e.target.value); setFieldErrors((prev) => { const { dueDate: _, ...rest } = prev; return rest; }); }}
+                  onChange={(e) => { setDueDate(e.target.value); setFieldErrors((prev) => { const next = {...prev}; delete next.dueDate; return next; }); }}
                   className={`w-full px-4 py-3 rounded-xl border text-base focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white appearance-none [color-scheme:dark] [&::-webkit-calendar-picker-indicator]:opacity-70 [&::-webkit-calendar-picker-indicator]:invert ${fieldErrors.dueDate ? "border-red-500" : "border-gray-600"}`}
                   style={{ minHeight: '50px' }}
                 />
