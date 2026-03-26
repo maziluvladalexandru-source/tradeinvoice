@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { formatCurrency, formatDate } from "@/lib/utils";
 import { notFound } from "next/navigation";
+import PayNowButton from "./PayNowButton";
 
 export default async function PublicInvoicePage({
   params,
@@ -273,15 +274,7 @@ export default async function PublicInvoicePage({
                   <p className="text-slate-400 text-sm mb-6">Due {formatDate(invoice.dueDate)}</p>
                 )}
 
-                <a
-                  href={`mailto:${contactEmail}?subject=Payment for ${invoice.invoiceNumber}&body=I would like to arrange payment for invoice ${invoice.invoiceNumber} (${formatCurrency(invoice.total, invoice.currency)}).`}
-                  className="inline-flex items-center justify-center gap-2.5 bg-white hover:bg-gray-100 active:bg-gray-200 text-slate-900 font-semibold text-base px-10 py-4 rounded-xl transition-all shadow-sm hover:shadow-md w-full sm:w-auto"
-                >
-                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
-                  </svg>
-                  Pay Now
-                </a>
+                <PayNowButton invoiceId={invoice.id} paymentUrl={invoice.paymentUrl || null} />
 
                 {hasBankDetails && (
                   <p className="text-slate-500 text-xs mt-4">

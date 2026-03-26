@@ -82,6 +82,7 @@ model Invoice {
   reminder7Sent Boolean  @default(false)
   reminder3Sent Boolean  @default(false)
   reminderOverdueSent Boolean @default(false)
+  paymentUrl    String?   // Stripe payment link URL
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
