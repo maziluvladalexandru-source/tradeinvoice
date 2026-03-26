@@ -1,8 +1,19 @@
 "use client";
 
-import { useState, Suspense } from "react";
+import { useState, useEffect, useRef, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
+
+declare global {
+  interface Window {
+    turnstile?: {
+      render: (container: string | HTMLElement, options: Record<string, unknown>) => string;
+      reset: (widgetId: string) => void;
+    };
+  }
+}
+
+const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || "1x00000000000000000000AA";
 
 export default function LoginPage() {
   return (
@@ -18,23 +29,57 @@ function LoginContent() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [agreedToTerms, setAgreedToTerms] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState("");
+  const turnstileRef = useRef<HTMLDivElement>(null);
+  const widgetIdRef = useRef<string | null>(null);
   const searchParams = useSearchParams();
   const errorParam = searchParams.get("error");
 
+  useEffect(() => {
+    const scriptId = "turnstile-script";
+    if (document.getElementById(scriptId)) return;
+
+    const script = document.createElement("script");
+    script.id = scriptId;
+    script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onTurnstileLoad";
+    script.async = true;
+
+    (window as unknown as Record<string, unknown>).onTurnstileLoad = () => {
+      if (turnstileRef.current && window.turnstile) {
+        widgetIdRef.current = window.turnstile.render(turnstileRef.current, {
+          sitekey: TURNSTILE_SITE_KEY,
+          callback: (token: string) => setTurnstileToken(token),
+          theme: "dark",
+        });
+      }
+    };
+
+    document.head.appendChild(script);
+  }, []);
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (!turnstileToken) {
+      setError("Please complete the CAPTCHA verification.");
+      return;
+    }
     setLoading(true);
     setError("");
     try {
       const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email, turnstileToken }),
       });
       if (!res.ok) throw new Error("Failed to send magic link");
       setSent(true);
     } catch {
       setError("Something went wrong. Please try again.");
+      // Reset turnstile on error
+      if (widgetIdRef.current && window.turnstile) {
+        window.turnstile.reset(widgetIdRef.current);
+        setTurnstileToken("");
+      }
     } finally {
       setLoading(false);
     }
@@ -113,9 +158,11 @@ function LoginContent() {
               </span>
             </label>
 
+            <div ref={turnstileRef} className="mb-2" />
+
             <button
               type="submit"
-              disabled={loading || !agreedToTerms}
+              disabled={loading || !agreedToTerms || !turnstileToken}
               className="w-full bg-amber-500 text-gray-900 py-4 rounded-xl font-bold text-lg hover:bg-amber-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? "Sending..." : "Send Magic Link"}

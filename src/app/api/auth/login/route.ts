@@ -3,35 +3,38 @@ import { createMagicLinkToken } from "@/lib/auth";
 import { sendMagicLink } from "@/lib/resend";
 import { appUrl } from "@/lib/utils";
 import { logSecurityEvent } from "@/lib/security-log";
+import { rateLimit } from "@/lib/rate-limit";
 
-// Simple in-memory rate limiter: max 5 requests per email per 15 minutes
-const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
+const TURNSTILE_SECRET = process.env.TURNSTILE_SECRET || "1x0000000000000000000000000000000AA";
 
-function isRateLimited(email: string): boolean {
-  const now = Date.now();
-  const entry = rateLimitMap.get(email);
-  
-  if (!entry || now > entry.resetAt) {
-    rateLimitMap.set(email, { count: 1, resetAt: now + 15 * 60 * 1000 });
+async function verifyTurnstile(token: string): Promise<boolean> {
+  try {
+    const res = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ secret: TURNSTILE_SECRET, response: token }),
+    });
+    const data = await res.json();
+    return data.success === true;
+  } catch {
     return false;
   }
-  
-  entry.count++;
-  if (entry.count > 5) return true;
-  return false;
 }
-
-// Clean up old entries every 30 minutes
-setInterval(() => {
-  const now = Date.now();
-  for (const [key, val] of Array.from(rateLimitMap)) {
-    if (now > val.resetAt) rateLimitMap.delete(key);
-  }
-}, 30 * 60 * 1000);
 
 export async function POST(req: NextRequest) {
   try {
-    const { email } = await req.json();
+    const { email, turnstileToken } = await req.json();
+
+    // Verify Turnstile CAPTCHA
+    if (!turnstileToken || typeof turnstileToken !== "string") {
+      return NextResponse.json({ error: "CAPTCHA verification required" }, { status: 403 });
+    }
+
+    const turnstileValid = await verifyTurnstile(turnstileToken);
+    if (!turnstileValid) {
+      logSecurityEvent("TURNSTILE_FAILED", { ip: req.headers.get("x-forwarded-for") || "unknown" });
+      return NextResponse.json({ error: "CAPTCHA verification failed" }, { status: 403 });
+    }
 
     if (!email || typeof email !== "string") {
       return NextResponse.json({ error: "Email is required" }, { status: 400 });
@@ -39,7 +42,7 @@ export async function POST(req: NextRequest) {
 
     const cleanEmail = email.toLowerCase().trim();
 
-    if (isRateLimited(cleanEmail)) {
+    if (rateLimit("login", cleanEmail, 5, 15 * 60 * 1000)) {
       logSecurityEvent("LOGIN_RATE_LIMITED", { email: cleanEmail, ip: req.headers.get("x-forwarded-for") || "unknown" });
       return NextResponse.json(
         { error: "Too many login attempts. Try again in 15 minutes." },

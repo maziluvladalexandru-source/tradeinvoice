@@ -3,6 +3,7 @@ import { requireUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { canCreateInvoice } from "@/lib/stripe";
 import { generateInvoiceNumber, sanitizeString, VALID_CURRENCIES } from "@/lib/utils";
+import { rateLimit } from "@/lib/rate-limit";
 
 export async function GET() {
   try {
@@ -25,6 +26,10 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   try {
     const user = await requireUser();
+
+    if (rateLimit("invoices", user.id, 50, 60 * 60 * 1000)) {
+      return NextResponse.json({ error: "Rate limit exceeded. Try again later." }, { status: 429 });
+    }
 
     // Check monthly reset
     const now = new Date();

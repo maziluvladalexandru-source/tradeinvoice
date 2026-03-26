@@ -48,6 +48,11 @@ function SettingsContent() {
   const [logoUrl, setLogoUrl] = useState("");
   const [logoUploading, setLogoUploading] = useState(false);
 
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleteConfirmation, setDeleteConfirmation] = useState("");
+  const [deleting, setDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState("");
+
   useEffect(() => {
     fetch("/api/user")
       .then((r) => {
@@ -345,6 +350,86 @@ function SettingsContent() {
             {saving ? "Saving..." : "Save Changes"}
           </button>
         </form>
+        {/* Delete Account */}
+        <div className="bg-gray-800/60 rounded-2xl p-6 border border-red-900/50 mt-6">
+          <h2 className="text-lg font-semibold text-red-400 mb-2">Danger Zone</h2>
+          <p className="text-sm text-gray-400 mb-4">
+            Permanently delete your account and all associated data. This action cannot be undone.
+          </p>
+          <button
+            onClick={() => setShowDeleteModal(true)}
+            className="bg-red-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-red-500"
+          >
+            Delete My Account
+          </button>
+        </div>
+
+        {/* Delete Confirmation Modal */}
+        {showDeleteModal && (
+          <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 px-4">
+            <div className="bg-gray-800 border border-gray-700 rounded-2xl p-8 max-w-md w-full">
+              <h3 className="text-xl font-bold text-red-400 mb-4">Delete Account</h3>
+              <p className="text-gray-300 mb-4">
+                This will permanently delete your account, all invoices, all clients, and all data.
+                This cannot be undone.
+              </p>
+              <p className="text-gray-400 text-sm mb-4">
+                Type <span className="font-mono text-red-400 font-bold">DELETE</span> to confirm.
+              </p>
+              {deleteError && (
+                <div className="bg-red-500/10 border border-red-500/30 text-red-400 p-3 rounded-xl mb-4 text-sm">
+                  {deleteError}
+                </div>
+              )}
+              <input
+                type="text"
+                value={deleteConfirmation}
+                onChange={(e) => setDeleteConfirmation(e.target.value)}
+                placeholder="Type DELETE"
+                className="w-full px-4 py-3 rounded-xl bg-gray-900 border border-gray-600 text-white placeholder-gray-500 mb-4 focus:ring-2 focus:ring-red-500 outline-none"
+              />
+              <div className="flex gap-3">
+                <button
+                  onClick={() => {
+                    setShowDeleteModal(false);
+                    setDeleteConfirmation("");
+                    setDeleteError("");
+                  }}
+                  className="flex-1 bg-gray-700 text-white py-3 rounded-xl font-semibold hover:bg-gray-600"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={async () => {
+                    setDeleting(true);
+                    setDeleteError("");
+                    try {
+                      const res = await fetch("/api/user/delete", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ confirmation: deleteConfirmation }),
+                      });
+                      if (!res.ok) {
+                        const data = await res.json();
+                        setDeleteError(data.error || "Failed to delete account");
+                        return;
+                      }
+                      window.location.href = "/";
+                    } catch {
+                      setDeleteError("Something went wrong. Please try again.");
+                    } finally {
+                      setDeleting(false);
+                    }
+                  }}
+                  disabled={deleteConfirmation !== "DELETE" || deleting}
+                  className="flex-1 bg-red-600 text-white py-3 rounded-xl font-semibold hover:bg-red-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {deleting ? "Deleting..." : "Delete Forever"}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
       <BottomNav />
     </div>

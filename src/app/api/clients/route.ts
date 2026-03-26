@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { requireUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { sanitizeString, isValidEmail } from "@/lib/utils";
+import { rateLimit } from "@/lib/rate-limit";
 
 export async function GET() {
   try {
@@ -59,6 +60,11 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   try {
     const user = await requireUser();
+
+    if (rateLimit("clients", user.id, 20, 60 * 60 * 1000)) {
+      return NextResponse.json({ error: "Rate limit exceeded. Try again later." }, { status: 429 });
+    }
+
     const { name, email, phone, address } = await req.json();
 
     if (!name || !email) {
