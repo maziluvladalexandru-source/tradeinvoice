@@ -54,6 +54,7 @@ function NewInvoiceForm() {
   const [recurringInterval, setRecurringInterval] = useState("monthly");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
   // New client inline form
   const [showNewClient, setShowNewClient] = useState(false);
@@ -129,6 +130,17 @@ function NewInvoiceForm() {
   }
 
   async function handleSubmit(sendNow: boolean) {
+    setError("");
+    const errors: Record<string, string> = {};
+    if (!clientId) errors.clientId = "Select a client to bill";
+    if (!invoiceNumber.trim()) errors.invoiceNumber = "Invoice number is required";
+    if (lineItems.length === 0 || !lineItems[0].description) errors.lineItems = "Add at least one item";
+    if (!dueDate) errors.dueDate = "Set a due date";
+    if (Object.keys(errors).length > 0) {
+      setFieldErrors(errors);
+      return;
+    }
+    setFieldErrors({});
     setLoading(true);
     setError("");
 
@@ -187,12 +199,15 @@ function NewInvoiceForm() {
           </h1>
           {invoiceNumber && (
             <div className="flex items-center gap-2">
-              <label className="text-sm text-gray-400">Invoice #</label>
+              <label className="text-sm text-gray-400">Invoice # <span className="text-red-500">*</span></label>
               <input
                 value={invoiceNumber}
-                onChange={(e) => setInvoiceNumber(e.target.value)}
-                className="w-36 px-3 py-2 rounded-lg border border-gray-600 text-base font-mono focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white text-center"
+                onChange={(e) => { setInvoiceNumber(e.target.value); setFieldErrors((prev) => { const { invoiceNumber: _, ...rest } = prev; return rest; }); }}
+                className={`w-36 px-3 py-2 rounded-lg border text-base font-mono focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white text-center ${fieldErrors.invoiceNumber ? "border-red-500" : "border-gray-600"}`}
               />
+              {fieldErrors.invoiceNumber && (
+                <p className="text-red-500 text-xs mt-1">{fieldErrors.invoiceNumber}</p>
+              )}
             </div>
           )}
         </div>
@@ -279,14 +294,14 @@ function NewInvoiceForm() {
           {/* Client */}
           <div className="bg-gray-800/60 rounded-2xl p-6 border border-gray-700">
             <h2 className="text-lg font-semibold text-white mb-4">
-              Client
+              Client <span className="text-red-500">*</span>
             </h2>
             {!showNewClient ? (
               <div className="space-y-3">
                 <select
                   value={clientId}
-                  onChange={(e) => setClientId(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-600 text-lg focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white"
+                  onChange={(e) => { setClientId(e.target.value); setFieldErrors((prev) => { const { clientId: _, ...rest } = prev; return rest; }); }}
+                  className={`w-full px-4 py-3 rounded-xl border text-lg focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white ${fieldErrors.clientId ? "border-red-500" : "border-gray-600"}`}
                 >
                   <option value="">Select a client...</option>
                   {clients.map((c) => (
@@ -295,6 +310,9 @@ function NewInvoiceForm() {
                     </option>
                   ))}
                 </select>
+                {fieldErrors.clientId && (
+                  <p className="text-red-500 text-sm mt-1">{fieldErrors.clientId}</p>
+                )}
 
                 {/* Show selected client details */}
                 {selectedClient && (
@@ -411,16 +429,20 @@ function NewInvoiceForm() {
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-400 mb-1">
-                  Due Date
+                  Due Date <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="date"
                   value={dueDate}
-                  onChange={(e) => setDueDate(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-600 text-base focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white appearance-none [color-scheme:dark] [&::-webkit-calendar-picker-indicator]:opacity-70 [&::-webkit-calendar-picker-indicator]:invert"
+                  onChange={(e) => { setDueDate(e.target.value); setFieldErrors((prev) => { const { dueDate: _, ...rest } = prev; return rest; }); }}
+                  className={`w-full px-4 py-3 rounded-xl border text-base focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white appearance-none [color-scheme:dark] [&::-webkit-calendar-picker-indicator]:opacity-70 [&::-webkit-calendar-picker-indicator]:invert ${fieldErrors.dueDate ? "border-red-500" : "border-gray-600"}`}
                   style={{ minHeight: '50px' }}
                 />
-                <p className="text-xs text-gray-500 mt-1">Default: 30 days from today</p>
+                {fieldErrors.dueDate ? (
+                  <p className="text-red-500 text-xs mt-1">{fieldErrors.dueDate}</p>
+                ) : (
+                  <p className="text-xs text-gray-500 mt-1">Default: 30 days from today</p>
+                )}
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-400 mb-1">
@@ -472,8 +494,11 @@ function NewInvoiceForm() {
           {/* Line Items */}
           <div className="bg-gray-800/60 rounded-2xl p-6 border border-gray-700">
             <h2 className="text-lg font-semibold text-white mb-4">
-              Line Items
+              Line Items <span className="text-red-500">*</span>
             </h2>
+            {fieldErrors.lineItems && (
+              <p className="text-red-500 text-sm mb-3">{fieldErrors.lineItems}</p>
+            )}
             <div className="space-y-3">
               {lineItems.map((item, index) => (
                 <div key={index} className="flex flex-wrap sm:flex-nowrap gap-3 items-start bg-gray-900/40 sm:bg-transparent rounded-xl p-3 sm:p-0 border border-gray-700/50 sm:border-0">
@@ -582,3 +607,4 @@ function NewInvoiceForm() {
     </div>
   );
 }
+
