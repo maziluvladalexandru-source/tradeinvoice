@@ -5,7 +5,7 @@ function getResend() {
 }
 
 function getFromEmail() {
-  return process.env.FROM_EMAIL || "TradeInvoice <noreply@tradeinvoice.com>";
+  return process.env.FROM_EMAIL || "TradeInvoice <noreply@tradeinvoice.app>";
 }
 
 /** Professional email layout with dark/amber branding */
@@ -57,7 +57,7 @@ function emailLayout(businessName: string, content: string, accentColor?: string
           <tr>
             <td style="padding: 28px 0 0; text-align: center;">
               <p style="margin: 0 0 6px; font-size: 12px; color: #57534e;">
-                Sent via <a href="https://tradeinvoice.com" style="color: ${accent}; font-weight: 600; text-decoration: none;">TradeInvoice</a>
+                Sent via <a href="https://tradeinvoice.app" style="color: ${accent}; font-weight: 600; text-decoration: none;">TradeInvoice</a>
               </p>
               <p style="margin: 0; font-size: 11px; color: #44403c;">
                 Professional invoicing for freelancers &amp; small businesses
