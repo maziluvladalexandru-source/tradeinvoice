@@ -24,7 +24,7 @@ export default function Home() {
         </h2>
         <p className="text-lg md:text-xl text-gray-400 mb-10 max-w-2xl mx-auto">
           Create professional invoices in 60 seconds. Automatic payment
-          reminders chase your clients for you. One flat price, your whole team.
+          reminders chase your clients for you. One flat price, no hidden fees.
         </p>
         <Link
           href="/auth/login"
@@ -33,7 +33,7 @@ export default function Home() {
           Start Free – 20 Invoices/Month
         </Link>
         <p className="mt-4 text-gray-500">
-          No credit card required. Most generous free tier in the industry.
+          No credit card required. No strings attached.
         </p>
 
         {/* Trust badges */}
@@ -137,58 +137,41 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Testimonials */}
+      {/* Built For You */}
       <section className="max-w-4xl mx-auto px-4 py-20">
         <h2 className="text-3xl font-bold text-center mb-2">
-          What Tradespeople Say
+          Built by a Contractor, for Contractors
         </h2>
         <p className="text-center text-gray-400 mb-12">
-          Real feedback from people who do the work.
+          We got tired of chasing payments ourselves. So we built something better.
         </p>
         <div className="grid md:grid-cols-3 gap-8">
           {[
             {
-              quote:
-                "I used to spend my evenings chasing clients for money. Now TradeInvoice sends reminders automatically — I've cut my late payments by 70%. I actually get paid within a week most of the time.",
-              name: "Mark T.",
-              role: "Plumber — Dublin",
-              stars: 5,
+              emoji: "🔔",
+              title: "Automatic Reminders",
+              desc: "Your clients get polite nudges at 7 days, 3 days, and when overdue. You never have to send the awkward follow-up again.",
             },
             {
-              quote:
-                "I was copying the same Word template for every job and half the time I'd forget to update the date or the total. This is so much faster and my invoices actually look professional now.",
-              name: "Sarah K.",
-              role: "Electrician — Amsterdam",
-              stars: 5,
+              emoji: "📱",
+              title: "Works on Any Device",
+              desc: "Create and send invoices from your phone on the job site, or from your laptop at home. No app to download.",
             },
             {
-              quote:
-                "Since switching to TradeInvoice, my average time-to-payment dropped from 30 days to 9. The automatic reminders do the awkward chasing so I don't have to. Best €15 I spend each month.",
-              name: "James B.",
-              role: "Builder — Rotterdam",
-              stars: 5,
+              emoji: "🌍",
+              title: "Multi-Language Invoices",
+              desc: "Generate invoices in English, Dutch, or German. Perfect for working across borders in the EU.",
             },
-          ].map((testimonial) => (
+          ].map((item) => (
             <div
-              key={testimonial.name}
-              className="bg-gray-800/50 border border-gray-700 rounded-2xl p-6"
+              key={item.title}
+              className="bg-gray-800/50 border border-gray-700 rounded-2xl p-6 text-center"
             >
-              <div className="flex gap-0.5 mb-3">
-                {Array.from({ length: testimonial.stars }).map((_, i) => (
-                  <svg key={i} className="w-4 h-4 text-amber-400" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                  </svg>
-                ))}
-              </div>
-              <p className="text-gray-300 text-sm mb-4 leading-relaxed">
-                &ldquo;{testimonial.quote}&rdquo;
-              </p>
-              <div>
-                <p className="text-white font-semibold text-sm">
-                  {testimonial.name}
-                </p>
-                <p className="text-amber-400/70 text-xs">{testimonial.role}</p>
-              </div>
+              <div className="text-4xl mb-4">{item.emoji}</div>
+              <h3 className="text-lg font-semibold text-white mb-2">
+                {item.title}
+              </h3>
+              <p className="text-gray-400 text-sm">{item.desc}</p>
             </div>
           ))}
         </div>
@@ -216,7 +199,8 @@ export default function Home() {
             <ul className="text-gray-400 text-sm space-y-2 mb-8 text-left">
               <li>✓ 20 invoices per month</li>
               <li>✓ Payment reminders</li>
-              <li>✓ Unlimited team members</li>
+              <li>✓ Professional PDF invoices</li>
+              <li>✓ Client management</li>
             </ul>
             <Link
               href="/auth/login"
@@ -236,14 +220,15 @@ export default function Home() {
             <ul className="text-gray-400 text-sm space-y-2 mb-8 text-left">
               <li>✓ Unlimited invoices</li>
               <li>✓ Payment reminders</li>
-              <li>✓ Unlimited team members</li>
-              <li>✓ Priority support</li>
+              <li>✓ Multi-language invoices</li>
+              <li>✓ Partial payment tracking</li>
+              <li>✓ Email support</li>
             </ul>
             <Link
               href="/auth/login"
               className="block w-full bg-amber-500 text-gray-900 py-3 rounded-xl font-bold hover:bg-amber-400 transition-colors"
             >
-              Start Free Trial
+              Upgrade to Pro
             </Link>
           </div>
         </div>
@@ -316,7 +301,7 @@ export default function Home() {
               <tr>
                 <td className="py-3 px-4 font-medium">Support</td>
                 <td className="py-3 px-4 text-center font-bold text-green-400">
-                  Fast responses
+                  Email support
                 </td>
                 <td className="py-3 px-4 text-center text-gray-500">
                   Chat / email
@@ -358,7 +343,7 @@ export default function Home() {
             },
             {
               q: "What happens after my 20 free invoices?",
-              a: "You can upgrade to Pro for €15/month for unlimited invoices, or continue on the free plan with 20 invoices per month. There's no pressure — the free plan never expires.",
+              a: "You can upgrade to Pro for €15/month for unlimited invoices. Your free plan resets every month — you get 20 fresh invoices each month at no cost, forever.",
             },
           ].map((faq) => (
             <details
@@ -391,8 +376,8 @@ export default function Home() {
           Stop Chasing Payments. Start Getting Paid.
         </h2>
         <p className="text-gray-400 mb-8 max-w-xl mx-auto">
-          Join tradespeople across Ireland, the UK, and the Netherlands who
-          invoice smarter with TradeInvoice.
+          Simple invoicing built for tradespeople in the Netherlands, UK, and Ireland.
+          Create your first invoice in 60 seconds.
         </p>
         <Link
           href="/auth/login"
