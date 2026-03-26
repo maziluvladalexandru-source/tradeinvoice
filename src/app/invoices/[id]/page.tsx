@@ -27,6 +27,10 @@ interface Invoice {
   remindersEnabled: boolean;
   isRecurring: boolean;
   recurringInterval: string | null;
+  reverseCharge: boolean;
+  referenceInvoice: string | null;
+  language: string;
+  paidAmount: number;
   client: { id: string; name: string; email: string; phone: string | null; address: string | null };
   lineItems: { id: string; description: string; quantity: number; unitPrice: number; total: number }[];
   user: { businessName: string | null; email: string };
@@ -41,6 +45,7 @@ export default function InvoiceDetailPage() {
   const [markingPaid, setMarkingPaid] = useState(false);
   const [showPaidModal, setShowPaidModal] = useState(false);
   const [paidDate, setPaidDate] = useState(() => new Date().toISOString().split("T")[0]);
+  const [paymentAmount, setPaymentAmount] = useState(0);
   const [duplicating, setDuplicating] = useState(false);
   const [converting, setConverting] = useState(false);
 
@@ -71,13 +76,24 @@ export default function InvoiceDetailPage() {
     if (!invoice) return;
     setMarkingPaid(true);
     const paidAt = new Date(paidDate + "T12:00:00").toISOString();
+    const newPaidAmount = (invoice.paidAmount || 0) + paymentAmount;
+    const isFullyPaid = newPaidAmount >= invoice.total;
     const res = await fetch(`/api/invoices/${invoice.id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ status: "paid", paidAt }),
+      body: JSON.stringify({
+        status: isFullyPaid ? "paid" : invoice.status,
+        paidAt: isFullyPaid ? paidAt : invoice.paidAt,
+        paidAmount: newPaidAmount,
+      }),
     });
     if (res.ok) {
-      setInvoice({ ...invoice, status: "paid", paidAt });
+      setInvoice({
+        ...invoice,
+        status: isFullyPaid ? "paid" : invoice.status,
+        paidAt: isFullyPaid ? paidAt : invoice.paidAt,
+        paidAmount: newPaidAmount,
+      });
       setShowPaidModal(false);
     }
     setMarkingPaid(false);
@@ -203,6 +219,16 @@ export default function InvoiceDetailPage() {
                   Quote
                 </span>
               )}
+              {invoice.type === "credit_note" && (
+                <span className="bg-orange-500/20 text-orange-300 ring-1 ring-orange-400/40 px-3 py-1 rounded-full text-xs font-semibold uppercase">
+                  Credit Note
+                </span>
+              )}
+              {invoice.reverseCharge && (
+                <span className="bg-amber-500/20 text-amber-300 ring-1 ring-amber-400/40 px-3 py-1 rounded-full text-xs font-semibold uppercase">
+                  Reverse Charge
+                </span>
+              )}
               {invoice.isRecurring && (
                 <span className="bg-cyan-500/20 text-cyan-300 ring-1 ring-cyan-400/40 px-3 py-1 rounded-full text-xs font-semibold capitalize">
                   Recurring ({invoice.recurringInterval})
@@ -213,12 +239,19 @@ export default function InvoiceDetailPage() {
               {invoice.client.name} &middot; {fmtDate(invoice.createdAt)}
             </p>
           </div>
-          <span
-            className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold capitalize ${statusColors[invoice.status] || ""}`}
-          >
-            <span className={`w-2 h-2 rounded-full ${statusDot[invoice.status] || ""}`} />
-            {invoice.status}
-          </span>
+          <div className="flex flex-col items-end gap-2">
+            <span
+              className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold capitalize ${statusColors[invoice.status] || ""}`}
+            >
+              <span className={`w-2 h-2 rounded-full ${statusDot[invoice.status] || ""}`} />
+              {invoice.status}
+            </span>
+            {invoice.paidAmount > 0 && invoice.paidAmount < invoice.total && (
+              <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/20 text-amber-300 ring-1 ring-amber-400/40">
+                Partially Paid
+              </span>
+            )}
+          </div>
         </div>
 
         {/* Actions */}
@@ -234,13 +267,17 @@ export default function InvoiceDetailPage() {
           )}
           {["sent", "viewed", "overdue"].includes(invoice.status) && (
             <button
-              onClick={() => { setPaidDate(new Date().toISOString().split("T")[0]); setShowPaidModal(true); }}
+              onClick={() => {
+                setPaidDate(new Date().toISOString().split("T")[0]);
+                setPaymentAmount(invoice.total - (invoice.paidAmount || 0));
+                setShowPaidModal(true);
+              }}
               className="bg-green-500 text-white px-6 py-3 rounded-xl font-semibold text-lg hover:bg-green-400 transition-colors flex items-center gap-2"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
-              Mark as Paid
+              {invoice.paidAmount > 0 ? "Record Payment" : "Mark as Paid"}
             </button>
           )}
           {invoice.type === "quote" && (
@@ -378,7 +415,29 @@ export default function InvoiceDetailPage() {
                 <span>Total</span>
                 <span>{fmt(invoice.total)}</span>
               </div>
+              {invoice.paidAmount > 0 && invoice.paidAmount < invoice.total && (
+                <>
+                  <div className="flex justify-between text-green-400 pt-1">
+                    <span>Amount Paid</span>
+                    <span>{fmt(invoice.paidAmount)}</span>
+                  </div>
+                  <div className="flex justify-between text-lg font-bold text-amber-400">
+                    <span>Balance Due</span>
+                    <span>{fmt(invoice.total - invoice.paidAmount)}</span>
+                  </div>
+                </>
+              )}
             </div>
+            {invoice.reverseCharge && (
+              <div className="mt-4 bg-amber-500/10 border border-amber-500/30 rounded-lg p-3 text-sm text-amber-400">
+                VAT reverse-charged (BTW verlegd) — Article 44 EU VAT Directive
+              </div>
+            )}
+            {invoice.referenceInvoice && (
+              <div className="mt-3 text-sm text-gray-400">
+                Reference Invoice: <span className="text-white font-medium">{invoice.referenceInvoice}</span>
+              </div>
+            )}
           </div>
 
           {/* Payment Notes */}
@@ -503,18 +562,35 @@ export default function InvoiceDetailPage() {
         {showPaidModal && (
           <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
             <div className="bg-gray-900 rounded-2xl border border-gray-700 p-6 w-full max-w-sm shadow-2xl">
-              <h3 className="text-lg font-semibold text-white mb-1">Mark as Paid</h3>
-              <p className="text-sm text-gray-400 mb-5">Select the date payment was received</p>
+              <h3 className="text-lg font-semibold text-white mb-1">Record Payment</h3>
+              <p className="text-sm text-gray-400 mb-5">
+                {invoice.paidAmount > 0
+                  ? `Already paid: ${fmt(invoice.paidAmount)} of ${fmt(invoice.total)}`
+                  : "Enter the payment amount and date"}
+              </p>
+              <label className="block text-sm font-medium text-gray-400 mb-1">Payment Amount</label>
+              <input
+                type="number"
+                min="0"
+                step="0.01"
+                value={paymentAmount}
+                onChange={(e) => setPaymentAmount(Number(e.target.value))}
+                className="w-full px-4 py-3 rounded-xl border border-gray-600 text-lg focus:ring-2 focus:ring-green-500 outline-none bg-gray-800 text-white mb-4"
+              />
+              <label className="block text-sm font-medium text-gray-400 mb-1">Payment Date</label>
               <input
                 type="date"
                 value={paidDate}
                 onChange={(e) => setPaidDate(e.target.value)}
                 className="w-full px-4 py-3 rounded-xl border border-gray-600 text-lg focus:ring-2 focus:ring-green-500 outline-none bg-gray-800 text-white mb-5"
               />
+              {paymentAmount > 0 && paymentAmount < (invoice.total - (invoice.paidAmount || 0)) && (
+                <p className="text-sm text-amber-400 mb-4">This is a partial payment. Status will remain until fully paid.</p>
+              )}
               <div className="flex gap-3">
                 <button
                   onClick={markPaid}
-                  disabled={markingPaid || !paidDate}
+                  disabled={markingPaid || !paidDate || paymentAmount <= 0}
                   className="flex-1 bg-green-500 text-white py-3 rounded-xl font-semibold hover:bg-green-400 disabled:opacity-50 transition-colors"
                 >
                   {markingPaid ? "Saving..." : "Confirm Payment"}

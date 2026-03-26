@@ -41,7 +41,7 @@ export default function TermsOfService() {
             </p>
             <ul className="list-disc list-inside space-y-2 ml-2">
               <li>
-                <strong className="text-white">Free</strong> — Up to 5 invoices
+                <strong className="text-white">Free</strong> — Up to 20 invoices
                 per month at no cost.
               </li>
               <li>

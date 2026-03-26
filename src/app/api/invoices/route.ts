@@ -47,8 +47,11 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const { clientId, description, dueDate, lineItems, taxRate, paymentNotes, notesToClient, serviceDate, invoiceNumber, type, currency, isRecurring, recurringInterval } =
-      await req.json();
+    const {
+      clientId, description, dueDate, lineItems, taxRate, paymentNotes,
+      notesToClient, serviceDate, invoiceNumber, type, currency,
+      isRecurring, recurringInterval, reverseCharge, referenceInvoice, language,
+    } = await req.json();
 
     if (!clientId || !lineItems?.length || !dueDate) {
       return NextResponse.json(
@@ -62,7 +65,8 @@ export async function POST(req: NextRequest) {
         sum + item.quantity * item.unitPrice,
       0
     );
-    const tax = taxRate ? subtotal * (taxRate / 100) : 0;
+    const effectiveTaxRate = reverseCharge ? 0 : (taxRate || 0);
+    const tax = subtotal * (effectiveTaxRate / 100);
     const total = subtotal + tax;
 
     // Calculate recurring next date
@@ -75,14 +79,44 @@ export async function POST(req: NextRequest) {
       else if (recurringInterval === "yearly") recurringNextDate.setFullYear(recurringNextDate.getFullYear() + 1);
     }
 
-    const invoiceType = type === "quote" ? "quote" : "invoice";
-    const invoiceNum = invoiceNumber || generateInvoiceNumber();
+    const invoiceType = type === "quote" ? "quote" : type === "credit_note" ? "credit_note" : "invoice";
+    let invoiceNum = invoiceNumber || generateInvoiceNumber();
+
+    // Prefix based on type
+    if (invoiceType === "quote") {
+      invoiceNum = invoiceNum.replace("INV-", "QTE-");
+    } else if (invoiceType === "credit_note") {
+      invoiceNum = invoiceNum.replace("INV-", "CN-");
+    }
+
+    // Gap warning check (non-blocking)
+    let gapWarning: string | null = null;
+    if (invoiceNumber && invoiceType === "invoice") {
+      const match = invoiceNumber.match(/INV-(\d+)/);
+      if (match) {
+        const inputNum = parseInt(match[1], 10);
+        const lastInvoice = await prisma.invoice.findFirst({
+          where: { userId: user.id, invoiceNumber: { startsWith: "INV-" } },
+          orderBy: { invoiceNumber: "desc" },
+          select: { invoiceNumber: true },
+        });
+        if (lastInvoice) {
+          const lastMatch = lastInvoice.invoiceNumber.match(/INV-(\d+)/);
+          if (lastMatch) {
+            const lastNum = parseInt(lastMatch[1], 10);
+            if (inputNum > lastNum + 1) {
+              gapWarning = `Invoice number creates a gap (expected INV-${String(lastNum + 1).padStart(4, "0")})`;
+            }
+          }
+        }
+      }
+    }
 
     const invoice = await prisma.invoice.create({
       data: {
         userId: user.id,
         clientId,
-        invoiceNumber: invoiceType === "quote" ? invoiceNum.replace("INV-", "QTE-") : invoiceNum,
+        invoiceNumber: invoiceNum,
         description: description || null,
         paymentNotes: paymentNotes || null,
         notesToClient: notesToClient || null,
@@ -91,12 +125,15 @@ export async function POST(req: NextRequest) {
         currency: currency || "EUR",
         dueDate: new Date(dueDate),
         subtotal,
-        taxRate: taxRate || 0,
+        taxRate: effectiveTaxRate,
         taxAmount: tax,
         total,
         isRecurring: !!isRecurring,
         recurringInterval: isRecurring ? recurringInterval : null,
         recurringNextDate,
+        reverseCharge: !!reverseCharge,
+        referenceInvoice: referenceInvoice || null,
+        language: language || "en",
         lineItems: {
           create: lineItems.map(
             (item: {
@@ -121,7 +158,7 @@ export async function POST(req: NextRequest) {
       data: { invoiceCount: { increment: 1 } },
     });
 
-    return NextResponse.json(invoice);
+    return NextResponse.json({ ...invoice, gapWarning });
   } catch (error) {
     console.error("Create invoice error:", error);
     return NextResponse.json(

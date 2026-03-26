@@ -50,9 +50,14 @@ function NewInvoiceForm() {
     { description: "", quantity: 1, unitPrice: 0 },
   ]);
   const [currency, setCurrency] = useState("EUR");
-  const [invoiceType, setInvoiceType] = useState(preselectedType === "quote" ? "quote" : "invoice");
+  const [invoiceType, setInvoiceType] = useState(
+    preselectedType === "quote" ? "quote" : preselectedType === "credit_note" ? "credit_note" : "invoice"
+  );
   const [isRecurring, setIsRecurring] = useState(false);
   const [recurringInterval, setRecurringInterval] = useState("monthly");
+  const [reverseCharge, setReverseCharge] = useState(false);
+  const [referenceInvoice, setReferenceInvoice] = useState("");
+  const [language, setLanguage] = useState("en");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
@@ -162,6 +167,9 @@ function NewInvoiceForm() {
           type: invoiceType,
           isRecurring,
           recurringInterval: isRecurring ? recurringInterval : null,
+          reverseCharge,
+          referenceInvoice: invoiceType === "credit_note" ? (referenceInvoice || null) : null,
+          language,
           lineItems: lineItems.filter((item) => item.description && item.unitPrice > 0),
         }),
       });
@@ -196,7 +204,7 @@ function NewInvoiceForm() {
       <div className="max-w-3xl mx-auto px-4 py-8">
         <div className="flex items-center justify-between mb-8">
           <h1 className="text-3xl font-bold text-white">
-            Create {invoiceType === "quote" ? "Quote" : "Invoice"}
+            Create {invoiceType === "quote" ? "Quote" : invoiceType === "credit_note" ? "Credit Note" : "Invoice"}
           </h1>
           {invoiceNumber && (
             <div className="flex items-center gap-2">
@@ -232,6 +240,7 @@ function NewInvoiceForm() {
                 >
                   <option value="invoice">Invoice</option>
                   <option value="quote">Quote / Estimate</option>
+                  <option value="credit_note">Credit Note</option>
                 </select>
               </div>
               <div>
@@ -249,6 +258,33 @@ function NewInvoiceForm() {
                   <option value="CHF">CHF - Swiss Franc</option>
                 </select>
               </div>
+            </div>
+
+            {/* Language selector */}
+            <div className="mt-4 grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-400 mb-1">PDF Language</label>
+                <select
+                  value={language}
+                  onChange={(e) => setLanguage(e.target.value)}
+                  className="w-full px-4 py-3 rounded-xl border border-gray-600 text-lg focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white"
+                >
+                  <option value="en">English</option>
+                  <option value="nl">Dutch (Nederlands)</option>
+                  <option value="de">German (Deutsch)</option>
+                </select>
+              </div>
+              {invoiceType === "credit_note" && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-400 mb-1">Reference Invoice #</label>
+                  <input
+                    placeholder="e.g. INV-0001"
+                    value={referenceInvoice}
+                    onChange={(e) => setReferenceInvoice(e.target.value)}
+                    className="w-full px-4 py-3 rounded-xl border border-gray-600 text-lg focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white placeholder-gray-500"
+                  />
+                </div>
+              )}
             </div>
 
             {/* Recurring Toggle */}
@@ -287,6 +323,38 @@ function NewInvoiceForm() {
                       <option value="yearly">Yearly</option>
                     </select>
                   </div>
+                )}
+              </div>
+            )}
+
+            {/* Reverse Charge Toggle */}
+            {invoiceType !== "quote" && (
+              <div className="mt-4 pt-4 border-t border-gray-700">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-white">VAT Reverse Charge</p>
+                    <p className="text-xs text-gray-500 mt-0.5">For B2B services to EU clients outside your country</p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const next = !reverseCharge;
+                      setReverseCharge(next);
+                      if (next) setTaxRate(0);
+                    }}
+                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                      reverseCharge ? "bg-amber-500" : "bg-gray-600"
+                    }`}
+                  >
+                    <span
+                      className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                        reverseCharge ? "translate-x-6" : "translate-x-1"
+                      }`}
+                    />
+                  </button>
+                </div>
+                {reverseCharge && (
+                  <p className="mt-2 text-xs text-amber-400">Tax rate set to 0%. &quot;VAT reverse-charged (BTW verlegd)&quot; will appear on the invoice.</p>
                 )}
               </div>
             )}
@@ -340,6 +408,11 @@ function NewInvoiceForm() {
                         </div>
                       )}
                     </div>
+                    {!selectedClient.address && (
+                      <div className="mt-3 bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-3 text-sm text-yellow-400">
+                        &#x26A0;&#xFE0F; Dutch law requires client address on invoices. Add it in Clients page.
+                      </div>
+                    )}
                   </div>
                 )}
 
@@ -374,7 +447,7 @@ function NewInvoiceForm() {
                     className="px-4 py-3 rounded-xl border border-gray-600 text-lg focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white placeholder-gray-500"
                   />
                   <input
-                    placeholder="Address (optional)"
+                    placeholder="Address (required for legal invoices)"
                     value={newClientAddress}
                     onChange={(e) => setNewClientAddress(e.target.value)}
                     className="px-4 py-3 rounded-xl border border-gray-600 text-lg focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white placeholder-gray-500"
@@ -415,7 +488,7 @@ function NewInvoiceForm() {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-400 mb-1">
-                  Service Date <span className="text-gray-600">(optional)</span>
+                  Service/Delivery Date
                 </label>
                 <input
                   type="date"
@@ -424,9 +497,7 @@ function NewInvoiceForm() {
                   className="w-full px-4 py-3 rounded-xl border border-gray-600 text-base focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white appearance-none [color-scheme:dark] [&::-webkit-calendar-picker-indicator]:opacity-70 [&::-webkit-calendar-picker-indicator]:invert"
                   style={{ minHeight: '50px' }}
                 />
-                {!serviceDate && (
-                  <p className="text-xs text-gray-500 mt-1">No date set</p>
-                )}
+                <p className="text-xs text-gray-500 mt-1">{serviceDate ? "" : "Required by Dutch tax law"}</p>
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-400 mb-1">
@@ -455,9 +526,11 @@ function NewInvoiceForm() {
                   max="100"
                   value={taxRate}
                   onChange={(e) => setTaxRate(Number(e.target.value))}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-600 text-base focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white"
+                  disabled={reverseCharge}
+                  className={`w-full px-4 py-3 rounded-xl border border-gray-600 text-base focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white ${reverseCharge ? "opacity-50 cursor-not-allowed" : ""}`}
                   style={{ minHeight: '50px' }}
                 />
+                {reverseCharge && <p className="text-xs text-amber-400 mt-1">Disabled (reverse charge)</p>}
               </div>
             </div>
           </div>
@@ -590,7 +663,7 @@ function NewInvoiceForm() {
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
               </svg>
-              {loading ? "Saving..." : `Save ${invoiceType === "quote" ? "Quote" : "Invoice"} as Draft`}
+              {loading ? "Saving..." : `Save ${invoiceType === "quote" ? "Quote" : invoiceType === "credit_note" ? "Credit Note" : "Invoice"} as Draft`}
             </button>
             <p className="text-center text-xs text-gray-500">
               Save now and finish later — you can send it when you&apos;re ready
@@ -600,7 +673,7 @@ function NewInvoiceForm() {
               disabled={loading || !isValid}
               className="w-full bg-gray-800 text-gray-300 py-3 rounded-xl font-medium text-base hover:bg-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed border border-gray-700"
             >
-              {loading ? "Creating..." : `Create & Send ${invoiceType === "quote" ? "Quote" : "Invoice"} Now`}
+              {loading ? "Creating..." : `Create & Send ${invoiceType === "quote" ? "Quote" : invoiceType === "credit_note" ? "Credit Note" : "Invoice"} Now`}
             </button>
           </div>
         </div>

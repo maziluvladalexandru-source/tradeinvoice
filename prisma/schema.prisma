@@ -83,6 +83,10 @@ model Invoice {
   reminder3Sent Boolean  @default(false)
   reminderOverdueSent Boolean @default(false)
   paymentUrl    String?   // Stripe payment link URL
+  reverseCharge Boolean  @default(false)
+  referenceInvoice String? // Original invoice number for credit notes
+  language      String   @default("en") // en | nl | de
+  paidAmount    Float    @default(0) // Partial payment tracking
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 

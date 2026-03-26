@@ -39,6 +39,47 @@ export default async function DashboardPage() {
 
   const overdueCount = actualInvoices.filter((i) => i.status === "overdue").length;
 
+  // Average days to payment (for paid invoices)
+  const paidInvoicesWithDates = actualInvoices.filter(
+    (i) => i.status === "paid" && i.paidAt && i.sentAt
+  );
+  const avgDaysToPayment =
+    paidInvoicesWithDates.length > 0
+      ? Math.round(
+          paidInvoicesWithDates.reduce((sum, i) => {
+            const sent = new Date(i.sentAt!).getTime();
+            const paid = new Date(i.paidAt!).getTime();
+            return sum + (paid - sent) / (1000 * 60 * 60 * 24);
+          }, 0) / paidInvoicesWithDates.length
+        )
+      : null;
+
+  // Revenue this month vs last month
+  const lastMonthStart = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+  const lastMonthEnd = new Date(now.getFullYear(), now.getMonth(), 0);
+  const revenueLastMonth = actualInvoices
+    .filter(
+      (i) =>
+        i.status === "paid" &&
+        i.paidAt &&
+        new Date(i.paidAt) >= lastMonthStart &&
+        new Date(i.paidAt) <= lastMonthEnd
+    )
+    .reduce((sum, i) => sum + i.total, 0);
+
+  const revenueChange = revenueLastMonth > 0
+    ? ((paidThisMonth - revenueLastMonth) / revenueLastMonth) * 100
+    : paidThisMonth > 0 ? 100 : 0;
+
+  // Active clients (clients with non-draft invoices in last 90 days)
+  const ninetyDaysAgo = new Date(now.getTime() - 90 * 24 * 60 * 60 * 1000);
+  const activeClientIds = new Set(
+    actualInvoices
+      .filter((i) => i.status !== "draft" && new Date(i.createdAt) >= ninetyDaysAgo)
+      .map((i) => i.clientId)
+  );
+  const activeClientsCount = activeClientIds.size;
+
   const recentInvoices = actualInvoices.slice(0, 5);
   const recentQuotes = quotes.slice(0, 5);
 
@@ -97,7 +138,7 @@ export default async function DashboardPage() {
         />
 
         {/* Stats */}
-        <div className="grid md:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 mb-8">
           <div className="bg-gray-800/60 rounded-2xl p-6 border border-gray-700">
             <p className="text-sm font-medium text-gray-400 mb-1">
               Total Outstanding
@@ -113,6 +154,11 @@ export default async function DashboardPage() {
             <p className="text-3xl font-bold text-green-400">
               {formatCurrency(paidThisMonth)}
             </p>
+            {revenueLastMonth > 0 && (
+              <p className={`text-sm mt-1 ${revenueChange >= 0 ? "text-green-500" : "text-red-400"}`}>
+                {revenueChange >= 0 ? "\u2191" : "\u2193"} {Math.abs(Math.round(revenueChange))}% vs last month
+              </p>
+            )}
           </div>
           <div className="bg-gray-800/60 rounded-2xl p-6 border border-gray-700">
             <p className="text-sm font-medium text-gray-400 mb-1">
@@ -121,6 +167,26 @@ export default async function DashboardPage() {
             <p className="text-3xl font-bold text-red-400">
               {overdueCount}
             </p>
+          </div>
+          {avgDaysToPayment !== null && (
+            <div className="bg-gray-800/60 rounded-2xl p-6 border border-gray-700">
+              <p className="text-sm font-medium text-gray-400 mb-1">
+                Avg. Days to Payment
+              </p>
+              <p className="text-3xl font-bold text-blue-400">
+                {avgDaysToPayment}
+              </p>
+              <p className="text-sm text-gray-500 mt-1">days</p>
+            </div>
+          )}
+          <div className="bg-gray-800/60 rounded-2xl p-6 border border-gray-700">
+            <p className="text-sm font-medium text-gray-400 mb-1">
+              Active Clients
+            </p>
+            <p className="text-3xl font-bold text-purple-400">
+              {activeClientsCount}
+            </p>
+            <p className="text-sm text-gray-500 mt-1">last 90 days</p>
           </div>
         </div>
 
@@ -248,9 +314,16 @@ export default async function DashboardPage() {
                       )}
                     </span>
                     {/* Prominent total amount */}
-                    <p className="text-base font-bold text-white text-right whitespace-nowrap">
-                      {formatCurrency(invoice.total, invoice.currency)}
-                    </p>
+                    <div className="text-right whitespace-nowrap">
+                      <p className="text-base font-bold text-white">
+                        {formatCurrency(invoice.total, invoice.currency)}
+                      </p>
+                      {invoice.paidAmount > 0 && invoice.paidAmount < invoice.total && (
+                        <p className="text-xs text-amber-400">
+                          Due: {formatCurrency(invoice.total - invoice.paidAmount, invoice.currency)}
+                        </p>
+                      )}
+                    </div>
                     {/* Quick actions */}
                     <InvoiceCardActions invoiceId={invoice.id} status={invoice.status} />
                     <a

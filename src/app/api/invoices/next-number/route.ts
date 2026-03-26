@@ -5,11 +5,27 @@ import { prisma } from "@/lib/prisma";
 export async function GET() {
   try {
     const user = await requireUser();
-    const count = await prisma.invoice.count({
-      where: { userId: user.id },
+
+    // Find the highest existing invoice number to ensure strict sequencing
+    const lastInvoice = await prisma.invoice.findFirst({
+      where: {
+        userId: user.id,
+        invoiceNumber: { startsWith: "INV-" },
+      },
+      orderBy: { invoiceNumber: "desc" },
+      select: { invoiceNumber: true },
     });
-    const nextNumber = `INV-${String(count + 1).padStart(4, "0")}`;
-    return NextResponse.json({ nextNumber });
+
+    let nextNum = 1;
+    if (lastInvoice) {
+      const match = lastInvoice.invoiceNumber.match(/INV-(\d+)/);
+      if (match) {
+        nextNum = parseInt(match[1], 10) + 1;
+      }
+    }
+
+    const nextNumber = `INV-${String(nextNum).padStart(4, "0")}`;
+    return NextResponse.json({ nextNumber, expectedNumber: nextNum });
   } catch {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
