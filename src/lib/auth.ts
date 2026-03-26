@@ -3,9 +3,11 @@ import { cookies } from "next/headers";
 import { prisma } from "./prisma";
 import { v4 as uuid } from "uuid";
 
-const JWT_SECRET = new TextEncoder().encode(
-  process.env.JWT_SECRET || "tradeinvoice-secret-change-me"
-);
+if (!process.env.JWT_SECRET) {
+  throw new Error("JWT_SECRET environment variable is required. Set it in Vercel dashboard.");
+}
+
+const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET);
 
 export async function createMagicLinkToken(email: string): Promise<string> {
   const token = await new SignJWT({ email })

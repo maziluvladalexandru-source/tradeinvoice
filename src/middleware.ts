@@ -9,6 +9,7 @@ const publicPaths = [
   "/api/auth/logout",
   "/api/stripe/webhook",
   "/api/cron/reminders",
+  "/api/cron/recurring",
 ];
 
 export function middleware(req: NextRequest) {
