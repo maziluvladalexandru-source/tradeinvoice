@@ -26,21 +26,21 @@ export default function PrivacyPolicy() {
             </h2>
             <ul className="list-disc list-inside space-y-2 ml-2">
               <li>
-                <strong className="text-white">Account information</strong> —
+                <strong className="text-white">Account information</strong>  - 
                 Your email address used to sign in.
               </li>
               <li>
-                <strong className="text-white">Business details</strong> — Your
+                <strong className="text-white">Business details</strong>  -  Your
                 business name, address, VAT number, and other details you
                 provide for invoices.
               </li>
               <li>
-                <strong className="text-white">Invoice data</strong> — Client
+                <strong className="text-white">Invoice data</strong>  -  Client
                 names, email addresses, invoice line items, amounts, and payment
                 status.
               </li>
               <li>
-                <strong className="text-white">Usage data</strong> — Basic
+                <strong className="text-white">Usage data</strong>  -  Basic
                 analytics such as page views and feature usage to improve the
                 service.
               </li>
@@ -74,17 +74,17 @@ export default function PrivacyPolicy() {
             </p>
             <ul className="list-disc list-inside space-y-2 ml-2">
               <li>
-                <strong className="text-white">Stripe</strong> — Payment
+                <strong className="text-white">Stripe</strong>  -  Payment
                 processing. Stripe handles your payment information securely. We
                 do not store your credit card details.
               </li>
               <li>
-                <strong className="text-white">Resend</strong> — Email delivery.
+                <strong className="text-white">Resend</strong>  -  Email delivery.
                 Used to send magic link sign-in emails, invoices, and payment
                 reminders.
               </li>
               <li>
-                <strong className="text-white">Neon</strong> — Database storage.
+                <strong className="text-white">Neon</strong>  -  Database storage.
                 Your account and invoice data is stored securely in a
                 Neon-hosted PostgreSQL database.
               </li>
@@ -113,23 +113,23 @@ export default function PrivacyPolicy() {
             </p>
             <ul className="list-disc list-inside space-y-2 ml-2">
               <li>
-                <strong className="text-white">Access</strong> — Request a copy
+                <strong className="text-white">Access</strong>  -  Request a copy
                 of the personal data we hold about you.
               </li>
               <li>
-                <strong className="text-white">Rectification</strong> — Request
+                <strong className="text-white">Rectification</strong>  -  Request
                 correction of inaccurate data.
               </li>
               <li>
-                <strong className="text-white">Deletion</strong> — Request
+                <strong className="text-white">Deletion</strong>  -  Request
                 deletion of your account and all associated data.
               </li>
               <li>
-                <strong className="text-white">Portability</strong> — Request an
+                <strong className="text-white">Portability</strong>  -  Request an
                 export of your data in a machine-readable format.
               </li>
               <li>
-                <strong className="text-white">Objection</strong> — Object to
+                <strong className="text-white">Objection</strong>  -  Object to
                 processing of your data for certain purposes.
               </li>
             </ul>
@@ -162,7 +162,7 @@ export default function PrivacyPolicy() {
             <p>
               We take reasonable measures to protect your data, including
               encryption in transit (TLS) and at rest. However, no method of
-              electronic storage is 100% secure.
+              electronic storage is completely secure, but we do our best to protect your data.
             </p>
           </section>
 
@@ -222,3 +222,4 @@ export default function PrivacyPolicy() {
     </div>
   );
 }
+

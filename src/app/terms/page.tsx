@@ -41,12 +41,12 @@ export default function TermsOfService() {
             </p>
             <ul className="list-disc list-inside space-y-2 ml-2">
               <li>
-                <strong className="text-white">Free</strong> — Up to 20 invoices
+                <strong className="text-white">Free</strong>  -  Up to 20 invoices
                 per month at no cost.
               </li>
               <li>
-                <strong className="text-white">Pro</strong> — €15 per month for
-                unlimited invoices, priority support, and all features.
+                <strong className="text-white">Pro</strong>  -  €15 per month for
+                unlimited invoices, email support, and all features.
               </li>
             </ul>
             <p className="mt-3">
@@ -174,3 +174,4 @@ export default function TermsOfService() {
     </div>
   );
 }
+

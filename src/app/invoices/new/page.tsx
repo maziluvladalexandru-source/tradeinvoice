@@ -666,7 +666,7 @@ function NewInvoiceForm() {
               {loading ? "Saving..." : `Save ${invoiceType === "quote" ? "Quote" : invoiceType === "credit_note" ? "Credit Note" : "Invoice"} as Draft`}
             </button>
             <p className="text-center text-xs text-gray-500">
-              Save now and finish later — you can send it when you&apos;re ready
+              Save now and finish later. You can send it when you&apos;re ready
             </p>
             <button
               onClick={() => handleSubmit(true)}
