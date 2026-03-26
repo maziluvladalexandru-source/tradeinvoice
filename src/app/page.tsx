@@ -24,7 +24,7 @@ export default function Home() {
         </h2>
         <p className="text-lg md:text-xl text-gray-400 mb-10 max-w-2xl mx-auto">
           Create professional invoices in 60 seconds. Automatic payment
-          reminders chase your clients for you. One flat price, no hidden fees.
+          reminders chase your clients for you. One flat price, no hidden fees, no nonsense.
         </p>
         <Link
           href="/auth/login"
@@ -67,15 +67,15 @@ export default function Home() {
           {[
             {
               title: "Create in 60 Seconds",
-              desc: "Add client, line items, and send. No fuss, no complicated forms.",
+              desc: "Add your client, add line items, hit send. That's it. No complicated forms.",
             },
             {
               title: "Auto Payment Reminders",
-              desc: "Automatic email reminders chase your clients at 7 days, 3 days, and when overdue.",
+              desc: "Your clients get reminded at 7 days, 3 days, and when overdue. You don't have to lift a finger.",
             },
             {
               title: "Track Everything",
-              desc: "See which invoices are sent, viewed, paid, or overdue at a glance.",
+              desc: "See which invoices are sent, viewed, paid, or overdue. All in one place.",
             },
           ].map((feature) => (
             <div
@@ -105,19 +105,19 @@ export default function Home() {
               step: "1",
               emoji: "📝",
               title: "Create Invoice in 60 Seconds",
-              desc: "Add your client, line items, and due date. Professional PDF generated automatically — no templates needed.",
+              desc: "Add your client, line items, and due date. A professional PDF gets generated automatically. No templates needed.",
             },
             {
               step: "2",
               emoji: "📨",
               title: "Send to Client Instantly",
-              desc: "One click sends a polished invoice straight to your client's inbox. Automatic reminders follow up for you.",
+              desc: "One click sends a clean invoice straight to your client's inbox. Reminders follow up automatically.",
             },
             {
               step: "3",
               emoji: "💰",
               title: "Get Paid & Get Notified",
-              desc: "Your client pays online. You get notified the moment the money lands. No more wondering who's paid.",
+              desc: "Your client pays online. You get an email the moment the money lands. No more guessing who paid and who didn't.",
             },
           ].map((item) => (
             <div
@@ -150,7 +150,7 @@ export default function Home() {
             {
               emoji: "🔔",
               title: "Automatic Reminders",
-              desc: "Your clients get polite nudges at 7 days, 3 days, and when overdue. You never have to send the awkward follow-up again.",
+              desc: "Your clients get polite nudges at 7 days, 3 days, and when overdue. You never have to send that awkward follow-up text again.",
             },
             {
               emoji: "📱",
@@ -244,7 +244,7 @@ export default function Home() {
             Why Tradespeople Choose Us Over the Alternatives
           </h2>
           <p className="text-gray-400 max-w-xl mx-auto">
-            No bloated features you&apos;ll never use. No per-user fees eating into your margins.
+            No bloated features you will never use. No per-user fees eating into your margins.
           </p>
         </div>
         <div className="overflow-x-auto bg-gray-800/50 border border-gray-700 rounded-2xl p-2">
@@ -327,23 +327,23 @@ export default function Home() {
           {[
             {
               q: "Do I need accounting software to use TradeInvoice?",
-              a: "No. TradeInvoice is a standalone invoicing tool — you don't need Xero, QuickBooks, or any other software. Just create an invoice, send it, and get paid. If you do use accounting software, you can export your data anytime.",
+              a: "Nope. TradeInvoice works on its own. You don't need Xero, QuickBooks, or anything else. Just create an invoice, send it, and get paid.",
             },
             {
               q: "Is my data safe?",
-              a: "Absolutely. All data is encrypted in transit and at rest. Payments are processed securely through Stripe — we never see or store your card details or your clients' card details.",
+              a: "Yes. All data is encrypted and payments go through Stripe. We never see or store any card details.",
             },
             {
               q: "Can I cancel anytime?",
-              a: "Yes, no contracts and no cancellation fees. You can downgrade to the free plan or cancel your subscription at any time from your account settings. Your data stays available for 90 days after cancellation.",
+              a: "Yes. No contracts, no cancellation fees. Downgrade to free or cancel from your settings whenever you want.",
             },
             {
               q: "Do my clients need to sign up to pay?",
-              a: "No. Your clients receive a simple email with a link to view and pay the invoice. No account needed, no app to download — they just click and pay.",
+              a: "No. They get an email with a link. They click it, see the invoice, and pay. No account needed.",
             },
             {
               q: "What happens after my 20 free invoices?",
-              a: "You can upgrade to Pro for €15/month for unlimited invoices. Your free plan resets every month — you get 20 fresh invoices each month at no cost, forever.",
+              a: "You can upgrade to Pro for €15/month for unlimited invoices. Or just wait. Your free plan resets every month, 20 fresh invoices, no cost, no expiry.",
             },
           ].map((faq) => (
             <details
