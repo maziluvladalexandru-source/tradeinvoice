@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getStripeClient } from "@/lib/stripe";
+import { logSecurityEvent } from "@/lib/security-log";
 import { appUrl } from "@/lib/utils";
 
 // Simple in-memory rate limit: max 3 payment link creations per invoice per hour
@@ -41,6 +42,7 @@ export async function POST(
 
     // Rate limit new payment link creation
     if (isRateLimited(params.id)) {
+      logSecurityEvent("PAYMENT_RATE_LIMITED", { invoiceId: params.id, ip: request.headers.get("x-forwarded-for") || "unknown" });
       return NextResponse.json({ error: "Too many requests. Please try again later." }, { status: 429 });
     }
 

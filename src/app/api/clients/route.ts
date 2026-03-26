@@ -47,8 +47,12 @@ export async function GET() {
     });
 
     return NextResponse.json(enriched);
-  } catch {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  } catch (error) {
+    if (error instanceof Error && error.message === "Unauthorized") {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+    console.error("Get clients error:", error);
+    return NextResponse.json({ error: "Failed to fetch clients" }, { status: 500 });
   }
 }
 
@@ -83,7 +87,11 @@ export async function POST(req: NextRequest) {
     });
 
     return NextResponse.json(client);
-  } catch {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  } catch (error) {
+    if (error instanceof Error && error.message === "Unauthorized") {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+    console.error("Create client error:", error);
+    return NextResponse.json({ error: "Failed to create client" }, { status: 500 });
   }
 }

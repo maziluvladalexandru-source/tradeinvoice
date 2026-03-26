@@ -26,7 +26,11 @@ export async function GET() {
 
     const nextNumber = `INV-${String(nextNum).padStart(4, "0")}`;
     return NextResponse.json({ nextNumber, expectedNumber: nextNum });
-  } catch {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  } catch (error) {
+    if (error instanceof Error && error.message === "Unauthorized") {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+    console.error("Next invoice number error:", error);
+    return NextResponse.json({ error: "Failed to get next number" }, { status: 500 });
   }
 }

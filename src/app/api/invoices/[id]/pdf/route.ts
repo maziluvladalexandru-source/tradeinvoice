@@ -120,6 +120,7 @@ export async function GET(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
+  try {
   const invoice = await prisma.invoice.findUnique({
     where: { id: params.id },
     include: { client: true, lineItems: true, user: true },
@@ -392,4 +393,8 @@ export async function GET(
       "Content-Type": "text/html",
     },
   });
+  } catch (error) {
+    console.error("PDF generation error:", error);
+    return NextResponse.json({ error: "Failed to generate document" }, { status: 500 });
+  }
 }

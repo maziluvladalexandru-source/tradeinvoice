@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { createMagicLinkToken } from "@/lib/auth";
 import { sendMagicLink } from "@/lib/resend";
 import { appUrl } from "@/lib/utils";
+import { logSecurityEvent } from "@/lib/security-log";
 
 // Simple in-memory rate limiter: max 5 requests per email per 15 minutes
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
@@ -39,6 +40,7 @@ export async function POST(req: NextRequest) {
     const cleanEmail = email.toLowerCase().trim();
 
     if (isRateLimited(cleanEmail)) {
+      logSecurityEvent("LOGIN_RATE_LIMITED", { email: cleanEmail, ip: req.headers.get("x-forwarded-for") || "unknown" });
       return NextResponse.json(
         { error: "Too many login attempts. Try again in 15 minutes." },
         { status: 429 }
@@ -49,6 +51,8 @@ export async function POST(req: NextRequest) {
     const url = appUrl(`/api/auth/verify?token=${token}`);
 
     await sendMagicLink(cleanEmail, url);
+
+    logSecurityEvent("LOGIN_ATTEMPT", { email: cleanEmail, ip: req.headers.get("x-forwarded-for") || "unknown" });
 
     return NextResponse.json({ success: true });
   } catch (error) {

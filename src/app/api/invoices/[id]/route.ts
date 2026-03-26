@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { requireUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { sendInvoicePaidNotification } from "@/lib/resend";
+import { logSecurityEvent } from "@/lib/security-log";
 import { sanitizeString, VALID_INVOICE_STATUSES } from "@/lib/utils";
 
 export async function GET(
@@ -16,12 +17,17 @@ export async function GET(
     });
 
     if (!invoice) {
+      logSecurityEvent("INVOICE_ACCESS_DENIED", { invoiceId: params.id, userId: user.id });
       return NextResponse.json({ error: "Not found" }, { status: 404 });
     }
 
     return NextResponse.json(invoice);
-  } catch {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  } catch (error) {
+    if (error instanceof Error && error.message === "Unauthorized") {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+    console.error("Get invoice error:", error);
+    return NextResponse.json({ error: "Failed to fetch invoice" }, { status: 500 });
   }
 }
 
@@ -89,8 +95,12 @@ export async function PATCH(
     }
 
     return NextResponse.json(updated);
-  } catch {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  } catch (error) {
+    if (error instanceof Error && error.message === "Unauthorized") {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+    console.error("Update invoice error:", error);
+    return NextResponse.json({ error: "Failed to update invoice" }, { status: 500 });
   }
 }
 
@@ -112,7 +122,11 @@ export async function DELETE(
     await prisma.invoice.delete({ where: { id: params.id } });
 
     return NextResponse.json({ success: true });
-  } catch {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  } catch (error) {
+    if (error instanceof Error && error.message === "Unauthorized") {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+    console.error("Delete invoice error:", error);
+    return NextResponse.json({ error: "Failed to delete invoice" }, { status: 500 });
   }
 }

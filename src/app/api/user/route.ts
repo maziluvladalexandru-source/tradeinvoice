@@ -7,8 +7,12 @@ export async function GET() {
   try {
     const user = await requireUser();
     return NextResponse.json(user);
-  } catch {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  } catch (error) {
+    if (error instanceof Error && error.message === "Unauthorized") {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+    console.error("Get user error:", error);
+    return NextResponse.json({ error: "Failed to fetch user" }, { status: 500 });
   }
 }
 
@@ -48,7 +52,11 @@ export async function PATCH(req: NextRequest) {
     });
 
     return NextResponse.json(updated);
-  } catch {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  } catch (error) {
+    if (error instanceof Error && error.message === "Unauthorized") {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+    console.error("Update user error:", error);
+    return NextResponse.json({ error: "Failed to update user" }, { status: 500 });
   }
 }

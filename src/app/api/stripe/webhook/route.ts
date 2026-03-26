@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getStripeClient } from "@/lib/stripe";
 import { prisma } from "@/lib/prisma";
 import { sendInvoicePaidNotification } from "@/lib/resend";
+import { logSecurityEvent } from "@/lib/security-log";
 import Stripe from "stripe";
 
 export async function POST(req: NextRequest) {
@@ -21,8 +22,11 @@ export async function POST(req: NextRequest) {
       process.env.STRIPE_WEBHOOK_SECRET
     );
   } catch {
+    logSecurityEvent("STRIPE_WEBHOOK_INVALID_SIG", { ip: req.headers.get("x-forwarded-for") || "unknown" });
     return NextResponse.json({ error: "Invalid signature" }, { status: 400 });
   }
+
+  logSecurityEvent("STRIPE_WEBHOOK", { eventType: event.type, eventId: event.id });
 
   switch (event.type) {
     case "checkout.session.completed": {

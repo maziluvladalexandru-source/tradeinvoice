@@ -31,7 +31,11 @@ export async function POST(
     });
 
     return NextResponse.json(updated);
-  } catch {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  } catch (error) {
+    if (error instanceof Error && error.message === "Unauthorized") {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+    console.error("Convert invoice error:", error);
+    return NextResponse.json({ error: "Failed to convert invoice" }, { status: 500 });
   }
 }

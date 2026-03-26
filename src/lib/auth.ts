@@ -65,6 +65,8 @@ export async function getCurrentUser() {
 export async function requireUser() {
   const user = await getCurrentUser();
   if (!user) {
+    const { logSecurityEvent } = await import("./security-log");
+    logSecurityEvent("AUTH_FAILURE", { reason: "no valid session" });
     throw new Error("Unauthorized");
   }
   return user;
