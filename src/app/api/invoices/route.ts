@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { requireUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { canCreateInvoice } from "@/lib/stripe";
-import { generateInvoiceNumber } from "@/lib/utils";
+import { generateInvoiceNumber, sanitizeString, VALID_CURRENCIES } from "@/lib/utils";
 
 export async function GET() {
   try {
@@ -60,12 +60,29 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // Validate currency
+    const validatedCurrency = currency && VALID_CURRENCIES.includes(currency) ? currency : "EUR";
+
+    // Validate taxRate
+    const validatedTaxRate = typeof taxRate === "number" && taxRate >= 0 && taxRate <= 100 ? taxRate : 0;
+
+    // Validate and sanitize line items
+    for (const item of lineItems) {
+      if (typeof item.quantity !== "number" || item.quantity <= 0) {
+        return NextResponse.json({ error: "Line item quantities must be positive numbers" }, { status: 400 });
+      }
+      if (typeof item.unitPrice !== "number" || item.unitPrice <= 0) {
+        return NextResponse.json({ error: "Line item prices must be positive numbers" }, { status: 400 });
+      }
+      item.description = sanitizeString(item.description || "", 500);
+    }
+
     const subtotal = lineItems.reduce(
       (sum: number, item: { quantity: number; unitPrice: number }) =>
         sum + item.quantity * item.unitPrice,
       0
     );
-    const effectiveTaxRate = reverseCharge ? 0 : (taxRate || 0);
+    const effectiveTaxRate = reverseCharge ? 0 : validatedTaxRate;
     const tax = subtotal * (effectiveTaxRate / 100);
     const total = subtotal + tax;
 
@@ -117,15 +134,15 @@ export async function POST(req: NextRequest) {
         userId: user.id,
         clientId,
         invoiceNumber: invoiceNum,
-        description: description || null,
-        paymentNotes: paymentNotes || null,
-        notesToClient: notesToClient || null,
+        description: description ? sanitizeString(description, 2000) : null,
+        paymentNotes: paymentNotes ? sanitizeString(paymentNotes, 2000) : null,
+        notesToClient: notesToClient ? sanitizeString(notesToClient, 2000) : null,
         serviceDate: serviceDate ? new Date(serviceDate) : null,
         type: invoiceType,
-        currency: currency || "EUR",
+        currency: validatedCurrency,
         dueDate: new Date(dueDate),
         subtotal,
-        taxRate: effectiveTaxRate,
+        taxRate: reverseCharge ? 0 : validatedTaxRate,
         taxAmount: tax,
         total,
         isRecurring: !!isRecurring,

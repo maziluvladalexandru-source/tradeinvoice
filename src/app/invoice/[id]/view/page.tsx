@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { formatCurrency, formatDate } from "@/lib/utils";
 import { notFound } from "next/navigation";
 import PayNowButton from "./PayNowButton";
+import ViewTracker from "./ViewTracker";
 
 export default async function PublicInvoicePage({
   params,
@@ -15,22 +16,7 @@ export default async function PublicInvoicePage({
 
   if (!invoice) notFound();
 
-  // Mark as viewed and notify contractor
-  if (invoice.status === "sent") {
-    await prisma.invoice.update({
-      where: { id: invoice.id },
-      data: { status: "viewed", viewedAt: new Date() },
-    });
-
-    // Fire-and-forget notification to contractor
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
-    fetch(`${appUrl}/api/notify`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ invoiceId: invoice.id, type: "viewed" }),
-    }).catch(() => {});
-  }
-
+  const shouldTrackView = invoice.status === "sent";
   const isPaid = invoice.status === "paid";
   const isOverdue =
     invoice.status === "overdue" ||
@@ -45,6 +31,7 @@ export default async function PublicInvoicePage({
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {shouldTrackView && <ViewTracker invoiceId={invoice.id} />}
       {/* Paid Confirmation */}
       {isPaid && (
         <div className="bg-emerald-600">

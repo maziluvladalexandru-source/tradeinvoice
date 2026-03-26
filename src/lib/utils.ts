@@ -1,3 +1,19 @@
+export function stripHtml(str: string): string {
+  return str.replace(/<[^>]*>/g, "");
+}
+
+export function sanitizeString(str: string, maxLength: number): string {
+  return stripHtml(str).trim().slice(0, maxLength);
+}
+
+export function isValidEmail(email: string): boolean {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+export const VALID_CURRENCIES = ["EUR", "GBP", "USD", "PLN"] as const;
+
+export const VALID_INVOICE_STATUSES = ["draft", "sent", "viewed", "paid", "overdue"] as const;
+
 export function formatCurrency(amount: number, currency = "EUR"): string {
   return new Intl.NumberFormat("en-IE", {
     style: "currency",

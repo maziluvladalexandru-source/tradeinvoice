@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { requireUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { sanitizeString, isValidEmail } from "@/lib/utils";
 
 export async function GET() {
   try {
@@ -63,13 +64,21 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    const sanitizedEmail = email.trim().slice(0, 254);
+    if (!isValidEmail(sanitizedEmail)) {
+      return NextResponse.json(
+        { error: "Invalid email format" },
+        { status: 400 }
+      );
+    }
+
     const client = await prisma.client.create({
       data: {
         userId: user.id,
-        name,
-        email,
-        phone: phone || null,
-        address: address || null,
+        name: sanitizeString(name, 200),
+        email: sanitizedEmail,
+        phone: phone ? sanitizeString(phone, 30) : null,
+        address: address ? sanitizeString(address, 500) : null,
       },
     });
 

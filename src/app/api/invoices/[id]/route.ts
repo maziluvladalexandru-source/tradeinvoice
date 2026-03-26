@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { requireUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { sendInvoicePaidNotification } from "@/lib/resend";
+import { sanitizeString, VALID_INVOICE_STATUSES } from "@/lib/utils";
 
 export async function GET(
   req: NextRequest,
@@ -30,7 +31,7 @@ export async function PATCH(
 ) {
   try {
     const user = await requireUser();
-    const data = await req.json();
+    const body = await req.json();
 
     const invoice = await prisma.invoice.findFirst({
       where: { id: params.id, userId: user.id },
@@ -38,6 +39,38 @@ export async function PATCH(
 
     if (!invoice) {
       return NextResponse.json({ error: "Not found" }, { status: 404 });
+    }
+
+    // Whitelist updatable fields only
+    const data: Record<string, unknown> = {};
+
+    if (body.status !== undefined) {
+      if (!VALID_INVOICE_STATUSES.includes(body.status)) {
+        return NextResponse.json({ error: "Invalid status" }, { status: 400 });
+      }
+      data.status = body.status;
+    }
+    if (body.status === "paid") {
+      data.paidAt = body.paidAt ? new Date(body.paidAt) : new Date();
+    }
+    if (body.paidAmount !== undefined) {
+      const paidAmount = Number(body.paidAmount);
+      if (isNaN(paidAmount) || paidAmount < 0) {
+        return NextResponse.json({ error: "Invalid paidAmount" }, { status: 400 });
+      }
+      data.paidAmount = paidAmount;
+    }
+    if (body.description !== undefined) {
+      data.description = body.description ? sanitizeString(body.description, 2000) : null;
+    }
+    if (body.paymentNotes !== undefined) {
+      data.paymentNotes = body.paymentNotes ? sanitizeString(body.paymentNotes, 2000) : null;
+    }
+    if (body.notesToClient !== undefined) {
+      data.notesToClient = body.notesToClient ? sanitizeString(body.notesToClient, 2000) : null;
+    }
+    if (body.remindersEnabled !== undefined) {
+      data.remindersEnabled = !!body.remindersEnabled;
     }
 
     const updated = await prisma.invoice.update({

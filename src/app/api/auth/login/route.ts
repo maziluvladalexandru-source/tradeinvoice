@@ -23,7 +23,7 @@ function isRateLimited(email: string): boolean {
 // Clean up old entries every 30 minutes
 setInterval(() => {
   const now = Date.now();
-  for (const [key, val] of rateLimitMap) {
+  for (const [key, val] of Array.from(rateLimitMap)) {
     if (now > val.resetAt) rateLimitMap.delete(key);
   }
 }, 30 * 60 * 1000);

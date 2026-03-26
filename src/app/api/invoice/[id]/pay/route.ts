@@ -3,6 +3,19 @@ import { prisma } from "@/lib/prisma";
 import { getStripeClient } from "@/lib/stripe";
 import { appUrl } from "@/lib/utils";
 
+// Simple in-memory rate limit: max 3 payment link creations per invoice per hour
+const payRateLimit = new Map<string, number[]>();
+
+function isRateLimited(invoiceId: string): boolean {
+  const now = Date.now();
+  const hourAgo = now - 60 * 60 * 1000;
+  const attempts = (payRateLimit.get(invoiceId) || []).filter((t) => t > hourAgo);
+  payRateLimit.set(invoiceId, attempts);
+  if (attempts.length >= 3) return true;
+  attempts.push(now);
+  return false;
+}
+
 export async function POST(
   request: NextRequest,
   { params }: { params: { id: string } }
@@ -21,9 +34,14 @@ export async function POST(
       return NextResponse.json({ error: "Invoice already paid" }, { status: 400 });
     }
 
-    // Return existing payment link if available
+    // Return existing payment link if available (no rate limit needed)
     if (invoice.paymentUrl) {
       return NextResponse.json({ url: invoice.paymentUrl });
+    }
+
+    // Rate limit new payment link creation
+    if (isRateLimited(params.id)) {
+      return NextResponse.json({ error: "Too many requests. Please try again later." }, { status: 429 });
     }
 
     const stripe = getStripeClient();
