@@ -25,15 +25,17 @@ export async function POST(req: NextRequest) {
   try {
     const { email, turnstileToken } = await req.json();
 
-    // Verify Turnstile CAPTCHA
-    if (!turnstileToken || typeof turnstileToken !== "string") {
-      return NextResponse.json({ error: "CAPTCHA verification required" }, { status: 403 });
-    }
-
-    const turnstileValid = await verifyTurnstile(turnstileToken);
-    if (!turnstileValid) {
-      logSecurityEvent("TURNSTILE_FAILED", { ip: req.headers.get("x-forwarded-for") || "unknown" });
-      return NextResponse.json({ error: "CAPTCHA verification failed" }, { status: 403 });
+    // Verify Turnstile CAPTCHA (only if real keys are configured)
+    const hasRealTurnstile = process.env.TURNSTILE_SECRET && !process.env.TURNSTILE_SECRET.startsWith("1x000");
+    if (hasRealTurnstile) {
+      if (!turnstileToken || typeof turnstileToken !== "string") {
+        return NextResponse.json({ error: "CAPTCHA verification required" }, { status: 403 });
+      }
+      const turnstileValid = await verifyTurnstile(turnstileToken);
+      if (!turnstileValid) {
+        logSecurityEvent("TURNSTILE_FAILED", { ip: req.headers.get("x-forwarded-for") || "unknown" });
+        return NextResponse.json({ error: "CAPTCHA verification failed" }, { status: 403 });
+      }
     }
 
     if (!email || typeof email !== "string") {

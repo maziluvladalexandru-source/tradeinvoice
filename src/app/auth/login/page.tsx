@@ -162,7 +162,7 @@ function LoginContent() {
 
             <button
               type="submit"
-              disabled={loading || !agreedToTerms || !turnstileToken}
+              disabled={loading || !agreedToTerms}
               className="w-full bg-amber-500 text-gray-900 py-4 rounded-xl font-bold text-lg hover:bg-amber-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? "Sending..." : "Send Magic Link"}
