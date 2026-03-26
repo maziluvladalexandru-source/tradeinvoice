@@ -208,11 +208,11 @@ export default async function DashboardPage() {
               {recentInvoices.map((invoice) => (
                 <div
                   key={invoice.id}
-                  className={`flex items-center justify-between p-4 hover:bg-gray-700/50 transition-colors border-l-4 ${statusBorder[invoice.status] || "border-l-gray-600"}`}
+                  className={`p-4 hover:bg-gray-700/50 transition-colors border-l-4 ${statusBorder[invoice.status] || "border-l-gray-600"}`}
                 >
                   <Link
                     href={`/invoices/${invoice.id}`}
-                    className="flex items-center gap-4 flex-1 min-w-0"
+                    className="flex items-center gap-2 flex-1 min-w-0 overflow-hidden"
                   >
                     <div className="flex-1 min-w-0">
                       <p className="font-medium text-white">
@@ -248,7 +248,7 @@ export default async function DashboardPage() {
                       )}
                     </span>
                     {/* Prominent total amount */}
-                    <p className="text-xl font-bold text-white w-32 text-right">
+                    <p className="text-base font-bold text-white text-right whitespace-nowrap">
                       {formatCurrency(invoice.total, invoice.currency)}
                     </p>
                     {/* Quick actions */}
@@ -284,11 +284,11 @@ export default async function DashboardPage() {
               {recentQuotes.map((quote) => (
                 <div
                   key={quote.id}
-                  className={`flex items-center justify-between p-4 hover:bg-gray-700/50 transition-colors border-l-4 ${statusBorder[quote.status] || "border-l-gray-600"}`}
+                  className={`p-4 hover:bg-gray-700/50 transition-colors border-l-4 ${statusBorder[quote.status] || "border-l-gray-600"}`}
                 >
                   <Link
                     href={`/invoices/${quote.id}`}
-                    className="flex items-center gap-4 flex-1 min-w-0"
+                    className="flex items-center gap-2 flex-1 min-w-0 overflow-hidden"
                   >
                     <div className="flex-1 min-w-0">
                       <p className="font-medium text-white">
@@ -309,7 +309,7 @@ export default async function DashboardPage() {
                       <span className={`w-1.5 h-1.5 rounded-full ${statusDot[quote.status] || ""}`} />
                       {quote.status}
                     </span>
-                    <p className="text-xl font-bold text-white w-32 text-right">
+                    <p className="text-base font-bold text-white text-right whitespace-nowrap">
                       {formatCurrency(quote.total, quote.currency)}
                     </p>
                   </div>

@@ -604,10 +604,7 @@ function NewInvoiceForm() {
             </button>
           </div>
         </div>
-      </div>
+      </div>      <BottomNav />
     </div>
   );
 }
-
-
-
