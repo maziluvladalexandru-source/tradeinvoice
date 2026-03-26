@@ -1,4 +1,5 @@
 "use client";
+import BottomNav from "@/components/BottomNav";
 
 import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
