@@ -140,10 +140,10 @@ export default function Home() {
       {/* Built For You */}
       <section className="max-w-4xl mx-auto px-4 py-20">
         <h2 className="text-3xl font-bold text-center mb-2">
-          Built by a Contractor, for Contractors
+          Everything You Need to Get Paid
         </h2>
         <p className="text-center text-gray-400 mb-12">
-          We got tired of chasing payments ourselves. So we built something better.
+          No bloat. No learning curve. Just the tools that actually matter.
         </p>
         <div className="grid md:grid-cols-3 gap-8">
           {[
