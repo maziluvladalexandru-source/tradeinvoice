@@ -62,23 +62,7 @@ export default function Navbar() {
             {loggingOut ? "Signing out..." : "Sign Out"}
           </button>
         </div>
-        {/* Mobile nav */}
-        <div className="flex md:hidden gap-1 pb-3 overflow-x-auto">
-          {links.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap ${
-                pathname === link.href ||
-                (link.href !== "/dashboard" && pathname.startsWith(link.href))
-                  ? "bg-amber-500/10 text-amber-500"
-                  : "text-gray-400"
-              }`}
-            >
-              {link.label}
-            </Link>
-          ))}
-        </div>
+        {/* Mobile nav moved to BottomNav component */}
       </div>
     </nav>
     </>

@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
+import BottomNav from "@/components/BottomNav";
 
 interface StatusBreakdown {
   draft: number;
@@ -116,7 +117,7 @@ export default function ClientsPage() {
   const primaryCurrency = clients[0]?.currency || "EUR";
 
   return (
-    <div className="min-h-screen bg-gray-950">
+    <div className="min-h-screen bg-gray-950 pb-20 md:pb-0">
       <Navbar />
       <div className="max-w-6xl mx-auto px-4 py-8">
         <div className="flex items-center justify-between mb-8">
@@ -342,6 +343,7 @@ export default function ClientsPage() {
           </div>
         )}
       </div>
+      <BottomNav />
     </div>
   );
 }

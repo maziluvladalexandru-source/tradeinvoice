@@ -3,6 +3,7 @@
 import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Navbar from "@/components/Navbar";
+import BottomNav from "@/components/BottomNav";
 
 export default function SettingsPage() {
   return (
@@ -140,17 +141,18 @@ function SettingsContent() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-950">
+      <div className="min-h-screen bg-gray-950 pb-20 md:pb-0">
         <Navbar />
         <div className="flex items-center justify-center py-20">
           <p className="text-gray-400">Loading...</p>
         </div>
+        <BottomNav />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-950">
+    <div className="min-h-screen bg-gray-950 pb-20 md:pb-0">
       <Navbar />
       <div className="max-w-3xl mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold text-white mb-8">Settings</h1>
@@ -344,6 +346,7 @@ function SettingsContent() {
           </button>
         </form>
       </div>
+      <BottomNav />
     </div>
   );
 }

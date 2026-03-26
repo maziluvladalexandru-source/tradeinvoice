@@ -3,6 +3,9 @@ import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { formatCurrency } from "@/lib/utils";
 import Navbar from "@/components/Navbar";
+import BottomNav from "@/components/BottomNav";
+import FloatingCreateButton from "@/components/FloatingCreateButton";
+import InvoiceCardActions from "@/components/InvoiceCardActions";
 import OnboardingChecklist from "@/components/OnboardingChecklist";
 import NewInvoiceButton from "@/components/NewInvoiceButton";
 import Link from "next/link";
@@ -63,8 +66,17 @@ export default async function DashboardPage() {
     overdue: "bg-red-400 animate-pulse",
   };
 
+  // Color-coded left border stripe per status
+  const statusBorder: Record<string, string> = {
+    draft: "border-l-gray-500",
+    sent: "border-l-blue-500",
+    viewed: "border-l-yellow-500",
+    paid: "border-l-green-500",
+    overdue: "border-l-red-500",
+  };
+
   return (
-    <div className="min-h-screen bg-gray-950">
+    <div className="min-h-screen bg-gray-950 pb-20 md:pb-0">
       <Navbar />
       <div className="max-w-6xl mx-auto px-4 py-8">
         <div className="flex items-center justify-between mb-8">
@@ -150,19 +162,44 @@ export default async function DashboardPage() {
 
           {recentInvoices.length === 0 ? (
             <div className="p-16 text-center">
-              <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-amber-500/10 flex items-center justify-center">
-                <svg className="w-8 h-8 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              {/* Empty state SVG illustration */}
+              <div className="w-40 h-40 mx-auto mb-8">
+                <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+                  {/* Paper/document shape */}
+                  <rect x="50" y="30" width="100" height="130" rx="8" fill="#1f2937" stroke="#374151" strokeWidth="2" />
+                  <rect x="50" y="30" width="100" height="130" rx="8" fill="url(#emptyGrad)" opacity="0.5" />
+                  {/* Folded corner */}
+                  <path d="M120 30 L150 30 L150 60 Z" fill="#111827" stroke="#374151" strokeWidth="1" />
+                  <path d="M120 30 L120 55 C120 57.7614 122.239 60 125 60 L150 60" fill="#1f2937" stroke="#374151" strokeWidth="2" />
+                  {/* Content lines */}
+                  <rect x="68" y="75" width="64" height="6" rx="3" fill="#374151" />
+                  <rect x="68" y="90" width="48" height="6" rx="3" fill="#374151" />
+                  <rect x="68" y="105" width="56" height="6" rx="3" fill="#374151" />
+                  <rect x="68" y="120" width="36" height="6" rx="3" fill="#374151" />
+                  {/* Amber accent circle with plus */}
+                  <circle cx="140" cy="145" r="24" fill="#f59e0b" opacity="0.15" />
+                  <circle cx="140" cy="145" r="18" fill="#f59e0b" opacity="0.25" />
+                  <path d="M140 137 L140 153 M132 145 L148 145" stroke="#f59e0b" strokeWidth="2.5" strokeLinecap="round" />
+                  {/* Gradient definition */}
+                  <defs>
+                    <linearGradient id="emptyGrad" x1="100" y1="30" x2="100" y2="160">
+                      <stop stopColor="#f59e0b" stopOpacity="0.05" />
+                      <stop offset="1" stopColor="#f59e0b" stopOpacity="0" />
+                    </linearGradient>
+                  </defs>
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold text-white mb-2">No invoices yet</h3>
-              <p className="text-gray-400 mb-6 max-w-sm mx-auto">
+              <h3 className="text-2xl font-semibold text-white mb-3">No invoices yet</h3>
+              <p className="text-gray-400 mb-8 max-w-sm mx-auto">
                 Create your first invoice to start tracking payments and getting paid faster.
               </p>
               <Link
                 href="/invoices/new"
-                className="inline-block bg-amber-500 text-gray-950 px-8 py-3 rounded-xl font-semibold text-lg hover:bg-amber-400 transition-colors"
+                className="inline-flex items-center gap-2 bg-amber-500 text-gray-950 px-8 py-3.5 rounded-xl font-semibold text-lg hover:bg-amber-400 transition-colors shadow-lg shadow-amber-500/20"
               >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 4v16m8-8H4" />
+                </svg>
                 Create Your First Invoice
               </Link>
             </div>
@@ -171,7 +208,7 @@ export default async function DashboardPage() {
               {recentInvoices.map((invoice) => (
                 <div
                   key={invoice.id}
-                  className="flex items-center justify-between p-4 hover:bg-gray-700/50 transition-colors"
+                  className={`flex items-center justify-between p-4 hover:bg-gray-700/50 transition-colors border-l-4 ${statusBorder[invoice.status] || "border-l-gray-600"}`}
                 >
                   <Link
                     href={`/invoices/${invoice.id}`}
@@ -210,9 +247,12 @@ export default async function DashboardPage() {
                         </svg>
                       )}
                     </span>
-                    <p className="font-semibold text-white w-28 text-right">
+                    {/* Prominent total amount */}
+                    <p className="text-xl font-bold text-white w-32 text-right">
                       {formatCurrency(invoice.total, invoice.currency)}
                     </p>
+                    {/* Quick actions */}
+                    <InvoiceCardActions invoiceId={invoice.id} status={invoice.status} />
                     <a
                       href={`/api/invoices/${invoice.id}/pdf`}
                       target="_blank"
@@ -244,7 +284,7 @@ export default async function DashboardPage() {
               {recentQuotes.map((quote) => (
                 <div
                   key={quote.id}
-                  className="flex items-center justify-between p-4 hover:bg-gray-700/50 transition-colors"
+                  className={`flex items-center justify-between p-4 hover:bg-gray-700/50 transition-colors border-l-4 ${statusBorder[quote.status] || "border-l-gray-600"}`}
                 >
                   <Link
                     href={`/invoices/${quote.id}`}
@@ -269,7 +309,7 @@ export default async function DashboardPage() {
                       <span className={`w-1.5 h-1.5 rounded-full ${statusDot[quote.status] || ""}`} />
                       {quote.status}
                     </span>
-                    <p className="font-semibold text-white w-28 text-right">
+                    <p className="text-xl font-bold text-white w-32 text-right">
                       {formatCurrency(quote.total, quote.currency)}
                     </p>
                   </div>
@@ -279,6 +319,10 @@ export default async function DashboardPage() {
           </div>
         )}
       </div>
+
+      {/* Floating create button & bottom nav (mobile only) */}
+      <FloatingCreateButton />
+      <BottomNav />
     </div>
   );
 }
