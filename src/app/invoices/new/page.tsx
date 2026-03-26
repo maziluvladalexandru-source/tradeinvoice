@@ -385,7 +385,7 @@ function NewInvoiceForm() {
                     onClick={handleNewClient}
                     className="bg-amber-500 text-gray-950 px-4 py-2 rounded-lg font-medium"
                   >
-                    Save Client
+                    Save Client to Continue
                   </button>
                   <button
                     type="button"
@@ -607,4 +607,6 @@ function NewInvoiceForm() {
     </div>
   );
 }
+
+
 
