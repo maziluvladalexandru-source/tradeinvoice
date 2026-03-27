@@ -556,12 +556,13 @@ function NewInvoiceForm() {
     <div className="min-h-screen bg-gray-950">
       <Navbar />
 
-      {/* Mobile floating preview toggle */}
+      {/* Mobile floating preview toggle - inline media query to bypass Tailwind JIT */}
       <button
         onClick={() => setShowMobilePreview(!showMobilePreview)}
-        className="md:hidden fixed bottom-28 right-4 z-50 bg-amber-500 text-gray-950 rounded-full px-4 py-2.5 text-sm font-semibold shadow-lg shadow-amber-500/25 active:scale-95 transition-transform"
+        style={{ position: 'fixed', bottom: '7rem', right: '1rem', zIndex: 9999 }}
+        className="bg-amber-500 text-gray-950 rounded-full px-5 py-3 text-base font-bold shadow-lg shadow-amber-500/30 active:scale-95 transition-transform mobile-preview-btn"
       >
-        {showMobilePreview ? "✏️ Edit" : "👁 Preview"}
+        {showMobilePreview ? "✏️ Edit" : "👁️ Preview"}
       </button>
 
       <div className="max-w-[1440px] mx-auto px-4 py-6 md:py-8">
