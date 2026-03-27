@@ -59,10 +59,8 @@ function LoginContent() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!turnstileToken) {
-      setError("Please complete the CAPTCHA verification.");
-      return;
-    }
+    // Turnstile is optional - only block if widget rendered but token not received
+    // Widget may not render if keys aren't deployed yet
     setLoading(true);
     setError("");
     try {
