@@ -96,7 +96,7 @@ function InvoicePreview({
   return (
     <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden text-gray-900 text-sm">
       {/* Header */}
-      <header className="px-6 pt-6 pb-5 border-b border-gray-100">
+      <header className="px-4 sm:px-6 pt-5 sm:pt-6 pb-4 sm:pb-5 border-b border-gray-100">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-slate-900 flex items-center justify-center flex-shrink-0">
             <span className="text-lg font-bold text-white leading-none">Y</span>
@@ -109,8 +109,8 @@ function InvoicePreview({
       </header>
 
       {/* Invoice Info + Bill To */}
-      <div className="px-6 py-5">
-        <div className="flex justify-between gap-6">
+      <div className="px-4 sm:px-6 py-4 sm:py-5">
+        <div className="flex flex-col sm:flex-row sm:justify-between gap-4 sm:gap-6">
           {/* Meta */}
           <div className="flex-1 min-w-0">
             <p className="text-[10px] font-semibold uppercase tracking-widest text-gray-400 mb-1">
@@ -154,7 +154,7 @@ function InvoicePreview({
           </div>
 
           {/* Bill To */}
-          <div className="text-right flex-shrink-0">
+          <div className="text-left sm:text-right flex-shrink-0">
             <p className="text-[10px] font-semibold uppercase tracking-widest text-gray-400 mb-1">
               Bill To
             </p>
@@ -192,8 +192,8 @@ function InvoicePreview({
       )}
 
       {/* Line Items Table */}
-      <div className="px-6">
-        <table className="w-full">
+      <div className="px-4 sm:px-6">
+        <table className="w-full text-xs sm:text-sm">
           <thead>
             <tr className="border-y border-gray-200 bg-gray-50/50">
               <th className="text-left text-[10px] font-semibold uppercase tracking-wider text-gray-500 py-2 pr-2">
@@ -270,7 +270,7 @@ function InvoicePreview({
             )}
             <div className="w-full max-w-[200px] flex justify-between pt-2 border-t border-gray-200">
               <span className="text-sm font-bold text-gray-900">Total</span>
-              <span className="text-lg font-bold text-gray-900 tabular-nums">
+              <span className="text-base sm:text-lg font-bold text-gray-900 tabular-nums">
                 {fmt(total)}
               </span>
             </div>
