@@ -37,23 +37,30 @@ function LoginContent() {
 
   useEffect(() => {
     const scriptId = "turnstile-script";
-    if (document.getElementById(scriptId)) return;
-
-    const script = document.createElement("script");
-    script.id = scriptId;
-    script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onTurnstileLoad";
-    script.async = true;
-
-    (window as unknown as Record<string, unknown>).onTurnstileLoad = () => {
-      if (turnstileRef.current && window.turnstile) {
+    
+    function renderWidget() {
+      if (turnstileRef.current && window.turnstile && !widgetIdRef.current) {
         widgetIdRef.current = window.turnstile.render(turnstileRef.current, {
           sitekey: TURNSTILE_SITE_KEY,
           callback: (token: string) => setTurnstileToken(token),
           theme: "dark",
         });
       }
-    };
+    }
 
+    if (document.getElementById(scriptId)) {
+      // Script already loaded, just render
+      renderWidget();
+      return;
+    }
+
+    // Set global callback before loading script
+    (window as Record<string, unknown>).onTurnstileLoad = renderWidget;
+
+    const script = document.createElement("script");
+    script.id = scriptId;
+    script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onTurnstileLoad&render=explicit";
+    script.async = true;
     document.head.appendChild(script);
   }, []);
 
