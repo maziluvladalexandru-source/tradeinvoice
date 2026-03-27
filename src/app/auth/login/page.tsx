@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, Suspense } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 
@@ -13,7 +13,7 @@ declare global {
   }
 }
 
-const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || "0x4AAAAAACweCZOmPzdmk32Y";
+// Site key hardcoded in the cf-turnstile div data-sitekey attribute
 
 export default function LoginPage() {
   return (
@@ -30,38 +30,24 @@ function LoginContent() {
   const [error, setError] = useState("");
   const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [turnstileToken, setTurnstileToken] = useState("");
-  const turnstileRef = useRef<HTMLDivElement>(null);
-  const widgetIdRef = useRef<string | null>(null);
   const searchParams = useSearchParams();
   const errorParam = searchParams.get("error");
 
   useEffect(() => {
+    // Global callback for Turnstile implicit rendering
+    (window as unknown as Record<string, unknown>).onTurnstileSuccess = (token: string) => {
+      setTurnstileToken(token);
+    };
+
     const scriptId = "turnstile-script";
-    
-    function renderWidget() {
-      if (turnstileRef.current && window.turnstile && !widgetIdRef.current) {
-        widgetIdRef.current = window.turnstile.render(turnstileRef.current, {
-          sitekey: TURNSTILE_SITE_KEY,
-          callback: (token: string) => setTurnstileToken(token),
-          theme: "dark",
-        });
-      }
+    if (!document.getElementById(scriptId)) {
+      const script = document.createElement("script");
+      script.id = scriptId;
+      script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js";
+      script.async = true;
+      script.defer = true;
+      document.head.appendChild(script);
     }
-
-    if (document.getElementById(scriptId)) {
-      // Script already loaded, just render
-      renderWidget();
-      return;
-    }
-
-    // Set global callback before loading script
-    (window as unknown as Record<string, unknown>).onTurnstileLoad = renderWidget;
-
-    const script = document.createElement("script");
-    script.id = scriptId;
-    script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onTurnstileLoad&render=explicit";
-    script.async = true;
-    document.head.appendChild(script);
   }, []);
 
   async function handleSubmit(e: React.FormEvent) {
@@ -80,11 +66,7 @@ function LoginContent() {
       setSent(true);
     } catch {
       setError("Something went wrong. Please try again.");
-      // Reset turnstile on error
-      if (widgetIdRef.current && window.turnstile) {
-        window.turnstile.reset(widgetIdRef.current);
-        setTurnstileToken("");
-      }
+      setTurnstileToken("");
     } finally {
       setLoading(false);
     }
@@ -163,7 +145,7 @@ function LoginContent() {
               </span>
             </label>
 
-            <div ref={turnstileRef} className="mb-2" />
+            <div className="cf-turnstile mb-2" data-sitekey="0x4AAAAAACweCZOmPzdmk32Y" data-theme="dark" data-callback="onTurnstileSuccess" />
 
             <button
               type="submit"
