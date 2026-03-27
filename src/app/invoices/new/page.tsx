@@ -556,29 +556,13 @@ function NewInvoiceForm() {
     <div className="min-h-screen bg-gray-950">
       <Navbar />
 
-      {/* Mobile preview toggle */}
-      <div className="md:hidden sticky top-0 z-30 bg-gray-900/95 backdrop-blur border-b border-gray-800 px-4 py-2 flex gap-2">
-        <button
-          onClick={() => setShowMobilePreview(false)}
-          className={`flex-1 py-2 rounded-lg text-sm font-medium transition-colors ${
-            !showMobilePreview
-              ? "bg-amber-500 text-gray-950"
-              : "text-gray-400 hover:text-white"
-          }`}
-        >
-          Edit
-        </button>
-        <button
-          onClick={() => setShowMobilePreview(true)}
-          className={`flex-1 py-2 rounded-lg text-sm font-medium transition-colors ${
-            showMobilePreview
-              ? "bg-amber-500 text-gray-950"
-              : "text-gray-400 hover:text-white"
-          }`}
-        >
-          Preview
-        </button>
-      </div>
+      {/* Mobile floating preview toggle */}
+      <button
+        onClick={() => setShowMobilePreview(!showMobilePreview)}
+        className="md:hidden fixed bottom-20 right-4 z-40 bg-amber-500 text-gray-950 rounded-full px-4 py-2.5 text-sm font-semibold shadow-lg shadow-amber-500/25 active:scale-95 transition-transform"
+      >
+        {showMobilePreview ? "✏️ Edit" : "👁 Preview"}
+      </button>
 
       <div className="max-w-[1440px] mx-auto px-4 py-6 md:py-8">
         <div className="flex flex-col md:flex-row gap-6 md:gap-8">
