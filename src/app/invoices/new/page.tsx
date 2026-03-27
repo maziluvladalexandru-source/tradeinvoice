@@ -557,7 +557,7 @@ function NewInvoiceForm() {
       <Navbar />
 
       {/* Mobile preview toggle */}
-      <div className="lg:hidden sticky top-0 z-30 bg-gray-900/95 backdrop-blur border-b border-gray-800 px-4 py-2 flex gap-2">
+      <div className="md:hidden sticky top-0 z-30 bg-gray-900/95 backdrop-blur border-b border-gray-800 px-4 py-2 flex gap-2">
         <button
           onClick={() => setShowMobilePreview(false)}
           className={`flex-1 py-2 rounded-lg text-sm font-medium transition-colors ${
@@ -580,16 +580,16 @@ function NewInvoiceForm() {
         </button>
       </div>
 
-      <div className="max-w-[1440px] mx-auto px-4 py-6 lg:py-8">
-        <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
+      <div className="max-w-[1440px] mx-auto px-4 py-6 md:py-8">
+        <div className="flex flex-col md:flex-row gap-6 md:gap-8">
           {/* ── LEFT: Form (40%) ─────────────────────────────────────── */}
           <div
-            className={`w-full lg:w-[40%] lg:flex-shrink-0 ${
-              showMobilePreview ? "hidden lg:block" : ""
+            className={`w-full md:w-[45%] md:flex-shrink-0 ${
+              showMobilePreview ? "hidden md:block" : ""
             }`}
           >
             <div className="flex items-center justify-between mb-6">
-              <h1 className="text-2xl lg:text-3xl font-bold text-white">
+              <h1 className="text-2xl md:text-3xl font-bold text-white">
                 Create{" "}
                 {invoiceType === "quote"
                   ? "Quote"
@@ -1208,11 +1208,11 @@ function NewInvoiceForm() {
 
           {/* ── RIGHT: Live Preview (60%) ─────────────────────────────── */}
           <div
-            className={`w-full lg:w-[60%] ${
-              !showMobilePreview ? "hidden lg:block" : ""
+            className={`w-full md:w-[55%] ${
+              !showMobilePreview ? "hidden md:block" : ""
             }`}
           >
-            <div className="lg:sticky lg:top-4">
+            <div className="md:sticky md:top-4">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider">
                   Live Preview
