@@ -584,9 +584,11 @@ function NewInvoiceForm() {
         <div className="flex flex-col md:flex-row gap-6 md:gap-8">
           {/* ── LEFT: Form (40%) ─────────────────────────────────────── */}
           <div
-            className={`w-full md:w-[45%] md:flex-shrink-0 ${
-              showMobilePreview ? "hidden md:block" : ""
-            }`}
+            className={
+              showMobilePreview
+                ? "hidden md:block w-full md:w-[45%] md:flex-shrink-0"
+                : "w-full md:w-[45%] md:flex-shrink-0"
+            }
           >
             <div className="flex items-center justify-between mb-6">
               <h1 className="text-2xl md:text-3xl font-bold text-white">
@@ -1208,9 +1210,11 @@ function NewInvoiceForm() {
 
           {/* ── RIGHT: Live Preview (60%) ─────────────────────────────── */}
           <div
-            className={`w-full md:w-[55%] ${
-              !showMobilePreview ? "hidden md:block" : ""
-            }`}
+            className={
+              !showMobilePreview
+                ? "hidden md:block w-full md:w-[55%]"
+                : "w-full md:w-[55%]"
+            }
           >
             <div className="md:sticky md:top-4">
               <div className="flex items-center justify-between mb-4">
