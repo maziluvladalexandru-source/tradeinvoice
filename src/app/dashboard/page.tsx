@@ -138,20 +138,20 @@ export default async function DashboardPage() {
         />
 
         {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 mb-8">
-          <div className="bg-gray-800/60 rounded-2xl p-6 border border-gray-700">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-8">
+          <div className="bg-gray-800/60 rounded-2xl p-4 md:p-6 border border-gray-700 overflow-hidden">
             <p className="text-sm font-medium text-gray-400 mb-1">
               Total Outstanding
             </p>
-            <p className="text-3xl font-bold text-white">
+            <p className="text-lg md:text-2xl font-bold text-white truncate">
               {formatCurrency(totalOutstanding)}
             </p>
           </div>
-          <div className="bg-gray-800/60 rounded-2xl p-6 border border-gray-700">
+          <div className="bg-gray-800/60 rounded-2xl p-4 md:p-6 border border-gray-700 overflow-hidden">
             <p className="text-sm font-medium text-gray-400 mb-1">
               Paid This Month
             </p>
-            <p className="text-3xl font-bold text-green-400">
+            <p className="text-lg md:text-2xl font-bold text-green-400 truncate">
               {formatCurrency(paidThisMonth)}
             </p>
             {revenueLastMonth > 0 && (
@@ -160,30 +160,30 @@ export default async function DashboardPage() {
               </p>
             )}
           </div>
-          <div className="bg-gray-800/60 rounded-2xl p-6 border border-gray-700">
+          <div className="bg-gray-800/60 rounded-2xl p-4 md:p-6 border border-gray-700 overflow-hidden">
             <p className="text-sm font-medium text-gray-400 mb-1">
               Overdue Invoices
             </p>
-            <p className="text-3xl font-bold text-red-400">
+            <p className="text-lg md:text-2xl font-bold text-red-400">
               {overdueCount}
             </p>
           </div>
           {avgDaysToPayment !== null && (
-            <div className="bg-gray-800/60 rounded-2xl p-6 border border-gray-700">
+            <div className="bg-gray-800/60 rounded-2xl p-4 md:p-6 border border-gray-700 overflow-hidden">
               <p className="text-sm font-medium text-gray-400 mb-1">
                 Avg. Days to Payment
               </p>
-              <p className="text-3xl font-bold text-blue-400">
+              <p className="text-lg md:text-2xl font-bold text-blue-400">
                 {avgDaysToPayment}
               </p>
               <p className="text-sm text-gray-500 mt-1">days</p>
             </div>
           )}
-          <div className="bg-gray-800/60 rounded-2xl p-6 border border-gray-700">
+          <div className="bg-gray-800/60 rounded-2xl p-4 md:p-6 border border-gray-700 overflow-hidden">
             <p className="text-sm font-medium text-gray-400 mb-1">
               Active Clients
             </p>
-            <p className="text-3xl font-bold text-purple-400">
+            <p className="text-lg md:text-2xl font-bold text-purple-400">
               {activeClientsCount}
             </p>
             <p className="text-sm text-gray-500 mt-1">last 90 days</p>

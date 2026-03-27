@@ -1212,7 +1212,7 @@ function NewInvoiceForm() {
                 </div>
               </div>
 
-              <div className="max-h-[calc(100vh-120px)] overflow-y-auto rounded-2xl">
+              <div className="max-h-[calc(100vh-120px)] overflow-y-auto rounded-2xl pb-24 md:pb-0">
                 <InvoicePreview
                   invoiceNumber={invoiceNumber}
                   invoiceType={invoiceType}
