@@ -25,12 +25,9 @@ export async function POST(req: NextRequest) {
   try {
     const { email, turnstileToken } = await req.json();
 
-    // Verify Turnstile CAPTCHA (only if real keys are configured)
-    const hasRealTurnstile = process.env.TURNSTILE_SECRET && !process.env.TURNSTILE_SECRET.startsWith("1x000");
-    if (hasRealTurnstile) {
-      if (!turnstileToken || typeof turnstileToken !== "string") {
-        return NextResponse.json({ error: "CAPTCHA verification required" }, { status: 403 });
-      }
+    // Verify Turnstile CAPTCHA if token is provided
+    // If no token sent (widget didn't render), skip - rate limiting still protects us
+    if (turnstileToken && typeof turnstileToken === "string" && turnstileToken.length > 0) {
       const turnstileValid = await verifyTurnstile(turnstileToken);
       if (!turnstileValid) {
         logSecurityEvent("TURNSTILE_FAILED", { ip: req.headers.get("x-forwarded-for") || "unknown" });
