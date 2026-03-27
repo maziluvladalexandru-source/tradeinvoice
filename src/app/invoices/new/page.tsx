@@ -1248,3 +1248,4 @@ function NewInvoiceForm() {
     </div>
   );
 }
+
