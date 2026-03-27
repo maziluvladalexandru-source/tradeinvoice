@@ -116,7 +116,7 @@ function InvoicePreview({
             <p className="text-[10px] font-semibold uppercase tracking-widest text-gray-400 mb-1">
               {docLabel}
             </p>
-            <p className="text-xl font-bold text-gray-900 font-mono tracking-tight truncate">
+            <p className="text-base sm:text-xl font-bold text-gray-900 font-mono tracking-tight break-all">
               {invoiceNumber || "INV-0000"}
             </p>
             {description && (
@@ -126,22 +126,22 @@ function InvoicePreview({
             )}
             <div className="mt-3 space-y-1 text-xs">
               <div className="flex gap-2">
-                <span className="text-gray-400 w-14">Issued</span>
-                <span className="text-gray-700 font-medium">
+                <span className="text-gray-400 shrink-0">Issued</span>
+                <span className="text-gray-700 font-medium whitespace-nowrap">
                   {fmtDate(today)}
                 </span>
               </div>
               {serviceDate && (
                 <div className="flex gap-2">
-                  <span className="text-gray-400 w-14">Service</span>
-                  <span className="text-gray-700 font-medium">
+                  <span className="text-gray-400 shrink-0">Service</span>
+                  <span className="text-gray-700 font-medium whitespace-nowrap">
                     {fmtDate(serviceDate)}
                   </span>
                 </div>
               )}
               <div className="flex gap-2">
-                <span className="text-gray-400 w-14">Due</span>
-                <span className="text-gray-700 font-medium">
+                <span className="text-gray-400 shrink-0">Due</span>
+                <span className="text-gray-700 font-medium whitespace-nowrap">
                   {fmtDate(dueDate)}
                 </span>
               </div>
