@@ -12,6 +12,15 @@ interface Client {
   address: string | null;
 }
 
+interface UserProfile {
+  businessName: string | null;
+  name: string | null;
+  email: string;
+  businessAddress: string | null;
+  businessPhone: string | null;
+  logoUrl: string | null;
+}
+
 interface LineItem {
   description: string;
   quantity: number;
@@ -50,6 +59,7 @@ function InvoicePreview({
   lineItems,
   selectedClient,
   referenceInvoice,
+  user,
 }: {
   invoiceNumber: string;
   invoiceType: string;
@@ -64,6 +74,7 @@ function InvoicePreview({
   lineItems: LineItem[];
   selectedClient: Client | undefined;
   referenceInvoice: string;
+  user: UserProfile | null;
 }) {
   const fmt = (n: number) =>
     new Intl.NumberFormat("en-IE", { style: "currency", currency }).format(n);
@@ -98,12 +109,20 @@ function InvoicePreview({
       {/* Header */}
       <header className="px-4 sm:px-6 pt-5 sm:pt-6 pb-4 sm:pb-5 border-b border-gray-100">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-slate-900 flex items-center justify-center flex-shrink-0">
-            <span className="text-lg font-bold text-white leading-none">Y</span>
-          </div>
+          {user?.logoUrl ? (
+            <img src={user.logoUrl} alt="" className="w-10 h-10 rounded-xl object-cover flex-shrink-0" />
+          ) : (
+            <div className="w-10 h-10 rounded-xl bg-slate-900 flex items-center justify-center flex-shrink-0">
+              <span className="text-lg font-bold text-white leading-none">
+                {(user?.businessName || user?.name || "?").charAt(0).toUpperCase()}
+              </span>
+            </div>
+          )}
           <div>
-            <h2 className="text-base font-bold text-gray-900">Your Business</h2>
-            <p className="text-gray-400 text-xs">your@email.com</p>
+            <h2 className="text-base font-bold text-gray-900">
+              {user?.businessName || user?.name || "Your Business"}
+            </h2>
+            <p className="text-gray-400 text-xs">{user?.email || "your@email.com"}</p>
           </div>
         </div>
       </header>
@@ -349,6 +368,9 @@ function NewInvoiceForm() {
   const [newClientPhone, setNewClientPhone] = useState("");
   const [newClientAddress, setNewClientAddress] = useState("");
 
+  // User business details
+  const [user, setUser] = useState<UserProfile | null>(null);
+
   // Mobile preview toggle
   const [showMobilePreview, setShowMobilePreview] = useState(false);
 
@@ -363,6 +385,11 @@ function NewInvoiceForm() {
           setClientId(preselectedClientId);
         }
       })
+      .catch(() => {});
+
+    fetch("/api/user")
+      .then((r) => r.json())
+      .then((data) => setUser(data))
       .catch(() => {});
 
     fetch("/api/invoices/next-number")
@@ -1227,6 +1254,7 @@ function NewInvoiceForm() {
                   lineItems={lineItems}
                   selectedClient={selectedClient}
                   referenceInvoice={referenceInvoice}
+                  user={user}
                 />
               </div>
             </div>
