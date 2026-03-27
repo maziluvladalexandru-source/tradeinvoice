@@ -21,6 +21,8 @@ export default async function DashboardPage() {
   });
 
   const now = new Date();
+  const hour = now.getHours();
+  const greeting = hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening";
   const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
 
   // Separate invoices and quotes
@@ -92,11 +94,11 @@ export default async function DashboardPage() {
     new Date(d).toLocaleDateString("en-IE", { day: "numeric", month: "short" });
 
   const statusColors: Record<string, string> = {
-    draft: "bg-gray-500/20 text-gray-300 ring-1 ring-gray-500/40",
-    sent: "bg-blue-500/20 text-blue-300 ring-1 ring-blue-400/40",
-    viewed: "bg-yellow-500/20 text-yellow-300 ring-1 ring-yellow-400/40",
-    paid: "bg-green-500/20 text-green-300 ring-1 ring-green-400/40",
-    overdue: "bg-red-500/20 text-red-300 ring-1 ring-red-400/40",
+    draft: "bg-gray-500/10 text-gray-400 border border-gray-500/20",
+    sent: "bg-blue-500/10 text-blue-400 border border-blue-500/20",
+    viewed: "bg-yellow-500/10 text-yellow-400 border border-yellow-500/20",
+    paid: "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20",
+    overdue: "bg-red-500/10 text-red-400 border border-red-500/20",
   };
 
   const statusDot: Record<string, string> = {
@@ -122,9 +124,9 @@ export default async function DashboardPage() {
       <div className="max-w-6xl mx-auto px-4 py-8">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-white">Dashboard</h1>
+            <h1 className="text-4xl font-bold text-white tracking-tight">Dashboard</h1>
             <p className="text-gray-400 mt-1">
-              Welcome back{user.name ? `, ${user.name}` : ""}
+              {greeting}{user.name ? `, ${user.name}` : ""}
             </p>
           </div>
           <NewInvoiceButton isNewUser={isNewUser} />
@@ -139,7 +141,8 @@ export default async function DashboardPage() {
 
         {/* Stats */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-8">
-          <div className="bg-gray-800/60 rounded-2xl p-4 md:p-6 border border-gray-700 overflow-hidden">
+          <div className="relative overflow-hidden bg-gray-900/50 backdrop-blur-sm rounded-2xl p-5 md:p-6 border border-gray-800/50 hover:border-gray-700/50 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300">
+            <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent pointer-events-none" />
             <p className="text-sm font-medium text-gray-400 mb-1">
               Total Outstanding
             </p>
@@ -147,7 +150,8 @@ export default async function DashboardPage() {
               {formatCurrency(totalOutstanding)}
             </p>
           </div>
-          <div className="bg-gray-800/60 rounded-2xl p-4 md:p-6 border border-gray-700 overflow-hidden">
+          <div className="relative overflow-hidden bg-gray-900/50 backdrop-blur-sm rounded-2xl p-5 md:p-6 border border-gray-800/50 hover:border-gray-700/50 hover:shadow-lg hover:shadow-emerald-500/5 transition-all duration-300">
+            <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent pointer-events-none" />
             <p className="text-sm font-medium text-gray-400 mb-1">
               Paid This Month
             </p>
@@ -160,16 +164,25 @@ export default async function DashboardPage() {
               </p>
             )}
           </div>
-          <div className="bg-gray-800/60 rounded-2xl p-4 md:p-6 border border-gray-700 overflow-hidden">
+          <div className="relative overflow-hidden bg-gray-900/50 backdrop-blur-sm rounded-2xl p-5 md:p-6 border border-gray-800/50 hover:border-gray-700/50 hover:shadow-lg hover:shadow-red-500/5 transition-all duration-300">
+            <div className="absolute inset-0 bg-gradient-to-br from-red-500/5 to-transparent pointer-events-none" />
             <p className="text-sm font-medium text-gray-400 mb-1">
               Overdue Invoices
             </p>
-            <p className="text-lg md:text-2xl font-bold text-red-400">
-              {overdueCount}
-            </p>
+            <div className="flex items-center gap-2">
+              <p className="text-lg md:text-2xl font-bold text-red-400">
+                {overdueCount}
+              </p>
+              {overdueCount > 0 && (
+                <svg className="w-5 h-5 text-red-400 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                </svg>
+              )}
+            </div>
           </div>
           {avgDaysToPayment !== null && (
-            <div className="bg-gray-800/60 rounded-2xl p-4 md:p-6 border border-gray-700 overflow-hidden">
+            <div className="relative overflow-hidden bg-gray-900/50 backdrop-blur-sm rounded-2xl p-5 md:p-6 border border-gray-800/50 hover:border-gray-700/50 hover:shadow-lg hover:shadow-blue-500/5 transition-all duration-300">
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent pointer-events-none" />
               <p className="text-sm font-medium text-gray-400 mb-1">
                 Avg. Days to Payment
               </p>
@@ -179,7 +192,8 @@ export default async function DashboardPage() {
               <p className="text-sm text-gray-500 mt-1">days</p>
             </div>
           )}
-          <div className="bg-gray-800/60 rounded-2xl p-4 md:p-6 border border-gray-700 overflow-hidden">
+          <div className="relative overflow-hidden bg-gray-900/50 backdrop-blur-sm rounded-2xl p-5 md:p-6 border border-gray-800/50 hover:border-gray-700/50 hover:shadow-lg hover:shadow-purple-500/5 transition-all duration-300">
+            <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent pointer-events-none" />
             <p className="text-sm font-medium text-gray-400 mb-1">
               Active Clients
             </p>
@@ -192,7 +206,7 @@ export default async function DashboardPage() {
 
         {/* Plan info */}
         {user.plan === "free" && (
-          <div className="bg-amber-500/10 border border-amber-500/30 rounded-2xl p-4 mb-8 flex items-center justify-between">
+          <div className="bg-gradient-to-r from-amber-500/10 via-amber-500/5 to-orange-500/10 border border-amber-500/20 rounded-2xl p-5 mb-8 flex items-center justify-between">
             <div>
               <p className="font-medium text-amber-400">
                 Free Plan: {user.invoiceCount}/20 invoices used this month
@@ -203,7 +217,7 @@ export default async function DashboardPage() {
             </div>
             <Link
               href="/settings"
-              className="bg-amber-500 text-gray-950 px-4 py-2 rounded-lg font-medium text-sm hover:bg-amber-400"
+              className="bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-gray-950 px-5 py-2.5 rounded-xl font-semibold text-sm shadow-lg shadow-amber-500/20 transition-all"
             >
               Upgrade
             </Link>
@@ -211,8 +225,8 @@ export default async function DashboardPage() {
         )}
 
         {/* Recent invoices */}
-        <div className="bg-gray-800/60 rounded-2xl border border-gray-700">
-          <div className="p-6 border-b border-gray-700 flex items-center justify-between">
+        <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl border border-gray-800/50">
+          <div className="p-6 border-b border-gray-800/50 flex items-center justify-between">
             <h2 className="text-xl font-semibold text-white">
               Recent Invoices
             </h2>
@@ -261,7 +275,7 @@ export default async function DashboardPage() {
               </p>
               <Link
                 href="/invoices/new"
-                className="inline-flex items-center gap-2 bg-amber-500 text-gray-950 px-8 py-3.5 rounded-xl font-semibold text-lg hover:bg-amber-400 transition-colors shadow-lg shadow-amber-500/20"
+                className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-gray-950 px-8 py-3.5 rounded-xl font-semibold text-lg shadow-lg shadow-amber-500/20 transition-all"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 4v16m8-8H4" />
@@ -270,11 +284,11 @@ export default async function DashboardPage() {
               </Link>
             </div>
           ) : (
-            <div className="divide-y divide-gray-700">
+            <div className="divide-y divide-gray-800/50">
               {recentInvoices.map((invoice) => (
                 <div
                   key={invoice.id}
-                  className={`p-4 hover:bg-gray-700/50 transition-colors border-l-4 ${statusBorder[invoice.status] || "border-l-gray-600"}`}
+                  className={`p-4 hover:bg-gray-800/50 transition-colors border-l-4 ${statusBorder[invoice.status] || "border-l-gray-600"}`}
                 >
                   <Link
                     href={`/invoices/${invoice.id}`}
@@ -345,8 +359,8 @@ export default async function DashboardPage() {
         </div>
         {/* Recent Quotes */}
         {recentQuotes.length > 0 && (
-          <div className="bg-gray-800/60 rounded-2xl border border-gray-700 mt-8">
-            <div className="p-6 border-b border-gray-700 flex items-center justify-between">
+          <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl border border-gray-800/50 mt-8">
+            <div className="p-6 border-b border-gray-800/50 flex items-center justify-between">
               <h2 className="text-xl font-semibold text-white flex items-center gap-2">
                 Recent Quotes
                 <span className="bg-purple-500/20 text-purple-300 ring-1 ring-purple-400/40 px-2 py-0.5 rounded-full text-xs font-semibold">
@@ -354,11 +368,11 @@ export default async function DashboardPage() {
                 </span>
               </h2>
             </div>
-            <div className="divide-y divide-gray-700">
+            <div className="divide-y divide-gray-800/50">
               {recentQuotes.map((quote) => (
                 <div
                   key={quote.id}
-                  className={`p-4 hover:bg-gray-700/50 transition-colors border-l-4 ${statusBorder[quote.status] || "border-l-gray-600"}`}
+                  className={`p-4 hover:bg-gray-800/50 transition-colors border-l-4 ${statusBorder[quote.status] || "border-l-gray-600"}`}
                 >
                   <Link
                     href={`/invoices/${quote.id}`}
