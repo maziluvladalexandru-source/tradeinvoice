@@ -55,7 +55,7 @@ function LoginContent() {
     }
 
     // Set global callback before loading script
-    (window as Record<string, unknown>).onTurnstileLoad = renderWidget;
+    (window as unknown as Record<string, unknown>).onTurnstileLoad = renderWidget;
 
     const script = document.createElement("script");
     script.id = scriptId;
