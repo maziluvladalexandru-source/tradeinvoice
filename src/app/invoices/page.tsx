@@ -167,7 +167,10 @@ export default function InvoicesListPage() {
       <main className="max-w-6xl mx-auto px-4 py-8 pb-24 md:pb-8">
         {/* Header */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
-          <h1 className="text-2xl font-bold text-white">Invoices</h1>
+          <div>
+            <h1 className="text-2xl font-bold text-white">Invoices</h1>
+            <div className="w-16 h-1 bg-gradient-to-r from-amber-500 to-amber-300 rounded-full mt-2" />
+          </div>
           <Link
             href="/invoices/new"
             className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-gray-950 px-5 py-2.5 rounded-xl font-semibold text-sm shadow-lg shadow-amber-500/20 transition-all"
@@ -190,13 +193,13 @@ export default function InvoicesListPage() {
               placeholder="Search by invoice number or client name..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-white/10 text-sm focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-white/5 text-white placeholder-gray-500 transition-all"
+              className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-700/50 text-sm focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-[#111827] text-white placeholder-gray-500 transition-all"
             />
           </div>
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="px-4 py-2.5 rounded-xl border border-white/10 text-sm focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-white/5 text-white transition-all"
+            className="px-4 py-2.5 rounded-xl border border-gray-700/50 text-sm focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-[#111827] text-white transition-all"
           >
             <option value="all">All statuses</option>
             <option value="draft">Draft</option>
@@ -224,7 +227,7 @@ export default function InvoicesListPage() {
         </div>
 
         {/* Invoice list */}
-        <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 overflow-hidden">
+        <div className="bg-[#111827] backdrop-blur-sm rounded-2xl border border-gray-700/50 overflow-hidden">
           {loading ? (
             <div className="p-12 text-center">
               <div className="w-8 h-8 border-2 border-amber-500 border-t-transparent rounded-full animate-spin mx-auto" />
@@ -239,11 +242,11 @@ export default function InvoicesListPage() {
               </p>
             </div>
           ) : (
-            <div className="divide-y divide-white/10">
+            <div className="space-y-1 p-1">
               {filtered.map((invoice) => (
                 <div
                   key={invoice.id}
-                  className={`p-4 hover:bg-white/5 transition-colors border-l-4 ${statusBorder[invoice.status] || "border-l-gray-600"}`}
+                  className={`p-4 bg-[#111827] hover:bg-[#1a2235] transition-all rounded-xl border border-gray-700/30 hover:border-amber-500/30 border-l-4 ${statusBorder[invoice.status] || "border-l-gray-600"}`}
                 >
                   <div className="flex items-center gap-3">
                     <Link

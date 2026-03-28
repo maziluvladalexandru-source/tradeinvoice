@@ -150,6 +150,7 @@ export default function ServicesPage() {
         <div className="flex items-center justify-between mb-8">
           <div>
             <h1 className="text-4xl font-bold text-white tracking-tight">Service Library</h1>
+            <div className="w-20 h-1 bg-gradient-to-r from-amber-500 to-amber-300 rounded-full mt-2" />
             <p className="text-gray-500 text-sm mt-2">
               Save commonly used items to quickly add them to invoices
             </p>
@@ -170,7 +171,7 @@ export default function ServicesPage() {
 
         {/* Add/Edit Form */}
         {showForm && (
-          <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 mb-8 animate-fade-in">
+          <div className="bg-[#111827] backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 mb-8 animate-fade-in">
             <h2 className="text-base font-semibold text-white mb-4">
               {editingId ? "Edit Service Item" : "New Service Item"}
             </h2>
@@ -183,7 +184,7 @@ export default function ServicesPage() {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="e.g. Boiler repair"
-                  className="w-full px-3 py-2.5 rounded-xl border border-white/10 text-sm focus:ring-1 focus:ring-amber-500/20 focus:border-amber-500/50 transition-all outline-none bg-white/5 text-white placeholder-gray-500"
+                  className="w-full px-3 py-2.5 rounded-xl border border-gray-700/50 text-sm focus:ring-1 focus:ring-amber-500/20 focus:border-amber-500/50 transition-all outline-none bg-[#0d1321] text-white placeholder-gray-500"
                   autoFocus
                 />
               </div>
@@ -193,7 +194,7 @@ export default function ServicesPage() {
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   placeholder="e.g. Standard boiler service and repair"
-                  className="w-full px-3 py-2.5 rounded-xl border border-white/10 text-sm focus:ring-1 focus:ring-amber-500/20 focus:border-amber-500/50 transition-all outline-none bg-white/5 text-white placeholder-gray-500"
+                  className="w-full px-3 py-2.5 rounded-xl border border-gray-700/50 text-sm focus:ring-1 focus:ring-amber-500/20 focus:border-amber-500/50 transition-all outline-none bg-[#0d1321] text-white placeholder-gray-500"
                 />
               </div>
               <div className="flex gap-3">
@@ -208,7 +209,7 @@ export default function ServicesPage() {
                     value={unitPrice}
                     onChange={(e) => setUnitPrice(e.target.value === "" ? "" : Number(e.target.value))}
                     placeholder="0.00"
-                    className="w-full px-3 py-2.5 rounded-xl border border-white/10 text-sm focus:ring-1 focus:ring-amber-500/20 focus:border-amber-500/50 transition-all outline-none bg-white/5 text-white placeholder-gray-500"
+                    className="w-full px-3 py-2.5 rounded-xl border border-gray-700/50 text-sm focus:ring-1 focus:ring-amber-500/20 focus:border-amber-500/50 transition-all outline-none bg-[#0d1321] text-white placeholder-gray-500"
                   />
                 </div>
                 <div className="w-32">
@@ -216,7 +217,7 @@ export default function ServicesPage() {
                   <select
                     value={unit}
                     onChange={(e) => setUnit(e.target.value)}
-                    className="w-full px-3 py-2.5 rounded-xl border border-white/10 text-sm focus:ring-1 focus:ring-amber-500/20 focus:border-amber-500/50 transition-all outline-none bg-white/5 text-white"
+                    className="w-full px-3 py-2.5 rounded-xl border border-gray-700/50 text-sm focus:ring-1 focus:ring-amber-500/20 focus:border-amber-500/50 transition-all outline-none bg-[#0d1321] text-white"
                   >
                     {UNITS.map((u) => (
                       <option key={u.value} value={u.value}>
@@ -251,14 +252,14 @@ export default function ServicesPage() {
         {loading ? (
           <div className="space-y-3">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="bg-white/5 rounded-2xl p-5 border border-white/10">
+              <div key={i} className="bg-[#111827] rounded-2xl p-5 border border-gray-700/50">
                 <div className="h-5 w-40 bg-white/10 rounded animate-pulse mb-2" />
                 <div className="h-4 w-24 bg-white/5 rounded animate-pulse" />
               </div>
             ))}
           </div>
         ) : items.length === 0 ? (
-          <div className="relative overflow-hidden bg-white/5 backdrop-blur-sm rounded-2xl p-12 border border-white/10 text-center">
+          <div className="relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl p-12 border border-gray-700/50 text-center">
             <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent pointer-events-none" />
             <div className="relative w-20 h-20 mx-auto mb-6 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center">
               <svg className="w-10 h-10 text-amber-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -284,7 +285,7 @@ export default function ServicesPage() {
             {items.map((item) => (
               <div
                 key={item.id}
-                className="bg-white/5 backdrop-blur-sm rounded-2xl p-4 border border-white/10 flex items-center gap-4 group hover:border-white/20 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300"
+                className="bg-[#111827] backdrop-blur-sm rounded-2xl p-4 border border-gray-700/50 border-l-4 border-l-amber-500/50 flex items-center gap-4 group hover:border-amber-500/30 hover:shadow-lg hover:shadow-amber-500/10 transition-all duration-300"
               >
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">

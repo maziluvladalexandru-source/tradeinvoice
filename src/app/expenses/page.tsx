@@ -55,6 +55,15 @@ const CATEGORY_COLORS: Record<string, string> = {
   other: "bg-gray-500/10 text-gray-400 border-gray-500/20",
 };
 
+const CATEGORY_BORDER_LEFT: Record<string, string> = {
+  materials: "border-l-orange-500",
+  fuel: "border-l-yellow-500",
+  tools: "border-l-blue-500",
+  subcontractor: "border-l-purple-500",
+  office: "border-l-cyan-500",
+  other: "border-l-gray-500",
+};
+
 const TIME_FILTERS = [
   { value: "all", label: "All Time" },
   { value: "month", label: "This Month" },
@@ -370,6 +379,7 @@ export default function ExpensesPage() {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-10">
           <div>
             <h1 className="text-4xl font-bold text-white tracking-tight">Expenses</h1>
+            <div className="w-20 h-1 bg-gradient-to-r from-amber-500 to-amber-300 rounded-full mt-2" />
             <p className="text-gray-400 mt-1">Track job costs, receipts &amp; deductions</p>
           </div>
           {activeTab === "expenses" ? (
@@ -404,7 +414,7 @@ export default function ExpensesPage() {
         </div>
 
         {/* Tab Toggle */}
-        <div className="flex gap-1 bg-white/5 rounded-xl p-1 border border-white/10 mb-10 w-fit">
+        <div className="flex gap-1 bg-[#111827] rounded-xl p-1 border border-gray-700/50 mb-10 w-fit">
           <button
             onClick={() => setActiveTab("expenses")}
             className={`px-5 py-2 rounded-lg text-sm font-medium transition-all ${
@@ -434,15 +444,15 @@ export default function ExpensesPage() {
           <>
             {/* Summary Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
-              <div className="relative overflow-hidden bg-white/5 backdrop-blur-sm rounded-2xl p-5 border border-white/10 hover:border-white/20 hover:shadow-lg hover:shadow-red-500/5 transition-all duration-300 col-span-1 sm:col-span-2 lg:col-span-1">
-                <div className="absolute inset-0 bg-gradient-to-br from-red-500/5 to-transparent pointer-events-none" />
+              <div className="relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl p-5 border border-gray-700/50 hover:border-amber-500/30 hover:shadow-lg hover:shadow-amber-500/10 transition-all duration-300 col-span-1 sm:col-span-2 lg:col-span-1">
+                <div className="absolute inset-0 bg-gradient-to-br from-red-500/10 to-transparent pointer-events-none" />
                 <p className="text-sm font-medium text-gray-400 mb-1">Total Expenses</p>
                 <p className="text-2xl font-bold text-red-400">{fmtCurrency(totalExpenses)}</p>
                 <p className="text-sm text-gray-500 mt-1">{TIME_FILTERS.find((f) => f.value === timeFilter)?.label}</p>
               </div>
               {categoryBreakdown.slice(0, 3).map((cat) => (
-                <div key={cat.value} className="relative overflow-hidden bg-white/5 backdrop-blur-sm rounded-2xl p-5 border border-white/10 hover:border-white/20 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300">
-                  <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent pointer-events-none" />
+                <div key={cat.value} className="relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl p-5 border border-gray-700/50 hover:border-amber-500/30 hover:shadow-lg hover:shadow-amber-500/10 transition-all duration-300">
+                  <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 to-transparent pointer-events-none" />
                   <p className="text-sm font-medium text-gray-400 mb-1">{cat.label}</p>
                   <p className="text-xl font-bold text-white">{fmtCurrency(cat.total)}</p>
                   <p className="text-sm text-gray-500 mt-1">{cat.count} expense{cat.count !== 1 ? "s" : ""}</p>
@@ -452,7 +462,7 @@ export default function ExpensesPage() {
 
             {/* Filters */}
             <div className="flex flex-wrap gap-3 mb-6">
-              <div className="flex gap-1 bg-white/5 rounded-xl p-1 border border-white/10">
+              <div className="flex gap-1 bg-[#111827] rounded-xl p-1 border border-gray-700/50">
                 {TIME_FILTERS.map((f) => (
                   <button
                     key={f.value}
@@ -470,7 +480,7 @@ export default function ExpensesPage() {
               <select
                 value={categoryFilter}
                 onChange={(e) => setCategoryFilter(e.target.value)}
-                className="bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-sm text-gray-300 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20"
+                className="bg-[#0d1321] border border-gray-700/50 rounded-xl px-4 py-2 text-sm text-gray-300 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20"
               >
                 <option value="">All Categories</option>
                 {CATEGORIES.map((cat) => (
@@ -481,7 +491,7 @@ export default function ExpensesPage() {
 
             {/* Add/Edit Form */}
             {showForm && (
-              <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 hover:border-white/20 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300 p-6 mb-10">
+              <div className="bg-[#111827] backdrop-blur-sm rounded-2xl border border-gray-700/50 hover:border-amber-500/30 hover:shadow-lg hover:shadow-amber-500/10 transition-all duration-300 p-6 mb-10">
                 <h2 className="text-lg font-semibold text-white mb-4">
                   {editingId ? "Edit Expense" : "New Expense"}
                 </h2>
@@ -495,7 +505,7 @@ export default function ExpensesPage() {
                         value={form.description}
                         onChange={(e) => setForm({ ...form, description: e.target.value })}
                         placeholder="e.g. Screws and fixings for kitchen job"
-                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20"
+                        className="w-full bg-[#0d1321] border border-gray-700/50 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20"
                       />
                     </div>
                     <div>
@@ -505,7 +515,7 @@ export default function ExpensesPage() {
                         value={form.vendor}
                         onChange={(e) => setForm({ ...form, vendor: e.target.value })}
                         placeholder="e.g. Screwfix, Toolstation"
-                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20"
+                        className="w-full bg-[#0d1321] border border-gray-700/50 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20"
                       />
                     </div>
                     <div>
@@ -518,7 +528,7 @@ export default function ExpensesPage() {
                         value={form.amount}
                         onChange={(e) => setForm({ ...form, amount: e.target.value })}
                         placeholder="0.00"
-                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20"
+                        className="w-full bg-[#0d1321] border border-gray-700/50 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20"
                       />
                     </div>
                     <div>
@@ -528,7 +538,7 @@ export default function ExpensesPage() {
                         required
                         value={form.date}
                         onChange={(e) => setForm({ ...form, date: e.target.value })}
-                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20"
+                        className="w-full bg-[#0d1321] border border-gray-700/50 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20"
                       />
                     </div>
                   </div>
@@ -564,7 +574,7 @@ export default function ExpensesPage() {
                       onChange={(e) => setForm({ ...form, notes: e.target.value })}
                       rows={2}
                       placeholder="Job reference, PO number, etc."
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50 resize-none"
+                      className="w-full bg-[#0d1321] border border-gray-700/50 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50 resize-none"
                     />
                   </div>
 
@@ -579,7 +589,7 @@ export default function ExpensesPage() {
                       </label>
                       {userPlan === "pro" ? (
                         <div className="flex items-center gap-3">
-                          <label className="cursor-pointer inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-gray-300 hover:border-gray-600 transition-all text-sm">
+                          <label className="cursor-pointer inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#0d1321] border border-gray-700/50 text-gray-300 hover:border-gray-600 transition-all text-sm">
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -645,7 +655,7 @@ export default function ExpensesPage() {
                     <button
                       type="button"
                       onClick={() => { setShowForm(false); resetForm(); }}
-                      className="px-6 py-2.5 rounded-xl font-semibold text-gray-400 bg-white/5 border border-white/10 hover:border-gray-600 transition-all"
+                      className="px-6 py-2.5 rounded-xl font-semibold text-gray-400 bg-[#111827] border border-gray-700/50 hover:border-gray-600 transition-all"
                     >
                       Cancel
                     </button>
@@ -657,7 +667,7 @@ export default function ExpensesPage() {
             {/* Category Breakdown */}
             {categoryBreakdown.length > 0 && (
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 mb-10">
-                <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 hover:border-white/20 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300 p-6">
+                <div className="bg-[#111827] backdrop-blur-sm rounded-2xl border border-gray-700/50 hover:border-amber-500/30 hover:shadow-lg hover:shadow-amber-500/10 transition-all duration-300 p-6">
                   <h2 className="text-lg font-semibold text-white mb-4">Spending by Category</h2>
                   <div className="space-y-3">
                     {categoryBreakdown.sort((a, b) => b.total - a.total).map((cat) => {
@@ -679,7 +689,7 @@ export default function ExpensesPage() {
                     })}
                   </div>
                 </div>
-                <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 hover:border-white/20 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300 p-6 flex items-center justify-center">
+                <div className="bg-[#111827] backdrop-blur-sm rounded-2xl border border-gray-700/50 hover:border-amber-500/30 hover:shadow-lg hover:shadow-amber-500/10 transition-all duration-300 p-6 flex items-center justify-center">
                   <DonutChart
                     segments={categoryBreakdown.sort((a, b) => b.total - a.total).map((cat) => ({
                       label: cat.label,
@@ -696,8 +706,8 @@ export default function ExpensesPage() {
             )}
 
             {/* Expenses List */}
-            <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 hover:border-white/20 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300">
-              <div className="p-6 border-b border-white/10">
+            <div className="bg-[#111827] backdrop-blur-sm rounded-2xl border border-gray-700/50 hover:border-amber-500/30 hover:shadow-lg hover:shadow-amber-500/10 transition-all duration-300">
+              <div className="p-6 border-b border-gray-700/50">
                 <h2 className="text-xl font-semibold text-white">
                   Expenses
                   <span className="ml-2 text-sm font-normal text-gray-500">({expenses.length})</span>
@@ -728,7 +738,7 @@ export default function ExpensesPage() {
               ) : (
                 <div className="divide-y divide-white/10/50">
                   {expenses.map((expense) => (
-                    <div key={expense.id} className="p-4 hover:bg-white/10/30 transition-all duration-200">
+                    <div key={expense.id} className={`p-4 border-l-4 ${CATEGORY_BORDER_LEFT[expense.category] || CATEGORY_BORDER_LEFT.other} hover:bg-white/5 hover:border-amber-500/30 hover:shadow-lg hover:shadow-amber-500/10 transition-all duration-200`}>
                       <div className="flex items-start gap-3">
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 mb-1">
@@ -798,8 +808,8 @@ export default function ExpensesPage() {
           /* ==================== MILEAGE TAB ==================== */
           <>
             {userPlan !== "pro" ? (
-              <div className="relative overflow-hidden bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 hover:border-white/20 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300 p-16 text-center">
-                <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent pointer-events-none" />
+              <div className="relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl border border-gray-700/50 hover:border-amber-500/30 hover:shadow-lg hover:shadow-amber-500/10 transition-all duration-300 p-16 text-center">
+                <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 to-transparent pointer-events-none" />
                 <svg className="w-16 h-16 text-gray-700 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l5.447 2.724A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
                 </svg>
@@ -817,20 +827,20 @@ export default function ExpensesPage() {
               <>
                 {/* Mileage Summary Cards */}
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10">
-                  <div className="relative overflow-hidden bg-white/5 backdrop-blur-sm rounded-2xl p-5 border border-white/10 hover:border-white/20 hover:shadow-lg hover:shadow-blue-500/5 transition-all duration-300">
-                    <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent pointer-events-none" />
+                  <div className="relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl p-5 border border-gray-700/50 hover:border-amber-500/30 hover:shadow-lg hover:shadow-amber-500/10 transition-all duration-300">
+                    <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent pointer-events-none" />
                     <p className="text-sm font-medium text-gray-400 mb-1">Total Distance</p>
                     <p className="text-2xl font-bold text-blue-400">{totalKm.toFixed(1)} km</p>
                     <p className="text-sm text-gray-500 mt-1">{TIME_FILTERS.find((f) => f.value === timeFilter)?.label}</p>
                   </div>
-                  <div className="relative overflow-hidden bg-white/5 backdrop-blur-sm rounded-2xl p-5 border border-white/10 hover:border-white/20 hover:shadow-lg hover:shadow-emerald-500/5 transition-all duration-300">
-                    <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent pointer-events-none" />
+                  <div className="relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl p-5 border border-gray-700/50 hover:border-amber-500/30 hover:shadow-lg hover:shadow-amber-500/10 transition-all duration-300">
+                    <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-transparent pointer-events-none" />
                     <p className="text-sm font-medium text-gray-400 mb-1">Tax Deduction</p>
                     <p className="text-2xl font-bold text-emerald-400">{fmtCurrency(totalDeduction)}</p>
                     <p className="text-sm text-gray-500 mt-1">at standard rates</p>
                   </div>
-                  <div className="relative overflow-hidden bg-white/5 backdrop-blur-sm rounded-2xl p-5 border border-white/10 hover:border-white/20 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300">
-                    <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent pointer-events-none" />
+                  <div className="relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl p-5 border border-gray-700/50 hover:border-amber-500/30 hover:shadow-lg hover:shadow-amber-500/10 transition-all duration-300">
+                    <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 to-transparent pointer-events-none" />
                     <p className="text-sm font-medium text-gray-400 mb-1">Billable</p>
                     <p className="text-2xl font-bold text-amber-400">{billableKm.toFixed(1)} km</p>
                     <p className="text-sm text-gray-500 mt-1">{mileageEntries.filter((e) => e.billable).length} trip{mileageEntries.filter((e) => e.billable).length !== 1 ? "s" : ""}</p>
@@ -838,7 +848,7 @@ export default function ExpensesPage() {
                 </div>
 
                 {/* Tax Info Note */}
-                <div className="bg-emerald-500/5 border border-emerald-500/20 rounded-2xl p-4 mb-10 flex items-start gap-3 hover:border-emerald-500/30 hover:shadow-lg hover:shadow-emerald-500/5 transition-all duration-300">
+                <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-2xl p-4 mb-10 flex items-start gap-3 hover:border-emerald-500/30 hover:shadow-lg hover:shadow-emerald-500/10 transition-all duration-300">
                   <svg className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
@@ -850,7 +860,7 @@ export default function ExpensesPage() {
 
                 {/* Time Filters */}
                 <div className="flex flex-wrap gap-3 mb-6">
-                  <div className="flex gap-1 bg-white/5 rounded-xl p-1 border border-white/10">
+                  <div className="flex gap-1 bg-[#111827] rounded-xl p-1 border border-gray-700/50">
                     {TIME_FILTERS.map((f) => (
                       <button
                         key={f.value}
@@ -869,7 +879,7 @@ export default function ExpensesPage() {
 
                 {/* Add Mileage Form */}
                 {showMileageForm && (
-                  <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 hover:border-white/20 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300 p-6 mb-10">
+                  <div className="bg-[#111827] backdrop-blur-sm rounded-2xl border border-gray-700/50 hover:border-amber-500/30 hover:shadow-lg hover:shadow-amber-500/10 transition-all duration-300 p-6 mb-10">
                     <h2 className="text-lg font-semibold text-white mb-4">Log Mileage</h2>
                     <form onSubmit={handleMileageSubmit} className="space-y-4">
                       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -880,7 +890,7 @@ export default function ExpensesPage() {
                             required
                             value={mileageForm.date}
                             onChange={(e) => setMileageForm({ ...mileageForm, date: e.target.value })}
-                            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20"
+                            className="w-full bg-[#0d1321] border border-gray-700/50 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20"
                           />
                         </div>
                         <div>
@@ -891,7 +901,7 @@ export default function ExpensesPage() {
                             value={mileageForm.fromLocation}
                             onChange={(e) => setMileageForm({ ...mileageForm, fromLocation: e.target.value })}
                             placeholder="e.g. Office, Amsterdam"
-                            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20"
+                            className="w-full bg-[#0d1321] border border-gray-700/50 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20"
                           />
                         </div>
                         <div>
@@ -902,7 +912,7 @@ export default function ExpensesPage() {
                             value={mileageForm.toLocation}
                             onChange={(e) => setMileageForm({ ...mileageForm, toLocation: e.target.value })}
                             placeholder="e.g. Client site, Rotterdam"
-                            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20"
+                            className="w-full bg-[#0d1321] border border-gray-700/50 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20"
                           />
                         </div>
                         <div>
@@ -915,7 +925,7 @@ export default function ExpensesPage() {
                             value={mileageForm.distance}
                             onChange={(e) => setMileageForm({ ...mileageForm, distance: e.target.value })}
                             placeholder="0.0"
-                            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20"
+                            className="w-full bg-[#0d1321] border border-gray-700/50 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20"
                           />
                         </div>
                         <div>
@@ -926,7 +936,7 @@ export default function ExpensesPage() {
                             value={mileageForm.purpose}
                             onChange={(e) => setMileageForm({ ...mileageForm, purpose: e.target.value })}
                             placeholder="e.g. Client visit - John Smith"
-                            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20"
+                            className="w-full bg-[#0d1321] border border-gray-700/50 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20"
                           />
                         </div>
                         <div>
@@ -937,7 +947,7 @@ export default function ExpensesPage() {
                             step="0.01"
                             value={mileageForm.ratePerKm}
                             onChange={(e) => setMileageForm({ ...mileageForm, ratePerKm: e.target.value })}
-                            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20"
+                            className="w-full bg-[#0d1321] border border-gray-700/50 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20"
                           />
                         </div>
                       </div>
@@ -948,7 +958,7 @@ export default function ExpensesPage() {
                           <select
                             value={mileageForm.clientId}
                             onChange={(e) => setMileageForm({ ...mileageForm, clientId: e.target.value })}
-                            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20"
+                            className="w-full bg-[#0d1321] border border-gray-700/50 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20"
                           >
                             <option value="">No client</option>
                             {clients.map((c) => (
@@ -987,7 +997,7 @@ export default function ExpensesPage() {
                         <button
                           type="button"
                           onClick={() => { setShowMileageForm(false); resetMileageForm(); }}
-                          className="px-6 py-2.5 rounded-xl font-semibold text-gray-400 bg-white/5 border border-white/10 hover:border-gray-600 transition-all"
+                          className="px-6 py-2.5 rounded-xl font-semibold text-gray-400 bg-[#111827] border border-gray-700/50 hover:border-gray-600 transition-all"
                         >
                           Cancel
                         </button>
@@ -997,8 +1007,8 @@ export default function ExpensesPage() {
                 )}
 
                 {/* Mileage List */}
-                <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 hover:border-white/20 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300">
-                  <div className="p-6 border-b border-white/10">
+                <div className="bg-[#111827] backdrop-blur-sm rounded-2xl border border-gray-700/50 hover:border-amber-500/30 hover:shadow-lg hover:shadow-amber-500/10 transition-all duration-300">
+                  <div className="p-6 border-b border-gray-700/50">
                     <h2 className="text-xl font-semibold text-white">
                       Mileage Log
                       <span className="ml-2 text-sm font-normal text-gray-500">({mileageEntries.length})</span>
@@ -1029,7 +1039,7 @@ export default function ExpensesPage() {
                   ) : (
                     <div className="divide-y divide-white/10/50">
                       {mileageEntries.map((entry) => (
-                        <div key={entry.id} className="p-4 hover:bg-white/10/30 transition-all duration-200">
+                        <div key={entry.id} className="p-4 border-l-4 border-l-blue-500 hover:bg-white/5 hover:border-amber-500/30 hover:shadow-lg hover:shadow-amber-500/10 transition-all duration-200">
                           <div className="flex items-start gap-3">
                             <div className="flex-1 min-w-0">
                               <div className="flex items-center gap-2 mb-1">

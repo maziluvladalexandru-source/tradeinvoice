@@ -295,6 +295,7 @@ export default function TimeTrackingPage() {
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-10">
           <div>
             <h1 className="text-4xl font-bold text-white tracking-tight">Time Tracking</h1>
+            <div className="w-20 h-1 bg-gradient-to-r from-amber-500 to-amber-300 rounded-full mt-2" />
             <p className="text-gray-400 mt-1">Track hours and generate invoices from logged time</p>
           </div>
           <button
@@ -307,8 +308,8 @@ export default function TimeTrackingPage() {
         </div>
 
         {/* Timer */}
-        <div className={`relative overflow-hidden bg-white/5 backdrop-blur-sm rounded-2xl border p-6 mb-8 transition-all duration-300 ${timerRunning ? "border-amber-500/30 shadow-lg shadow-amber-500/10" : "border-white/10"}`}>
-          {timerRunning && <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent pointer-events-none" />}
+        <div className={`relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl border p-6 mb-8 transition-all duration-300 ${timerRunning ? "border-amber-500/30 shadow-xl shadow-amber-500/20" : "border-gray-700/50"}`}>
+          {timerRunning && <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 to-transparent pointer-events-none" />}
           <div className="relative flex flex-col md:flex-row items-center gap-4">
             <div className="flex-1 w-full">
               <input
@@ -369,18 +370,18 @@ export default function TimeTrackingPage() {
 
         {/* Summary Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-          <div className="relative overflow-hidden bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-5 hover:border-white/20 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300">
-            <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent pointer-events-none" />
+          <div className="relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl border border-gray-700/50 border-l-4 border-l-blue-500 p-5 hover:border-white/20 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300">
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent pointer-events-none" />
             <p className="relative text-gray-400 text-sm mb-1">This Week</p>
             <p className="relative text-2xl font-bold text-white">{weekHours.toFixed(1)}h</p>
           </div>
-          <div className="relative overflow-hidden bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-5 hover:border-white/20 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300">
-            <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent pointer-events-none" />
+          <div className="relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl border border-gray-700/50 border-l-4 border-l-emerald-500 p-5 hover:border-white/20 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300">
+            <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-transparent pointer-events-none" />
             <p className="relative text-gray-400 text-sm mb-1">This Month</p>
             <p className="relative text-2xl font-bold text-white">{monthHours.toFixed(1)}h</p>
           </div>
-          <div className="relative overflow-hidden bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-5 hover:border-white/20 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300">
-            <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent pointer-events-none" />
+          <div className="relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl border border-gray-700/50 border-l-4 border-l-amber-500 p-5 hover:border-white/20 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300">
+            <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 to-transparent pointer-events-none" />
             <p className="relative text-gray-400 text-sm mb-1">Unbilled</p>
             <p className="relative text-2xl font-bold text-amber-400">&euro;{unbilledAmount.toFixed(2)}</p>
           </div>
@@ -440,7 +441,7 @@ export default function TimeTrackingPage() {
 
         {/* Manual Entry Form */}
         {showForm && (
-          <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-6 mb-8 animate-fade-in">
+          <div className="bg-[#111827] backdrop-blur-sm rounded-2xl border border-gray-700/50 p-6 mb-8 animate-fade-in">
             <h3 className="text-lg font-semibold text-white mb-4">{editingId ? "Edit Entry" : "Add Time Entry"}</h3>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -536,7 +537,7 @@ export default function TimeTrackingPage() {
         {loading ? (
           <div className="space-y-4">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="bg-white/5 rounded-2xl border border-white/10 p-6 animate-pulse">
+              <div key={i} className="bg-[#111827] rounded-2xl border border-gray-700/50 p-6 animate-pulse">
                 <div className="h-4 bg-white/10 rounded w-32 mb-4" />
                 <div className="space-y-3">
                   <div className="h-12 bg-white/10 rounded-xl" />
@@ -562,8 +563,8 @@ export default function TimeTrackingPage() {
                   {dateEntries.map((entry) => (
                     <div
                       key={entry.id}
-                      className={`bg-white/5 backdrop-blur-sm rounded-xl border p-4 flex flex-col sm:flex-row items-start sm:items-center gap-3 transition-all duration-300 hover:shadow-lg hover:shadow-amber-500/5 ${
-                        entry.invoiced ? "border-white/5 opacity-60" : "border-white/10 hover:border-white/20"
+                      className={`bg-[#111827] backdrop-blur-sm rounded-xl border p-4 flex flex-col sm:flex-row items-start sm:items-center gap-3 transition-all duration-300 hover:shadow-lg hover:shadow-amber-500/5 ${
+                        entry.invoiced ? "border-white/5 opacity-60" : "border-gray-700/50 hover:border-amber-500/30"
                       }`}
                     >
                       {!entry.invoiced && entry.billable && (

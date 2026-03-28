@@ -142,6 +142,7 @@ export default function ReportsPage() {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
           <div>
             <h1 className="text-4xl font-bold text-white tracking-tight">Reports</h1>
+            <div className="w-20 h-1 bg-gradient-to-r from-amber-500 to-amber-300 rounded-full mt-2" />
             <p className="text-gray-400 mt-1">Profit &amp; Loss overview</p>
           </div>
           {data && (
@@ -158,7 +159,7 @@ export default function ReportsPage() {
         </div>
 
         {userPlan !== "pro" ? (
-          <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-16 text-center">
+          <div className="bg-[#111827] backdrop-blur-sm rounded-2xl border border-gray-700/50 p-16 text-center">
             <svg className="w-16 h-16 text-gray-700 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
             </svg>
@@ -176,7 +177,7 @@ export default function ReportsPage() {
           <>
             {/* Period Filters */}
             <div className="flex flex-wrap gap-3 mb-8">
-              <div className="flex gap-1 bg-white/5 rounded-xl p-1 border border-white/10">
+              <div className="flex gap-1 bg-[#111827] rounded-xl p-1 border border-gray-700/50">
                 {(["month", "quarter", "year"] as const).map((p) => (
                   <button
                     key={p}
@@ -235,26 +236,26 @@ export default function ReportsPage() {
               <>
                 {/* Summary Cards */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-                  <div className="relative overflow-hidden bg-white/5 backdrop-blur-sm rounded-2xl p-5 border border-white/10 hover:border-white/20 transition-all duration-300">
-                    <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent pointer-events-none" />
+                  <div className="relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl p-5 border border-gray-700/50 border-l-4 border-l-emerald-500 hover:border-white/20 transition-all duration-300">
+                    <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-transparent pointer-events-none" />
                     <p className="text-sm font-medium text-gray-400 mb-1">Revenue</p>
                     <p className="text-2xl font-bold text-emerald-400">{fmtCurrency(data.revenue)}</p>
                     <p className="text-sm text-gray-500 mt-1">{data.invoicesPaid} invoice{data.invoicesPaid !== 1 ? "s" : ""} paid</p>
                   </div>
-                  <div className="relative overflow-hidden bg-white/5 backdrop-blur-sm rounded-2xl p-5 border border-white/10 hover:border-white/20 transition-all duration-300">
-                    <div className="absolute inset-0 bg-gradient-to-br from-red-500/5 to-transparent pointer-events-none" />
+                  <div className="relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl p-5 border border-gray-700/50 border-l-4 border-l-red-500 hover:border-white/20 transition-all duration-300">
+                    <div className="absolute inset-0 bg-gradient-to-br from-red-500/10 to-transparent pointer-events-none" />
                     <p className="text-sm font-medium text-gray-400 mb-1">Expenses</p>
                     <p className="text-2xl font-bold text-red-400">{fmtCurrency(data.totalExpenses)}</p>
                     <p className="text-sm text-gray-500 mt-1">{fmtCurrency(data.deductibleExpenses)} deductible</p>
                   </div>
-                  <div className="relative overflow-hidden bg-white/5 backdrop-blur-sm rounded-2xl p-5 border border-white/10 hover:border-white/20 transition-all duration-300">
-                    <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent pointer-events-none" />
+                  <div className="relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl p-5 border border-gray-700/50 border-l-4 border-l-blue-500 hover:border-white/20 transition-all duration-300">
+                    <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent pointer-events-none" />
                     <p className="text-sm font-medium text-gray-400 mb-1">Mileage Deduction</p>
                     <p className="text-2xl font-bold text-blue-400">{fmtCurrency(data.mileageDeduction)}</p>
                     <p className="text-sm text-gray-500 mt-1">{data.totalKm.toFixed(1)} km</p>
                   </div>
-                  <div className="relative overflow-hidden bg-white/5 backdrop-blur-sm rounded-2xl p-5 border border-white/10 hover:border-white/20 transition-all duration-300">
-                    <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent pointer-events-none" />
+                  <div className="relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl p-5 border border-gray-700/50 border-l-4 border-l-amber-500 hover:border-white/20 transition-all duration-300">
+                    <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 to-transparent pointer-events-none" />
                     <p className="text-sm font-medium text-gray-400 mb-1">Net Profit</p>
                     <p className={`text-2xl font-bold ${data.netProfit >= 0 ? "text-amber-400" : "text-red-400"}`}>
                       {fmtCurrency(data.netProfit)}
@@ -265,7 +266,7 @@ export default function ReportsPage() {
 
                 {/* Revenue vs Expenses Donut */}
                 {(data.revenue > 0 || data.totalExpenses > 0) && (
-                  <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-6 mb-8">
+                  <div className="bg-[#111827] backdrop-blur-sm rounded-2xl border border-gray-700/50 border-t-[3px] border-t-amber-500/60 p-6 mb-8">
                     <h2 className="text-lg font-semibold text-white mb-4">Profit Overview</h2>
                     <div className="flex justify-center">
                       <DonutChart
@@ -283,7 +284,7 @@ export default function ReportsPage() {
 
                 {/* P&L Statement */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-                  <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-6">
+                  <div className="bg-[#111827] backdrop-blur-sm rounded-2xl border border-gray-700/50 p-6">
                     <h2 className="text-lg font-semibold text-white mb-4">Profit &amp; Loss Statement</h2>
                     <div className="space-y-3">
                       <div className="pb-3 border-b border-white/10">
@@ -352,7 +353,7 @@ export default function ReportsPage() {
 
                   {/* Monthly Breakdown */}
                   {data.monthlyData.length > 1 && (
-                    <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-6">
+                    <div className="bg-[#111827] backdrop-blur-sm rounded-2xl border border-gray-700/50 p-6">
                       <h2 className="text-lg font-semibold text-white mb-4">Monthly Breakdown</h2>
                       <div className="space-y-3">
                         <div className="grid grid-cols-5 gap-2 text-xs font-semibold text-gray-500 uppercase tracking-wider pb-2 border-b border-white/10">

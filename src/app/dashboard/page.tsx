@@ -68,11 +68,11 @@ interface DashboardData {
 }
 
 const statusColors: Record<string, string> = {
-  draft: "bg-gray-500/10 text-gray-400 border border-gray-500/20",
-  sent: "bg-blue-500/10 text-blue-400 border border-blue-500/20",
-  viewed: "bg-yellow-500/10 text-yellow-400 border border-yellow-500/20",
-  paid: "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20",
-  overdue: "bg-red-500/10 text-red-400 border border-red-500/20",
+  draft: "bg-gray-500/20 text-gray-400 px-3 py-1 rounded-full text-xs font-semibold",
+  sent: "bg-blue-500/20 text-blue-400 px-3 py-1 rounded-full text-xs font-semibold",
+  viewed: "bg-yellow-500/20 text-yellow-400 px-3 py-1 rounded-full text-xs font-semibold",
+  paid: "bg-emerald-500/20 text-emerald-400 px-3 py-1 rounded-full text-xs font-semibold",
+  overdue: "bg-red-500/20 text-red-400 px-3 py-1 rounded-full text-xs font-semibold",
 };
 
 const statusDot: Record<string, string> = {
@@ -114,14 +114,14 @@ function LoadingSkeleton() {
           {[1, 2, 3].map((i) => (
             <div
               key={i}
-              className="bg-white/5 rounded-2xl p-5 md:p-6 border border-white/10"
+              className="bg-[#111827] rounded-2xl p-5 md:p-6 border border-white/10"
             >
               <div className="h-4 w-28 bg-white/10 rounded animate-pulse mb-3" />
               <div className="h-8 w-36 bg-white/10 rounded animate-pulse" />
             </div>
           ))}
         </div>
-        <div className="bg-white/5 rounded-2xl border border-white/10">
+        <div className="bg-[#111827] rounded-2xl border border-white/10">
           <div className="p-6 border-b border-white/10">
             <div className="h-6 w-40 bg-white/10 rounded animate-pulse" />
           </div>
@@ -195,6 +195,7 @@ export default function DashboardPage() {
             <h1 className="text-4xl font-bold text-white tracking-tight">
               Dashboard
             </h1>
+            <div className="w-20 h-1 bg-gradient-to-r from-amber-500 to-amber-300 rounded-full mt-2" />
             <p className="text-gray-400 mt-1">
               {greeting}
               {user.name ? `, ${user.name}` : ""}
@@ -212,21 +213,21 @@ export default function DashboardPage() {
 
         {/* Stats */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-8">
-          <div className="relative overflow-hidden bg-white/5 backdrop-blur-sm rounded-2xl p-5 md:p-6 border border-white/10 hover:border-white/20 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300">
-            <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent pointer-events-none" />
+          <div className="relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl p-5 md:p-6 border border-white/10 border-l-4 border-l-amber-500 hover:border-white/20 shadow-lg shadow-amber-500/10 hover:shadow-amber-500/5 transition-all duration-300">
+            <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 to-transparent pointer-events-none" />
             <p className="text-sm font-medium text-gray-400 mb-1">
               Total Outstanding
             </p>
-            <p className="text-lg md:text-2xl font-bold text-white truncate">
+            <p className="text-3xl font-bold text-amber-400 truncate">
               {fc(stats.totalOutstanding)}
             </p>
           </div>
-          <div className="relative overflow-hidden bg-white/5 backdrop-blur-sm rounded-2xl p-5 md:p-6 border border-white/10 hover:border-white/20 hover:shadow-lg hover:shadow-emerald-500/5 transition-all duration-300">
-            <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent pointer-events-none" />
+          <div className="relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl p-5 md:p-6 border border-white/10 border-l-4 border-l-emerald-500 hover:border-white/20 shadow-lg shadow-emerald-500/10 hover:shadow-emerald-500/5 transition-all duration-300">
+            <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-transparent pointer-events-none" />
             <p className="text-sm font-medium text-gray-400 mb-1">
               Paid This Month
             </p>
-            <p className="text-lg md:text-2xl font-bold text-green-400 truncate">
+            <p className="text-3xl font-bold text-green-400 truncate">
               {fc(stats.paidThisMonth)}
             </p>
             {stats.revenueLastMonth > 0 && (
@@ -238,13 +239,13 @@ export default function DashboardPage() {
               </p>
             )}
           </div>
-          <div className="relative overflow-hidden bg-white/5 backdrop-blur-sm rounded-2xl p-5 md:p-6 border border-white/10 hover:border-white/20 hover:shadow-lg hover:shadow-red-500/5 transition-all duration-300">
-            <div className="absolute inset-0 bg-gradient-to-br from-red-500/5 to-transparent pointer-events-none" />
+          <div className="relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl p-5 md:p-6 border border-white/10 border-l-4 border-l-red-500 hover:border-white/20 shadow-lg shadow-red-500/10 hover:shadow-red-500/5 transition-all duration-300">
+            <div className="absolute inset-0 bg-gradient-to-br from-red-500/10 to-transparent pointer-events-none" />
             <p className="text-sm font-medium text-gray-400 mb-1">
               Overdue Invoices
             </p>
             <div className="flex items-center gap-2">
-              <p className="text-lg md:text-2xl font-bold text-red-400">
+              <p className="text-3xl font-bold text-red-400">
                 {stats.overdueCount}
               </p>
               {stats.overdueCount > 0 && (
@@ -265,23 +266,23 @@ export default function DashboardPage() {
             </div>
           </div>
           {stats.avgDaysToPayment !== null && (
-            <div className="relative overflow-hidden bg-white/5 backdrop-blur-sm rounded-2xl p-5 md:p-6 border border-white/10 hover:border-white/20 hover:shadow-lg hover:shadow-blue-500/5 transition-all duration-300">
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent pointer-events-none" />
+            <div className="relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl p-5 md:p-6 border border-white/10 border-l-4 border-l-blue-500 hover:border-white/20 shadow-lg shadow-blue-500/10 hover:shadow-blue-500/5 transition-all duration-300">
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent pointer-events-none" />
               <p className="text-sm font-medium text-gray-400 mb-1">
                 Avg. Days to Payment
               </p>
-              <p className="text-lg md:text-2xl font-bold text-blue-400">
+              <p className="text-3xl font-bold text-blue-400">
                 {stats.avgDaysToPayment}
               </p>
               <p className="text-sm text-gray-500 mt-1">days</p>
             </div>
           )}
-          <div className="relative overflow-hidden bg-white/5 backdrop-blur-sm rounded-2xl p-5 md:p-6 border border-white/10 hover:border-white/20 hover:shadow-lg hover:shadow-purple-500/5 transition-all duration-300">
-            <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent pointer-events-none" />
+          <div className="relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl p-5 md:p-6 border border-white/10 border-l-4 border-l-purple-500 hover:border-white/20 shadow-lg shadow-purple-500/10 hover:shadow-purple-500/5 transition-all duration-300">
+            <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-transparent pointer-events-none" />
             <p className="text-sm font-medium text-gray-400 mb-1">
               Active Clients
             </p>
-            <p className="text-lg md:text-2xl font-bold text-purple-400">
+            <p className="text-3xl font-bold text-purple-400">
               {stats.activeClientsCount}
             </p>
             <p className="text-sm text-gray-500 mt-1">last 90 days</p>
@@ -292,8 +293,8 @@ export default function DashboardPage() {
         {data.totalInvoiceCount > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-8">
             {/* Invoice Status */}
-            <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-5 md:p-6">
-              <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">Invoice Status</h3>
+            <div className="bg-[#111827] backdrop-blur-sm rounded-2xl border border-gray-700/50 border-t-[3px] border-t-amber-500/60 p-5 md:p-6">
+              <h3 className="text-sm font-semibold text-amber-400 uppercase tracking-wider mb-4">Invoice Status</h3>
               <DonutChart
                 segments={[
                   { label: "Draft", value: data.charts.statusCounts.draft || 0, color: "#6b7280", displayValue: String(data.charts.statusCounts.draft || 0) },
@@ -309,8 +310,8 @@ export default function DashboardPage() {
             </div>
 
             {/* Revenue This Month */}
-            <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-5 md:p-6">
-              <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">Revenue This Month</h3>
+            <div className="bg-[#111827] backdrop-blur-sm rounded-2xl border border-gray-700/50 border-t-[3px] border-t-amber-500/60 p-5 md:p-6">
+              <h3 className="text-sm font-semibold text-amber-400 uppercase tracking-wider mb-4">Revenue This Month</h3>
               <DonutChart
                 segments={[
                   { label: "Paid", value: data.charts.revenueBreakdown.paid, color: "#22c55e", displayValue: fc(data.charts.revenueBreakdown.paid) },
@@ -324,8 +325,8 @@ export default function DashboardPage() {
             </div>
 
             {/* Collection Rate */}
-            <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-5 md:p-6">
-              <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">Collection Rate</h3>
+            <div className="bg-[#111827] backdrop-blur-sm rounded-2xl border border-gray-700/50 border-t-[3px] border-t-amber-500/60 p-5 md:p-6">
+              <h3 className="text-sm font-semibold text-amber-400 uppercase tracking-wider mb-4">Collection Rate</h3>
               <DonutChart
                 segments={[
                   { label: "Collected", value: data.charts.totalCollected, color: "#22c55e", displayValue: fc(data.charts.totalCollected) },
@@ -389,8 +390,8 @@ export default function DashboardPage() {
         )}
 
         {/* Recent invoices */}
-        <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10">
-          <div className="p-6 border-b border-white/10 flex items-center justify-between">
+        <div className="bg-[#111827] backdrop-blur-sm rounded-2xl border border-gray-700/50">
+          <div className="p-6 border-b border-gray-700/50 flex items-center justify-between">
             <h2 className="text-xl font-semibold text-white">
               Recent Invoices
             </h2>
@@ -531,11 +532,11 @@ export default function DashboardPage() {
               </Link>
             </div>
           ) : (
-            <div className="divide-y divide-white/10">
+            <div className="p-2">
               {recentInvoices.map((invoice) => (
                 <div
                   key={invoice.id}
-                  className={`p-4 hover:bg-white/5 transition-colors border-l-4 ${statusBorder[invoice.status] || "border-l-gray-600"}`}
+                  className={`p-4 bg-[#111827] rounded-xl mb-1 border border-gray-700/30 hover:border-amber-500/30 hover:bg-[#1a2235] transition-colors border-l-4 ${statusBorder[invoice.status] || "border-l-gray-600"}`}
                 >
                   <div className="flex items-center gap-3">
                     <Link
@@ -652,7 +653,7 @@ export default function DashboardPage() {
 
         {/* Recent Quotes */}
         {recentQuotes.length > 0 && (
-          <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 mt-8">
+          <div className="bg-[#111827] backdrop-blur-sm rounded-2xl border border-gray-700/50 mt-8">
             <div className="p-6 border-b border-white/10 flex items-center justify-between">
               <h2 className="text-xl font-semibold text-white flex items-center gap-2">
                 Recent Quotes

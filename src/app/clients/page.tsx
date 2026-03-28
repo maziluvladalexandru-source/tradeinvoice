@@ -224,6 +224,7 @@ export default function ClientsPage() {
         <div className="flex items-center justify-between mb-8">
           <div>
             <h1 className="text-4xl font-bold text-white tracking-tight">Clients</h1>
+            <div className="w-20 h-1 bg-gradient-to-r from-amber-500 to-amber-300 rounded-full mt-2" />
             <p className="text-gray-400 mt-1">{clients.length} client{clients.length !== 1 ? "s" : ""}</p>
           </div>
           <button
@@ -237,8 +238,8 @@ export default function ClientsPage() {
         {/* Summary Cards */}
         {clients.length > 0 && (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-            <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-5 border border-white/10 hover:border-white/20 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300 relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent pointer-events-none" />
+            <div className="bg-[#111827] backdrop-blur-sm rounded-2xl p-5 border border-gray-700/50 border-l-4 border-l-blue-500 hover:border-gray-600/50 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300 relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent pointer-events-none" />
               <div className="relative">
                 <p className="text-xs uppercase tracking-wider text-gray-500 font-semibold flex items-center gap-1.5">
                   <svg className="w-3.5 h-3.5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" /></svg>
@@ -247,8 +248,8 @@ export default function ClientsPage() {
                 <p className="text-2xl font-bold text-white mt-1">{clients.length}</p>
               </div>
             </div>
-            <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-5 border border-white/10 hover:border-white/20 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300 relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent pointer-events-none" />
+            <div className="bg-[#111827] backdrop-blur-sm rounded-2xl p-5 border border-gray-700/50 border-l-4 border-l-amber-500 hover:border-gray-600/50 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300 relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 to-transparent pointer-events-none" />
               <div className="relative">
                 <p className="text-xs uppercase tracking-wider text-gray-500 font-semibold flex items-center gap-1.5">
                   <svg className="w-3.5 h-3.5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
@@ -257,8 +258,8 @@ export default function ClientsPage() {
                 <p className="text-2xl font-bold text-amber-400 mt-1">{formatCurrency(totalRevenue, primaryCurrency)}</p>
               </div>
             </div>
-            <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-5 border border-white/10 hover:border-white/20 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300 relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent pointer-events-none" />
+            <div className="bg-[#111827] backdrop-blur-sm rounded-2xl p-5 border border-gray-700/50 border-l-4 border-l-emerald-500 hover:border-gray-600/50 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300 relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-transparent pointer-events-none" />
               <div className="relative">
                 <p className="text-xs uppercase tracking-wider text-gray-500 font-semibold flex items-center gap-1.5">
                   <svg className="w-3.5 h-3.5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" /></svg>
@@ -267,8 +268,8 @@ export default function ClientsPage() {
                 <p className="text-2xl font-bold text-white mt-1">{totalInvoices}</p>
               </div>
             </div>
-            <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-5 border border-white/10 hover:border-white/20 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300 relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent pointer-events-none" />
+            <div className="bg-[#111827] backdrop-blur-sm rounded-2xl p-5 border border-gray-700/50 border-l-4 border-l-red-500 hover:border-gray-600/50 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300 relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-red-500/10 to-transparent pointer-events-none" />
               <div className="relative">
                 <p className="text-xs uppercase tracking-wider text-gray-500 font-semibold flex items-center gap-1.5">
                   <svg className="w-3.5 h-3.5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" /></svg>
@@ -285,7 +286,7 @@ export default function ClientsPage() {
         {showForm && (
           <form
             onSubmit={handleSubmit}
-            className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 mb-8 space-y-4"
+            className="bg-[#111827] backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 mb-8 space-y-4"
           >
             <div className="grid md:grid-cols-2 gap-4">
               <input
@@ -293,7 +294,7 @@ export default function ClientsPage() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
-                className="px-4 py-3 rounded-xl border border-white/10 text-lg focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-white/5 text-white placeholder-gray-500 transition-all"
+                className="px-4 py-3 rounded-xl border border-gray-700/50 text-lg focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-[#111827] text-white placeholder-gray-500 transition-all"
               />
               <input
                 placeholder="Email *"
@@ -301,25 +302,25 @@ export default function ClientsPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="px-4 py-3 rounded-xl border border-white/10 text-lg focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-white/5 text-white placeholder-gray-500 transition-all"
+                className="px-4 py-3 rounded-xl border border-gray-700/50 text-lg focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-[#111827] text-white placeholder-gray-500 transition-all"
               />
               <input
                 placeholder="Phone (optional)"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                className="px-4 py-3 rounded-xl border border-white/10 text-lg focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-white/5 text-white placeholder-gray-500 transition-all"
+                className="px-4 py-3 rounded-xl border border-gray-700/50 text-lg focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-[#111827] text-white placeholder-gray-500 transition-all"
               />
               <input
                 placeholder="Address (optional)"
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
-                className="px-4 py-3 rounded-xl border border-white/10 text-lg focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-white/5 text-white placeholder-gray-500 transition-all"
+                className="px-4 py-3 rounded-xl border border-gray-700/50 text-lg focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-[#111827] text-white placeholder-gray-500 transition-all"
               />
               <input
                 placeholder="VAT number (optional)"
                 value={vatNumber}
                 onChange={(e) => setVatNumber(e.target.value)}
-                className="px-4 py-3 rounded-xl border border-white/10 text-lg focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-white/5 text-white placeholder-gray-500 transition-all"
+                className="px-4 py-3 rounded-xl border border-gray-700/50 text-lg focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-[#111827] text-white placeholder-gray-500 transition-all"
               />
             </div>
             <button
@@ -341,13 +342,13 @@ export default function ClientsPage() {
                 placeholder="Search clients..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="flex-1 w-full pl-10 px-4 py-2.5 rounded-xl border border-white/10 bg-white/5 text-white placeholder-gray-500 focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none transition-all"
+                className="flex-1 w-full pl-10 px-4 py-2.5 rounded-xl border border-gray-700/50 bg-[#111827] text-white placeholder-gray-500 focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none transition-all"
               />
             </div>
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
-              className="px-4 py-2.5 rounded-xl border border-white/10 bg-white/5 text-gray-300 focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none transition-all"
+              className="px-4 py-2.5 rounded-xl border border-gray-700/50 bg-[#111827] text-gray-300 focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none transition-all"
             >
               <option value="name">Sort by Name</option>
               <option value="totalInvoiced">Sort by Revenue</option>
@@ -362,7 +363,7 @@ export default function ClientsPage() {
             {[1, 2, 3].map((i) => <SkeletonCard key={i} />)}
           </div>
         ) : clients.length === 0 ? (
-          <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-16 border border-white/10 text-center relative overflow-hidden">
+          <div className="bg-[#111827] backdrop-blur-sm rounded-2xl p-16 border border-gray-700/50 text-center relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent pointer-events-none" />
             <div className="relative">
               <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-amber-500/10 flex items-center justify-center">
@@ -383,7 +384,7 @@ export default function ClientsPage() {
             </div>
           </div>
         ) : filtered.length === 0 ? (
-          <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-12 border border-white/10 text-center">
+          <div className="bg-[#111827] backdrop-blur-sm rounded-2xl p-12 border border-gray-700/50 text-center">
             <p className="text-gray-400 text-lg">No clients match your search.</p>
           </div>
         ) : (
@@ -393,7 +394,7 @@ export default function ClientsPage() {
               return (
                 <div
                   key={client.id}
-                  className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-5 hover:border-white/20 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300"
+                  className="bg-[#111827] backdrop-blur-sm rounded-2xl border border-gray-700/50 p-5 hover:border-amber-500/30 hover:shadow-lg hover:shadow-amber-500/10 transition-all duration-300"
                 >
                   {editingId === client.id ? (
                     <form onSubmit={handleEditSubmit} className="space-y-3">
@@ -470,7 +471,7 @@ export default function ClientsPage() {
                   )}
 
                   {/* Stats Row */}
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4 pt-4 border-t border-white/10">
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4 pt-4 border-t border-gray-700/50">
                     <div>
                       <p className="text-xs text-gray-500 uppercase tracking-wider">Total Invoiced</p>
                       <p className="text-lg font-bold text-white mt-0.5">
