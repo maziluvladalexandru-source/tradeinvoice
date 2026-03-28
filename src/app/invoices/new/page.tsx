@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import UpgradeModal, { ProBadge } from "@/components/UpgradeModal";
 import { COUNTRY_CONFIGS, getCountryConfig, formatComplianceFooter } from "@/lib/country-config";
-// CountryConfig type used via getCountryConfig return
+import FlagIcon from "@/components/FlagIcon";
 
 interface Client {
   id: string;
@@ -867,7 +867,7 @@ function NewInvoiceForm() {
                             : "border-gray-700/50 hover:border-gray-600/50 bg-gray-900/50"
                         }`}
                       >
-                        <span className="text-2xl leading-none">{c.flag}</span>
+                        <FlagIcon countryCode={c.countryCode} />
                         <span className={`text-xs font-bold ${invoiceCountry === c.countryCode ? "text-amber-400" : "text-white"}`}>
                           {c.countryCode}
                         </span>
