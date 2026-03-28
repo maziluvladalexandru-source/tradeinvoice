@@ -57,6 +57,38 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              name: "TradeInvoice",
+              url: "https://tradeinvoice.app",
+              description:
+                "Simple invoicing for tradespeople in the Netherlands, UK, Germany and Belgium",
+            }),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "SoftwareApplication",
+              name: "TradeInvoice",
+              applicationCategory: "BusinessApplication",
+              operatingSystem: "Web",
+              offers: {
+                "@type": "Offer",
+                price: "0",
+                priceCurrency: "EUR",
+              },
+            }),
+          }}
+        />
+      </head>
       <body className={`${inter.className} antialiased bg-[#0a0f1e]`}>
         <ToastProvider>
           <TimerProvider>

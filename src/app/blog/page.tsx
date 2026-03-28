@@ -32,10 +32,29 @@ export default function BlogIndex() {
 
       <main className="max-w-4xl mx-auto px-4 py-16">
         <h1 className="text-4xl md:text-5xl font-extrabold mb-4 text-amber-400">Blog</h1>
-        <p className="text-lg text-gray-400 mb-12 max-w-2xl">
+        <p className="text-lg text-gray-400 mb-8 max-w-2xl">
           Practical guides on invoicing, BTW, payments, and running your trade
           business in the Netherlands.
         </p>
+
+        {/* Free template banner */}
+        <Link
+          href="/templates"
+          className="block mb-12 bg-gradient-to-r from-amber-500/10 to-amber-600/5 border border-amber-500/20 rounded-2xl p-6 hover:border-amber-500/40 transition-all duration-200 group"
+        >
+          <div className="flex items-center justify-between">
+            <div>
+              <div className="text-sm text-amber-400 font-semibold mb-1">Free Resource</div>
+              <div className="text-lg font-bold text-white group-hover:text-amber-400 transition-colors">
+                Free Invoice Template for Tradespeople
+              </div>
+              <div className="text-gray-400 text-sm mt-1">
+                Download our professional template or create your own invoice online in 60 seconds.
+              </div>
+            </div>
+            <div className="text-amber-400 text-2xl flex-shrink-0 ml-4">&rarr;</div>
+          </div>
+        </Link>
 
         <div className="space-y-8">
           {articles.map((article) => (

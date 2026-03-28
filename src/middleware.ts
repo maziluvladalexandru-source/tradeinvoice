@@ -30,6 +30,11 @@ export function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
+  // Allow templates page (public SEO content)
+  if (pathname.startsWith("/templates")) {
+    return NextResponse.next();
+  }
+
   // Allow legal/public pages
   if (["/terms", "/privacy", "/dpa", "/contact"].includes(pathname)) {
     return NextResponse.next();
