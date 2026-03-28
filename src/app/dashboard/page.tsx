@@ -6,6 +6,7 @@ import Navbar from "@/components/Navbar";
 import BottomNav from "@/components/BottomNav";
 import FloatingCreateButton from "@/components/FloatingCreateButton";
 import InvoiceCardActions from "@/components/InvoiceCardActions";
+import BulkInvoiceActions from "@/components/BulkInvoiceActions";
 import OnboardingChecklist from "@/components/OnboardingChecklist";
 import NewInvoiceButton from "@/components/NewInvoiceButton";
 import Link from "next/link";
@@ -225,138 +226,155 @@ export default async function DashboardPage() {
         )}
 
         {/* Recent invoices */}
-        <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl border border-gray-800/50">
-          <div className="p-6 border-b border-gray-800/50 flex items-center justify-between">
-            <h2 className="text-xl font-semibold text-white">
-              Recent Invoices
-            </h2>
-            {invoices.length > 5 && (
-              <Link
-                href="/invoices/new"
-                className="text-amber-500 font-medium text-sm"
-              >
-                View all
-              </Link>
-            )}
-          </div>
-
-          {recentInvoices.length === 0 ? (
-            <div className="p-16 text-center">
-              {/* Empty state SVG illustration */}
-              <div className="w-40 h-40 mx-auto mb-8">
-                <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-                  {/* Paper/document shape */}
-                  <rect x="50" y="30" width="100" height="130" rx="8" fill="#1f2937" stroke="#374151" strokeWidth="2" />
-                  <rect x="50" y="30" width="100" height="130" rx="8" fill="url(#emptyGrad)" opacity="0.5" />
-                  {/* Folded corner */}
-                  <path d="M120 30 L150 30 L150 60 Z" fill="#111827" stroke="#374151" strokeWidth="1" />
-                  <path d="M120 30 L120 55 C120 57.7614 122.239 60 125 60 L150 60" fill="#1f2937" stroke="#374151" strokeWidth="2" />
-                  {/* Content lines */}
-                  <rect x="68" y="75" width="64" height="6" rx="3" fill="#374151" />
-                  <rect x="68" y="90" width="48" height="6" rx="3" fill="#374151" />
-                  <rect x="68" y="105" width="56" height="6" rx="3" fill="#374151" />
-                  <rect x="68" y="120" width="36" height="6" rx="3" fill="#374151" />
-                  {/* Amber accent circle with plus */}
-                  <circle cx="140" cy="145" r="24" fill="#f59e0b" opacity="0.15" />
-                  <circle cx="140" cy="145" r="18" fill="#f59e0b" opacity="0.25" />
-                  <path d="M140 137 L140 153 M132 145 L148 145" stroke="#f59e0b" strokeWidth="2.5" strokeLinecap="round" />
-                  {/* Gradient definition */}
-                  <defs>
-                    <linearGradient id="emptyGrad" x1="100" y1="30" x2="100" y2="160">
-                      <stop stopColor="#f59e0b" stopOpacity="0.05" />
-                      <stop offset="1" stopColor="#f59e0b" stopOpacity="0" />
-                    </linearGradient>
-                  </defs>
-                </svg>
-              </div>
-              <h3 className="text-2xl font-semibold text-white mb-3">No invoices yet</h3>
-              <p className="text-gray-400 mb-8 max-w-sm mx-auto">
-                Create your first invoice to start tracking payments and getting paid faster.
-              </p>
-              <Link
-                href="/invoices/new"
-                className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-gray-950 px-8 py-3.5 rounded-xl font-semibold text-lg shadow-lg shadow-amber-500/20 transition-all"
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 4v16m8-8H4" />
-                </svg>
-                Create Your First Invoice
-              </Link>
-            </div>
-          ) : (
-            <div className="divide-y divide-gray-800/50">
-              {recentInvoices.map((invoice) => (
-                <div
-                  key={invoice.id}
-                  className={`p-4 hover:bg-gray-800/50 transition-colors border-l-4 ${statusBorder[invoice.status] || "border-l-gray-600"}`}
-                >
-                  <Link
-                    href={`/invoices/${invoice.id}`}
-                    className="flex items-center gap-2 flex-1 min-w-0 overflow-hidden"
-                  >
-                    <div className="flex-1 min-w-0">
-                      <p className="font-medium text-white">
-                        {invoice.invoiceNumber}
-                      </p>
-                      <p className="text-sm text-gray-400">
-                        {invoice.client.name}
-                      </p>
-                    </div>
-                    {invoice.isRecurring && (
-                      <span className="bg-cyan-500/20 text-cyan-300 ring-1 ring-cyan-400/40 px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase hidden sm:inline-flex items-center gap-1">
-                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                        </svg>
-                        Recurring
-                      </span>
-                    )}
-                    <p className="text-xs text-gray-500 hidden sm:block">
-                      Due {fmtDate(invoice.dueDate)}
-                    </p>
-                  </Link>
-                  <div className="flex items-center gap-3">
-                    <span
-                      className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold capitalize ${statusColors[invoice.status] || ""}`}
-                    >
-                      <span className={`w-1.5 h-1.5 rounded-full ${statusDot[invoice.status] || ""}`} />
-                      {invoice.status}
-                      {invoice.status === "viewed" && (
-                        <svg className="w-3.5 h-3.5 ml-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                        </svg>
-                      )}
-                    </span>
-                    {/* Prominent total amount */}
-                    <div className="text-right whitespace-nowrap">
-                      <p className="text-base font-bold text-white">
-                        {formatCurrency(invoice.total, invoice.currency)}
-                      </p>
-                      {invoice.paidAmount > 0 && invoice.paidAmount < invoice.total && (
-                        <p className="text-xs text-amber-400">
-                          Due: {formatCurrency(invoice.total - invoice.paidAmount, invoice.currency)}
-                        </p>
-                      )}
-                    </div>
-                    {/* Quick actions */}
-                    <InvoiceCardActions invoiceId={invoice.id} status={invoice.status} type={invoice.type} />
-                    <a
-                      href={`/api/invoices/${invoice.id}/pdf`}
-                      target="_blank"
-                      className="p-2 rounded-lg text-gray-400 hover:text-amber-500 hover:bg-gray-700 transition-colors"
-                      title="Download PDF"
-                      aria-label="Download PDF"
-                    >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                      </svg>
-                    </a>
-                  </div>
+        <BulkInvoiceActions invoices={recentInvoices.map((i) => ({ id: i.id, invoiceNumber: i.invoiceNumber, status: i.status }))}>
+          {({ selectedIds, toggleSelect, toggleAll, allSelected }) => (
+            <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl border border-gray-800/50">
+              <div className="p-6 border-b border-gray-800/50 flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  {recentInvoices.length > 0 && (
+                    <label className="flex items-center cursor-pointer" onClick={(e) => e.stopPropagation()}>
+                      <input
+                        type="checkbox"
+                        checked={allSelected}
+                        onChange={toggleAll}
+                        className="w-4 h-4 rounded border-gray-600 bg-gray-800 text-amber-500 focus:ring-amber-500 focus:ring-offset-0 cursor-pointer"
+                      />
+                    </label>
+                  )}
+                  <h2 className="text-xl font-semibold text-white">
+                    Recent Invoices
+                  </h2>
                 </div>
-              ))}
+                {invoices.length > 5 && (
+                  <Link
+                    href="/invoices/new"
+                    className="text-amber-500 font-medium text-sm"
+                  >
+                    View all
+                  </Link>
+                )}
+              </div>
+
+              {recentInvoices.length === 0 ? (
+                <div className="p-16 text-center">
+                  {/* Empty state SVG illustration */}
+                  <div className="w-40 h-40 mx-auto mb-8">
+                    <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+                      <rect x="50" y="30" width="100" height="130" rx="8" fill="#1f2937" stroke="#374151" strokeWidth="2" />
+                      <rect x="50" y="30" width="100" height="130" rx="8" fill="url(#emptyGrad)" opacity="0.5" />
+                      <path d="M120 30 L150 30 L150 60 Z" fill="#111827" stroke="#374151" strokeWidth="1" />
+                      <path d="M120 30 L120 55 C120 57.7614 122.239 60 125 60 L150 60" fill="#1f2937" stroke="#374151" strokeWidth="2" />
+                      <rect x="68" y="75" width="64" height="6" rx="3" fill="#374151" />
+                      <rect x="68" y="90" width="48" height="6" rx="3" fill="#374151" />
+                      <rect x="68" y="105" width="56" height="6" rx="3" fill="#374151" />
+                      <rect x="68" y="120" width="36" height="6" rx="3" fill="#374151" />
+                      <circle cx="140" cy="145" r="24" fill="#f59e0b" opacity="0.15" />
+                      <circle cx="140" cy="145" r="18" fill="#f59e0b" opacity="0.25" />
+                      <path d="M140 137 L140 153 M132 145 L148 145" stroke="#f59e0b" strokeWidth="2.5" strokeLinecap="round" />
+                      <defs>
+                        <linearGradient id="emptyGrad" x1="100" y1="30" x2="100" y2="160">
+                          <stop stopColor="#f59e0b" stopOpacity="0.05" />
+                          <stop offset="1" stopColor="#f59e0b" stopOpacity="0" />
+                        </linearGradient>
+                      </defs>
+                    </svg>
+                  </div>
+                  <h3 className="text-2xl font-semibold text-white mb-3">No invoices yet</h3>
+                  <p className="text-gray-400 mb-8 max-w-sm mx-auto">
+                    Create your first invoice to start tracking payments and getting paid faster.
+                  </p>
+                  <Link
+                    href="/invoices/new"
+                    className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-gray-950 px-8 py-3.5 rounded-xl font-semibold text-lg shadow-lg shadow-amber-500/20 transition-all"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 4v16m8-8H4" />
+                    </svg>
+                    Create Your First Invoice
+                  </Link>
+                </div>
+              ) : (
+                <div className="divide-y divide-gray-800/50">
+                  {recentInvoices.map((invoice) => (
+                    <div
+                      key={invoice.id}
+                      className={`p-4 hover:bg-gray-800/50 transition-colors border-l-4 ${statusBorder[invoice.status] || "border-l-gray-600"} ${selectedIds.has(invoice.id) ? "bg-amber-500/5" : ""}`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <label className="flex items-center cursor-pointer shrink-0" onClick={(e) => e.stopPropagation()}>
+                          <input
+                            type="checkbox"
+                            checked={selectedIds.has(invoice.id)}
+                            onChange={() => toggleSelect(invoice.id)}
+                            className="w-4 h-4 rounded border-gray-600 bg-gray-800 text-amber-500 focus:ring-amber-500 focus:ring-offset-0 cursor-pointer"
+                          />
+                        </label>
+                        <Link
+                          href={`/invoices/${invoice.id}`}
+                          className="flex items-center gap-2 flex-1 min-w-0 overflow-hidden"
+                        >
+                          <div className="flex-1 min-w-0">
+                            <p className="font-medium text-white">
+                              {invoice.invoiceNumber}
+                            </p>
+                            <p className="text-sm text-gray-400">
+                              {invoice.client.name}
+                            </p>
+                          </div>
+                          {invoice.isRecurring && (
+                            <span className="bg-cyan-500/20 text-cyan-300 ring-1 ring-cyan-400/40 px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase hidden sm:inline-flex items-center gap-1">
+                              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                              </svg>
+                              Recurring
+                            </span>
+                          )}
+                          <p className="text-xs text-gray-500 hidden sm:block">
+                            Due {fmtDate(invoice.dueDate)}
+                          </p>
+                        </Link>
+                        <span
+                          className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold capitalize ${statusColors[invoice.status] || ""}`}
+                        >
+                          <span className={`w-1.5 h-1.5 rounded-full ${statusDot[invoice.status] || ""}`} />
+                          {invoice.status}
+                          {invoice.status === "viewed" && (
+                            <svg className="w-3.5 h-3.5 ml-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                            </svg>
+                          )}
+                        </span>
+                        <div className="text-right whitespace-nowrap">
+                          <p className="text-base font-bold text-white">
+                            {formatCurrency(invoice.total, invoice.currency)}
+                          </p>
+                          {invoice.paidAmount > 0 && invoice.paidAmount < invoice.total && (
+                            <p className="text-xs text-amber-400">
+                              Due: {formatCurrency(invoice.total - invoice.paidAmount, invoice.currency)}
+                            </p>
+                          )}
+                        </div>
+                        <InvoiceCardActions invoiceId={invoice.id} status={invoice.status} type={invoice.type} />
+                        <a
+                          href={`/api/invoices/${invoice.id}/pdf`}
+                          target="_blank"
+                          className="p-2 rounded-lg text-gray-400 hover:text-amber-500 hover:bg-gray-700 transition-colors"
+                          title="Download PDF"
+                          aria-label="Download PDF"
+                        >
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                          </svg>
+                        </a>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           )}
-        </div>
+        </BulkInvoiceActions>
         {/* Recent Quotes */}
         {recentQuotes.length > 0 && (
           <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl border border-gray-800/50 mt-8">
