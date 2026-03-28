@@ -16,6 +16,7 @@ export default function Navbar() {
     { href: "/clients", label: "Clients" },
     { href: "/expenses", label: "Expenses" },
     { href: "/time-tracking", label: "Time" },
+    { href: "/reports", label: "Reports" },
     { href: "/services", label: "Services" },
     { href: "/settings", label: "Settings" },
   ];
