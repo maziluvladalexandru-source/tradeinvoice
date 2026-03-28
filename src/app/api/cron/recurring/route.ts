@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { generateInvoiceNumber, formatCurrency, formatDate, appUrl } from "@/lib/utils";
+import { getNextInvoiceNumber, formatCurrency, formatDate, appUrl } from "@/lib/utils";
 import { sendInvoiceEmail } from "@/lib/resend";
 
 export async function GET(req: NextRequest) {
@@ -37,7 +37,7 @@ export async function GET(req: NextRequest) {
         data: {
           userId: invoice.userId,
           clientId: invoice.clientId,
-          invoiceNumber: generateInvoiceNumber(),
+          invoiceNumber: await getNextInvoiceNumber(invoice.userId),
           description: invoice.description,
           paymentNotes: invoice.paymentNotes,
           notesToClient: invoice.notesToClient,

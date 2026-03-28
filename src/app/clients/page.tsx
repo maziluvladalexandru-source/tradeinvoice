@@ -104,6 +104,16 @@ export default function ClientsPage() {
   const [search, setSearch] = useState("");
   const [sortBy, setSortBy] = useState<"name" | "totalInvoiced" | "lastInvoiceDate" | "invoiceCount">("name");
 
+  // Edit/delete state
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editName, setEditName] = useState("");
+  const [editEmail, setEditEmail] = useState("");
+  const [editPhone, setEditPhone] = useState("");
+  const [editAddress, setEditAddress] = useState("");
+  const [editVatNumber, setEditVatNumber] = useState("");
+  const [editSaving, setEditSaving] = useState(false);
+  const [deleting, setDeleting] = useState<string | null>(null);
+
   useEffect(() => {
     fetch("/api/clients")
       .then((r) => r.json())
@@ -134,6 +144,54 @@ export default function ClientsPage() {
       toast("Failed to add client", "error");
     }
     setSaving(false);
+  }
+
+  function startEditing(client: Client) {
+    setEditingId(client.id);
+    setEditName(client.name);
+    setEditEmail(client.email);
+    setEditPhone(client.phone || "");
+    setEditAddress(client.address || "");
+    setEditVatNumber(client.vatNumber || "");
+  }
+
+  async function handleEditSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!editingId) return;
+    setEditSaving(true);
+    const res = await fetch(`/api/clients/${editingId}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name: editName, email: editEmail, phone: editPhone, address: editAddress, vatNumber: editVatNumber || null }),
+    });
+    if (res.ok) {
+      const updated = await res.json();
+      setClients(clients.map((c) => c.id === editingId ? { ...c, name: updated.name, email: updated.email, phone: updated.phone, address: updated.address, vatNumber: updated.vatNumber } : c));
+      setEditingId(null);
+      toast("Client updated");
+    } else {
+      const data = await res.json();
+      toast(data.error || "Failed to update client", "error");
+    }
+    setEditSaving(false);
+  }
+
+  async function handleDelete(client: Client) {
+    if (client.invoiceCount > 0) {
+      toast(`Cannot delete ${client.name} — has ${client.invoiceCount} invoice(s)`, "error");
+      return;
+    }
+    if (!confirm(`Delete client "${client.name}"? This cannot be undone.`)) return;
+    setDeleting(client.id);
+    const res = await fetch(`/api/clients/${client.id}`, { method: "DELETE" });
+    if (res.ok) {
+      setClients(clients.filter((c) => c.id !== client.id));
+      toast("Client deleted");
+    } else {
+      const data = await res.json();
+      toast(data.error || "Failed to delete client", "error");
+    }
+    setDeleting(null);
   }
 
   const filtered = clients
@@ -337,36 +395,79 @@ export default function ClientsPage() {
                   key={client.id}
                   className="bg-gray-900/50 backdrop-blur-sm rounded-2xl border border-gray-800/50 p-5 hover:border-gray-700/50 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300"
                 >
-                  <div className="flex items-start justify-between gap-4">
-                    {/* Left: Client info */}
-                    <div className="flex items-start gap-4 min-w-0 flex-1">
-                      <div className="w-11 h-11 rounded-full bg-gradient-to-br from-amber-500/20 to-amber-600/10 flex items-center justify-center flex-shrink-0 border border-amber-500/20">
-                        <span className="text-amber-400 font-bold text-lg">{client.name.charAt(0).toUpperCase()}</span>
+                  {editingId === client.id ? (
+                    <form onSubmit={handleEditSubmit} className="space-y-3">
+                      <div className="grid md:grid-cols-2 gap-3">
+                        <input placeholder="Client name *" value={editName} onChange={(e) => setEditName(e.target.value)} required className="px-3 py-2 rounded-xl border border-gray-800/50 text-sm focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-gray-900 text-white placeholder-gray-500 transition-all" />
+                        <input placeholder="Email *" type="email" value={editEmail} onChange={(e) => setEditEmail(e.target.value)} required className="px-3 py-2 rounded-xl border border-gray-800/50 text-sm focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-gray-900 text-white placeholder-gray-500 transition-all" />
+                        <input placeholder="Phone" value={editPhone} onChange={(e) => setEditPhone(e.target.value)} className="px-3 py-2 rounded-xl border border-gray-800/50 text-sm focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-gray-900 text-white placeholder-gray-500 transition-all" />
+                        <input placeholder="Address" value={editAddress} onChange={(e) => setEditAddress(e.target.value)} className="px-3 py-2 rounded-xl border border-gray-800/50 text-sm focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-gray-900 text-white placeholder-gray-500 transition-all" />
+                        <input placeholder="VAT number" value={editVatNumber} onChange={(e) => setEditVatNumber(e.target.value)} className="px-3 py-2 rounded-xl border border-gray-800/50 text-sm focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-gray-900 text-white placeholder-gray-500 transition-all" />
                       </div>
-                      <div className="min-w-0">
-                        <p className="font-semibold text-white text-lg truncate flex items-center gap-2">
-                          {client.name}
-                          {flag && <span className="text-base" title="Detected country">{flag}</span>}
-                        </p>
-                        <p className="text-sm text-gray-400 truncate">{client.email}</p>
-                        {(client.phone || client.address || client.vatNumber) && (
-                          <div className="flex flex-wrap gap-x-4 gap-y-0.5 mt-1">
-                            {client.phone && <p className="text-xs text-gray-500">{client.phone}</p>}
-                            {client.address && <p className="text-xs text-gray-500">{client.address}</p>}
-                            {client.vatNumber && <p className="text-xs text-gray-500">VAT: {client.vatNumber}</p>}
+                      <div className="flex gap-2">
+                        <button type="submit" disabled={editSaving} className="bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-gray-950 px-4 py-2 rounded-xl text-sm font-semibold shadow-sm shadow-amber-500/20 transition-all disabled:opacity-50">
+                          {editSaving ? "Saving..." : "Save Changes"}
+                        </button>
+                        <button type="button" onClick={() => setEditingId(null)} className="px-4 py-2 rounded-xl text-sm text-gray-400 hover:text-white hover:bg-gray-800/50 transition-colors">
+                          Cancel
+                        </button>
+                      </div>
+                    </form>
+                  ) : (
+                    <>
+                      <div className="flex items-start justify-between gap-4">
+                        {/* Left: Client info */}
+                        <div className="flex items-start gap-4 min-w-0 flex-1">
+                          <div className="w-11 h-11 rounded-full bg-gradient-to-br from-amber-500/20 to-amber-600/10 flex items-center justify-center flex-shrink-0 border border-amber-500/20">
+                            <span className="text-amber-400 font-bold text-lg">{client.name.charAt(0).toUpperCase()}</span>
                           </div>
-                        )}
-                      </div>
-                    </div>
+                          <div className="min-w-0">
+                            <p className="font-semibold text-white text-lg truncate flex items-center gap-2">
+                              {client.name}
+                              {flag && <span className="text-base" title="Detected country">{flag}</span>}
+                            </p>
+                            <p className="text-sm text-gray-400 truncate">{client.email}</p>
+                            {(client.phone || client.address || client.vatNumber) && (
+                              <div className="flex flex-wrap gap-x-4 gap-y-0.5 mt-1">
+                                {client.phone && <p className="text-xs text-gray-500">{client.phone}</p>}
+                                {client.address && <p className="text-xs text-gray-500">{client.address}</p>}
+                                {client.vatNumber && <p className="text-xs text-gray-500">VAT: {client.vatNumber}</p>}
+                              </div>
+                            )}
+                          </div>
+                        </div>
 
-                    {/* Right: New Invoice button */}
-                    <Link
-                      href={`/invoices/new?clientId=${client.id}`}
-                      className="bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-gray-950 px-4 py-2 rounded-xl text-sm font-semibold shadow-sm shadow-amber-500/20 transition-all whitespace-nowrap flex-shrink-0"
-                    >
-                      + New Invoice
-                    </Link>
-                  </div>
+                        {/* Right: Action buttons */}
+                        <div className="flex items-center gap-2 flex-shrink-0">
+                          <button
+                            onClick={() => startEditing(client)}
+                            className="p-2 rounded-lg text-gray-400 hover:text-amber-400 hover:bg-gray-800/50 transition-colors"
+                            title="Edit client"
+                          >
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                            </svg>
+                          </button>
+                          <button
+                            onClick={() => handleDelete(client)}
+                            disabled={deleting === client.id}
+                            className="p-2 rounded-lg text-gray-400 hover:text-red-400 hover:bg-gray-800/50 transition-colors disabled:opacity-50"
+                            title={client.invoiceCount > 0 ? `Cannot delete — has ${client.invoiceCount} invoice(s)` : "Delete client"}
+                          >
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                          </button>
+                          <Link
+                            href={`/invoices/new?clientId=${client.id}`}
+                            className="bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-gray-950 px-4 py-2 rounded-xl text-sm font-semibold shadow-sm shadow-amber-500/20 transition-all whitespace-nowrap"
+                          >
+                            + New Invoice
+                          </Link>
+                        </div>
+                      </div>
+                    </>
+                  )}
 
                   {/* Stats Row */}
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4 pt-4 border-t border-gray-700/50">

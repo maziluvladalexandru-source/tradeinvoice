@@ -786,6 +786,7 @@ function NewInvoiceForm() {
   const searchParams = useSearchParams();
   const preselectedClientId = searchParams.get("clientId") || "";
   const preselectedType = searchParams.get("type") || "invoice";
+  const editInvoiceId = searchParams.get("edit") || "";
 
   const [clients, setClients] = useState<Client[]>([]);
   const [clientId, setClientId] = useState(preselectedClientId);
@@ -854,6 +855,9 @@ function NewInvoiceForm() {
   // Mobile preview toggle
   const [showMobilePreview, setShowMobilePreview] = useState(false);
 
+  // Edit mode
+  const [isEditMode, setIsEditMode] = useState(false);
+
   // Saved service items
   const [savedItems, setSavedItems] = useState<{ id: string; name: string; description: string | null; unitPrice: number; unit: string }[]>([]);
 
@@ -889,6 +893,50 @@ function NewInvoiceForm() {
       .then((data) => { if (Array.isArray(data)) setSavedItems(data); })
       .catch(() => {});
   }, [preselectedClientId]);
+
+  // Load invoice data for edit mode
+  useEffect(() => {
+    if (!editInvoiceId) return;
+    fetch(`/api/invoices/${editInvoiceId}`)
+      .then((r) => { if (!r.ok) throw new Error(); return r.json(); })
+      .then((inv) => {
+        if (inv.status !== "draft") {
+          router.push(`/invoices/${editInvoiceId}`);
+          return;
+        }
+        setIsEditMode(true);
+        setClientId(inv.clientId || inv.client?.id || "");
+        setInvoiceNumber(inv.invoiceNumber || "");
+        setDescription(inv.description || "");
+        setDueDate(inv.dueDate ? new Date(inv.dueDate).toISOString().split("T")[0] : "");
+        setServiceDate(inv.serviceDate ? new Date(inv.serviceDate).toISOString().split("T")[0] : "");
+        setPaymentNotes(inv.paymentNotes || "");
+        setNotesToClient(inv.notesToClient || "");
+        setTaxRate(inv.taxRate ?? 0);
+        setCurrency(inv.currency || "EUR");
+        setInvoiceType(inv.type || "invoice");
+        setIsRecurring(!!inv.isRecurring);
+        setRecurringInterval(inv.recurringInterval || "monthly");
+        setReverseCharge(!!inv.reverseCharge);
+        setReferenceInvoice(inv.referenceInvoice || "");
+        setInvoiceCountry(inv.invoiceCountry || "NL");
+        setLanguage(inv.language || "en");
+        setInvoiceTheme(inv.invoiceTheme || "classic");
+        if (inv.depositPercent) {
+          setDepositEnabled(true);
+          setDepositPercent(inv.depositPercent);
+        }
+        if (inv.lineItems?.length) {
+          setLineItems(inv.lineItems.map((li: { description: string; quantity: number; unitPrice: number }) => ({
+            description: li.description,
+            quantity: li.quantity,
+            unitPrice: li.unitPrice,
+          })));
+        }
+        setPaymentTerms(-1); // custom since we loaded an existing date
+      })
+      .catch(() => { router.push("/invoices"); });
+  }, [editInvoiceId, router]);
 
   // Close suggestions on outside click
   useEffect(() => {
@@ -977,44 +1025,55 @@ function NewInvoiceForm() {
     setError("");
 
     try {
-      const res = await fetch("/api/invoices", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          clientId,
-          description,
-          dueDate,
-          taxRate,
-          serviceDate: serviceDate || null,
-          paymentNotes: paymentNotes || null,
-          notesToClient: notesToClient || null,
-          invoiceNumber: invoiceNumber || null,
-          currency,
-          type: invoiceType,
-          isRecurring,
-          recurringInterval: isRecurring ? recurringInterval : null,
-          reverseCharge,
-          referenceInvoice:
-            invoiceType === "credit_note" ? referenceInvoice || null : null,
-          invoiceCountry,
-          language,
-          invoiceTheme: isPro ? invoiceTheme : "classic",
-          scheduledSendAt: scheduleAt ? new Date(scheduleAt).toISOString() : null,
-          depositPercent: invoiceType === "quote" && depositEnabled && isPro ? depositPercent : null,
-          lineItems: lineItems.filter(
-            (item) => item.description && item.unitPrice > 0
-          ),
-        }),
-      });
+      const invoicePayload = {
+        clientId,
+        description,
+        dueDate,
+        taxRate,
+        serviceDate: serviceDate || null,
+        paymentNotes: paymentNotes || null,
+        notesToClient: notesToClient || null,
+        invoiceNumber: invoiceNumber || null,
+        currency,
+        type: invoiceType,
+        isRecurring,
+        recurringInterval: isRecurring ? recurringInterval : null,
+        reverseCharge,
+        referenceInvoice:
+          invoiceType === "credit_note" ? referenceInvoice || null : null,
+        invoiceCountry,
+        language,
+        invoiceTheme: isPro ? invoiceTheme : "classic",
+        scheduledSendAt: scheduleAt ? new Date(scheduleAt).toISOString() : null,
+        depositPercent: invoiceType === "quote" && depositEnabled && isPro ? depositPercent : null,
+        lineItems: lineItems.filter(
+          (item) => item.description && item.unitPrice > 0
+        ),
+      };
+
+      let res: Response;
+      if (isEditMode && editInvoiceId) {
+        res = await fetch(`/api/invoices/${editInvoiceId}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ...invoicePayload, fullEdit: true }),
+        });
+      } else {
+        res = await fetch("/api/invoices", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(invoicePayload),
+        });
+      }
 
       if (!res.ok) {
         const data = await res.json();
-        throw new Error(data.error || "Failed to create invoice");
+        throw new Error(data.error || (isEditMode ? "Failed to update invoice" : "Failed to create invoice"));
       }
 
       const invoice = await res.json();
 
-      if (sendNow) {
+      if (sendNow && !isEditMode) {
         await fetch(`/api/invoices/${invoice.id}/send`, { method: "POST" });
       }
 
@@ -1043,34 +1102,45 @@ function NewInvoiceForm() {
     setLoading(true);
 
     try {
-      const res = await fetch("/api/invoices", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          clientId,
-          description,
-          dueDate,
-          taxRate,
-          serviceDate: serviceDate || null,
-          paymentNotes: paymentNotes || null,
-          notesToClient: notesToClient || null,
-          invoiceNumber: invoiceNumber || null,
-          currency,
-          type: invoiceType,
-          isRecurring,
-          recurringInterval: isRecurring ? recurringInterval : null,
-          reverseCharge,
-          referenceInvoice:
-            invoiceType === "credit_note" ? referenceInvoice || null : null,
-          invoiceCountry,
-          language,
-          invoiceTheme: isPro ? invoiceTheme : "classic",
-          depositPercent: invoiceType === "quote" && depositEnabled && isPro ? depositPercent : null,
-          lineItems: lineItems.filter(
-            (item) => item.description && item.unitPrice > 0
-          ),
-        }),
-      });
+      const previewPayload = {
+        clientId,
+        description,
+        dueDate,
+        taxRate,
+        serviceDate: serviceDate || null,
+        paymentNotes: paymentNotes || null,
+        notesToClient: notesToClient || null,
+        invoiceNumber: invoiceNumber || null,
+        currency,
+        type: invoiceType,
+        isRecurring,
+        recurringInterval: isRecurring ? recurringInterval : null,
+        reverseCharge,
+        referenceInvoice:
+          invoiceType === "credit_note" ? referenceInvoice || null : null,
+        invoiceCountry,
+        language,
+        invoiceTheme: isPro ? invoiceTheme : "classic",
+        depositPercent: invoiceType === "quote" && depositEnabled && isPro ? depositPercent : null,
+        lineItems: lineItems.filter(
+          (item) => item.description && item.unitPrice > 0
+        ),
+      };
+
+      let res: Response;
+      if (isEditMode && editInvoiceId) {
+        res = await fetch(`/api/invoices/${editInvoiceId}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ...previewPayload, fullEdit: true }),
+        });
+      } else {
+        res = await fetch("/api/invoices", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(previewPayload),
+        });
+      }
 
       if (!res.ok) {
         const data = await res.json();
@@ -1125,7 +1195,7 @@ function NewInvoiceForm() {
           >
             <div className="flex items-center justify-between mb-6">
               <h1 className="text-3xl md:text-4xl font-bold text-white tracking-tight">
-                Create{" "}
+                {isEditMode ? "Edit" : "Create"}{" "}
                 {invoiceType === "quote"
                   ? "Quote"
                   : invoiceType === "credit_note"
@@ -2059,6 +2129,14 @@ function NewInvoiceForm() {
                   </svg>
                   {loading
                     ? "Saving..."
+                    : isEditMode
+                    ? `Update ${
+                        invoiceType === "quote"
+                          ? "Quote"
+                          : invoiceType === "credit_note"
+                          ? "Credit Note"
+                          : "Invoice"
+                      }`
                     : `Save ${
                         invoiceType === "quote"
                           ? "Quote"
@@ -2077,7 +2155,7 @@ function NewInvoiceForm() {
                     disabled={loading || !isValid}
                     className="flex-1 bg-gray-900/50 text-gray-300 py-3 rounded-xl font-medium text-sm hover:bg-gray-800/80 transition-all disabled:opacity-50 disabled:cursor-not-allowed border border-gray-800/50 hover:border-gray-700/50"
                   >
-                    {loading ? "Creating..." : "Create & Send"}
+                    {loading ? (isEditMode ? "Updating..." : "Creating...") : (isEditMode ? "Update & Send" : "Create & Send")}
                   </button>
                   <button
                     onClick={() => setShowSchedulePicker(!showSchedulePicker)}

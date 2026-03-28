@@ -82,6 +82,52 @@ export async function PATCH(
       data.scheduledSendAt = body.scheduledSendAt ? new Date(body.scheduledSendAt) : null;
     }
 
+    // Full edit support (draft invoices only)
+    if (body.fullEdit && invoice.status === "draft") {
+      if (body.clientId) data.clientId = body.clientId;
+      if (body.invoiceNumber) data.invoiceNumber = body.invoiceNumber;
+      if (body.dueDate) data.dueDate = new Date(body.dueDate);
+      if (body.serviceDate !== undefined) data.serviceDate = body.serviceDate ? new Date(body.serviceDate) : null;
+      if (body.currency) data.currency = body.currency;
+      if (body.taxRate !== undefined) {
+        const tr = Number(body.taxRate);
+        if (!isNaN(tr) && tr >= 0 && tr <= 100) data.taxRate = tr;
+      }
+      if (body.reverseCharge !== undefined) data.reverseCharge = !!body.reverseCharge;
+      if (body.invoiceCountry) data.invoiceCountry = body.invoiceCountry;
+      if (body.language) data.language = body.language;
+      if (body.invoiceTheme) data.invoiceTheme = body.invoiceTheme;
+      if (body.isRecurring !== undefined) data.isRecurring = !!body.isRecurring;
+      if (body.recurringInterval !== undefined) data.recurringInterval = body.recurringInterval || null;
+      if (body.referenceInvoice !== undefined) data.referenceInvoice = body.referenceInvoice || null;
+      if (body.depositPercent !== undefined) data.depositPercent = body.depositPercent;
+      if (body.type) data.type = body.type;
+
+      if (body.lineItems?.length) {
+        // Recalculate totals
+        const effectiveTaxRate = body.reverseCharge ? 0 : (data.taxRate as number ?? invoice.taxRate);
+        const subtotal = body.lineItems.reduce(
+          (sum: number, item: { quantity: number; unitPrice: number }) => sum + item.quantity * item.unitPrice, 0
+        );
+        const taxAmount = subtotal * (effectiveTaxRate / 100);
+        data.subtotal = subtotal;
+        data.taxAmount = taxAmount;
+        data.total = subtotal + taxAmount;
+
+        // Delete old line items and create new ones
+        await prisma.lineItem.deleteMany({ where: { invoiceId: params.id } });
+        await prisma.lineItem.createMany({
+          data: body.lineItems.map((item: { description: string; quantity: number; unitPrice: number }) => ({
+            invoiceId: params.id,
+            description: sanitizeString(item.description || "", 500),
+            quantity: item.quantity,
+            unitPrice: item.unitPrice,
+            total: item.quantity * item.unitPrice,
+          })),
+        });
+      }
+    }
+
     const updated = await prisma.invoice.update({
       where: { id: params.id },
       data,

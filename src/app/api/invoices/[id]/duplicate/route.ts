@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { requireUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { canCreateInvoice } from "@/lib/stripe";
-import { generateInvoiceNumber } from "@/lib/utils";
+import { getNextInvoiceNumber } from "@/lib/utils";
 
 export async function POST(
   req: NextRequest,
@@ -49,7 +49,7 @@ export async function POST(
       data: {
         userId: user.id,
         clientId: original.clientId,
-        invoiceNumber: generateInvoiceNumber(),
+        invoiceNumber: await getNextInvoiceNumber(user.id),
         description: original.description,
         paymentNotes: original.paymentNotes,
         notesToClient: original.notesToClient,

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { requireUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { canCreateInvoice } from "@/lib/stripe";
-import { generateInvoiceNumber } from "@/lib/utils";
+import { getNextInvoiceNumber } from "@/lib/utils";
 
 export async function POST(req: NextRequest) {
   try {
@@ -73,7 +73,7 @@ export async function POST(req: NextRequest) {
       data: {
         userId: user.id,
         clientId,
-        invoiceNumber: generateInvoiceNumber(),
+        invoiceNumber: await getNextInvoiceNumber(user.id),
         description: `Time tracking invoice - ${entries.length} entries`,
         dueDate,
         subtotal,
