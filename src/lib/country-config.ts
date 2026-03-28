@@ -26,7 +26,7 @@ export const COUNTRY_CONFIGS: Record<string, CountryConfig> = {
   NL: {
     countryCode: "NL",
     countryName: "Netherlands",
-    flag: "\u{1F1F3}\u{1F1F1}",
+    flag: "🇳🇱",
     businessRegLabel: "KVK",
     taxIdLabel: "BTW-id",
     taxIdFormat: /^NL\d{9}B\d{2}$/,
@@ -48,7 +48,7 @@ export const COUNTRY_CONFIGS: Record<string, CountryConfig> = {
   UK: {
     countryCode: "UK",
     countryName: "United Kingdom",
-    flag: "\u{1F1EC}\u{1F1E7}",
+    flag: "🇬🇧",
     businessRegLabel: "Companies House #",
     taxIdLabel: "VAT Number",
     taxIdFormat: /^GB\d{9}$/,
@@ -71,7 +71,7 @@ export const COUNTRY_CONFIGS: Record<string, CountryConfig> = {
   DE: {
     countryCode: "DE",
     countryName: "Germany",
-    flag: "\u{1F1E9}\u{1F1EA}",
+    flag: "🇩🇪",
     businessRegLabel: "Handelsregister",
     taxIdLabel: "Steuernummer/USt-IdNr",
     taxIdFormat: /^DE\d{9}$/,
@@ -94,7 +94,7 @@ export const COUNTRY_CONFIGS: Record<string, CountryConfig> = {
   BE: {
     countryCode: "BE",
     countryName: "Belgium",
-    flag: "\u{1F1E7}\u{1F1EA}",
+    flag: "🇧🇪",
     businessRegLabel: "Ondernemingsnummer",
     taxIdLabel: "BTW-nummer",
     taxIdFormat: /^BE\d{10}$/,

@@ -867,8 +867,8 @@ function NewInvoiceForm() {
                             : "border-gray-700/50 hover:border-gray-600/50 bg-gray-900/50"
                         }`}
                       >
-                        <span className="text-xl">{c.flag}</span>
-                        <span className={`text-xs font-medium ${invoiceCountry === c.countryCode ? "text-amber-400" : "text-gray-400"}`}>
+                        <span className="text-2xl leading-none">{c.flag}</span>
+                        <span className={`text-xs font-bold ${invoiceCountry === c.countryCode ? "text-amber-400" : "text-white"}`}>
                           {c.countryCode}
                         </span>
                       </button>
