@@ -63,9 +63,17 @@ export default function DonutChart({
 
   const activeSegments = segments.filter((s) => s.value > 0);
   const gap = activeSegments.length > 1 ? 2 : 0;
+
+  // Ensure tiny segments are still visible (minimum 4% of circumference)
+  const minFraction = 0.04;
+  const rawFractions = activeSegments.map((s) => s.value / total);
+  const adjustedFractions = rawFractions.map((f) => Math.max(f, minFraction));
+  const adjustedTotal = adjustedFractions.reduce((a, b) => a + b, 0);
+  const normalizedFractions = adjustedFractions.map((f) => f / adjustedTotal);
+
   let cumulativeOffset = 0;
   const arcs = activeSegments.map((segment, i) => {
-    const fraction = segment.value / total;
+    const fraction = normalizedFractions[i];
     const segmentLength = fraction * circumference;
     const adjustedLength = Math.max(segmentLength - gap, 0);
     const offset = cumulativeOffset;

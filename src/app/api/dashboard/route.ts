@@ -104,13 +104,12 @@ export async function GET() {
     const collectionEligible = actualInvoices.filter((i) =>
       ["sent", "viewed", "paid", "overdue"].includes(i.status)
     );
-    const paidCount = collectionEligible.filter((i) => i.status === "paid").length;
     const totalInvoiced = collectionEligible.reduce((sum, i) => sum + i.total, 0);
     const totalCollected = actualInvoices
       .filter((i) => i.status === "paid")
       .reduce((sum, i) => sum + i.total, 0);
-    const collectionRate = collectionEligible.length > 0
-      ? Math.round((paidCount / collectionEligible.length) * 100)
+    const collectionRate = totalInvoiced > 0
+      ? Math.round((totalCollected / totalInvoiced) * 100)
       : 0;
 
     const recentInvoices = actualInvoices.slice(0, 10).map((i) => ({
