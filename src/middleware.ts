@@ -30,6 +30,21 @@ export function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
+  // Allow legal/public pages
+  if (["/terms", "/privacy", "/dpa", "/contact"].includes(pathname)) {
+    return NextResponse.next();
+  }
+
+  // Allow SEO files
+  if (pathname === "/sitemap.xml" || pathname === "/robots.txt") {
+    return NextResponse.next();
+  }
+
+  // Allow client portal
+  if (pathname.startsWith("/portal/")) {
+    return NextResponse.next();
+  }
+
   // Allow static files and API PDF routes
   if (
     pathname.startsWith("/_next") ||
