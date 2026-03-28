@@ -37,7 +37,7 @@ export default function Navbar() {
           <div className="flex items-center gap-8">
             <Link
               href="/dashboard"
-              className="flex items-center gap-2 text-2xl font-bold text-amber-500"
+              className="flex items-center gap-2 text-2xl font-bold text-amber-500 hover:scale-105 transition-transform duration-200"
             >
               <svg
                 width="24"

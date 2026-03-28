@@ -74,7 +74,9 @@ export default function BottomNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-gray-900 border-t border-gray-700/80 pb-[env(safe-area-inset-bottom)]">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-gray-900/95 backdrop-blur-xl border-t border-gray-700/80 pb-[env(safe-area-inset-bottom)]">
+      {/* Subtle amber gradient line at the top */}
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-amber-500/30 to-transparent" />
       <div className="flex items-center justify-around h-16">
         {tabs.map((tab) => {
           const isActive =
@@ -84,12 +86,15 @@ export default function BottomNav() {
             <Link
               key={tab.href}
               href={tab.href}
-              className={`flex flex-col items-center justify-center gap-0.5 w-full h-full transition-colors ${
+              className={`relative flex flex-col items-center justify-center gap-0.5 w-full h-full transition-all duration-200 ${
                 isActive
-                  ? "text-amber-500"
+                  ? "text-amber-400"
                   : "text-gray-500 active:text-gray-300"
               }`}
             >
+              {isActive && (
+                <span className="absolute top-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-amber-400 shadow-[0_0_6px_rgba(251,191,36,0.5)]" />
+              )}
               {tab.icon}
               <span className="text-[10px] font-medium">{tab.label}</span>
             </Link>

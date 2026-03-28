@@ -292,9 +292,9 @@ export default function TimeTrackingPage() {
       <Navbar />
       <main className="max-w-6xl mx-auto px-4 py-8 pb-24 md:pb-8">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-10">
           <div>
-            <h1 className="text-3xl font-bold text-white tracking-tight">Time Tracking</h1>
+            <h1 className="text-4xl font-bold text-white tracking-tight">Time Tracking</h1>
             <p className="text-gray-400 mt-1">Track hours and generate invoices from logged time</p>
           </div>
           <button
@@ -307,15 +307,16 @@ export default function TimeTrackingPage() {
         </div>
 
         {/* Timer */}
-        <div className="bg-gray-900/50 rounded-2xl border border-gray-800/50 p-6 mb-6">
-          <div className="flex flex-col md:flex-row items-center gap-4">
+        <div className={`relative overflow-hidden bg-gray-900/50 backdrop-blur-sm rounded-2xl border p-6 mb-8 transition-all duration-300 ${timerRunning ? "border-amber-500/30 shadow-lg shadow-amber-500/10" : "border-gray-800/50"}`}>
+          {timerRunning && <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent pointer-events-none" />}
+          <div className="relative flex flex-col md:flex-row items-center gap-4">
             <div className="flex-1 w-full">
               <input
                 type="text"
                 placeholder="What are you working on?"
                 value={timerDescription}
                 onChange={(e) => setTimerDescription(e.target.value)}
-                className="w-full bg-gray-800/50 border border-gray-700/50 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50"
+                className="w-full bg-gray-800/50 border border-gray-700/50 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20 transition-all"
               />
             </div>
             <div className="flex items-center gap-3">
@@ -325,7 +326,7 @@ export default function TimeTrackingPage() {
                   const client = clients.find(c => c.id === e.target.value);
                   setTimerClientId(e.target.value, client?.name || "");
                 }}
-                className="bg-gray-800/50 border border-gray-700/50 rounded-xl px-3 py-3 text-gray-300 focus:outline-none focus:border-amber-500/50"
+                className="bg-gray-800/50 border border-gray-700/50 rounded-xl px-3 py-3 text-gray-300 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20 transition-all"
               >
                 <option value="">No client</option>
                 {clients.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
@@ -336,13 +337,13 @@ export default function TimeTrackingPage() {
                   type="number"
                   value={timerRate}
                   onChange={(e) => setTimerRate(e.target.value)}
-                  className="w-20 bg-gray-800/50 border border-gray-700/50 rounded-xl px-3 py-3 text-white focus:outline-none focus:border-amber-500/50"
+                  className="w-20 bg-gray-800/50 border border-gray-700/50 rounded-xl px-3 py-3 text-white focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20 transition-all"
                   min="0"
                   step="0.01"
                 />
                 <span className="text-gray-500 text-sm">/hr</span>
               </div>
-              <div className="text-2xl font-mono text-white min-w-[100px] text-center">
+              <div className={`text-2xl font-mono text-white min-w-[100px] text-center ${timerRunning ? "animate-pulse" : ""}`}>
                 {formatTimer(timerElapsed)}
               </div>
               {!timerRunning ? (
@@ -367,23 +368,26 @@ export default function TimeTrackingPage() {
         </div>
 
         {/* Summary Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-          <div className="bg-gray-900/50 rounded-2xl border border-gray-800/50 p-5">
-            <p className="text-gray-400 text-sm mb-1">This Week</p>
-            <p className="text-2xl font-bold text-white">{weekHours.toFixed(1)}h</p>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+          <div className="relative overflow-hidden bg-white/5 backdrop-blur-sm rounded-2xl border border-gray-800/50 p-5 hover:border-gray-700/50 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300">
+            <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent pointer-events-none" />
+            <p className="relative text-gray-400 text-sm mb-1">This Week</p>
+            <p className="relative text-2xl font-bold text-white">{weekHours.toFixed(1)}h</p>
           </div>
-          <div className="bg-gray-900/50 rounded-2xl border border-gray-800/50 p-5">
-            <p className="text-gray-400 text-sm mb-1">This Month</p>
-            <p className="text-2xl font-bold text-white">{monthHours.toFixed(1)}h</p>
+          <div className="relative overflow-hidden bg-white/5 backdrop-blur-sm rounded-2xl border border-gray-800/50 p-5 hover:border-gray-700/50 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300">
+            <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent pointer-events-none" />
+            <p className="relative text-gray-400 text-sm mb-1">This Month</p>
+            <p className="relative text-2xl font-bold text-white">{monthHours.toFixed(1)}h</p>
           </div>
-          <div className="bg-gray-900/50 rounded-2xl border border-gray-800/50 p-5">
-            <p className="text-gray-400 text-sm mb-1">Unbilled</p>
-            <p className="text-2xl font-bold text-amber-400">&euro;{unbilledAmount.toFixed(2)}</p>
+          <div className="relative overflow-hidden bg-white/5 backdrop-blur-sm rounded-2xl border border-gray-800/50 p-5 hover:border-gray-700/50 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300">
+            <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent pointer-events-none" />
+            <p className="relative text-gray-400 text-sm mb-1">Unbilled</p>
+            <p className="relative text-2xl font-bold text-amber-400">&euro;{unbilledAmount.toFixed(2)}</p>
           </div>
         </div>
 
         {/* Filters */}
-        <div className="flex flex-wrap items-center gap-3 mb-6">
+        <div className="flex flex-wrap items-center gap-3 mb-8">
           <select
             value={filterClient}
             onChange={(e) => setFilterClient(e.target.value)}
@@ -418,7 +422,7 @@ export default function TimeTrackingPage() {
 
         {/* Generate Invoice Button */}
         {selectedIds.size > 0 && (
-          <div className="bg-amber-500/10 border border-amber-500/20 rounded-2xl p-4 mb-6 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div className="bg-amber-500/10 border border-amber-500/20 rounded-2xl p-4 mb-8 flex flex-col sm:flex-row items-center justify-between gap-3">
             <p className="text-amber-400 font-medium">
               {selectedIds.size} {selectedIds.size === 1 ? "entry" : "entries"} selected
               {" "}&middot;{" "}
@@ -436,7 +440,7 @@ export default function TimeTrackingPage() {
 
         {/* Manual Entry Form */}
         {showForm && (
-          <div className="bg-gray-900/50 rounded-2xl border border-gray-800/50 p-6 mb-6 animate-fade-in">
+          <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl border border-gray-800/50 p-6 mb-8 animate-fade-in">
             <h3 className="text-lg font-semibold text-white mb-4">{editingId ? "Edit Entry" : "Add Time Entry"}</h3>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -550,16 +554,16 @@ export default function TimeTrackingPage() {
             <p className="text-gray-600 text-sm mt-1">Start the timer or add an entry manually</p>
           </div>
         ) : (
-          <div className="space-y-6">
+          <div className="space-y-8">
             {Object.entries(grouped).map(([dateLabel, dateEntries]) => (
               <div key={dateLabel}>
-                <h3 className="text-sm font-medium text-gray-500 mb-3">{dateLabel}</h3>
+                <h3 className="text-sm font-semibold text-gray-400 mb-3 flex items-center gap-2"><span className="w-1 h-4 bg-amber-500/40 rounded-full" />{dateLabel}</h3>
                 <div className="space-y-2">
                   {dateEntries.map((entry) => (
                     <div
                       key={entry.id}
-                      className={`bg-gray-900/50 rounded-xl border p-4 flex flex-col sm:flex-row items-start sm:items-center gap-3 transition-colors ${
-                        entry.invoiced ? "border-gray-800/30 opacity-60" : "border-gray-800/50"
+                      className={`bg-gray-900/50 backdrop-blur-sm rounded-xl border p-4 flex flex-col sm:flex-row items-start sm:items-center gap-3 transition-all duration-300 hover:shadow-lg hover:shadow-amber-500/5 ${
+                        entry.invoiced ? "border-gray-800/30 opacity-60" : "border-gray-800/50 hover:border-gray-700/50"
                       }`}
                     >
                       {!entry.invoiced && entry.billable && (

@@ -189,18 +189,18 @@ export default function InvoiceDetailPage() {
     new Date(d).toLocaleDateString("en-IE", { day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" });
 
   const statusColors: Record<string, string> = {
-    draft: "bg-gray-500/20 text-gray-300 ring-1 ring-gray-500/40",
-    sent: "bg-blue-500/20 text-blue-300 ring-1 ring-blue-400/40",
-    viewed: "bg-yellow-500/20 text-yellow-300 ring-1 ring-yellow-400/40",
-    paid: "bg-green-500/20 text-green-300 ring-1 ring-green-400/40",
-    overdue: "bg-red-500/20 text-red-300 ring-1 ring-red-400/40",
+    draft: "bg-gray-500/20 text-gray-400 ring-1 ring-gray-500/40",
+    sent: "bg-blue-500/20 text-blue-400 ring-1 ring-blue-400/40",
+    viewed: "bg-yellow-500/20 text-yellow-400 ring-1 ring-yellow-400/40",
+    paid: "bg-emerald-500/20 text-emerald-400 ring-1 ring-emerald-400/40",
+    overdue: "bg-red-500/20 text-red-400 ring-1 ring-red-400/40",
   };
 
   const statusDot: Record<string, string> = {
     draft: "bg-gray-400",
     sent: "bg-blue-400",
     viewed: "bg-yellow-400",
-    paid: "bg-green-400",
+    paid: "bg-emerald-400",
     overdue: "bg-red-400 animate-pulse",
   };
 
@@ -208,8 +208,11 @@ export default function InvoiceDetailPage() {
     return (
       <div className="min-h-screen bg-gray-950">
         <Navbar />
-        <div className="flex items-center justify-center py-20">
-          <p className="text-gray-400">Loading...</p>
+        <div className="flex items-center justify-center py-32">
+          <div className="flex flex-col items-center gap-4">
+            <div className="w-8 h-8 border-2 border-amber-500/30 border-t-amber-500 rounded-full animate-spin" />
+            <p className="text-gray-400 text-sm">Loading invoice...</p>
+          </div>
         </div>
       </div>
     );
@@ -227,18 +230,21 @@ export default function InvoiceDetailPage() {
   return (
     <div className="min-h-screen bg-gray-950">
       <Navbar />
-      <div className="max-w-4xl mx-auto px-4 py-8">
+      <div className="max-w-4xl mx-auto px-4 py-10">
         <Link
           href="/dashboard"
-          className="text-amber-500 font-medium text-sm mb-4 inline-block hover:text-amber-400 transition-colors"
+          className="text-amber-500 font-medium text-sm mb-6 inline-flex items-center gap-1.5 hover:text-amber-400 transition-colors group"
         >
-          &larr; Back to Dashboard
+          <svg className="w-4 h-4 transition-transform group-hover:-translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          </svg>
+          Back to Dashboard
         </Link>
 
-        <div className="flex items-start justify-between mb-8">
+        <div className="flex items-start justify-between mb-10">
           <div>
             <div className="flex items-center gap-3">
-              <h1 className="text-3xl font-bold text-white">
+              <h1 className="text-4xl font-bold tracking-tight text-white">
                 {invoice.invoiceNumber}
               </h1>
               {invoice.type === "quote" && (
@@ -303,12 +309,12 @@ export default function InvoiceDetailPage() {
         </div>
 
         {/* Actions */}
-        <div className="flex gap-3 mb-8 flex-wrap">
+        <div className="flex gap-3 mb-10 flex-wrap">
           {invoice.status === "draft" && (
             <button
               onClick={sendInvoice}
               disabled={sending}
-              className="bg-blue-500 text-white px-6 py-3 rounded-xl font-semibold text-lg hover:bg-blue-400 disabled:opacity-50 transition-colors"
+              className="bg-gradient-to-r from-amber-500 to-orange-500 text-gray-950 px-6 py-3 rounded-xl font-semibold text-lg hover:from-amber-400 hover:to-orange-400 disabled:opacity-50 transition-all duration-200 shadow-lg shadow-amber-500/20 hover:shadow-amber-500/30 hover:scale-[1.02]"
             >
               {sending ? "Sending..." : "Send to Client"}
             </button>
@@ -316,7 +322,7 @@ export default function InvoiceDetailPage() {
           {invoice.status === "draft" && invoice.scheduledSendAt && (
             <button
               onClick={cancelSchedule}
-              className="bg-red-500/10 text-red-400 px-6 py-3 rounded-xl font-semibold text-lg hover:bg-red-500/20 ring-1 ring-red-500/30 transition-colors flex items-center gap-2"
+              className="bg-red-500/10 text-red-400 px-6 py-3 rounded-xl font-semibold text-lg hover:bg-red-500/20 ring-1 ring-red-500/30 transition-all duration-200 hover:scale-[1.02] flex items-center gap-2"
             >
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -331,7 +337,7 @@ export default function InvoiceDetailPage() {
                 setPaymentAmount(invoice.total - (invoice.paidAmount || 0));
                 setShowPaidModal(true);
               }}
-              className="bg-green-500 text-white px-6 py-3 rounded-xl font-semibold text-lg hover:bg-green-400 transition-colors flex items-center gap-2"
+              className="bg-emerald-500 text-white px-6 py-3 rounded-xl font-semibold text-lg hover:bg-emerald-400 transition-all duration-200 flex items-center gap-2 shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/30 hover:scale-[1.02]"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -343,7 +349,7 @@ export default function InvoiceDetailPage() {
             <button
               onClick={convertToInvoice}
               disabled={converting}
-              className="bg-gradient-to-r from-amber-500 to-orange-500 text-gray-950 px-6 py-3 rounded-xl font-semibold text-lg hover:from-amber-400 hover:to-orange-400 disabled:opacity-50 transition-all shadow-lg shadow-amber-500/25 flex items-center gap-2"
+              className="bg-gradient-to-r from-amber-500 to-orange-500 text-gray-950 px-6 py-3 rounded-xl font-semibold text-lg hover:from-amber-400 hover:to-orange-400 disabled:opacity-50 transition-all duration-200 shadow-lg shadow-amber-500/25 hover:shadow-amber-500/35 hover:scale-[1.02] flex items-center gap-2"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -354,7 +360,7 @@ export default function InvoiceDetailPage() {
           {invoice.status === "draft" && (
             <Link
               href={`/invoices/new?edit=${invoice.id}`}
-              className="bg-amber-500/15 text-amber-400 px-6 py-3 rounded-xl font-semibold text-lg hover:bg-amber-500/25 ring-1 ring-amber-500/30 transition-colors flex items-center gap-2"
+              className="bg-amber-500/15 text-amber-400 px-6 py-3 rounded-xl font-semibold text-lg hover:bg-amber-500/25 ring-1 ring-amber-500/30 transition-all duration-200 hover:scale-[1.02] flex items-center gap-2"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -365,7 +371,7 @@ export default function InvoiceDetailPage() {
           <button
             onClick={duplicateInvoice}
             disabled={duplicating}
-            className="bg-amber-500/15 text-amber-400 px-6 py-3 rounded-xl font-semibold text-lg hover:bg-amber-500/25 ring-1 ring-amber-500/30 transition-colors flex items-center gap-2 disabled:opacity-50"
+            className="bg-amber-500/15 text-amber-400 px-6 py-3 rounded-xl font-semibold text-lg hover:bg-amber-500/25 ring-1 ring-amber-500/30 transition-all duration-200 hover:scale-[1.02] flex items-center gap-2 disabled:opacity-50"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
@@ -375,7 +381,7 @@ export default function InvoiceDetailPage() {
           <a
             href={`/api/invoices/${invoice.id}/pdf`}
             target="_blank"
-            className="bg-gray-800 text-gray-300 px-6 py-3 rounded-xl font-semibold text-lg hover:bg-gray-700 border border-gray-700 transition-colors"
+            className="bg-gray-800/50 text-gray-300 px-6 py-3 rounded-xl font-semibold text-lg hover:bg-gray-700/50 border border-gray-700/50 transition-all duration-200 hover:scale-[1.02] backdrop-blur-sm"
           >
             View PDF
           </a>
@@ -384,7 +390,7 @@ export default function InvoiceDetailPage() {
               const w = window.open(`/api/invoices/${invoice.id}/pdf`, '_blank');
               if (w) setTimeout(() => w.print(), 500);
             }}
-            className="bg-purple-500/20 text-purple-300 px-6 py-3 rounded-xl font-semibold text-lg hover:bg-purple-500/30 ring-1 ring-purple-500/40 transition-colors flex items-center gap-2"
+            className="bg-purple-500/20 text-purple-300 px-6 py-3 rounded-xl font-semibold text-lg hover:bg-purple-500/30 ring-1 ring-purple-500/40 transition-all duration-200 hover:scale-[1.02] flex items-center gap-2"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -394,7 +400,7 @@ export default function InvoiceDetailPage() {
           {invoice.status === "draft" && (
             <button
               onClick={deleteInvoice}
-              className="bg-red-500/10 text-red-400 px-6 py-3 rounded-xl font-semibold text-lg hover:bg-red-500/20 ring-1 ring-red-500/30 transition-colors"
+              className="bg-red-500/10 text-red-400 px-6 py-3 rounded-xl font-semibold text-lg hover:bg-red-500/20 ring-1 ring-red-500/30 transition-all duration-200 hover:scale-[1.02]"
             >
               Delete
             </button>
@@ -402,9 +408,9 @@ export default function InvoiceDetailPage() {
         </div>
 
         {/* Invoice details */}
-        <div className="bg-gray-900 rounded-2xl border border-gray-800 overflow-hidden mb-8">
-          <div className="p-6 border-b border-gray-800">
-            <div className="grid md:grid-cols-2 gap-6">
+        <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl border border-gray-800/50 overflow-hidden mb-10 shadow-xl shadow-black/20">
+          <div className="p-8 border-b border-gray-800/50">
+            <div className="grid md:grid-cols-2 gap-8">
               <div>
                 <h3 className="text-xs uppercase tracking-wide text-gray-500 mb-2">
                   From
@@ -452,7 +458,7 @@ export default function InvoiceDetailPage() {
                 )}
               </div>
             </div>
-            <div className="mt-4 md:text-right">
+            <div className="mt-6 md:text-right">
               <div>
                 <h3 className="text-xs uppercase tracking-wide text-gray-500 mb-2">
                   Details
@@ -474,16 +480,16 @@ export default function InvoiceDetailPage() {
           {/* Line items table */}
           <table className="w-full">
             <thead>
-              <tr className="bg-gray-800/50 text-xs uppercase tracking-wide text-gray-500">
-                <th className="px-6 py-3 text-left">Description</th>
-                <th className="px-6 py-3 text-center">Qty</th>
-                <th className="px-6 py-3 text-right">Unit Price</th>
-                <th className="px-6 py-3 text-right">Amount</th>
+              <tr className="bg-gray-800/30 text-xs uppercase tracking-wider text-gray-500">
+                <th className="px-6 py-4 text-left font-semibold">Description</th>
+                <th className="px-6 py-4 text-center font-semibold">Qty</th>
+                <th className="px-6 py-4 text-right font-semibold">Unit Price</th>
+                <th className="px-6 py-4 text-right font-semibold">Amount</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-800">
-              {invoice.lineItems.map((item) => (
-                <tr key={item.id}>
+            <tbody className="divide-y divide-gray-800/50">
+              {invoice.lineItems.map((item, idx) => (
+                <tr key={item.id} className={`transition-colors hover:bg-gray-800/30 ${idx % 2 === 1 ? "bg-gray-800/10" : ""}`}>
                   <td className="px-6 py-4 text-white">
                     {item.description}
                   </td>
@@ -502,7 +508,7 @@ export default function InvoiceDetailPage() {
           </table>
 
           {/* Totals */}
-          <div className="p-6 border-t border-gray-800 bg-gray-800/30">
+          <div className="p-8 border-t border-gray-800/50 bg-gray-800/20">
             <div className="max-w-xs ml-auto space-y-2">
               <div className="flex justify-between text-gray-400">
                 <span>Subtotal</span>
@@ -514,7 +520,7 @@ export default function InvoiceDetailPage() {
                   <span>{fmt(invoice.taxAmount)}</span>
                 </div>
               )}
-              <div className="flex justify-between text-xl font-bold text-white pt-2 border-t border-gray-700">
+              <div className="flex justify-between text-xl font-bold text-white pt-3 border-t border-gray-700/50">
                 <span>Total</span>
                 <span>{fmt(invoice.total)}</span>
               </div>
@@ -558,8 +564,8 @@ export default function InvoiceDetailPage() {
 
           {/* Bank Details */}
           {invoice.user.bankDetails && (
-            <div className="p-6 border-t border-gray-800">
-              <h3 className="text-xs uppercase tracking-wide text-gray-500 mb-2">
+            <div className="p-8 border-t border-gray-800/50">
+              <h3 className="text-xs uppercase tracking-wider text-gray-500 mb-3 font-semibold">
                 Payment Information
               </h3>
               {(() => {
@@ -584,8 +590,8 @@ export default function InvoiceDetailPage() {
 
           {/* Payment Notes */}
           {invoice.paymentNotes && (
-            <div className="p-6 border-t border-gray-800">
-              <h3 className="text-xs uppercase tracking-wide text-gray-500 mb-2">
+            <div className="p-8 border-t border-gray-800/50">
+              <h3 className="text-xs uppercase tracking-wider text-gray-500 mb-3 font-semibold">
                 Payment Notes
               </h3>
               <p className="text-gray-300 whitespace-pre-line">{invoice.paymentNotes}</p>
@@ -594,8 +600,8 @@ export default function InvoiceDetailPage() {
 
           {/* Notes to Client */}
           {invoice.notesToClient && (
-            <div className="p-6 border-t border-gray-800">
-              <h3 className="text-xs uppercase tracking-wide text-gray-500 mb-2">
+            <div className="p-8 border-t border-gray-800/50">
+              <h3 className="text-xs uppercase tracking-wider text-gray-500 mb-3 font-semibold">
                 Notes to Client
               </h3>
               <p className="text-gray-300 whitespace-pre-line">{invoice.notesToClient}</p>
@@ -604,7 +610,7 @@ export default function InvoiceDetailPage() {
 
           {/* Reminder Toggle (Pro) */}
           {invoice.status !== "paid" && invoice.status !== "draft" && (
-            <div className="p-6 border-t border-gray-800">
+            <div className="p-8 border-t border-gray-800/50">
               <div className="flex items-center justify-between">
                 <div>
                   <h3 className="text-sm font-medium text-white flex items-center gap-2">
@@ -634,11 +640,11 @@ export default function InvoiceDetailPage() {
         </div>
 
         {/* Timeline / Activity */}
-        <div className="bg-gray-900 rounded-2xl border border-gray-800 overflow-hidden">
-          <div className="p-6 border-b border-gray-800">
-            <h2 className="text-lg font-semibold text-white">Activity Timeline</h2>
+        <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl border border-gray-800/50 overflow-hidden shadow-xl shadow-black/20">
+          <div className="p-8 border-b border-gray-800/50">
+            <h2 className="text-lg font-semibold text-white tracking-tight">Activity Timeline</h2>
           </div>
-          <div className="p-6">
+          <div className="p-8">
             <div className="relative">
               {timelineEvents.map((event, i) => {
                 const isLast = i === timelineEvents.length - 1;
@@ -647,23 +653,25 @@ export default function InvoiceDetailPage() {
                   <div key={event.icon} className="flex gap-4 relative">
                     {/* Vertical line */}
                     {!isLast && (
-                      <div className={`absolute left-[15px] top-8 w-0.5 h-full ${isCompleted ? "bg-gray-700" : "bg-gray-800"}`} />
+                      <div className={`absolute left-[15px] top-8 w-0.5 h-full ${isCompleted ? "bg-gradient-to-b from-gray-600 to-gray-700" : "bg-gray-800/50"}`} />
                     )}
                     {/* Dot */}
                     <div className="relative z-10 flex-shrink-0">
-                      <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${
                         event.icon === "paid" && isCompleted
-                          ? "bg-green-500/20 ring-1 ring-green-500/40"
+                          ? "bg-emerald-500/20 ring-1 ring-emerald-500/40 shadow-lg shadow-emerald-500/10"
                           : event.icon === "view" && isCompleted
-                          ? "bg-yellow-500/20 ring-1 ring-yellow-500/40"
+                          ? "bg-yellow-500/20 ring-1 ring-yellow-500/40 shadow-lg shadow-yellow-500/10"
                           : event.icon === "send" && isCompleted
-                          ? "bg-blue-500/20 ring-1 ring-blue-500/40"
+                          ? "bg-blue-500/20 ring-1 ring-blue-500/40 shadow-lg shadow-blue-500/10"
+                          : event.icon === "create" && isCompleted
+                          ? "bg-amber-500/20 ring-1 ring-amber-500/40 shadow-lg shadow-amber-500/10"
                           : isCompleted
                           ? "bg-gray-700 ring-1 ring-gray-600"
-                          : "bg-gray-800 ring-1 ring-gray-700"
+                          : "bg-gray-800/50 ring-1 ring-gray-700/50"
                       }`}>
                         {event.icon === "create" && (
-                          <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <svg className="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                           </svg>
                         )}
@@ -679,7 +687,7 @@ export default function InvoiceDetailPage() {
                           </svg>
                         )}
                         {event.icon === "paid" && (
-                          <svg className="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <svg className="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                           </svg>
                         )}
@@ -708,10 +716,10 @@ export default function InvoiceDetailPage() {
 
         {/* Mark as Paid Modal */}
         {showPaidModal && (
-          <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-            <div className="bg-gray-900 rounded-2xl border border-gray-700 p-6 w-full max-w-sm shadow-2xl">
-              <h3 className="text-lg font-semibold text-white mb-1">Record Payment</h3>
-              <p className="text-sm text-gray-400 mb-5">
+          <div className="fixed inset-0 bg-black/70 backdrop-blur-md z-50 flex items-center justify-center p-4">
+            <div className="bg-gray-900/90 backdrop-blur-sm rounded-2xl border border-gray-800/50 p-8 w-full max-w-sm shadow-2xl shadow-black/40">
+              <h3 className="text-lg font-semibold text-white mb-1 tracking-tight">Record Payment</h3>
+              <p className="text-sm text-gray-400 mb-6">
                 {invoice.paidAmount > 0
                   ? `Already paid: ${fmt(invoice.paidAmount)} of ${fmt(invoice.total)}`
                   : "Enter the payment amount and date"}
@@ -723,14 +731,14 @@ export default function InvoiceDetailPage() {
                 step="0.01"
                 value={paymentAmount}
                 onChange={(e) => setPaymentAmount(Number(e.target.value))}
-                className="w-full px-4 py-3 rounded-xl border border-gray-600 text-lg focus:ring-2 focus:ring-green-500 outline-none bg-gray-800 text-white mb-4"
+                className="w-full px-4 py-3 rounded-xl border border-gray-700/50 text-lg focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-gray-800/50 text-white mb-4 transition-colors"
               />
               <label className="block text-sm font-medium text-gray-400 mb-1">Payment Date</label>
               <input
                 type="date"
                 value={paidDate}
                 onChange={(e) => setPaidDate(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl border border-gray-600 text-lg focus:ring-2 focus:ring-green-500 outline-none bg-gray-800 text-white mb-5"
+                className="w-full px-4 py-3 rounded-xl border border-gray-700/50 text-lg focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-gray-800/50 text-white mb-6 transition-colors"
               />
               {paymentAmount > 0 && paymentAmount < (invoice.total - (invoice.paidAmount || 0)) && (
                 <p className="text-sm text-amber-400 mb-4">This is a partial payment. Status will remain until fully paid.</p>
@@ -739,13 +747,13 @@ export default function InvoiceDetailPage() {
                 <button
                   onClick={markPaid}
                   disabled={markingPaid || !paidDate || paymentAmount <= 0}
-                  className="flex-1 bg-green-500 text-white py-3 rounded-xl font-semibold hover:bg-green-400 disabled:opacity-50 transition-colors"
+                  className="flex-1 bg-gradient-to-r from-amber-500 to-orange-500 text-gray-950 py-3 rounded-xl font-semibold hover:from-amber-400 hover:to-orange-400 disabled:opacity-50 transition-all duration-200 shadow-lg shadow-amber-500/20"
                 >
                   {markingPaid ? "Saving..." : "Confirm Payment"}
                 </button>
                 <button
                   onClick={() => setShowPaidModal(false)}
-                  className="px-4 py-3 rounded-xl text-gray-400 hover:text-white hover:bg-gray-800 transition-colors"
+                  className="px-4 py-3 rounded-xl text-gray-400 hover:text-white hover:bg-gray-800/50 transition-all duration-200"
                 >
                   Cancel
                 </button>

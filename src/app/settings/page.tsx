@@ -305,8 +305,8 @@ function SettingsContent() {
   return (
     <div className="min-h-screen bg-gray-950 pb-20 md:pb-0">
       <Navbar />
-      <div className="max-w-3xl mx-auto px-4 py-8">
-        <h1 className="text-4xl font-bold text-white mb-8 tracking-tight">Settings</h1>
+      <div className="max-w-3xl mx-auto px-4 py-10">
+        <h1 className="text-4xl font-bold text-white mb-10 tracking-tight">Settings</h1>
 
         {upgraded && (
           <div className="bg-green-900/50 text-green-400 p-4 rounded-xl mb-6 font-medium">
@@ -315,12 +315,13 @@ function SettingsContent() {
         )}
 
         {/* Subscription */}
-        <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-800/50 mb-6">
+        <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-800/50 mb-8 hover:border-gray-700/60 transition-all duration-300">
           <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
             <svg className="w-5 h-5 text-amber-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
             </svg>
             Subscription
+            <div className="flex-1 h-px bg-gradient-to-r from-amber-500/20 to-transparent ml-2" />
           </h2>
           <div className="flex items-center justify-between">
             <div>
@@ -351,13 +352,14 @@ function SettingsContent() {
         </div>
 
         {/* Team Management */}
-        <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-800/50 mb-6">
+        <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-800/50 mb-8 hover:border-gray-700/60 transition-all duration-300">
           <h2 className="text-lg font-semibold text-white mb-2 flex items-center gap-2">
             <svg className="w-5 h-5 text-amber-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" />
             </svg>
             Team Members
             {!isPro && <ProBadge onClick={() => showProPrompt("Team management")} />}
+            <div className="flex-1 h-px bg-gradient-to-r from-amber-500/20 to-transparent ml-2" />
           </h2>
           <p className="text-sm text-gray-400 mb-4">
             Invite team members to create invoices, view clients, and log time. Pro plan: up to 3 members.
@@ -415,7 +417,7 @@ function SettingsContent() {
                   )}
 
                   {showInviteForm ? (
-                    <form onSubmit={handleInvite} className="space-y-3 p-4 bg-gray-800/20 rounded-xl border border-gray-700/30">
+                    <form onSubmit={handleInvite} className="space-y-3 p-4 bg-gray-800/20 rounded-xl border border-gray-700/30 backdrop-blur-sm">
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div>
                           <label className="block text-sm font-medium text-gray-400 mb-1">Email *</label>
@@ -425,7 +427,7 @@ function SettingsContent() {
                             value={inviteEmail}
                             onChange={(e) => setInviteEmail(e.target.value)}
                             placeholder="teammate@example.com"
-                            className="w-full bg-gray-800/50 border border-gray-700/50 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50"
+                            className="w-full bg-gray-800/50 border border-gray-700/50 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50 focus:ring-2 focus:ring-amber-500/20 transition-all"
                           />
                         </div>
                         <div>
@@ -435,7 +437,7 @@ function SettingsContent() {
                             value={inviteName}
                             onChange={(e) => setInviteName(e.target.value)}
                             placeholder="John"
-                            className="w-full bg-gray-800/50 border border-gray-700/50 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50"
+                            className="w-full bg-gray-800/50 border border-gray-700/50 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50 focus:ring-2 focus:ring-amber-500/20 transition-all"
                           />
                         </div>
                       </div>
@@ -444,7 +446,7 @@ function SettingsContent() {
                         <select
                           value={inviteRole}
                           onChange={(e) => setInviteRole(e.target.value)}
-                          className="bg-gray-800/50 border border-gray-700/50 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-amber-500/50"
+                          className="bg-gray-800/50 border border-gray-700/50 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-amber-500/50 focus:ring-2 focus:ring-amber-500/20 transition-all"
                         >
                           <option value="member">Member - can create invoices, view clients, log time/expenses</option>
                           <option value="admin">Admin - same as member plus team management</option>
@@ -486,13 +488,14 @@ function SettingsContent() {
         </div>
 
         {/* Logo Upload */}
-        <div className={`bg-gray-900/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-800/50 mb-6 relative ${!isPro ? "overflow-hidden" : ""}`}>
+        <div className={`bg-gray-900/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-800/50 mb-8 relative hover:border-gray-700/60 transition-all duration-300 ${!isPro ? "overflow-hidden" : ""}`}>
           <h2 className="text-lg font-semibold text-white mb-2 flex items-center gap-2">
             <svg className="w-5 h-5 text-amber-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0022.5 18.75V5.25A2.25 2.25 0 0020.25 3H3.75A2.25 2.25 0 001.5 5.25v13.5A2.25 2.25 0 003.75 21z" />
             </svg>
             Invoice Logo
             {!isPro && <ProBadge onClick={() => showProPrompt("Custom branding & logo")} />}
+            <div className="flex-1 h-px bg-gradient-to-r from-amber-500/20 to-transparent ml-2" />
           </h2>
           <p className="text-sm text-gray-400 mb-4">
             Upload your business logo to display on invoices and client views. JPG or PNG, max 2MB.
@@ -559,15 +562,16 @@ function SettingsContent() {
         {/* Profile */}
         <form
           onSubmit={handleSave}
-          className="space-y-6"
+          className="space-y-8"
         >
           {/* Business Information */}
-          <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-800/50 space-y-4">
+          <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-800/50 space-y-5 hover:border-gray-700/60 transition-all duration-300">
             <h2 className="text-lg font-semibold text-white mb-2 flex items-center gap-2">
               <svg className="w-5 h-5 text-amber-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21" />
               </svg>
               Business Information
+              <div className="flex-1 h-px bg-gradient-to-r from-amber-500/20 to-transparent ml-2" />
             </h2>
             <p className="text-sm text-gray-400">
               These details appear on your invoices and client communications.
@@ -582,7 +586,7 @@ function SettingsContent() {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="John Murphy"
-                  className="w-full px-4 py-3 rounded-xl border border-gray-800/50 text-lg focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-gray-900/50 text-white placeholder-gray-500 transition-all"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-700/50 text-lg focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 outline-none bg-gray-800/50 text-white placeholder-gray-500 transition-all"
                 />
               </div>
 
@@ -594,7 +598,7 @@ function SettingsContent() {
                   value={businessName}
                   onChange={(e) => setBusinessName(e.target.value)}
                   placeholder="Murphy Plumbing Ltd"
-                  className="w-full px-4 py-3 rounded-xl border border-gray-800/50 text-lg focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-gray-900/50 text-white placeholder-gray-500 transition-all"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-700/50 text-lg focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 outline-none bg-gray-800/50 text-white placeholder-gray-500 transition-all"
                 />
               </div>
             </div>
@@ -607,7 +611,7 @@ function SettingsContent() {
                 value={businessAddress}
                 onChange={(e) => setBusinessAddress(e.target.value)}
                 placeholder="123 Main St, Amsterdam"
-                className="w-full px-4 py-3 rounded-xl border border-gray-800/50 text-lg focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-gray-900/50 text-white placeholder-gray-500 transition-all"
+                className="w-full px-4 py-3 rounded-xl border border-gray-700/50 text-lg focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 outline-none bg-gray-800/50 text-white placeholder-gray-500 transition-all"
               />
             </div>
 
@@ -619,7 +623,7 @@ function SettingsContent() {
                 value={businessPhone}
                 onChange={(e) => setBusinessPhone(e.target.value)}
                 placeholder="+31 20 123 4567"
-                className="w-full px-4 py-3 rounded-xl border border-gray-800/50 text-lg focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-gray-900/50 text-white placeholder-gray-500 transition-all"
+                className="w-full px-4 py-3 rounded-xl border border-gray-700/50 text-lg focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 outline-none bg-gray-800/50 text-white placeholder-gray-500 transition-all"
               />
               <p className="text-xs text-gray-500 mt-1">
                 Include country code, e.g. +31 6 12345678 (NL) or +40 712 345 678 (RO)
@@ -628,12 +632,13 @@ function SettingsContent() {
           </div>
 
           {/* Tax & Registration */}
-          <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-800/50 space-y-4">
+          <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-800/50 space-y-5 hover:border-gray-700/60 transition-all duration-300">
             <h2 className="text-lg font-semibold text-white mb-2 flex items-center gap-2">
               <svg className="w-5 h-5 text-amber-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
               </svg>
               Tax &amp; Registration
+              <div className="flex-1 h-px bg-gradient-to-r from-amber-500/20 to-transparent ml-2" />
             </h2>
             <p className="text-sm text-gray-400">
               Registration numbers shown on invoices for legal compliance.
@@ -648,7 +653,7 @@ function SettingsContent() {
                   value={kvkNumber}
                   onChange={(e) => setKvkNumber(e.target.value)}
                   placeholder="12345678"
-                  className="w-full px-4 py-3 rounded-xl border border-gray-800/50 text-lg focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-gray-900/50 text-white placeholder-gray-500 transition-all"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-700/50 text-lg focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 outline-none bg-gray-800/50 text-white placeholder-gray-500 transition-all"
                 />
                 <p className="text-xs text-gray-500 mt-1">
                   KVK (NL), Companies House (UK), Handelsregister (DE)
@@ -663,7 +668,7 @@ function SettingsContent() {
                   value={vatNumber}
                   onChange={(e) => setVatNumber(e.target.value)}
                   placeholder="NL123456789B01"
-                  className="w-full px-4 py-3 rounded-xl border border-gray-800/50 text-lg focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-gray-900/50 text-white placeholder-gray-500 transition-all"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-700/50 text-lg focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 outline-none bg-gray-800/50 text-white placeholder-gray-500 transition-all"
                 />
                 <p className="text-xs text-gray-500 mt-1">
                   BTW-id (NL), VAT number (UK), USt-IdNr (DE)
@@ -673,12 +678,13 @@ function SettingsContent() {
           </div>
 
           {/* Bank / Payment Details */}
-          <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-800/50 space-y-4">
+          <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-800/50 space-y-5 hover:border-gray-700/60 transition-all duration-300">
             <h2 className="text-lg font-semibold text-white mb-2 flex items-center gap-2">
               <svg className="w-5 h-5 text-amber-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z" />
               </svg>
               Payment Details
+              <div className="flex-1 h-px bg-gradient-to-r from-amber-500/20 to-transparent ml-2" />
             </h2>
             <p className="text-sm text-gray-400">
               Bank account details shown on all your invoices so clients know where to pay.
@@ -693,7 +699,7 @@ function SettingsContent() {
                 onChange={(e) => setIban(e.target.value.replace(/\s/g, "").toUpperCase())}
                 placeholder="NL91 ABNA 0417 1643 00"
                 maxLength={42}
-                className="w-full px-4 py-3 rounded-xl border border-gray-800/50 text-lg focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-gray-900/50 text-white placeholder-gray-500 transition-all font-mono tracking-wider"
+                className="w-full px-4 py-3 rounded-xl border border-gray-700/50 text-lg focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 outline-none bg-gray-800/50 text-white placeholder-gray-500 transition-all font-mono tracking-wider"
               />
             </div>
 
@@ -706,7 +712,7 @@ function SettingsContent() {
                   value={bankName}
                   onChange={(e) => setBankName(e.target.value)}
                   placeholder="ABN AMRO"
-                  className="w-full px-4 py-3 rounded-xl border border-gray-800/50 text-lg focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-gray-900/50 text-white placeholder-gray-500 transition-all"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-700/50 text-lg focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 outline-none bg-gray-800/50 text-white placeholder-gray-500 transition-all"
                 />
               </div>
               <div>
@@ -718,7 +724,7 @@ function SettingsContent() {
                   onChange={(e) => setBic(e.target.value.toUpperCase())}
                   placeholder="ABNANL2A"
                   maxLength={11}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-800/50 text-lg focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-gray-900/50 text-white placeholder-gray-500 transition-all font-mono"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-700/50 text-lg focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 outline-none bg-gray-800/50 text-white placeholder-gray-500 transition-all font-mono"
                 />
               </div>
             </div>
@@ -731,7 +737,7 @@ function SettingsContent() {
                 value={accountHolder}
                 onChange={(e) => setAccountHolder(e.target.value)}
                 placeholder={businessName || "Your business name"}
-                className="w-full px-4 py-3 rounded-xl border border-gray-800/50 text-lg focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-gray-900/50 text-white placeholder-gray-500 transition-all"
+                className="w-full px-4 py-3 rounded-xl border border-gray-700/50 text-lg focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 outline-none bg-gray-800/50 text-white placeholder-gray-500 transition-all"
               />
             </div>
 
@@ -782,12 +788,13 @@ function SettingsContent() {
         </form>
 
         {/* Data Export */}
-        <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-800/50 mt-6">
+        <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-800/50 mt-8 hover:border-gray-700/60 transition-all duration-300">
           <h2 className="text-lg font-semibold text-white mb-2 flex items-center gap-2">
             <svg className="w-5 h-5 text-amber-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
             </svg>
             Data Export
+            <div className="flex-1 h-px bg-gradient-to-r from-amber-500/20 to-transparent ml-2" />
           </h2>
           <p className="text-sm text-gray-400 mb-4">
             Download all your data (profile, clients, invoices) as a JSON file. This is your right under GDPR Article 20.
@@ -802,12 +809,13 @@ function SettingsContent() {
         </div>
 
         {/* Delete Account */}
-        <div className="bg-red-500/5 backdrop-blur-sm rounded-2xl p-6 border border-red-500/20 mt-6">
+        <div className="bg-red-500/5 backdrop-blur-sm rounded-2xl p-6 border border-red-500/20 mt-8 hover:border-red-500/30 transition-all duration-300">
           <h2 className="text-lg font-semibold text-red-400 mb-2 flex items-center gap-2">
-            <svg className="w-5 h-5 text-amber-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 text-red-400/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 9v3.75m0-10.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285zm0 13.036h.008v.008H12v-.008z" />
             </svg>
             Danger Zone
+            <div className="flex-1 h-px bg-gradient-to-r from-red-500/20 to-transparent ml-2" />
           </h2>
           <p className="text-sm text-gray-400 mb-4">
             Permanently delete your account and all associated data. This action cannot be undone.
@@ -822,8 +830,8 @@ function SettingsContent() {
 
         {/* Delete Confirmation Modal */}
         {showDeleteModal && (
-          <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 px-4">
-            <div className="bg-gray-800 border border-gray-700 rounded-2xl p-8 max-w-md w-full">
+          <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 px-4">
+            <div className="bg-gray-900/95 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-8 max-w-md w-full shadow-2xl">
               <h3 className="text-xl font-bold text-red-400 mb-4">Delete Account</h3>
               <p className="text-gray-300 mb-4">
                 This will permanently delete your account, all invoices, all clients, and all data.
@@ -842,7 +850,7 @@ function SettingsContent() {
                 value={deleteConfirmation}
                 onChange={(e) => setDeleteConfirmation(e.target.value)}
                 placeholder="Type DELETE"
-                className="w-full px-4 py-3 rounded-xl bg-gray-900 border border-gray-600 text-white placeholder-gray-500 mb-4 focus:ring-2 focus:ring-red-500 outline-none"
+                className="w-full px-4 py-3 rounded-xl bg-gray-800/50 border border-gray-700/50 text-white placeholder-gray-500 mb-4 focus:ring-2 focus:ring-red-500/20 focus:border-red-500/50 outline-none transition-all"
               />
               <div className="flex gap-3">
                 <button
@@ -851,7 +859,7 @@ function SettingsContent() {
                     setDeleteConfirmation("");
                     setDeleteError("");
                   }}
-                  className="flex-1 bg-gray-700 text-white py-3 rounded-xl font-semibold hover:bg-gray-600 transition-colors"
+                  className="flex-1 bg-gray-800/50 border border-gray-700/50 text-white py-3 rounded-xl font-semibold hover:border-gray-600 transition-all"
                 >
                   Cancel
                 </button>
