@@ -19,6 +19,7 @@ interface Client {
   email: string;
   phone: string | null;
   address: string | null;
+  vatNumber: string | null;
   createdAt: string;
   invoiceCount: number;
   totalInvoiced: number;
@@ -61,6 +62,7 @@ export default function ClientsPage() {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
+  const [vatNumber, setVatNumber] = useState("");
   const [saving, setSaving] = useState(false);
   const [search, setSearch] = useState("");
   const [sortBy, setSortBy] = useState<"name" | "totalInvoiced" | "lastInvoiceDate" | "invoiceCount">("name");
@@ -79,7 +81,7 @@ export default function ClientsPage() {
     const res = await fetch("/api/clients", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email, phone, address }),
+      body: JSON.stringify({ name, email, phone, address, vatNumber: vatNumber || null }),
     });
     if (res.ok) {
       const client = await res.json();
@@ -88,6 +90,7 @@ export default function ClientsPage() {
       setEmail("");
       setPhone("");
       setAddress("");
+      setVatNumber("");
       setShowForm(false);
     }
     setSaving(false);
@@ -214,6 +217,12 @@ export default function ClientsPage() {
                 onChange={(e) => setAddress(e.target.value)}
                 className="px-4 py-3 rounded-xl border border-gray-800/50 text-lg focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-gray-900 text-white placeholder-gray-500 transition-all"
               />
+              <input
+                placeholder="VAT number (optional)"
+                value={vatNumber}
+                onChange={(e) => setVatNumber(e.target.value)}
+                className="px-4 py-3 rounded-xl border border-gray-800/50 text-lg focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-gray-900 text-white placeholder-gray-500 transition-all"
+              />
             </div>
             <button
               type="submit"
@@ -293,10 +302,11 @@ export default function ClientsPage() {
                     <div className="min-w-0">
                       <p className="font-semibold text-white text-lg truncate">{client.name}</p>
                       <p className="text-sm text-gray-400 truncate">{client.email}</p>
-                      {(client.phone || client.address) && (
+                      {(client.phone || client.address || client.vatNumber) && (
                         <div className="flex flex-wrap gap-x-4 gap-y-0.5 mt-1">
                           {client.phone && <p className="text-xs text-gray-500">{client.phone}</p>}
                           {client.address && <p className="text-xs text-gray-500">{client.address}</p>}
+                          {client.vatNumber && <p className="text-xs text-gray-500">VAT: {client.vatNumber}</p>}
                         </div>
                       )}
                     </div>

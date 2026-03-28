@@ -158,6 +158,9 @@ export default async function PublicInvoicePage({
                 {invoice.client.address && (
                   <p className="text-gray-500 text-sm mt-0.5 whitespace-pre-line">{invoice.client.address}</p>
                 )}
+                {invoice.client.vatNumber && (
+                  <p className="text-gray-400 text-xs mt-1">VAT: {invoice.client.vatNumber}</p>
+                )}
               </div>
             </div>
           </div>

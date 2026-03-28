@@ -11,6 +11,7 @@ interface Client {
   email: string;
   phone: string | null;
   address: string | null;
+  vatNumber: string | null;
 }
 
 interface UserProfile {
@@ -203,6 +204,11 @@ function InvoicePreview({
                 {selectedClient.address && (
                   <p className="text-gray-500 text-xs mt-0.5 whitespace-pre-line">
                     {selectedClient.address}
+                  </p>
+                )}
+                {selectedClient.vatNumber && (
+                  <p className="text-gray-500 text-xs mt-0.5">
+                    VAT: {selectedClient.vatNumber}
                   </p>
                 )}
               </>
@@ -405,6 +411,7 @@ function NewInvoiceForm() {
   const [newClientEmail, setNewClientEmail] = useState("");
   const [newClientPhone, setNewClientPhone] = useState("");
   const [newClientAddress, setNewClientAddress] = useState("");
+  const [newClientVatNumber, setNewClientVatNumber] = useState("");
 
   // User business details
   const [user, setUser] = useState<UserProfile | null>(null);
@@ -488,6 +495,7 @@ function NewInvoiceForm() {
         email: newClientEmail,
         phone: newClientPhone || null,
         address: newClientAddress || null,
+        vatNumber: newClientVatNumber || null,
       }),
     });
     if (res.ok) {
@@ -499,6 +507,7 @@ function NewInvoiceForm() {
       setNewClientEmail("");
       setNewClientPhone("");
       setNewClientAddress("");
+      setNewClientVatNumber("");
     }
   }
 
@@ -963,6 +972,12 @@ function NewInvoiceForm() {
                         placeholder="Address (required for legal)"
                         value={newClientAddress}
                         onChange={(e) => setNewClientAddress(e.target.value)}
+                        className="px-3 py-2.5 rounded-xl border border-gray-800/50 text-sm focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 transition-all outline-none bg-gray-900/80 text-white placeholder-gray-500"
+                      />
+                      <input
+                        placeholder="VAT number (optional)"
+                        value={newClientVatNumber}
+                        onChange={(e) => setNewClientVatNumber(e.target.value)}
                         className="px-3 py-2.5 rounded-xl border border-gray-800/50 text-sm focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 transition-all outline-none bg-gray-900/80 text-white placeholder-gray-500"
                       />
                     </div>

@@ -32,6 +32,7 @@ export async function GET() {
         email: client.email,
         phone: client.phone,
         address: client.address,
+        vatNumber: client.vatNumber,
         createdAt: client.createdAt,
         invoiceCount: invoices.length,
         totalInvoiced: invoices.reduce((sum, inv) => sum + inv.total, 0),
@@ -65,7 +66,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Rate limit exceeded. Try again later." }, { status: 429 });
     }
 
-    const { name, email, phone, address } = await req.json();
+    const { name, email, phone, address, vatNumber } = await req.json();
 
     if (!name || !email) {
       return NextResponse.json(
@@ -89,6 +90,7 @@ export async function POST(req: NextRequest) {
         email: sanitizedEmail,
         phone: phone ? sanitizeString(phone, 30) : null,
         address: address ? sanitizeString(address, 500) : null,
+        vatNumber: vatNumber ? sanitizeString(vatNumber, 50) : null,
       },
     });
 

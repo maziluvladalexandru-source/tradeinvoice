@@ -313,6 +313,7 @@ export async function GET(
             <p>${escapeHtml(invoice.client.email)}</p>
             ${invoice.client.address ? `<p>${escapeHtml(invoice.client.address)}</p>` : ""}
             ${invoice.client.phone ? `<p>${escapeHtml(invoice.client.phone)}</p>` : ""}
+            ${invoice.client.vatNumber ? `<p>VAT: ${escapeHtml(invoice.client.vatNumber)}</p>` : ""}
           </div>
         </div>
 

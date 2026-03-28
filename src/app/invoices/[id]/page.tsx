@@ -32,7 +32,7 @@ interface Invoice {
   referenceInvoice: string | null;
   language: string;
   paidAmount: number;
-  client: { id: string; name: string; email: string; phone: string | null; address: string | null };
+  client: { id: string; name: string; email: string; phone: string | null; address: string | null; vatNumber: string | null };
   lineItems: { id: string; description: string; quantity: number; unitPrice: number; total: number }[];
   user: { businessName: string | null; email: string; plan?: string; businessAddress?: string | null; businessPhone?: string | null; kvkNumber?: string | null; vatNumber?: string | null; bankDetails?: string | null; logoUrl?: string | null };
 }
@@ -379,6 +379,9 @@ export default function InvoiceDetailPage() {
                 )}
                 {invoice.client.address && (
                   <p className="text-gray-400">{invoice.client.address}</p>
+                )}
+                {invoice.client.vatNumber && (
+                  <p className="text-gray-400 text-sm mt-1">VAT: {invoice.client.vatNumber}</p>
                 )}
               </div>
             </div>
