@@ -5,12 +5,20 @@ export default function Home() {
     <div className="min-h-screen bg-gradient-to-b from-gray-950 via-gray-900 to-gray-950 text-white">
       <header className="max-w-6xl mx-auto px-4 py-6 flex items-center justify-between">
         <h1 className="text-2xl font-bold text-amber-400">TradeInvoice</h1>
-        <Link
-          href="/auth/login"
-          className="bg-amber-500 text-gray-900 px-6 py-3 rounded-xl font-semibold text-lg hover:bg-amber-400 transition-colors"
-        >
-          Sign In
-        </Link>
+        <div className="flex items-center gap-6">
+          <Link
+            href="/blog"
+            className="text-gray-400 hover:text-white transition-colors font-medium"
+          >
+            Blog
+          </Link>
+          <Link
+            href="/auth/login"
+            className="bg-amber-500 text-gray-900 px-6 py-3 rounded-xl font-semibold text-lg hover:bg-amber-400 transition-colors"
+          >
+            Sign In
+          </Link>
+        </div>
       </header>
 
       {/* Hero */}
