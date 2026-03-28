@@ -447,7 +447,7 @@ export default function ExpensesPage() {
               <div className="relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl p-5 border border-gray-700/50 hover:border-amber-500/30 hover:shadow-lg hover:shadow-amber-500/10 transition-all duration-300 col-span-1 sm:col-span-2 lg:col-span-1">
                 <div className="absolute inset-0 bg-gradient-to-br from-red-500/10 to-transparent pointer-events-none" />
                 <p className="text-sm font-medium text-gray-400 mb-1">Total Expenses</p>
-                <p className="text-2xl font-bold text-red-400">{fmtCurrency(totalExpenses)}</p>
+                <p className="text-lg md:text-2xl font-bold text-red-400 truncate">{fmtCurrency(totalExpenses)}</p>
                 <p className="text-sm text-gray-500 mt-1">{TIME_FILTERS.find((f) => f.value === timeFilter)?.label}</p>
               </div>
               {categoryBreakdown.slice(0, 3).map((cat) => (
@@ -830,19 +830,19 @@ export default function ExpensesPage() {
                   <div className="relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl p-5 border border-gray-700/50 hover:border-amber-500/30 hover:shadow-lg hover:shadow-amber-500/10 transition-all duration-300">
                     <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent pointer-events-none" />
                     <p className="text-sm font-medium text-gray-400 mb-1">Total Distance</p>
-                    <p className="text-2xl font-bold text-blue-400">{totalKm.toFixed(1)} km</p>
+                    <p className="text-lg md:text-2xl font-bold text-blue-400">{totalKm.toFixed(1)} km</p>
                     <p className="text-sm text-gray-500 mt-1">{TIME_FILTERS.find((f) => f.value === timeFilter)?.label}</p>
                   </div>
                   <div className="relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl p-5 border border-gray-700/50 hover:border-amber-500/30 hover:shadow-lg hover:shadow-amber-500/10 transition-all duration-300">
                     <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-transparent pointer-events-none" />
                     <p className="text-sm font-medium text-gray-400 mb-1">Tax Deduction</p>
-                    <p className="text-2xl font-bold text-emerald-400">{fmtCurrency(totalDeduction)}</p>
+                    <p className="text-lg md:text-2xl font-bold text-emerald-400 truncate">{fmtCurrency(totalDeduction)}</p>
                     <p className="text-sm text-gray-500 mt-1">at standard rates</p>
                   </div>
                   <div className="relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl p-5 border border-gray-700/50 hover:border-amber-500/30 hover:shadow-lg hover:shadow-amber-500/10 transition-all duration-300">
                     <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 to-transparent pointer-events-none" />
                     <p className="text-sm font-medium text-gray-400 mb-1">Billable</p>
-                    <p className="text-2xl font-bold text-amber-400">{billableKm.toFixed(1)} km</p>
+                    <p className="text-lg md:text-2xl font-bold text-amber-400">{billableKm.toFixed(1)} km</p>
                     <p className="text-sm text-gray-500 mt-1">{mileageEntries.filter((e) => e.billable).length} trip{mileageEntries.filter((e) => e.billable).length !== 1 ? "s" : ""}</p>
                   </div>
                 </div>

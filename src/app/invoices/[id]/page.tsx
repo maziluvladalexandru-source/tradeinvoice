@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
+import BottomNav from "@/components/BottomNav";
 import Link from "next/link";
 import UpgradeModal, { ProBadge } from "@/components/UpgradeModal";
 
@@ -228,7 +229,7 @@ export default function InvoiceDetailPage() {
   ].filter((e) => e.always || e.date);
 
   return (
-    <div className="min-h-screen bg-[#0a0f1e] premium-glow">
+    <div className="min-h-screen bg-[#0a0f1e] pb-20 md:pb-0 premium-glow">
       <Navbar />
       <div className="max-w-4xl mx-auto px-4 py-10">
         <Link
@@ -766,6 +767,7 @@ export default function InvoiceDetailPage() {
       {showUpgradeModal && (
         <UpgradeModal feature={upgradeFeature} onClose={() => setShowUpgradeModal(false)} />
       )}
+      <BottomNav />
     </div>
   );
 }

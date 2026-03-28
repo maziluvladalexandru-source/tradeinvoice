@@ -218,7 +218,7 @@ export default function DashboardPage() {
             <p className="text-sm font-medium text-gray-400 mb-1">
               Total Outstanding
             </p>
-            <p className="text-3xl font-bold text-amber-400 truncate">
+            <p className="text-lg md:text-3xl font-bold text-amber-400 truncate">
               {fc(stats.totalOutstanding)}
             </p>
           </div>
@@ -227,7 +227,7 @@ export default function DashboardPage() {
             <p className="text-sm font-medium text-gray-400 mb-1">
               Paid This Month
             </p>
-            <p className="text-3xl font-bold text-green-400 truncate">
+            <p className="text-lg md:text-3xl font-bold text-green-400 truncate">
               {fc(stats.paidThisMonth)}
             </p>
             {stats.revenueLastMonth > 0 && (
@@ -245,7 +245,7 @@ export default function DashboardPage() {
               Overdue Invoices
             </p>
             <div className="flex items-center gap-2">
-              <p className="text-3xl font-bold text-red-400">
+              <p className="text-lg md:text-3xl font-bold text-red-400">
                 {stats.overdueCount}
               </p>
               {stats.overdueCount > 0 && (
@@ -271,7 +271,7 @@ export default function DashboardPage() {
               <p className="text-sm font-medium text-gray-400 mb-1">
                 Avg. Days to Payment
               </p>
-              <p className="text-3xl font-bold text-blue-400">
+              <p className="text-lg md:text-3xl font-bold text-blue-400">
                 {stats.avgDaysToPayment}
               </p>
               <p className="text-sm text-gray-500 mt-1">days</p>
@@ -282,7 +282,7 @@ export default function DashboardPage() {
             <p className="text-sm font-medium text-gray-400 mb-1">
               Active Clients
             </p>
-            <p className="text-3xl font-bold text-purple-400">
+            <p className="text-lg md:text-3xl font-bold text-purple-400">
               {stats.activeClientsCount}
             </p>
             <p className="text-sm text-gray-500 mt-1">last 90 days</p>
@@ -536,9 +536,10 @@ export default function DashboardPage() {
               {recentInvoices.map((invoice) => (
                 <div
                   key={invoice.id}
-                  className={`p-4 bg-[#111827] rounded-xl mb-1 border border-gray-700/30 hover:border-amber-500/30 hover:bg-[#1a2235] transition-colors border-l-4 ${statusBorder[invoice.status] || "border-l-gray-600"}`}
+                  className={`p-3 sm:p-4 bg-[#111827] rounded-xl mb-1 border border-gray-700/30 hover:border-amber-500/30 hover:bg-[#1a2235] transition-colors border-l-4 ${statusBorder[invoice.status] || "border-l-gray-600"}`}
                 >
-                  <div className="flex items-center gap-3">
+                  {/* Desktop layout */}
+                  <div className="hidden sm:flex items-center gap-3">
                     <Link
                       href={`/invoices/${invoice.id}`}
                       className="flex items-center gap-2 flex-1 min-w-0 overflow-hidden"
@@ -552,53 +553,24 @@ export default function DashboardPage() {
                         </p>
                       </div>
                       {invoice.isRecurring && (
-                        <span className="bg-cyan-500/20 text-cyan-300 ring-1 ring-cyan-400/40 px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase hidden sm:inline-flex items-center gap-1">
-                          <svg
-                            className="w-3 h-3"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-                            />
+                        <span className="bg-cyan-500/20 text-cyan-300 ring-1 ring-cyan-400/40 px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase inline-flex items-center gap-1">
+                          <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                           </svg>
                           Recurring
                         </span>
                       )}
-                      <p className="text-xs text-gray-500 hidden sm:block">
+                      <p className="text-xs text-gray-500">
                         Due {fmtDate(invoice.dueDate)}
                       </p>
                     </Link>
-                    <span
-                      className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold capitalize ${statusColors[invoice.status] || ""}`}
-                    >
-                      <span
-                        className={`w-1.5 h-1.5 rounded-full ${statusDot[invoice.status] || ""}`}
-                      />
+                    <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold capitalize ${statusColors[invoice.status] || ""}`}>
+                      <span className={`w-1.5 h-1.5 rounded-full ${statusDot[invoice.status] || ""}`} />
                       {invoice.status}
                       {invoice.status === "viewed" && (
-                        <svg
-                          className="w-3.5 h-3.5 ml-0.5"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                          />
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                          />
+                        <svg className="w-3.5 h-3.5 ml-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                         </svg>
                       )}
                     </span>
@@ -606,44 +578,52 @@ export default function DashboardPage() {
                       <p className="text-base font-bold text-white">
                         {formatCurrency(invoice.total, invoice.currency)}
                       </p>
-                      {invoice.paidAmount > 0 &&
-                        invoice.paidAmount < invoice.total && (
-                          <p className="text-xs text-amber-400">
-                            Due:{" "}
-                            {formatCurrency(
-                              invoice.total - invoice.paidAmount,
-                              invoice.currency
-                            )}
-                          </p>
-                        )}
+                      {invoice.paidAmount > 0 && invoice.paidAmount < invoice.total && (
+                        <p className="text-xs text-amber-400">
+                          Due: {formatCurrency(invoice.total - invoice.paidAmount, invoice.currency)}
+                        </p>
+                      )}
                     </div>
-                    <InvoiceCardActions
-                      invoiceId={invoice.id}
-                      status={invoice.status}
-                      type={invoice.type}
-                    />
-                    <a
-                      href={`/api/invoices/${invoice.id}/pdf`}
-                      target="_blank"
-                      className="p-2 rounded-lg text-gray-400 hover:text-amber-500 hover:bg-gray-700 transition-colors"
-                      title="Download PDF"
-                      aria-label="Download PDF"
-                    >
-                      <svg
-                        className="w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        aria-hidden="true"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                        />
+                    <InvoiceCardActions invoiceId={invoice.id} status={invoice.status} type={invoice.type} />
+                    <a href={`/api/invoices/${invoice.id}/pdf`} target="_blank" className="p-2 rounded-lg text-gray-400 hover:text-amber-500 hover:bg-gray-700 transition-colors" title="Download PDF" aria-label="Download PDF">
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                       </svg>
                     </a>
+                  </div>
+
+                  {/* Mobile layout */}
+                  <div className="sm:hidden">
+                    <Link href={`/invoices/${invoice.id}`} className="block min-w-0">
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="min-w-0 flex-1">
+                          <p className="font-medium text-white text-sm">{invoice.invoiceNumber}</p>
+                          <p className="text-sm text-gray-400 truncate">{invoice.clientName}</p>
+                        </div>
+                        <p className="text-sm font-bold text-white whitespace-nowrap">
+                          {formatCurrency(invoice.total, invoice.currency)}
+                        </p>
+                      </div>
+                    </Link>
+                    <div className="flex items-center justify-between mt-2">
+                      <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold capitalize ${statusColors[invoice.status] || ""}`}>
+                        <span className={`w-1.5 h-1.5 rounded-full ${statusDot[invoice.status] || ""}`} />
+                        {invoice.status}
+                      </span>
+                      <div className="flex items-center gap-0.5">
+                        <InvoiceCardActions invoiceId={invoice.id} status={invoice.status} type={invoice.type} />
+                        <a href={`/api/invoices/${invoice.id}/pdf`} target="_blank" className="p-1 rounded-lg text-gray-400 hover:text-amber-500 hover:bg-gray-700 transition-colors" title="Download PDF" aria-label="Download PDF">
+                          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                          </svg>
+                        </a>
+                      </div>
+                    </div>
+                    {invoice.paidAmount > 0 && invoice.paidAmount < invoice.total && (
+                      <p className="text-xs text-amber-400 mt-1">
+                        Due: {formatCurrency(invoice.total - invoice.paidAmount, invoice.currency)}
+                      </p>
+                    )}
                   </div>
                 </div>
               ))}

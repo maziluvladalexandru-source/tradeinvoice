@@ -245,7 +245,7 @@ export default function ClientsPage() {
                   <svg className="w-3.5 h-3.5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" /></svg>
                   Total Clients
                 </p>
-                <p className="text-2xl font-bold text-white mt-1">{clients.length}</p>
+                <p className="text-lg md:text-2xl font-bold text-white mt-1">{clients.length}</p>
               </div>
             </div>
             <div className="bg-[#111827] backdrop-blur-sm rounded-2xl p-5 border border-gray-700/50 border-l-4 border-l-amber-500 hover:border-gray-600/50 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300 relative overflow-hidden">
@@ -255,7 +255,7 @@ export default function ClientsPage() {
                   <svg className="w-3.5 h-3.5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                   Total Invoiced
                 </p>
-                <p className="text-2xl font-bold text-amber-400 mt-1">{formatCurrency(totalRevenue, primaryCurrency)}</p>
+                <p className="text-lg md:text-2xl font-bold text-amber-400 mt-1 truncate">{formatCurrency(totalRevenue, primaryCurrency)}</p>
               </div>
             </div>
             <div className="bg-[#111827] backdrop-blur-sm rounded-2xl p-5 border border-gray-700/50 border-l-4 border-l-emerald-500 hover:border-gray-600/50 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300 relative overflow-hidden">
@@ -265,7 +265,7 @@ export default function ClientsPage() {
                   <svg className="w-3.5 h-3.5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" /></svg>
                   Total Invoices
                 </p>
-                <p className="text-2xl font-bold text-white mt-1">{totalInvoices}</p>
+                <p className="text-lg md:text-2xl font-bold text-white mt-1">{totalInvoices}</p>
               </div>
             </div>
             <div className="bg-[#111827] backdrop-blur-sm rounded-2xl p-5 border border-gray-700/50 border-l-4 border-l-red-500 hover:border-gray-600/50 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300 relative overflow-hidden">
@@ -275,7 +275,7 @@ export default function ClientsPage() {
                   <svg className="w-3.5 h-3.5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" /></svg>
                   Overdue
                 </p>
-                <p className={`text-2xl font-bold mt-1 ${totalOverdue > 0 ? "text-red-400" : "text-green-400"}`}>
+                <p className={`text-lg md:text-2xl font-bold mt-1 ${totalOverdue > 0 ? "text-red-400" : "text-green-400"}`}>
                   {totalOverdue}
                 </p>
               </div>
@@ -416,16 +416,16 @@ export default function ClientsPage() {
                     </form>
                   ) : (
                     <>
-                      <div className="flex items-start justify-between gap-4">
-                        {/* Left: Client info */}
-                        <div className="flex items-start gap-4 min-w-0 flex-1">
-                          <div className="w-11 h-11 rounded-full bg-gradient-to-br from-amber-500/20 to-amber-600/10 flex items-center justify-center flex-shrink-0 border border-amber-500/20">
-                            <span className="text-amber-400 font-bold text-lg">{client.name.charAt(0).toUpperCase()}</span>
+                      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4">
+                        {/* Client info */}
+                        <div className="flex items-start gap-3 sm:gap-4 min-w-0 flex-1">
+                          <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-gradient-to-br from-amber-500/20 to-amber-600/10 flex items-center justify-center flex-shrink-0 border border-amber-500/20">
+                            <span className="text-amber-400 font-bold text-base sm:text-lg">{client.name.charAt(0).toUpperCase()}</span>
                           </div>
-                          <div className="min-w-0">
-                            <p className="font-semibold text-white text-lg truncate flex items-center gap-2">
-                              {client.name}
-                              {flag && <span className="text-base" title="Detected country">{flag}</span>}
+                          <div className="min-w-0 flex-1">
+                            <p className="font-semibold text-white text-base sm:text-lg flex items-center gap-2">
+                              <span className="truncate">{client.name}</span>
+                              {flag && <span className="text-base flex-shrink-0" title="Detected country">{flag}</span>}
                             </p>
                             <p className="text-sm text-gray-400 truncate">{client.email}</p>
                             {(client.phone || client.address || client.vatNumber) && (
@@ -438,8 +438,8 @@ export default function ClientsPage() {
                           </div>
                         </div>
 
-                        {/* Right: Action buttons */}
-                        <div className="flex items-center gap-2 flex-shrink-0">
+                        {/* Action buttons - own row on mobile */}
+                        <div className="flex items-center gap-2 flex-shrink-0 pl-13 sm:pl-0">
                           <button
                             onClick={() => startEditing(client)}
                             className="p-2 rounded-lg text-gray-400 hover:text-amber-400 hover:bg-white/5 transition-colors"
@@ -453,7 +453,7 @@ export default function ClientsPage() {
                             onClick={() => handleDelete(client)}
                             disabled={deleting === client.id}
                             className="p-2 rounded-lg text-gray-400 hover:text-red-400 hover:bg-white/5 transition-colors disabled:opacity-50"
-                            title={client.invoiceCount > 0 ? `Cannot delete — has ${client.invoiceCount} invoice(s)` : "Delete client"}
+                            title={client.invoiceCount > 0 ? `Cannot delete - has ${client.invoiceCount} invoice(s)` : "Delete client"}
                           >
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -461,7 +461,7 @@ export default function ClientsPage() {
                           </button>
                           <Link
                             href={`/invoices/new?clientId=${client.id}`}
-                            className="bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-gray-950 px-4 py-2 rounded-xl text-sm font-semibold shadow-sm shadow-amber-500/20 transition-all whitespace-nowrap"
+                            className="bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-gray-950 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-semibold shadow-sm shadow-amber-500/20 transition-all whitespace-nowrap"
                           >
                             + New Invoice
                           </Link>
@@ -474,7 +474,7 @@ export default function ClientsPage() {
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4 pt-4 border-t border-gray-700/50">
                     <div>
                       <p className="text-xs text-gray-500 uppercase tracking-wider">Total Invoiced</p>
-                      <p className="text-lg font-bold text-white mt-0.5">
+                      <p className="text-sm sm:text-lg font-bold text-white mt-0.5 truncate">
                         {client.invoiceCount > 0
                           ? formatCurrency(client.totalInvoiced, client.currency)
                           : "--"}

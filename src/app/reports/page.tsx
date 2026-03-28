@@ -239,25 +239,25 @@ export default function ReportsPage() {
                   <div className="relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl p-5 border border-gray-700/50 border-l-4 border-l-emerald-500 hover:border-white/20 transition-all duration-300">
                     <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-transparent pointer-events-none" />
                     <p className="text-sm font-medium text-gray-400 mb-1">Revenue</p>
-                    <p className="text-2xl font-bold text-emerald-400">{fmtCurrency(data.revenue)}</p>
+                    <p className="text-lg md:text-2xl font-bold text-emerald-400 truncate">{fmtCurrency(data.revenue)}</p>
                     <p className="text-sm text-gray-500 mt-1">{data.invoicesPaid} invoice{data.invoicesPaid !== 1 ? "s" : ""} paid</p>
                   </div>
                   <div className="relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl p-5 border border-gray-700/50 border-l-4 border-l-red-500 hover:border-white/20 transition-all duration-300">
                     <div className="absolute inset-0 bg-gradient-to-br from-red-500/10 to-transparent pointer-events-none" />
                     <p className="text-sm font-medium text-gray-400 mb-1">Expenses</p>
-                    <p className="text-2xl font-bold text-red-400">{fmtCurrency(data.totalExpenses)}</p>
+                    <p className="text-lg md:text-2xl font-bold text-red-400 truncate">{fmtCurrency(data.totalExpenses)}</p>
                     <p className="text-sm text-gray-500 mt-1">{fmtCurrency(data.deductibleExpenses)} deductible</p>
                   </div>
                   <div className="relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl p-5 border border-gray-700/50 border-l-4 border-l-blue-500 hover:border-white/20 transition-all duration-300">
                     <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent pointer-events-none" />
                     <p className="text-sm font-medium text-gray-400 mb-1">Mileage Deduction</p>
-                    <p className="text-2xl font-bold text-blue-400">{fmtCurrency(data.mileageDeduction)}</p>
+                    <p className="text-lg md:text-2xl font-bold text-blue-400 truncate">{fmtCurrency(data.mileageDeduction)}</p>
                     <p className="text-sm text-gray-500 mt-1">{data.totalKm.toFixed(1)} km</p>
                   </div>
                   <div className="relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl p-5 border border-gray-700/50 border-l-4 border-l-amber-500 hover:border-white/20 transition-all duration-300">
                     <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 to-transparent pointer-events-none" />
                     <p className="text-sm font-medium text-gray-400 mb-1">Net Profit</p>
-                    <p className={`text-2xl font-bold ${data.netProfit >= 0 ? "text-amber-400" : "text-red-400"}`}>
+                    <p className={`text-lg md:text-2xl font-bold truncate ${data.netProfit >= 0 ? "text-amber-400" : "text-red-400"}`}>
                       {fmtCurrency(data.netProfit)}
                     </p>
                     <p className="text-sm text-gray-500 mt-1">{fmtCurrency(data.totalOutstanding)} outstanding</p>

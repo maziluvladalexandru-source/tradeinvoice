@@ -1171,7 +1171,7 @@ function NewInvoiceForm() {
   if (invoiceCountry === "DE" && !serviceDate) missingFields.push("Service date (required for DE)");
 
   return (
-    <div className="min-h-screen bg-[#0a0f1e] premium-glow">
+    <div className="min-h-screen bg-[#0a0f1e] pb-20 md:pb-0 premium-glow">
       <Navbar />
 
       {/* Mobile floating preview toggle */}

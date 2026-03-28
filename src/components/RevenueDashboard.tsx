@@ -94,14 +94,14 @@ export default function RevenueDashboard({
         <div className="relative overflow-hidden bg-white/5 backdrop-blur-sm rounded-2xl p-5 border border-white/10 hover:border-amber-500/20 transition-all">
           <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent pointer-events-none" />
           <p className="text-xs font-medium text-gray-400 mb-1 uppercase tracking-wider">Total Revenue</p>
-          <p className="text-xl font-bold text-amber-400">{fmt(totalRevenue, currency)}</p>
+          <p className="text-base md:text-xl font-bold text-amber-400 truncate">{fmt(totalRevenue, currency)}</p>
           <p className="text-xs text-gray-500 mt-1">all time</p>
         </div>
 
         <div className="relative overflow-hidden bg-white/5 backdrop-blur-sm rounded-2xl p-5 border border-white/10 hover:border-emerald-500/20 transition-all">
           <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent pointer-events-none" />
           <p className="text-xs font-medium text-gray-400 mb-1 uppercase tracking-wider">This Month</p>
-          <p className="text-xl font-bold text-emerald-400">{fmt(thisMonthRevenue, currency)}</p>
+          <p className="text-base md:text-xl font-bold text-emerald-400 truncate">{fmt(thisMonthRevenue, currency)}</p>
           {lastMonthRevenue > 0 && (
             <p className={`text-xs mt-1 ${revenueChange >= 0 ? "text-emerald-500" : "text-red-400"}`}>
               {revenueChange >= 0 ? "↑" : "↓"} {Math.abs(Math.round(revenueChange))}% vs last month
@@ -112,21 +112,21 @@ export default function RevenueDashboard({
         <div className="relative overflow-hidden bg-white/5 backdrop-blur-sm rounded-2xl p-5 border border-white/10 hover:border-blue-500/20 transition-all">
           <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent pointer-events-none" />
           <p className="text-xs font-medium text-gray-400 mb-1 uppercase tracking-wider">Avg Invoice</p>
-          <p className="text-xl font-bold text-blue-400">{fmt(avgInvoiceValue, currency)}</p>
+          <p className="text-base md:text-xl font-bold text-blue-400 truncate">{fmt(avgInvoiceValue, currency)}</p>
           <p className="text-xs text-gray-500 mt-1">per invoice</p>
         </div>
 
         <div className="relative overflow-hidden bg-white/5 backdrop-blur-sm rounded-2xl p-5 border border-white/10 hover:border-purple-500/20 transition-all">
           <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent pointer-events-none" />
           <p className="text-xs font-medium text-gray-400 mb-1 uppercase tracking-wider">Avg Days to Pay</p>
-          <p className="text-xl font-bold text-purple-400">{avgDaysToPayment ?? "—"}</p>
+          <p className="text-base md:text-xl font-bold text-purple-400">{avgDaysToPayment ?? "—"}</p>
           <p className="text-xs text-gray-500 mt-1">days</p>
         </div>
 
         <div className="relative overflow-hidden bg-white/5 backdrop-blur-sm rounded-2xl p-5 border border-white/10 hover:border-cyan-500/20 transition-all">
           <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-transparent pointer-events-none" />
           <p className="text-xs font-medium text-gray-400 mb-1 uppercase tracking-wider">Collection Rate</p>
-          <p className="text-xl font-bold text-cyan-400">{Math.round(collectionRate)}%</p>
+          <p className="text-base md:text-xl font-bold text-cyan-400">{Math.round(collectionRate)}%</p>
           <p className="text-xs text-gray-500 mt-1">paid / sent</p>
         </div>
       </div>
