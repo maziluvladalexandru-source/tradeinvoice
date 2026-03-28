@@ -818,6 +818,9 @@ function NewInvoiceForm() {
   // Mobile preview toggle
   const [showMobilePreview, setShowMobilePreview] = useState(false);
 
+  // Saved service items
+  const [savedItems, setSavedItems] = useState<{ id: string; name: string; description: string | null; unitPrice: number; unit: string }[]>([]);
+
   // Common items suggestions
   const [showSuggestions, setShowSuggestions] = useState<number | null>(null);
   const suggestionsRef = useRef<HTMLDivElement>(null);
@@ -843,6 +846,11 @@ function NewInvoiceForm() {
     fetch("/api/invoices/next-number")
       .then((r) => r.json())
       .then((data) => setInvoiceNumber(data.nextNumber))
+      .catch(() => {});
+
+    fetch("/api/service-items")
+      .then((r) => r.json())
+      .then((data) => { if (Array.isArray(data)) setSavedItems(data); })
       .catch(() => {});
   }, [preselectedClientId]);
 
@@ -1759,9 +1767,29 @@ function NewInvoiceForm() {
                           onFocus={() => setShowSuggestions(index)}
                           className="w-full px-3 py-2.5 rounded-xl border border-gray-800/50 text-sm focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 transition-all outline-none bg-gray-900/80 text-white placeholder-gray-500"
                         />
-                        {/* Common items suggestions */}
+                        {/* Saved + Common items suggestions */}
                         {showSuggestions === index && !item.description && (
-                          <div className="absolute z-20 top-full left-0 right-0 mt-1 bg-gray-800 border border-gray-700 rounded-xl shadow-xl overflow-hidden">
+                          <div className="absolute z-20 top-full left-0 right-0 mt-1 bg-gray-800 border border-gray-700 rounded-xl shadow-xl overflow-hidden max-h-64 overflow-y-auto">
+                            {savedItems.length > 0 && (
+                              <>
+                                <p className="px-3 py-1.5 text-[10px] font-semibold text-amber-500/80 uppercase tracking-wider">Your saved items</p>
+                                {savedItems.map((si) => (
+                                  <button
+                                    key={si.id}
+                                    type="button"
+                                    onClick={() => {
+                                      updateLineItem(index, "description", si.description || si.name);
+                                      updateLineItem(index, "unitPrice", si.unitPrice);
+                                      setShowSuggestions(null);
+                                    }}
+                                    className="w-full text-left px-3 py-2 text-sm text-gray-300 hover:bg-gray-700/50 hover:text-white transition-colors flex items-center justify-between gap-2"
+                                  >
+                                    <span className="truncate">{si.name}{si.description ? ` — ${si.description}` : ""}</span>
+                                    <span className="text-xs text-gray-500 shrink-0 tabular-nums">{new Intl.NumberFormat("en-IE", { style: "currency", currency }).format(si.unitPrice)}/{si.unit}</span>
+                                  </button>
+                                ))}
+                              </>
+                            )}
                             <p className="px-3 py-1.5 text-[10px] font-semibold text-gray-500 uppercase tracking-wider">Common items</p>
                             {COMMON_ITEMS.map((ci) => (
                               <button
