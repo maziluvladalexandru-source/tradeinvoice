@@ -20,6 +20,11 @@ export function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
+  // Allow blog pages (public SEO content)
+  if (pathname.startsWith("/blog")) {
+    return NextResponse.next();
+  }
+
   // Allow public invoice views
   if (pathname.startsWith("/invoice/") && pathname.includes("/view")) {
     return NextResponse.next();
