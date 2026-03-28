@@ -61,21 +61,21 @@ export default function DonutChart({
   const radius = 80;
   const circumference = 2 * Math.PI * radius;
 
-  let accumulatedOffset = 0;
   const activeSegments = segments.filter((s) => s.value > 0);
+  const gap = activeSegments.length > 1 ? 2 : 0;
+  let cumulativeOffset = 0;
   const arcs = activeSegments.map((segment, i) => {
     const fraction = segment.value / total;
-    const dashLength = fraction * circumference;
-    const gap = activeSegments.length > 1 ? 2 : 0;
-    const adjustedDash = Math.max(dashLength - gap, 0);
-    const offset = circumference - accumulatedOffset;
-    accumulatedOffset += dashLength;
+    const segmentLength = fraction * circumference;
+    const adjustedLength = Math.max(segmentLength - gap, 0);
+    const offset = cumulativeOffset;
+    cumulativeOffset += segmentLength;
 
     return {
       ...segment,
       index: i,
-      dashArray: `${adjustedDash} ${circumference - adjustedDash}`,
-      dashOffset: offset,
+      dashArray: `${adjustedLength} ${circumference - adjustedLength}`,
+      dashOffset: -offset,
       fraction,
     };
   });

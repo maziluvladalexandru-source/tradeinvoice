@@ -89,23 +89,29 @@ export async function GET() {
       if (statusCounts[inv.status] !== undefined) statusCounts[inv.status]++;
     }
 
-    // Revenue breakdown for donut chart (this month)
+    // Revenue breakdown for donut chart (this month only)
     const paidThisMonthTotal = actualInvoices
       .filter((i) => i.status === "paid" && i.paidAt && new Date(i.paidAt) >= monthStart)
       .reduce((sum, i) => sum + i.total, 0);
     const overdueTotal = actualInvoices
-      .filter((i) => i.status === "overdue")
+      .filter((i) => i.status === "overdue" && new Date(i.createdAt) >= monthStart)
       .reduce((sum, i) => sum + i.total, 0);
-    const outstandingNonOverdue = totalOutstanding - overdueTotal;
+    const outstandingNonOverdue = actualInvoices
+      .filter((i) => ["sent", "viewed"].includes(i.status) && new Date(i.createdAt) >= monthStart)
+      .reduce((sum, i) => sum + i.total, 0);
 
-    // Collection rate
-    const totalInvoiced = actualInvoices
-      .filter((i) => i.status !== "draft")
-      .reduce((sum, i) => sum + i.total, 0);
+    // Collection rate (count-based: paid / total sent+viewed+paid+overdue)
+    const collectionEligible = actualInvoices.filter((i) =>
+      ["sent", "viewed", "paid", "overdue"].includes(i.status)
+    );
+    const paidCount = collectionEligible.filter((i) => i.status === "paid").length;
+    const totalInvoiced = collectionEligible.reduce((sum, i) => sum + i.total, 0);
     const totalCollected = actualInvoices
       .filter((i) => i.status === "paid")
       .reduce((sum, i) => sum + i.total, 0);
-    const collectionRate = totalInvoiced > 0 ? Math.round((totalCollected / totalInvoiced) * 100) : 0;
+    const collectionRate = collectionEligible.length > 0
+      ? Math.round((paidCount / collectionEligible.length) * 100)
+      : 0;
 
     const recentInvoices = actualInvoices.slice(0, 10).map((i) => ({
       id: i.id,
