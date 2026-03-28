@@ -150,6 +150,17 @@ export default async function DashboardPage() {
   const expensesThisMonth = expenses.reduce((sum, e) => sum + e.amount, 0);
   const profitThisMonth = paidThisMonth - expensesThisMonth;
 
+  // Recurring invoices data
+  const recurringInvoices = actualInvoices.filter((i) => i.isRecurring);
+  const recurringCount = recurringInvoices.length;
+  const recurringMonthlyValue = recurringInvoices.reduce((sum, i) => {
+    const interval = i.recurringInterval || "monthly";
+    if (interval === "weekly") return sum + i.total * 4.33;
+    if (interval === "quarterly") return sum + i.total / 3;
+    if (interval === "yearly") return sum + i.total / 12;
+    return sum + i.total; // monthly
+  }, 0);
+
   // Onboarding data
   const hasBusinessName = !!user.businessName;
   const hasSentInvoice = invoices.some((i) => i.sentAt !== null);
@@ -321,6 +332,45 @@ export default async function DashboardPage() {
             <p className="text-sm font-medium text-yellow-300">
               {recentlyViewedCount} invoice{recentlyViewedCount !== 1 ? "s were" : " was"} viewed today
             </p>
+          </div>
+        )}
+
+        {/* Recurring invoices summary */}
+        {recurringCount > 0 && (
+          <div className="bg-cyan-500/5 border border-cyan-500/20 rounded-2xl p-5 mb-8">
+            <div className="flex items-center gap-3 mb-3">
+              <svg className="w-5 h-5 text-cyan-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
+              <h3 className="text-sm font-semibold text-cyan-300">Recurring Invoices</h3>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+              <div>
+                <p className="text-2xl font-bold text-white">{recurringCount}</p>
+                <p className="text-xs text-gray-400">active recurring</p>
+              </div>
+              <div>
+                <p className="text-2xl font-bold text-cyan-400">{formatCurrency(recurringMonthlyValue)}</p>
+                <p className="text-xs text-gray-400">est. monthly value</p>
+              </div>
+              <div className="col-span-2 sm:col-span-1">
+                <div className="space-y-1">
+                  {recurringInvoices.slice(0, 3).map((inv) => (
+                    <div key={inv.id} className="flex items-center justify-between text-xs">
+                      <span className="text-gray-300 truncate">{inv.client.name}</span>
+                      <span className="text-gray-400 shrink-0 ml-2">
+                        {inv.recurringInterval} &middot; {formatCurrency(inv.total)}
+                        {inv.recurringNextDate && (
+                          <span className="text-gray-500 ml-1">
+                            next {new Date(inv.recurringNextDate).toLocaleDateString("en-IE", { day: "numeric", month: "short" })}
+                          </span>
+                        )}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
         )}
 
