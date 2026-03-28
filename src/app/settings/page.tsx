@@ -657,7 +657,7 @@ function SettingsContent() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-400 mb-1">
-                  Business Registration Number
+                  Business Registration Number (KVK)
                 </label>
                 <input
                   value={kvkNumber}
@@ -672,7 +672,7 @@ function SettingsContent() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-400 mb-1">
-                  Tax ID / VAT Number
+                  Tax ID / VAT Number (BTW)
                 </label>
                 <input
                   value={vatNumber}
