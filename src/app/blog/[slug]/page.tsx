@@ -240,7 +240,19 @@ export default function ArticlePage({ params }: Props) {
   };
 
   return (
-    <>
+    <div className="min-h-screen bg-[#0a0f1e] text-white">
+      <header className="max-w-4xl mx-auto px-4 py-6 flex items-center justify-between">
+        <Link href="/" className="text-2xl font-bold text-amber-400">
+          TradeInvoice
+        </Link>
+        <Link
+          href="/auth/login"
+          className="bg-amber-500 text-gray-900 px-6 py-3 rounded-xl font-semibold hover:bg-amber-400 transition-colors"
+        >
+          Sign In
+        </Link>
+      </header>
+
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -265,7 +277,7 @@ export default function ArticlePage({ params }: Props) {
             <span>·</span>
             <span>{article.readTime}</span>
           </div>
-          <h1 className="text-3xl md:text-4xl font-extrabold leading-tight">
+          <h1 className="text-3xl md:text-4xl font-extrabold leading-tight text-white">
             {article.title}
           </h1>
         </header>
@@ -277,7 +289,7 @@ export default function ArticlePage({ params }: Props) {
 
         {/* CTA Banner */}
         <div className="mt-16 bg-gradient-to-r from-amber-500/10 to-amber-600/5 border border-amber-500/20 rounded-2xl p-8 text-center">
-          <h3 className="text-2xl font-bold mb-3">
+          <h3 className="text-2xl font-bold mb-3 text-white">
             Create your first invoice in 60 seconds - free
           </h3>
           <p className="text-gray-400 mb-6 max-w-lg mx-auto">
@@ -292,6 +304,24 @@ export default function ArticlePage({ params }: Props) {
           </Link>
         </div>
       </article>
-    </>
+
+      <footer className="border-t border-gray-800 py-8 text-center text-gray-500 text-sm">
+        <div className="flex items-center gap-4 sm:gap-6 flex-wrap justify-center mb-4">
+          <Link href="/terms" className="text-gray-500 hover:text-gray-300 transition-colors">
+            Terms of Service
+          </Link>
+          <Link href="/privacy" className="text-gray-500 hover:text-gray-300 transition-colors">
+            Privacy Policy
+          </Link>
+          <Link href="/dpa" className="text-gray-500 hover:text-gray-300 transition-colors">
+            DPA
+          </Link>
+          <Link href="/contact" className="text-gray-500 hover:text-gray-300 transition-colors">
+            Contact
+          </Link>
+        </div>
+        &copy; {new Date().getFullYear()} TradeInvoice. Operated by Vlad Mazilu Alexandru, Netherlands.
+      </footer>
+    </div>
   );
 }

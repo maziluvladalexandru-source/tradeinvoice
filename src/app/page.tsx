@@ -285,7 +285,7 @@ export default function Home() {
       <section className="bg-[#0f172a] border-y border-white/5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
           <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-10">
-            <span className="text-gray-500 text-sm font-medium">Trusted by tradespeople across Europe</span>
+            <span className="text-gray-500 text-sm font-medium">Available across Europe</span>
             <div className="flex items-center gap-6 sm:gap-8">
               <div className="flex items-center gap-2">
                 <FlagNL />
@@ -453,7 +453,7 @@ export default function Home() {
                 Built for Tradespeople Across Europe
               </h2>
               <p className="text-gray-500 max-w-xl mx-auto">
-                Tradespeople across Europe rely on TradeInvoice to get paid on time.
+                TradeInvoice is designed for tradespeople across Europe.
               </p>
             </div>
           </Reveal>
@@ -476,7 +476,7 @@ export default function Home() {
           <Reveal>
             <div className="max-w-2xl mx-auto bg-white rounded-2xl p-8 sm:p-10 shadow-sm border border-gray-100 text-center">
               <p className="text-lg sm:text-xl text-[#1e293b] font-medium leading-relaxed">
-                Built by tradespeople, for tradespeople. We use TradeInvoice ourselves every day.
+                Built for tradespeople. Simple, honest, no nonsense.
               </p>
             </div>
           </Reveal>
@@ -556,7 +556,7 @@ export default function Home() {
                     "Payment reminders",
                     "Multi-language invoices",
                     "Partial payment tracking",
-                    "Email support",
+                    "Priority email support",
                   ].map((f) => (
                     <li key={f} className="flex items-center gap-3 text-gray-300 text-sm">
                       <Check color="text-amber-400" />
@@ -631,12 +631,6 @@ export default function Home() {
                       label: "Auto reminders",
                       us: "check",
                       c1: "check",
-                      c2: "cross",
-                    },
-                    {
-                      label: "Multi-language",
-                      us: "check",
-                      c1: "cross",
                       c2: "cross",
                     },
                   ].map((row, i) => (
@@ -750,7 +744,7 @@ export default function Home() {
               Ready to get paid faster?
             </h2>
             <p className="text-lg text-gray-400 mb-10 max-w-xl mx-auto">
-              Join tradespeople across Europe who stopped chasing payments and started getting paid on time.
+              Stop chasing payments. Start getting paid on time.
             </p>
             <Link
               href="/auth/login"
@@ -792,7 +786,7 @@ export default function Home() {
             </div>
           </div>
           <div className="mt-8 pt-6 border-t border-white/5 text-center text-gray-600 text-sm">
-            © {new Date().getFullYear()} TradeInvoice. All rights reserved.
+            © {new Date().getFullYear()} TradeInvoice. Operated by Vlad Mazilu Alexandru, Netherlands.
           </div>
         </div>
       </footer>

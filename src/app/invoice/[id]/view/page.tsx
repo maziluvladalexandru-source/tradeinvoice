@@ -472,7 +472,7 @@ export default async function PublicInvoicePage({
             </div>
             <span className="text-gray-200">|</span>
             <a
-              href="https://tradeinvoice.vercel.app"
+              href="https://tradeinvoice.app"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-gray-500 transition-colors"

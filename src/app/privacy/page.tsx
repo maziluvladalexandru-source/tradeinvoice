@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function PrivacyPolicy() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-950 via-gray-900 to-gray-950 text-white">
+    <div className="min-h-screen bg-[#0a0f1e] text-white">
       <header className="max-w-4xl mx-auto px-4 py-6 flex items-center justify-between">
         <Link href="/" className="text-2xl font-bold text-amber-400">
           TradeInvoice
@@ -16,12 +16,11 @@ export default function PrivacyPolicy() {
       </header>
 
       <main className="max-w-3xl mx-auto px-4 py-12">
-        <h1 className="text-3xl font-bold mb-2">Privacy Policy</h1>
-        <p className="text-gray-500 mb-10">Last updated: 26 March 2026</p>
+        <h1 className="text-3xl font-bold mb-2 text-amber-400">Privacy Policy</h1>
+        <p className="text-gray-400 mb-10">Last updated: 26 March 2026</p>
 
         <div className="space-y-8 text-gray-300 leading-relaxed">
-          {/* 1. Data Controller */}
-          <section>
+          <section className="bg-[#111827] border border-gray-700/50 rounded-2xl p-6">
             <h2 className="text-xl font-semibold text-white mb-3">
               1. Data Controller
             </h2>
@@ -40,8 +39,7 @@ export default function PrivacyPolicy() {
             </ul>
           </section>
 
-          {/* 2. Data We Collect and Legal Basis */}
-          <section>
+          <section className="bg-[#111827] border border-gray-700/50 rounded-2xl p-6">
             <h2 className="text-xl font-semibold text-white mb-3">
               2. Data We Collect and Legal Basis
             </h2>
@@ -50,45 +48,44 @@ export default function PrivacyPolicy() {
             </p>
 
             <div className="space-y-4">
-              <div className="bg-gray-800/40 rounded-xl p-4 border border-gray-700/50">
+              <div className="bg-white/5 rounded-xl p-4 border border-gray-700/30">
                 <p className="text-white font-medium mb-1">Account registration (email, name)</p>
                 <p className="text-sm text-gray-400">Legal basis: Art. 6(1)(b) - necessary for the performance of the contract (providing the invoicing service).</p>
               </div>
 
-              <div className="bg-gray-800/40 rounded-xl p-4 border border-gray-700/50">
+              <div className="bg-white/5 rounded-xl p-4 border border-gray-700/30">
                 <p className="text-white font-medium mb-1">Business details (company name, address, KVK number, BTW/VAT number)</p>
                 <p className="text-sm text-gray-400">Legal basis: Art. 6(1)(b) - necessary for the performance of the contract (generating invoices with your business information).</p>
               </div>
 
-              <div className="bg-gray-800/40 rounded-xl p-4 border border-gray-700/50">
+              <div className="bg-white/5 rounded-xl p-4 border border-gray-700/30">
                 <p className="text-white font-medium mb-1">Invoice data (client names, emails, addresses, line items, amounts)</p>
                 <p className="text-sm text-gray-400">Legal basis: Art. 6(1)(b) - necessary for the performance of the contract (creating and sending invoices).</p>
               </div>
 
-              <div className="bg-gray-800/40 rounded-xl p-4 border border-gray-700/50">
+              <div className="bg-white/5 rounded-xl p-4 border border-gray-700/30">
                 <p className="text-white font-medium mb-1">Payment processing (email, subscription status)</p>
                 <p className="text-sm text-gray-400">Legal basis: Art. 6(1)(b) - necessary for the performance of the contract (managing your subscription).</p>
               </div>
 
-              <div className="bg-gray-800/40 rounded-xl p-4 border border-gray-700/50">
+              <div className="bg-white/5 rounded-xl p-4 border border-gray-700/30">
                 <p className="text-white font-medium mb-1">Email notifications (invoice delivery, payment reminders)</p>
                 <p className="text-sm text-gray-400">Legal basis: Art. 6(1)(b) - necessary for the performance of the contract (delivering invoices and reminders on your behalf).</p>
               </div>
 
-              <div className="bg-gray-800/40 rounded-xl p-4 border border-gray-700/50">
+              <div className="bg-white/5 rounded-xl p-4 border border-gray-700/30">
                 <p className="text-white font-medium mb-1">Security logging (IP addresses, login attempts, security events)</p>
                 <p className="text-sm text-gray-400">Legal basis: Art. 6(1)(f) - legitimate interest in maintaining the security of our service and protecting user accounts.</p>
               </div>
 
-              <div className="bg-gray-800/40 rounded-xl p-4 border border-gray-700/50">
+              <div className="bg-white/5 rounded-xl p-4 border border-gray-700/30">
                 <p className="text-white font-medium mb-1">Session cookie</p>
                 <p className="text-sm text-gray-400">Legal basis: Art. 6(1)(b) - strictly necessary for authentication and keeping you logged in.</p>
               </div>
             </div>
           </section>
 
-          {/* 3. Third-Party Processors */}
-          <section>
+          <section className="bg-[#111827] border border-gray-700/50 rounded-2xl p-6">
             <h2 className="text-xl font-semibold text-white mb-3">
               3. Third-Party Processors
             </h2>
@@ -97,34 +94,34 @@ export default function PrivacyPolicy() {
             </p>
 
             <div className="space-y-4">
-              <div className="bg-gray-800/40 rounded-xl p-4 border border-gray-700/50">
+              <div className="bg-white/5 rounded-xl p-4 border border-gray-700/30">
                 <p className="text-white font-medium mb-1">Vercel Inc. (USA)</p>
                 <p className="text-sm text-gray-400">Purpose: Hosting and deployment of the application.</p>
                 <p className="text-sm text-gray-400">Data processed: All application data transmitted through the platform.</p>
                 <p className="text-sm text-gray-400">EU data region available.</p>
               </div>
 
-              <div className="bg-gray-800/40 rounded-xl p-4 border border-gray-700/50">
+              <div className="bg-white/5 rounded-xl p-4 border border-gray-700/30">
                 <p className="text-white font-medium mb-1">Neon Inc. (USA)</p>
                 <p className="text-sm text-gray-400">Purpose: PostgreSQL database hosting.</p>
                 <p className="text-sm text-gray-400">Data processed: All stored user data, invoice data, and client data.</p>
                 <p className="text-sm text-gray-400">Database hosted in EU region (eu-west-2).</p>
               </div>
 
-              <div className="bg-gray-800/40 rounded-xl p-4 border border-gray-700/50">
+              <div className="bg-white/5 rounded-xl p-4 border border-gray-700/30">
                 <p className="text-white font-medium mb-1">Stripe Inc. (USA)</p>
                 <p className="text-sm text-gray-400">Purpose: Subscription payment processing.</p>
                 <p className="text-sm text-gray-400">Data processed: Email address, subscription status. We do not store credit card details.</p>
                 <p className="text-sm text-gray-400">PCI DSS compliant. Certified under the EU-US Data Privacy Framework.</p>
               </div>
 
-              <div className="bg-gray-800/40 rounded-xl p-4 border border-gray-700/50">
+              <div className="bg-white/5 rounded-xl p-4 border border-gray-700/30">
                 <p className="text-white font-medium mb-1">Resend Inc. (USA)</p>
                 <p className="text-sm text-gray-400">Purpose: Transactional email delivery (magic links, invoices, reminders).</p>
                 <p className="text-sm text-gray-400">Data processed: Email addresses, invoice details included in emails.</p>
               </div>
 
-              <div className="bg-gray-800/40 rounded-xl p-4 border border-gray-700/50">
+              <div className="bg-white/5 rounded-xl p-4 border border-gray-700/30">
                 <p className="text-white font-medium mb-1">Cloudflare Inc. (USA)</p>
                 <p className="text-sm text-gray-400">Purpose: CAPTCHA and bot protection (Cloudflare Turnstile).</p>
                 <p className="text-sm text-gray-400">Data processed: IP address, browser information.</p>
@@ -133,8 +130,7 @@ export default function PrivacyPolicy() {
             </div>
           </section>
 
-          {/* 4. International Data Transfers */}
-          <section>
+          <section className="bg-[#111827] border border-gray-700/50 rounded-2xl p-6">
             <h2 className="text-xl font-semibold text-white mb-3">
               4. International Data Transfers
             </h2>
@@ -146,8 +142,7 @@ export default function PrivacyPolicy() {
             </p>
           </section>
 
-          {/* 5. Data Retention */}
-          <section>
+          <section className="bg-[#111827] border border-gray-700/50 rounded-2xl p-6">
             <h2 className="text-xl font-semibold text-white mb-3">
               5. Data Retention
             </h2>
@@ -170,8 +165,7 @@ export default function PrivacyPolicy() {
             </ul>
           </section>
 
-          {/* 6. Your Rights */}
-          <section>
+          <section className="bg-[#111827] border border-gray-700/50 rounded-2xl p-6">
             <h2 className="text-xl font-semibold text-white mb-3">
               6. Your Rights Under GDPR (Articles 15-22)
             </h2>
@@ -211,8 +205,7 @@ export default function PrivacyPolicy() {
             </p>
           </section>
 
-          {/* 7. Right to Lodge a Complaint */}
-          <section>
+          <section className="bg-[#111827] border border-gray-700/50 rounded-2xl p-6">
             <h2 className="text-xl font-semibold text-white mb-3">
               7. Right to Lodge a Complaint
             </h2>
@@ -232,8 +225,7 @@ export default function PrivacyPolicy() {
             </p>
           </section>
 
-          {/* 8. Cookies */}
-          <section>
+          <section className="bg-[#111827] border border-gray-700/50 rounded-2xl p-6">
             <h2 className="text-xl font-semibold text-white mb-3">
               8. Cookies
             </h2>
@@ -250,8 +242,7 @@ export default function PrivacyPolicy() {
             </p>
           </section>
 
-          {/* 9. Security */}
-          <section>
+          <section className="bg-[#111827] border border-gray-700/50 rounded-2xl p-6">
             <h2 className="text-xl font-semibold text-white mb-3">
               9. Security
             </h2>
@@ -264,8 +255,7 @@ export default function PrivacyPolicy() {
             </p>
           </section>
 
-          {/* 10. Children */}
-          <section>
+          <section className="bg-[#111827] border border-gray-700/50 rounded-2xl p-6">
             <h2 className="text-xl font-semibold text-white mb-3">
               10. Children
             </h2>
@@ -280,8 +270,7 @@ export default function PrivacyPolicy() {
             </p>
           </section>
 
-          {/* 11. Changes to This Policy */}
-          <section>
+          <section className="bg-[#111827] border border-gray-700/50 rounded-2xl p-6">
             <h2 className="text-xl font-semibold text-white mb-3">
               11. Changes to This Policy
             </h2>
@@ -292,8 +281,7 @@ export default function PrivacyPolicy() {
             </p>
           </section>
 
-          {/* 12. Contact */}
-          <section>
+          <section className="bg-[#111827] border border-gray-700/50 rounded-2xl p-6">
             <h2 className="text-xl font-semibold text-white mb-3">
               12. Contact
             </h2>
@@ -311,8 +299,22 @@ export default function PrivacyPolicy() {
         </div>
       </main>
 
-      <footer className="border-t border-gray-800 py-8 text-center text-gray-600 text-sm">
-        © {new Date().getFullYear()} TradeInvoice. All rights reserved.
+      <footer className="border-t border-gray-800 py-8 text-center text-gray-500 text-sm">
+        <div className="flex items-center gap-4 sm:gap-6 flex-wrap justify-center mb-4">
+          <Link href="/terms" className="text-gray-500 hover:text-gray-300 transition-colors">
+            Terms of Service
+          </Link>
+          <Link href="/privacy" className="text-gray-500 hover:text-gray-300 transition-colors">
+            Privacy Policy
+          </Link>
+          <Link href="/dpa" className="text-gray-500 hover:text-gray-300 transition-colors">
+            DPA
+          </Link>
+          <Link href="/contact" className="text-gray-500 hover:text-gray-300 transition-colors">
+            Contact
+          </Link>
+        </div>
+        &copy; {new Date().getFullYear()} TradeInvoice. Operated by Vlad Mazilu Alexandru, Netherlands.
       </footer>
     </div>
   );

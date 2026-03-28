@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function TermsOfService() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-950 via-gray-900 to-gray-950 text-white">
+    <div className="min-h-screen bg-[#0a0f1e] text-white">
       <header className="max-w-4xl mx-auto px-4 py-6 flex items-center justify-between">
         <Link href="/" className="text-2xl font-bold text-amber-400">
           TradeInvoice
@@ -16,11 +16,11 @@ export default function TermsOfService() {
       </header>
 
       <main className="max-w-3xl mx-auto px-4 py-12">
-        <h1 className="text-3xl font-bold mb-2">Terms of Service</h1>
-        <p className="text-gray-500 mb-10">Last updated: 24 March 2026</p>
+        <h1 className="text-3xl font-bold mb-2 text-amber-400">Terms of Service</h1>
+        <p className="text-gray-400 mb-10">Last updated: 24 March 2026</p>
 
         <div className="space-y-8 text-gray-300 leading-relaxed">
-          <section>
+          <section className="bg-[#111827] border border-gray-700/50 rounded-2xl p-6">
             <h2 className="text-xl font-semibold text-white mb-3">
               1. Services
             </h2>
@@ -32,7 +32,7 @@ export default function TermsOfService() {
             </p>
           </section>
 
-          <section>
+          <section className="bg-[#111827] border border-gray-700/50 rounded-2xl p-6">
             <h2 className="text-xl font-semibold text-white mb-3">
               2. Subscription Plans
             </h2>
@@ -45,8 +45,8 @@ export default function TermsOfService() {
                 per month at no cost.
               </li>
               <li>
-                <strong className="text-white">Pro</strong>  -  €15 per month for
-                unlimited invoices, email support, and all features.
+                <strong className="text-white">Pro</strong>  -  &euro;15 per month for
+                unlimited invoices, priority email support, and all features.
               </li>
             </ul>
             <p className="mt-3">
@@ -55,14 +55,14 @@ export default function TermsOfService() {
             </p>
           </section>
 
-          <section>
+          <section className="bg-[#111827] border border-gray-700/50 rounded-2xl p-6">
             <h2 className="text-xl font-semibold text-white mb-3">
               3. Payment and Refund Policy
             </h2>
             <p className="mb-3">
               Pro subscriptions are billed monthly via Stripe. Payment is due at
               the start of each billing cycle. All payments are processed in
-              euros (€).
+              euros (&euro;).
             </p>
             <p>
               You may cancel your subscription at any time, and you will retain
@@ -73,7 +73,7 @@ export default function TermsOfService() {
             </p>
           </section>
 
-          <section>
+          <section className="bg-[#111827] border border-gray-700/50 rounded-2xl p-6">
             <h2 className="text-xl font-semibold text-white mb-3">
               4. Right of Withdrawal (EU Cooling-Off Period)
             </h2>
@@ -102,7 +102,7 @@ export default function TermsOfService() {
             </p>
           </section>
 
-          <section>
+          <section className="bg-[#111827] border border-gray-700/50 rounded-2xl p-6">
             <h2 className="text-xl font-semibold text-white mb-3">
               5. User Responsibilities
             </h2>
@@ -126,7 +126,7 @@ export default function TermsOfService() {
             </ul>
           </section>
 
-          <section>
+          <section className="bg-[#111827] border border-gray-700/50 rounded-2xl p-6">
             <h2 className="text-xl font-semibold text-white mb-3">
               6. Data Handling
             </h2>
@@ -144,7 +144,7 @@ export default function TermsOfService() {
             </p>
           </section>
 
-          <section>
+          <section className="bg-[#111827] border border-gray-700/50 rounded-2xl p-6">
             <h2 className="text-xl font-semibold text-white mb-3">
               7. Limitation of Liability
             </h2>
@@ -157,7 +157,7 @@ export default function TermsOfService() {
             </p>
           </section>
 
-          <section>
+          <section className="bg-[#111827] border border-gray-700/50 rounded-2xl p-6">
             <h2 className="text-xl font-semibold text-white mb-3">
               8. Termination
             </h2>
@@ -169,7 +169,7 @@ export default function TermsOfService() {
             </p>
           </section>
 
-          <section>
+          <section className="bg-[#111827] border border-gray-700/50 rounded-2xl p-6">
             <h2 className="text-xl font-semibold text-white mb-3">
               9. Governing Law
             </h2>
@@ -180,7 +180,7 @@ export default function TermsOfService() {
             </p>
           </section>
 
-          <section>
+          <section className="bg-[#111827] border border-gray-700/50 rounded-2xl p-6">
             <h2 className="text-xl font-semibold text-white mb-3">
               10. Contact
             </h2>
@@ -198,10 +198,23 @@ export default function TermsOfService() {
         </div>
       </main>
 
-      <footer className="border-t border-gray-800 py-8 text-center text-gray-600 text-sm">
-        © {new Date().getFullYear()} TradeInvoice. All rights reserved.
+      <footer className="border-t border-gray-800 py-8 text-center text-gray-500 text-sm">
+        <div className="flex items-center gap-4 sm:gap-6 flex-wrap justify-center mb-4">
+          <Link href="/terms" className="text-gray-500 hover:text-gray-300 transition-colors">
+            Terms of Service
+          </Link>
+          <Link href="/privacy" className="text-gray-500 hover:text-gray-300 transition-colors">
+            Privacy Policy
+          </Link>
+          <Link href="/dpa" className="text-gray-500 hover:text-gray-300 transition-colors">
+            DPA
+          </Link>
+          <Link href="/contact" className="text-gray-500 hover:text-gray-300 transition-colors">
+            Contact
+          </Link>
+        </div>
+        &copy; {new Date().getFullYear()} TradeInvoice. Operated by Vlad Mazilu Alexandru, Netherlands.
       </footer>
     </div>
   );
 }
-

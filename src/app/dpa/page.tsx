@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function DataProcessingAgreement() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-950 via-gray-900 to-gray-950 text-white">
+    <div className="min-h-screen bg-[#0a0f1e] text-white">
       <header className="max-w-4xl mx-auto px-4 py-6 flex items-center justify-between">
         <Link href="/" className="text-2xl font-bold text-amber-400">
           TradeInvoice
@@ -16,11 +16,11 @@ export default function DataProcessingAgreement() {
       </header>
 
       <main className="max-w-3xl mx-auto px-4 py-12">
-        <h1 className="text-3xl font-bold mb-2">Data Processing Agreement</h1>
-        <p className="text-gray-500 mb-10">Last updated: 26 March 2026</p>
+        <h1 className="text-3xl font-bold mb-2 text-amber-400">Data Processing Agreement</h1>
+        <p className="text-gray-400 mb-10">Last updated: 26 March 2026</p>
 
         <div className="space-y-8 text-gray-300 leading-relaxed">
-          <section>
+          <section className="bg-[#111827] border border-gray-700/50 rounded-2xl p-6">
             <h2 className="text-xl font-semibold text-white mb-3">
               1. Scope and Purpose
             </h2>
@@ -32,7 +32,7 @@ export default function DataProcessingAgreement() {
             </p>
           </section>
 
-          <section>
+          <section className="bg-[#111827] border border-gray-700/50 rounded-2xl p-6">
             <h2 className="text-xl font-semibold text-white mb-3">
               2. Data Processed
             </h2>
@@ -48,7 +48,7 @@ export default function DataProcessingAgreement() {
             </ul>
           </section>
 
-          <section>
+          <section className="bg-[#111827] border border-gray-700/50 rounded-2xl p-6">
             <h2 className="text-xl font-semibold text-white mb-3">
               3. Purpose of Processing
             </h2>
@@ -60,7 +60,7 @@ export default function DataProcessingAgreement() {
             </p>
           </section>
 
-          <section>
+          <section className="bg-[#111827] border border-gray-700/50 rounded-2xl p-6">
             <h2 className="text-xl font-semibold text-white mb-3">
               4. Sub-processors
             </h2>
@@ -91,7 +91,7 @@ export default function DataProcessingAgreement() {
             </p>
           </section>
 
-          <section>
+          <section className="bg-[#111827] border border-gray-700/50 rounded-2xl p-6">
             <h2 className="text-xl font-semibold text-white mb-3">
               5. Data Security Measures
             </h2>
@@ -110,7 +110,7 @@ export default function DataProcessingAgreement() {
             </ul>
           </section>
 
-          <section>
+          <section className="bg-[#111827] border border-gray-700/50 rounded-2xl p-6">
             <h2 className="text-xl font-semibold text-white mb-3">
               6. Data Breach Notification
             </h2>
@@ -122,7 +122,7 @@ export default function DataProcessingAgreement() {
             </p>
           </section>
 
-          <section>
+          <section className="bg-[#111827] border border-gray-700/50 rounded-2xl p-6">
             <h2 className="text-xl font-semibold text-white mb-3">
               7. Data Deletion
             </h2>
@@ -134,7 +134,7 @@ export default function DataProcessingAgreement() {
             </p>
           </section>
 
-          <section>
+          <section className="bg-[#111827] border border-gray-700/50 rounded-2xl p-6">
             <h2 className="text-xl font-semibold text-white mb-3">
               8. Data Subject Rights
             </h2>
@@ -153,7 +153,7 @@ export default function DataProcessingAgreement() {
             </p>
           </section>
 
-          <section>
+          <section className="bg-[#111827] border border-gray-700/50 rounded-2xl p-6">
             <h2 className="text-xl font-semibold text-white mb-3">
               9. International Transfers
             </h2>
@@ -164,7 +164,7 @@ export default function DataProcessingAgreement() {
             </p>
           </section>
 
-          <section>
+          <section className="bg-[#111827] border border-gray-700/50 rounded-2xl p-6">
             <h2 className="text-xl font-semibold text-white mb-3">
               10. Contact
             </h2>
@@ -182,8 +182,22 @@ export default function DataProcessingAgreement() {
         </div>
       </main>
 
-      <footer className="border-t border-gray-800 py-8 text-center text-gray-600 text-sm">
-        © {new Date().getFullYear()} TradeInvoice. All rights reserved.
+      <footer className="border-t border-gray-800 py-8 text-center text-gray-500 text-sm">
+        <div className="flex items-center gap-4 sm:gap-6 flex-wrap justify-center mb-4">
+          <Link href="/terms" className="text-gray-500 hover:text-gray-300 transition-colors">
+            Terms of Service
+          </Link>
+          <Link href="/privacy" className="text-gray-500 hover:text-gray-300 transition-colors">
+            Privacy Policy
+          </Link>
+          <Link href="/dpa" className="text-gray-500 hover:text-gray-300 transition-colors">
+            DPA
+          </Link>
+          <Link href="/contact" className="text-gray-500 hover:text-gray-300 transition-colors">
+            Contact
+          </Link>
+        </div>
+        &copy; {new Date().getFullYear()} TradeInvoice. Operated by Vlad Mazilu Alexandru, Netherlands.
       </footer>
     </div>
   );
