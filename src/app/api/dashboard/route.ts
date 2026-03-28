@@ -137,6 +137,13 @@ export async function GET() {
       clientName: q.client.name,
     }));
 
+    // Determine primary currency (most-used across invoices)
+    const currencyCounts: Record<string, number> = {};
+    for (const inv of actualInvoices) {
+      currencyCounts[inv.currency] = (currencyCounts[inv.currency] || 0) + 1;
+    }
+    const primaryCurrency = Object.entries(currencyCounts).sort((a, b) => b[1] - a[1])[0]?.[0] || "EUR";
+
     return NextResponse.json({
       user: {
         name: user.name,
@@ -145,6 +152,7 @@ export async function GET() {
         businessName: user.businessName,
       },
       greeting,
+      primaryCurrency,
       stats: {
         totalOutstanding,
         paidThisMonth,

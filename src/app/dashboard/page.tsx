@@ -20,6 +20,7 @@ interface DashboardData {
     businessName: string | null;
   };
   greeting: string;
+  primaryCurrency: string;
   stats: {
     totalOutstanding: number;
     paidThisMonth: number;
@@ -182,7 +183,8 @@ export default function DashboardPage() {
 
   if (!data) return <LoadingSkeleton />;
 
-  const { user, greeting, stats, recentInvoices, recentQuotes } = data;
+  const { user, greeting, stats, recentInvoices, recentQuotes, primaryCurrency } = data;
+  const fc = (amount: number) => formatCurrency(amount, primaryCurrency);
 
   return (
     <div className="min-h-screen bg-gray-950 pb-20 md:pb-0">
@@ -216,7 +218,7 @@ export default function DashboardPage() {
               Total Outstanding
             </p>
             <p className="text-lg md:text-2xl font-bold text-white truncate">
-              {formatCurrency(stats.totalOutstanding)}
+              {fc(stats.totalOutstanding)}
             </p>
           </div>
           <div className="relative overflow-hidden bg-gray-900/50 backdrop-blur-sm rounded-2xl p-5 md:p-6 border border-gray-800/50 hover:border-gray-700/50 hover:shadow-lg hover:shadow-emerald-500/5 transition-all duration-300">
@@ -225,7 +227,7 @@ export default function DashboardPage() {
               Paid This Month
             </p>
             <p className="text-lg md:text-2xl font-bold text-green-400 truncate">
-              {formatCurrency(stats.paidThisMonth)}
+              {fc(stats.paidThisMonth)}
             </p>
             {stats.revenueLastMonth > 0 && (
               <p
@@ -311,11 +313,11 @@ export default function DashboardPage() {
               <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">Revenue This Month</h3>
               <DonutChart
                 segments={[
-                  { label: "Paid", value: data.charts.revenueBreakdown.paid, color: "#22c55e", displayValue: formatCurrency(data.charts.revenueBreakdown.paid) },
-                  { label: "Outstanding", value: data.charts.revenueBreakdown.outstanding, color: "#f59e0b", displayValue: formatCurrency(data.charts.revenueBreakdown.outstanding) },
-                  { label: "Overdue", value: data.charts.revenueBreakdown.overdue, color: "#ef4444", displayValue: formatCurrency(data.charts.revenueBreakdown.overdue) },
+                  { label: "Paid", value: data.charts.revenueBreakdown.paid, color: "#22c55e", displayValue: fc(data.charts.revenueBreakdown.paid) },
+                  { label: "Outstanding", value: data.charts.revenueBreakdown.outstanding, color: "#f59e0b", displayValue: fc(data.charts.revenueBreakdown.outstanding) },
+                  { label: "Overdue", value: data.charts.revenueBreakdown.overdue, color: "#ef4444", displayValue: fc(data.charts.revenueBreakdown.overdue) },
                 ]}
-                centerText={formatCurrency(data.charts.revenueBreakdown.paid + data.charts.revenueBreakdown.outstanding + data.charts.revenueBreakdown.overdue)}
+                centerText={fc(data.charts.revenueBreakdown.paid + data.charts.revenueBreakdown.outstanding + data.charts.revenueBreakdown.overdue)}
                 centerSubtext="total"
                 size={180}
               />
@@ -326,8 +328,8 @@ export default function DashboardPage() {
               <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">Collection Rate</h3>
               <DonutChart
                 segments={[
-                  { label: "Collected", value: data.charts.totalCollected, color: "#22c55e", displayValue: formatCurrency(data.charts.totalCollected) },
-                  { label: "Uncollected", value: data.charts.totalInvoiced - data.charts.totalCollected, color: "#374151", displayValue: formatCurrency(data.charts.totalInvoiced - data.charts.totalCollected) },
+                  { label: "Collected", value: data.charts.totalCollected, color: "#22c55e", displayValue: fc(data.charts.totalCollected) },
+                  { label: "Uncollected", value: data.charts.totalInvoiced - data.charts.totalCollected, color: "#374151", displayValue: fc(data.charts.totalInvoiced - data.charts.totalCollected) },
                 ]}
                 centerText={`${data.charts.collectionRate}%`}
                 centerSubtext="collected"
