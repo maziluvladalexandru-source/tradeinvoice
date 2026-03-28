@@ -3,6 +3,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import CookieBanner from "@/components/CookieBanner";
 import { ToastProvider } from "@/components/Toast";
+import { TimerProvider } from "@/components/TimerContext";
+import GlobalTimerBar from "@/components/GlobalTimerBar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -57,7 +59,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.className} antialiased bg-gray-950`}>
         <ToastProvider>
-          {children}
+          <TimerProvider>
+            <GlobalTimerBar />
+            {children}
+          </TimerProvider>
           <CookieBanner />
         </ToastProvider>
       </body>

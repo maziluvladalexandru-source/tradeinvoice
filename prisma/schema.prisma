@@ -35,6 +35,7 @@ model User {
   mileageEntries MileageEntry[]
   teamMembers    TeamMember[]
   teamMemberships TeamMember[] @relation("MemberUser")
+  activeTimer    ActiveTimer?
 }
 
 model Session {
@@ -62,6 +63,7 @@ model Client {
   invoices       Invoice[]
   timeEntries    TimeEntry[]
   mileageEntries MileageEntry[]
+  activeTimers   ActiveTimer[]
 }
 
 model Invoice {
@@ -151,6 +153,19 @@ model Expense {
   updatedAt     DateTime @updatedAt
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model ActiveTimer {
+  id          String   @id @default(uuid())
+  userId      String   @unique
+  startTime   DateTime
+  description String   @default("")
+  clientId    String?
+  hourlyRate  Float    @default(50)
+  createdAt   DateTime @default(now())
+
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  client Client? @relation(fields: [clientId], references: [id])
 }
 
 model TimeEntry {

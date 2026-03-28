@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import BottomNav from "@/components/BottomNav";
 import UpgradeModal from "@/components/UpgradeModal";
 import { useToast } from "@/components/Toast";
+import { useTimer } from "@/components/TimerContext";
 
 interface Client {
   id: string;
@@ -57,14 +58,19 @@ export default function TimeTrackingPage() {
     clientId: "",
   });
 
-  // Timer
-  const [timerRunning, setTimerRunning] = useState(false);
-  const [timerStart, setTimerStart] = useState<Date | null>(null);
-  const [timerElapsed, setTimerElapsed] = useState(0);
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
-  const [timerDescription, setTimerDescription] = useState("");
-  const [timerClientId, setTimerClientId] = useState("");
-  const [timerRate, setTimerRate] = useState("50");
+  // Timer (shared via context - persists across pages)
+  const {
+    timerRunning,
+    timerElapsed,
+    timerDescription,
+    setTimerDescription,
+    timerClientId,
+    setTimerClientId,
+    timerRate,
+    setTimerRate,
+    startTimer,
+    stopTimer,
+  } = useTimer();
 
   // Selection for invoice generation
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
@@ -118,18 +124,6 @@ export default function TimeTrackingPage() {
     fetchClients();
   }, [fetchEntries, fetchClients]);
 
-  // Timer interval
-  useEffect(() => {
-    if (timerRunning && timerStart) {
-      timerRef.current = setInterval(() => {
-        setTimerElapsed(Math.floor((Date.now() - timerStart.getTime()) / 1000));
-      }, 1000);
-    }
-    return () => {
-      if (timerRef.current) clearInterval(timerRef.current);
-    };
-  }, [timerRunning, timerStart]);
-
   function formatTimer(seconds: number) {
     const h = Math.floor(seconds / 3600);
     const m = Math.floor((seconds % 3600) / 60);
@@ -139,49 +133,12 @@ export default function TimeTrackingPage() {
 
   async function handleStartTimer() {
     if (!isPro) { setShowUpgrade(true); return; }
-    setTimerStart(new Date());
-    setTimerRunning(true);
-    setTimerElapsed(0);
+    startTimer();
   }
 
   async function handleStopTimer() {
-    if (!timerStart) return;
-    setTimerRunning(false);
-    if (timerRef.current) clearInterval(timerRef.current);
-
-    const endTime = new Date();
-    const hours = Math.round(((endTime.getTime() - timerStart.getTime()) / (1000 * 60 * 60)) * 100) / 100;
-
-    if (hours < 0.01) {
-      toast("Timer too short to record", "error");
-      return;
-    }
-
-    try {
-      const res = await fetch("/api/time-entries", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          description: timerDescription || "Untitled task",
-          date: new Date().toISOString(),
-          startTime: timerStart.toISOString(),
-          endTime: endTime.toISOString(),
-          hours,
-          hourlyRate: parseFloat(timerRate) || 50,
-          billable: true,
-          clientId: timerClientId || null,
-        }),
-      });
-      if (res.status === 403) { setShowUpgrade(true); return; }
-      if (!res.ok) throw new Error();
-      toast("Time entry saved", "success");
-      setTimerDescription("");
-      setTimerElapsed(0);
-      setTimerStart(null);
-      fetchEntries();
-    } catch {
-      toast("Failed to save time entry", "error");
-    }
+    const saved = await stopTimer();
+    if (saved) fetchEntries();
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -364,7 +321,10 @@ export default function TimeTrackingPage() {
             <div className="flex items-center gap-3">
               <select
                 value={timerClientId}
-                onChange={(e) => setTimerClientId(e.target.value)}
+                onChange={(e) => {
+                  const client = clients.find(c => c.id === e.target.value);
+                  setTimerClientId(e.target.value, client?.name || "");
+                }}
                 className="bg-gray-800/50 border border-gray-700/50 rounded-xl px-3 py-3 text-gray-300 focus:outline-none focus:border-amber-500/50"
               >
                 <option value="">No client</option>
