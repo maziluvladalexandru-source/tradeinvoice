@@ -145,71 +145,6 @@ function InvoicePreview({
   invoiceCountry: string;
   invoiceTheme?: string;
 }) {
-  // Theme styles
-  const themes = {
-    classic: {
-      primary: "#1e40af",
-      wrapper: "bg-white rounded-2xl shadow-sm border border-gray-200",
-      headerBg: "",
-      headerAccent: "border-b-2 border-b-[#1e40af]",
-      businessName: "text-[#1e40af]",
-      labelColor: "text-[#1e40af]",
-      invoiceNum: "text-gray-900 font-mono",
-      tableHead: "bg-[#1e40af]/10 border-y border-[#1e40af]/20",
-      tableHeadText: "text-[#1e40af]",
-      totalBorder: "border-t-2 border-[#1e40af]",
-      totalText: "text-[#1e40af]",
-      footerBg: "bg-[#1e40af]/5 border-t border-[#1e40af]/10",
-      notesBg: "bg-blue-50 border-blue-200/80",
-      notesTitle: "text-blue-900",
-      notesText: "text-blue-800",
-      bankBg: "bg-gray-50 border-gray-200",
-      fontFamily: "",
-      accentBar: "",
-    },
-    modern: {
-      primary: "#4f46e5",
-      wrapper: "bg-white rounded-2xl shadow-lg border border-indigo-100",
-      headerBg: "bg-gradient-to-r from-[#4f46e5] to-[#7c3aed]",
-      headerAccent: "",
-      businessName: "text-white",
-      labelColor: "text-[#4f46e5]",
-      invoiceNum: "text-[#4f46e5] font-mono",
-      tableHead: "bg-gradient-to-r from-[#4f46e5] to-[#6366f1] border-none",
-      tableHeadText: "text-white",
-      totalBorder: "border-t-2 border-[#4f46e5]",
-      totalText: "text-[#4f46e5]",
-      footerBg: "bg-gradient-to-r from-[#4f46e5]/5 to-[#7c3aed]/5 border-t border-indigo-100",
-      notesBg: "bg-indigo-50 border-indigo-200/80",
-      notesTitle: "text-indigo-900",
-      notesText: "text-indigo-800",
-      bankBg: "bg-indigo-50/50 border-indigo-100",
-      fontFamily: "",
-      accentBar: "h-1.5 bg-gradient-to-r from-[#4f46e5] via-[#7c3aed] to-[#a855f7]",
-    },
-    minimal: {
-      primary: "#374151",
-      wrapper: "bg-white rounded-lg shadow-none border border-gray-300",
-      headerBg: "",
-      headerAccent: "border-b border-gray-200",
-      businessName: "text-gray-800",
-      labelColor: "text-gray-500",
-      invoiceNum: "text-gray-800",
-      tableHead: "bg-transparent border-y border-gray-300",
-      tableHeadText: "text-gray-600",
-      totalBorder: "border-t border-gray-300",
-      totalText: "text-gray-900",
-      footerBg: "bg-transparent border-t border-gray-200",
-      notesBg: "bg-gray-50 border-gray-200",
-      notesTitle: "text-gray-700",
-      notesText: "text-gray-600",
-      bankBg: "bg-transparent border-gray-200",
-      fontFamily: "font-serif",
-      accentBar: "",
-    },
-  };
-  const t = themes[invoiceTheme as keyof typeof themes] || themes.classic;
-
   const countryConfig = getCountryConfig(invoiceCountry);
   const fmt = (n: number) =>
     new Intl.NumberFormat("en-IE", { style: "currency", currency }).format(n);
@@ -240,115 +175,502 @@ function InvoicePreview({
   const total = subtotal + tax;
 
   const bankData = parseBankDetails(user?.bankDetails || null);
+  const businessInitial = (user?.businessName || user?.name || "?").charAt(0).toUpperCase();
 
-  return (
-    <div className={`${t.wrapper} overflow-hidden text-gray-900 text-sm ${t.fontFamily} transition-all duration-300`}>
-      {/* Accent bar for modern theme */}
-      {t.accentBar && <div className={t.accentBar} />}
-      {/* Header */}
-      <header className={`px-4 sm:px-6 pt-5 sm:pt-6 pb-4 sm:pb-5 ${t.headerAccent} ${t.headerBg}`}>
-        <div className="flex items-center gap-3">
-          {user?.logoUrl ? (
-            <img src={user.logoUrl} alt="" className="w-10 h-10 rounded-xl object-cover flex-shrink-0" />
-          ) : (
-            <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${invoiceTheme === "modern" ? "bg-white/20" : invoiceTheme === "minimal" ? "bg-gray-200" : "bg-slate-900"}`}>
-              <span className="text-lg font-bold text-white leading-none">
-                {(user?.businessName || user?.name || "?").charAt(0).toUpperCase()}
-              </span>
+  // ── Shared sub-components ──
+
+  const BankSection = ({ labelClass, bgClass }: { labelClass: string; bgClass: string }) => {
+    if (bankData && (bankData.iban || bankData.bankName)) {
+      return (
+        <div className={`rounded-lg border p-3 ${bgClass}`}>
+          <p className={`text-[10px] font-semibold mb-1.5 ${labelClass}`}>Payment Information</p>
+          <div className="space-y-0.5 text-xs">
+            {bankData.iban && (
+              <div className="flex gap-2">
+                <span className="text-gray-400 w-10 flex-shrink-0">IBAN</span>
+                <span className="text-gray-700 font-mono font-medium">{formatIBAN(bankData.iban)}</span>
+              </div>
+            )}
+            {bankData.bic && (
+              <div className="flex gap-2">
+                <span className="text-gray-400 w-10 flex-shrink-0">BIC</span>
+                <span className="text-gray-700 font-mono font-medium">{bankData.bic}</span>
+              </div>
+            )}
+            {bankData.bankName && (
+              <div className="flex gap-2">
+                <span className="text-gray-400 w-10 flex-shrink-0">Bank</span>
+                <span className="text-gray-700 font-medium">{bankData.bankName}</span>
+              </div>
+            )}
+            {(bankData.accountHolder || user?.businessName) && (
+              <div className="flex gap-2">
+                <span className="text-gray-400 w-10 flex-shrink-0">Name</span>
+                <span className="text-gray-700 font-medium">{bankData.accountHolder || user?.businessName}</span>
+              </div>
+            )}
+          </div>
+        </div>
+      );
+    }
+    if (user?.bankDetails && !bankData) {
+      return (
+        <div className={`rounded-lg border p-3 ${bgClass}`}>
+          <p className={`text-[10px] font-semibold mb-0.5 ${labelClass}`}>Payment Information</p>
+          <p className="text-gray-700 text-xs whitespace-pre-line leading-relaxed">{user.bankDetails}</p>
+        </div>
+      );
+    }
+    return null;
+  };
+
+  const PaymentNotesSection = () =>
+    paymentNotes ? (
+      <div className="bg-amber-50 rounded-lg border border-amber-200/80 p-3">
+        <p className="text-[10px] font-semibold text-amber-900 mb-0.5">Payment Notes</p>
+        <p className="text-amber-800 text-xs whitespace-pre-line leading-relaxed">{paymentNotes}</p>
+      </div>
+    ) : null;
+
+  const WatermarkFooter = () =>
+    !user?.plan || user.plan !== "pro" ? (
+      <div className="bg-gray-100 border-2 border-dashed border-gray-300 rounded-lg p-2 mt-1">
+        <p className="text-[11px] text-gray-500 text-center font-medium">
+          Invoice created with <span className="text-indigo-600 font-bold">TradeInvoice.app</span>
+        </p>
+        <p className="text-[9px] text-gray-400 text-center">Upgrade to remove this notice</p>
+      </div>
+    ) : null;
+
+  const ComplianceFooter = () => (
+    <>
+      {(user?.kvkNumber || user?.vatNumber) && (
+        <p className="text-[10px] text-gray-400 text-center mb-1">
+          {formatComplianceFooter(countryConfig, user?.kvkNumber || null, user?.vatNumber || null)}
+        </p>
+      )}
+      {invoiceCountry === "BE" && invoiceType === "credit_note" && referenceInvoice && (
+        <p className="text-[10px] text-amber-600 text-center mb-1">{countryConfig.creditNoteText}</p>
+      )}
+    </>
+  );
+
+  const EmptyRows = () => (
+    <tr>
+      <td colSpan={4} className="text-center text-gray-300 text-xs py-6 italic">
+        Add line items to see them here
+      </td>
+    </tr>
+  );
+
+  // ════════════════════════════════════════════════════════════════════════════
+  // CLASSIC THEME — Traditional corporate invoice
+  // ════════════════════════════════════════════════════════════════════════════
+  if (invoiceTheme === "classic") {
+    return (
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden text-gray-900 text-sm transition-all duration-300">
+        {/* Blue top line */}
+        <div className="h-1 bg-[#1e40af]" />
+
+        {/* Header: logo + business left, registration right */}
+        <header className="px-5 sm:px-6 pt-5 pb-4 border-b border-gray-200">
+          <div className="flex justify-between items-start">
+            <div className="flex items-center gap-3">
+              {user?.logoUrl ? (
+                <img src={user.logoUrl} alt="" className="w-10 h-10 rounded-lg object-cover flex-shrink-0" />
+              ) : (
+                <div className="w-10 h-10 rounded-lg bg-[#1e40af] flex items-center justify-center flex-shrink-0">
+                  <span className="text-lg font-bold text-white leading-none">{businessInitial}</span>
+                </div>
+              )}
+              <div>
+                <h2 className="text-base font-bold text-[#1e40af]">
+                  {user?.businessName || user?.name || "Your Business"}
+                </h2>
+                <div className="text-[11px] text-gray-500 space-y-0.5">
+                  {user?.businessAddress && <p>{user.businessAddress}</p>}
+                  <p>
+                    {user?.email || "your@email.com"}
+                    {user?.businessPhone && ` · ${user.businessPhone}`}
+                  </p>
+                </div>
+              </div>
+            </div>
+            {(user?.kvkNumber || user?.vatNumber) && (
+              <div className="text-[10px] text-right text-gray-400 space-y-0.5">
+                {user.kvkNumber && <p>{countryConfig.businessRegLabel}: {user.kvkNumber}</p>}
+                {user.vatNumber && <p>{countryConfig.taxIdLabel}: {user.vatNumber}</p>}
+              </div>
+            )}
+          </div>
+        </header>
+
+        {/* Invoice meta + Bill To in two columns */}
+        <div className="px-5 sm:px-6 py-5">
+          <div className="flex flex-col sm:flex-row sm:justify-between gap-4 sm:gap-6">
+            <div className="flex-1 min-w-0">
+              <p className="text-[10px] font-semibold uppercase tracking-widest mb-1 text-[#1e40af]">{docLabel}</p>
+              <p className="text-lg sm:text-xl font-bold tracking-tight break-all text-gray-900 font-mono">
+                {invoiceNumber || "INV-0000"}
+              </p>
+              {description && <p className="text-gray-500 text-xs mt-0.5 truncate">{description}</p>}
+              <div className="mt-3 space-y-1 text-xs">
+                <div className="flex gap-2">
+                  <span className="text-gray-400 w-16 shrink-0">Issued</span>
+                  <span className="text-gray-700 font-medium">{fmtDate(today)}</span>
+                </div>
+                {serviceDate && (
+                  <div className="flex gap-2">
+                    <span className="text-gray-400 w-16 shrink-0">{countryConfig.serviceDateLabel}</span>
+                    <span className="text-gray-700 font-medium">{fmtDate(serviceDate)}</span>
+                  </div>
+                )}
+                {invoiceCountry === "DE" && serviceDate && serviceDate === today && (
+                  <p className="text-[10px] text-amber-600 italic mt-0.5">{countryConfig.serviceDateNote}</p>
+                )}
+                <div className="flex gap-2">
+                  <span className="text-gray-400 w-16 shrink-0">Due</span>
+                  <span className="text-gray-700 font-medium">{fmtDate(dueDate)}</span>
+                </div>
+              </div>
+              {invoiceType === "credit_note" && referenceInvoice && (
+                <p className="text-xs text-gray-400 mt-2">Ref: {referenceInvoice}</p>
+              )}
+            </div>
+            <div className="text-left sm:text-right flex-shrink-0">
+              <p className="text-[10px] font-semibold uppercase tracking-widest mb-1 text-[#1e40af]">Bill To</p>
+              {selectedClient ? (
+                <>
+                  <p className="text-sm font-semibold text-gray-900">{selectedClient.name}</p>
+                  <p className="text-gray-500 text-xs">{selectedClient.email}</p>
+                  {selectedClient.address && <p className="text-gray-500 text-xs mt-0.5 whitespace-pre-line">{selectedClient.address}</p>}
+                  {selectedClient.vatNumber && <p className="text-gray-500 text-xs mt-0.5">VAT: {selectedClient.vatNumber}</p>}
+                </>
+              ) : (
+                <p className="text-gray-300 text-xs italic">No client selected</p>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Notes to Client */}
+        {notesToClient && (
+          <div className="px-5 sm:px-6 pb-4">
+            <div className="rounded-lg border border-blue-200/80 bg-blue-50 p-3">
+              <p className="text-[10px] font-semibold mb-0.5 text-blue-900">Note</p>
+              <p className="text-xs whitespace-pre-line leading-relaxed text-blue-800">{notesToClient}</p>
+            </div>
+          </div>
+        )}
+
+        {/* Line Items — standard table with light blue header */}
+        <div className="px-5 sm:px-6">
+          <table className="w-full text-xs sm:text-sm">
+            <thead>
+              <tr className="bg-[#1e40af]/8 border-y border-[#1e40af]/15">
+                <th className="text-left text-[10px] font-semibold uppercase tracking-wider py-2.5 pr-2 text-[#1e40af]">Description</th>
+                <th className="text-center text-[10px] font-semibold uppercase tracking-wider py-2.5 px-2 w-12 text-[#1e40af]">Qty</th>
+                <th className="text-right text-[10px] font-semibold uppercase tracking-wider py-2.5 px-2 w-20 text-[#1e40af]">Price</th>
+                <th className="text-right text-[10px] font-semibold uppercase tracking-wider py-2.5 pl-2 w-20 text-[#1e40af]">Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              {validItems.length > 0 ? validItems.map((item, idx) => (
+                <tr key={idx} className={idx < validItems.length - 1 ? "border-b border-gray-100" : ""}>
+                  <td className="text-gray-800 text-xs py-2.5 pr-2 truncate max-w-[120px]">{item.description || "--"}</td>
+                  <td className="text-gray-500 text-xs text-center py-2.5 px-2 tabular-nums">{item.quantity}</td>
+                  <td className="text-gray-500 text-xs text-right py-2.5 px-2 tabular-nums">{fmt(item.unitPrice)}</td>
+                  <td className="text-gray-900 text-xs font-medium text-right py-2.5 pl-2 tabular-nums">{fmt(item.quantity * item.unitPrice)}</td>
+                </tr>
+              )) : <EmptyRows />}
+            </tbody>
+          </table>
+
+          {/* Totals */}
+          <div className="border-t border-gray-200 py-4">
+            <div className="flex flex-col items-end space-y-1">
+              <div className="w-full max-w-[200px] flex justify-between text-xs">
+                <span className="text-gray-400">Subtotal</span>
+                <span className="text-gray-700 tabular-nums">{fmt(subtotal)}</span>
+              </div>
+              {taxRate > 0 && (
+                <div className="w-full max-w-[200px] flex justify-between text-xs">
+                  <span className="text-gray-400">VAT ({taxRate}%)</span>
+                  <span className="text-gray-700 tabular-nums">{fmt(tax)}</span>
+                </div>
+              )}
+              {reverseCharge && (
+                <div className="w-full max-w-[200px]">
+                  <p className="text-[10px] text-amber-600 italic">{countryConfig.reverseChargeText}</p>
+                </div>
+              )}
+              <div className="w-full max-w-[200px] flex justify-between pt-2 border-t-2 border-[#1e40af]">
+                <span className="text-sm font-bold text-[#1e40af]">Total</span>
+                <span className="text-base sm:text-lg font-bold tabular-nums text-[#1e40af]">{fmt(total)}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Bank + Payment Notes */}
+        <div className="px-5 sm:px-6 pb-4 space-y-3">
+          <BankSection labelClass="text-[#1e40af]" bgClass="bg-gray-50 border-gray-200" />
+          <PaymentNotesSection />
+        </div>
+
+        {/* Footer */}
+        <div className="px-6 py-3 bg-[#1e40af]/5 border-t border-[#1e40af]/10">
+          <ComplianceFooter />
+          <WatermarkFooter />
+        </div>
+      </div>
+    );
+  }
+
+  // ════════════════════════════════════════════════════════════════════════════
+  // MODERN THEME — Bold, dark header, card-based sections, tech startup feel
+  // ════════════════════════════════════════════════════════════════════════════
+  if (invoiceTheme === "modern") {
+    return (
+      <div className="bg-white rounded-2xl shadow-lg overflow-hidden text-gray-900 text-sm transition-all duration-300">
+        {/* Gradient accent bar */}
+        <div className="h-1.5 bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500" />
+
+        {/* Dark header block */}
+        <header className="bg-slate-800 px-5 sm:px-6 pt-6 pb-5">
+          <div className="flex items-start justify-between">
+            <div className="flex items-center gap-3">
+              {user?.logoUrl ? (
+                <img src={user.logoUrl} alt="" className="w-12 h-12 rounded-2xl object-cover flex-shrink-0 ring-2 ring-white/10" />
+              ) : (
+                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center flex-shrink-0">
+                  <span className="text-xl font-bold text-white leading-none">{businessInitial}</span>
+                </div>
+              )}
+              <div>
+                <h2 className="text-lg font-bold text-white tracking-tight">
+                  {user?.businessName || user?.name || "Your Business"}
+                </h2>
+                <div className="text-[11px] text-slate-400 space-y-0.5 mt-0.5">
+                  {user?.businessAddress && <p>{user.businessAddress}</p>}
+                  <p>
+                    {user?.email || "your@email.com"}
+                    {user?.businessPhone && ` · ${user.businessPhone}`}
+                  </p>
+                </div>
+              </div>
+            </div>
+            {/* Large invoice number on dark bg */}
+            <div className="text-right">
+              <p className="text-[10px] font-semibold uppercase tracking-widest text-slate-500 mb-0.5">{docLabel}</p>
+              <p className="text-xl sm:text-2xl font-extrabold text-white tracking-tight font-mono">
+                {invoiceNumber || "INV-0000"}
+              </p>
+              {description && <p className="text-slate-400 text-xs mt-0.5 truncate max-w-[140px]">{description}</p>}
+            </div>
+          </div>
+          {(user?.kvkNumber || user?.vatNumber) && (
+            <div className="flex gap-3 mt-3 text-[10px] text-slate-500">
+              {user.kvkNumber && <span>{countryConfig.businessRegLabel}: {user.kvkNumber}</span>}
+              {user.vatNumber && <span>{countryConfig.taxIdLabel}: {user.vatNumber}</span>}
             </div>
           )}
-          <div>
-            <h2 className={`text-base font-bold ${t.businessName}`}>
-              {user?.businessName || user?.name || "Your Business"}
-            </h2>
-            <div className={`text-xs space-y-0.5 ${invoiceTheme === "modern" ? "text-white/70" : "text-gray-400"}`}>
-              {user?.businessAddress && <p>{user.businessAddress}</p>}
-              <p>
+        </header>
+
+        {/* Dates row — card-style chips */}
+        <div className="px-5 sm:px-6 py-4">
+          <div className="flex flex-wrap gap-2">
+            <div className="bg-slate-50 rounded-lg px-3 py-2 border border-slate-100">
+              <p className="text-[9px] uppercase tracking-wider text-slate-400 font-semibold">Issued</p>
+              <p className="text-xs font-semibold text-slate-700">{fmtDate(today)}</p>
+            </div>
+            {serviceDate && (
+              <div className="bg-slate-50 rounded-lg px-3 py-2 border border-slate-100">
+                <p className="text-[9px] uppercase tracking-wider text-slate-400 font-semibold">{countryConfig.serviceDateLabel}</p>
+                <p className="text-xs font-semibold text-slate-700">{fmtDate(serviceDate)}</p>
+              </div>
+            )}
+            <div className="bg-amber-50 rounded-lg px-3 py-2 border border-amber-200/50">
+              <p className="text-[9px] uppercase tracking-wider text-amber-500 font-semibold">Due</p>
+              <p className="text-xs font-semibold text-amber-700">{fmtDate(dueDate)}</p>
+            </div>
+          </div>
+          {invoiceCountry === "DE" && serviceDate && serviceDate === today && (
+            <p className="text-[10px] text-amber-600 italic mt-2">{countryConfig.serviceDateNote}</p>
+          )}
+          {invoiceType === "credit_note" && referenceInvoice && (
+            <p className="text-xs text-slate-400 mt-2">Ref: {referenceInvoice}</p>
+          )}
+        </div>
+
+        {/* Bill To — card */}
+        <div className="px-5 sm:px-6 pb-4">
+          <div className="bg-slate-50 rounded-xl p-4 border border-slate-100">
+            <p className="text-[10px] font-semibold uppercase tracking-widest mb-2 text-slate-400">Bill To</p>
+            {selectedClient ? (
+              <>
+                <p className="text-sm font-bold text-slate-800">{selectedClient.name}</p>
+                <p className="text-slate-500 text-xs mt-0.5">{selectedClient.email}</p>
+                {selectedClient.address && <p className="text-slate-500 text-xs mt-0.5 whitespace-pre-line">{selectedClient.address}</p>}
+                {selectedClient.vatNumber && <p className="text-slate-500 text-xs mt-1">VAT: {selectedClient.vatNumber}</p>}
+              </>
+            ) : (
+              <p className="text-slate-300 text-xs italic">No client selected</p>
+            )}
+          </div>
+        </div>
+
+        {/* Notes to Client */}
+        {notesToClient && (
+          <div className="px-5 sm:px-6 pb-4">
+            <div className="rounded-xl border border-amber-200/60 bg-amber-50/50 p-3">
+              <p className="text-[10px] font-semibold mb-0.5 text-amber-800">Note</p>
+              <p className="text-xs whitespace-pre-line leading-relaxed text-amber-700">{notesToClient}</p>
+            </div>
+          </div>
+        )}
+
+        {/* Line Items — rounded card with dark header */}
+        <div className="px-5 sm:px-6">
+          <div className="rounded-xl overflow-hidden border border-slate-200">
+            <table className="w-full text-xs sm:text-sm">
+              <thead>
+                <tr className="bg-slate-800">
+                  <th className="text-left text-[10px] font-semibold uppercase tracking-wider py-3 pl-4 pr-2 text-slate-300">Description</th>
+                  <th className="text-center text-[10px] font-semibold uppercase tracking-wider py-3 px-2 w-12 text-slate-300">Qty</th>
+                  <th className="text-right text-[10px] font-semibold uppercase tracking-wider py-3 px-2 w-20 text-slate-300">Price</th>
+                  <th className="text-right text-[10px] font-semibold uppercase tracking-wider py-3 pl-2 pr-4 w-20 text-slate-300">Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                {validItems.length > 0 ? validItems.map((item, idx) => (
+                  <tr key={idx} className={`${idx % 2 === 0 ? "bg-white" : "bg-slate-50/50"} ${idx < validItems.length - 1 ? "border-b border-slate-100" : ""}`}>
+                    <td className="text-slate-800 text-xs py-3 pl-4 pr-2 truncate max-w-[120px]">{item.description || "--"}</td>
+                    <td className="text-slate-500 text-xs text-center py-3 px-2 tabular-nums">{item.quantity}</td>
+                    <td className="text-slate-500 text-xs text-right py-3 px-2 tabular-nums">{fmt(item.unitPrice)}</td>
+                    <td className="text-slate-900 text-xs font-semibold text-right py-3 pl-2 pr-4 tabular-nums">{fmt(item.quantity * item.unitPrice)}</td>
+                  </tr>
+                )) : <EmptyRows />}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Totals — highlighted card */}
+          <div className="mt-4 mb-4 flex justify-end">
+            <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl p-4 min-w-[200px] text-white">
+              <div className="space-y-1.5">
+                <div className="flex justify-between text-xs">
+                  <span className="text-slate-400">Subtotal</span>
+                  <span className="text-slate-200 tabular-nums">{fmt(subtotal)}</span>
+                </div>
+                {taxRate > 0 && (
+                  <div className="flex justify-between text-xs">
+                    <span className="text-slate-400">VAT ({taxRate}%)</span>
+                    <span className="text-slate-200 tabular-nums">{fmt(tax)}</span>
+                  </div>
+                )}
+                {reverseCharge && (
+                  <p className="text-[10px] text-amber-400 italic">{countryConfig.reverseChargeText}</p>
+                )}
+                <div className="flex justify-between pt-2 border-t border-slate-600">
+                  <span className="text-sm font-bold text-amber-400">Total</span>
+                  <span className="text-lg font-extrabold tabular-nums text-white">{fmt(total)}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Bank + Payment Notes */}
+        <div className="px-5 sm:px-6 pb-4 space-y-3">
+          <BankSection labelClass="text-slate-500" bgClass="bg-slate-50 border-slate-100" />
+          <PaymentNotesSection />
+        </div>
+
+        {/* Footer */}
+        <div className="px-6 py-3 bg-slate-50 border-t border-slate-100">
+          <ComplianceFooter />
+          <WatermarkFooter />
+        </div>
+      </div>
+    );
+  }
+
+  // ════════════════════════════════════════════════════════════════════════════
+  // MINIMAL THEME — Ultra-clean, serif headings, hairline borders, whitespace
+  // ════════════════════════════════════════════════════════════════════════════
+  return (
+    <div className="bg-white rounded-lg overflow-hidden text-gray-900 text-sm transition-all duration-300" style={{ fontFamily: "Georgia, 'Times New Roman', serif" }}>
+      {/* Spacious top padding — no accent bar */}
+      <div className="px-6 sm:px-8 pt-8 pb-6">
+        {/* Business + registration on one line, small text */}
+        <div className="flex justify-between items-baseline border-b border-gray-200 pb-4">
+          <div className="flex items-center gap-3">
+            {user?.logoUrl ? (
+              <img src={user.logoUrl} alt="" className="w-8 h-8 rounded object-cover flex-shrink-0 opacity-80" />
+            ) : null}
+            <div>
+              <h2 className="text-sm font-normal tracking-wide text-gray-800" style={{ fontFamily: "Georgia, serif", fontStyle: "italic" }}>
+                {user?.businessName || user?.name || "Your Business"}
+              </h2>
+              <p className="text-[10px] text-gray-400 mt-0.5" style={{ fontFamily: "system-ui, sans-serif" }}>
+                {user?.businessAddress && <>{user.businessAddress} · </>}
                 {user?.email || "your@email.com"}
                 {user?.businessPhone && ` · ${user.businessPhone}`}
               </p>
             </div>
           </div>
-        </div>
-        {(user?.kvkNumber || user?.vatNumber) && (
-          <div className={`text-[10px] text-right space-y-0.5 mt-1 ${invoiceTheme === "modern" ? "text-white/60" : "text-gray-400"}`}>
-            {user.kvkNumber && <p>{countryConfig.businessRegLabel}: {user.kvkNumber}</p>}
-            {user.vatNumber && <p>{countryConfig.taxIdLabel}: {user.vatNumber}</p>}
+          <div className="text-[10px] text-gray-400 text-right space-y-0.5" style={{ fontFamily: "system-ui, sans-serif" }}>
+            {user?.kvkNumber && <p>{countryConfig.businessRegLabel}: {user.kvkNumber}</p>}
+            {user?.vatNumber && <p>{countryConfig.taxIdLabel}: {user.vatNumber}</p>}
           </div>
-        )}
-      </header>
+        </div>
 
-      {/* Invoice Info + Bill To */}
-      <div className="px-4 sm:px-6 py-4 sm:py-5">
-        <div className="flex flex-col sm:flex-row sm:justify-between gap-4 sm:gap-6">
-          {/* Meta */}
-          <div className="flex-1 min-w-0">
-            <p className={`text-[10px] font-semibold uppercase tracking-widest mb-1 ${t.labelColor}`}>
-              {docLabel}
-            </p>
-            <p className={`text-base sm:text-xl font-bold tracking-tight break-all ${t.invoiceNum}`}>
-              {invoiceNumber || "INV-0000"}
-            </p>
-            {description && (
-              <p className="text-gray-500 text-xs mt-0.5 truncate">
-                {description}
-              </p>
-            )}
-            <div className="mt-3 space-y-1 text-xs">
-              <div className="flex gap-2">
-                <span className="text-gray-400 shrink-0">Issued</span>
-                <span className="text-gray-700 font-medium whitespace-nowrap">
-                  {fmtDate(today)}
-                </span>
+        {/* Large doc label + invoice number — centered, elegant */}
+        <div className="text-center py-8">
+          <p className="text-[11px] uppercase tracking-[0.3em] text-gray-400 mb-2" style={{ fontFamily: "system-ui, sans-serif" }}>
+            {docLabel}
+          </p>
+          <p className="text-2xl sm:text-3xl font-normal text-gray-800 tracking-tight" style={{ fontFamily: "Georgia, serif" }}>
+            {invoiceNumber || "INV-0000"}
+          </p>
+          {description && <p className="text-gray-400 text-xs mt-2 truncate" style={{ fontFamily: "system-ui, sans-serif" }}>{description}</p>}
+        </div>
+
+        {/* Dates + Bill To side by side, minimal */}
+        <div className="flex flex-col sm:flex-row sm:justify-between gap-6 border-t border-gray-200 pt-5 pb-2">
+          <div className="flex-1" style={{ fontFamily: "system-ui, sans-serif" }}>
+            <div className="space-y-1.5 text-xs">
+              <div className="flex gap-3">
+                <span className="text-gray-400 w-20 shrink-0">Issued</span>
+                <span className="text-gray-600">{fmtDate(today)}</span>
               </div>
               {serviceDate && (
-                <div className="flex gap-2">
-                  <span className="text-gray-400 shrink-0">{countryConfig.serviceDateLabel}</span>
-                  <span className="text-gray-700 font-medium whitespace-nowrap">
-                    {fmtDate(serviceDate)}
-                  </span>
+                <div className="flex gap-3">
+                  <span className="text-gray-400 w-20 shrink-0">{countryConfig.serviceDateLabel}</span>
+                  <span className="text-gray-600">{fmtDate(serviceDate)}</span>
                 </div>
               )}
               {invoiceCountry === "DE" && serviceDate && serviceDate === today && (
-                <p className="text-[10px] text-amber-600 italic mt-0.5">
-                  {countryConfig.serviceDateNote}
-                </p>
+                <p className="text-[10px] text-amber-600 italic mt-0.5">{countryConfig.serviceDateNote}</p>
               )}
-              <div className="flex gap-2">
-                <span className="text-gray-400 shrink-0">Due</span>
-                <span className="text-gray-700 font-medium whitespace-nowrap">
-                  {fmtDate(dueDate)}
-                </span>
+              <div className="flex gap-3">
+                <span className="text-gray-400 w-20 shrink-0">Due</span>
+                <span className="text-gray-600">{fmtDate(dueDate)}</span>
               </div>
             </div>
             {invoiceType === "credit_note" && referenceInvoice && (
-              <p className="text-xs text-gray-400 mt-2">
-                Ref: {referenceInvoice}
-              </p>
+              <p className="text-xs text-gray-400 mt-2">Ref: {referenceInvoice}</p>
             )}
           </div>
-
-          {/* Bill To */}
-          <div className="text-left sm:text-right flex-shrink-0">
-            <p className={`text-[10px] font-semibold uppercase tracking-widest mb-1 ${t.labelColor}`}>
-              Bill To
-            </p>
+          <div className="text-left sm:text-right flex-shrink-0" style={{ fontFamily: "system-ui, sans-serif" }}>
+            <p className="text-[10px] uppercase tracking-[0.2em] text-gray-400 mb-1.5">Bill To</p>
             {selectedClient ? (
               <>
-                <p className="text-sm font-semibold text-gray-900">
-                  {selectedClient.name}
-                </p>
-                <p className="text-gray-500 text-xs">{selectedClient.email}</p>
-                {selectedClient.address && (
-                  <p className="text-gray-500 text-xs mt-0.5 whitespace-pre-line">
-                    {selectedClient.address}
-                  </p>
-                )}
-                {selectedClient.vatNumber && (
-                  <p className="text-gray-500 text-xs mt-0.5">
-                    VAT: {selectedClient.vatNumber}
-                  </p>
-                )}
+                <p className="text-sm text-gray-800">{selectedClient.name}</p>
+                <p className="text-gray-400 text-xs mt-0.5">{selectedClient.email}</p>
+                {selectedClient.address && <p className="text-gray-400 text-xs mt-0.5 whitespace-pre-line">{selectedClient.address}</p>}
+                {selectedClient.vatNumber && <p className="text-gray-400 text-xs mt-1">VAT: {selectedClient.vatNumber}</p>}
               </>
             ) : (
               <p className="text-gray-300 text-xs italic">No client selected</p>
@@ -359,191 +681,73 @@ function InvoicePreview({
 
       {/* Notes to Client */}
       {notesToClient && (
-        <div className="px-6 pb-4">
-          <div className={`rounded-lg border p-3 ${t.notesBg}`}>
-            <p className={`text-[10px] font-semibold mb-0.5 ${t.notesTitle}`}>
-              Note
-            </p>
-            <p className={`text-xs whitespace-pre-line leading-relaxed ${t.notesText}`}>
-              {notesToClient}
-            </p>
+        <div className="px-6 sm:px-8 pb-5">
+          <div className="border-l-2 border-gray-200 pl-4 py-1">
+            <p className="text-[10px] text-gray-400 mb-0.5" style={{ fontFamily: "system-ui, sans-serif" }}>Note</p>
+            <p className="text-xs whitespace-pre-line leading-relaxed text-gray-600" style={{ fontFamily: "system-ui, sans-serif" }}>{notesToClient}</p>
           </div>
         </div>
       )}
 
-      {/* Line Items Table */}
-      <div className="px-4 sm:px-6">
-        <table className="w-full text-xs sm:text-sm">
+      {/* Line Items — no backgrounds, just hairline borders */}
+      <div className="px-6 sm:px-8" style={{ fontFamily: "system-ui, sans-serif" }}>
+        <table className="w-full text-xs">
           <thead>
-            <tr className={`${t.tableHead} ${invoiceTheme === "minimal" ? "" : "rounded"}`}>
-              <th className={`text-left text-[10px] font-semibold uppercase tracking-wider py-2 pr-2 ${t.tableHeadText}`}>
-                Description
-              </th>
-              <th className={`text-center text-[10px] font-semibold uppercase tracking-wider py-2 px-2 w-12 ${t.tableHeadText}`}>
-                Qty
-              </th>
-              <th className={`text-right text-[10px] font-semibold uppercase tracking-wider py-2 px-2 w-20 ${t.tableHeadText}`}>
-                Price
-              </th>
-              <th className={`text-right text-[10px] font-semibold uppercase tracking-wider py-2 pl-2 w-20 ${t.tableHeadText}`}>
-                Amount
-              </th>
+            <tr className="border-b border-gray-300">
+              <th className="text-left text-[10px] font-normal uppercase tracking-[0.15em] py-3 pr-2 text-gray-400">Description</th>
+              <th className="text-center text-[10px] font-normal uppercase tracking-[0.15em] py-3 px-2 w-12 text-gray-400">Qty</th>
+              <th className="text-right text-[10px] font-normal uppercase tracking-[0.15em] py-3 px-2 w-20 text-gray-400">Price</th>
+              <th className="text-right text-[10px] font-normal uppercase tracking-[0.15em] py-3 pl-2 w-20 text-gray-400">Amount</th>
             </tr>
           </thead>
           <tbody>
-            {validItems.length > 0 ? (
-              validItems.map((item, idx) => (
-                <tr
-                  key={idx}
-                  className={
-                    idx < validItems.length - 1
-                      ? "border-b border-gray-100"
-                      : ""
-                  }
-                >
-                  <td className="text-gray-800 text-xs py-2.5 pr-2 truncate max-w-[120px]">
-                    {item.description || "--"}
-                  </td>
-                  <td className="text-gray-500 text-xs text-center py-2.5 px-2 tabular-nums">
-                    {item.quantity}
-                  </td>
-                  <td className="text-gray-500 text-xs text-right py-2.5 px-2 tabular-nums">
-                    {fmt(item.unitPrice)}
-                  </td>
-                  <td className="text-gray-900 text-xs font-medium text-right py-2.5 pl-2 tabular-nums">
-                    {fmt(item.quantity * item.unitPrice)}
-                  </td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td
-                  colSpan={4}
-                  className="text-center text-gray-300 text-xs py-6 italic"
-                >
-                  Add line items to see them here
-                </td>
+            {validItems.length > 0 ? validItems.map((item, idx) => (
+              <tr key={idx} className="border-b border-gray-100">
+                <td className="text-gray-700 text-xs py-3.5 pr-2 truncate max-w-[120px]">{item.description || "--"}</td>
+                <td className="text-gray-400 text-xs text-center py-3.5 px-2 tabular-nums">{item.quantity}</td>
+                <td className="text-gray-400 text-xs text-right py-3.5 px-2 tabular-nums">{fmt(item.unitPrice)}</td>
+                <td className="text-gray-800 text-xs text-right py-3.5 pl-2 tabular-nums">{fmt(item.quantity * item.unitPrice)}</td>
               </tr>
-            )}
+            )) : <EmptyRows />}
           </tbody>
         </table>
 
-        {/* Totals */}
-        <div className="border-t border-gray-200 py-4">
-          <div className="flex flex-col items-end space-y-1">
+        {/* Totals — clean, right-aligned */}
+        <div className="py-6">
+          <div className="flex flex-col items-end space-y-1.5">
             <div className="w-full max-w-[200px] flex justify-between text-xs">
               <span className="text-gray-400">Subtotal</span>
-              <span className="text-gray-700 tabular-nums">{fmt(subtotal)}</span>
+              <span className="text-gray-600 tabular-nums">{fmt(subtotal)}</span>
             </div>
             {taxRate > 0 && (
               <div className="w-full max-w-[200px] flex justify-between text-xs">
                 <span className="text-gray-400">VAT ({taxRate}%)</span>
-                <span className="text-gray-700 tabular-nums">{fmt(tax)}</span>
+                <span className="text-gray-600 tabular-nums">{fmt(tax)}</span>
               </div>
             )}
             {reverseCharge && (
               <div className="w-full max-w-[200px]">
-                <p className="text-[10px] text-amber-600 italic">
-                  {countryConfig.reverseChargeText}
-                </p>
+                <p className="text-[10px] text-amber-600 italic">{countryConfig.reverseChargeText}</p>
               </div>
             )}
-            <div className={`w-full max-w-[200px] flex justify-between pt-2 ${t.totalBorder}`}>
-              <span className={`text-sm font-bold ${t.totalText}`}>Total</span>
-              <span className={`text-base sm:text-lg font-bold tabular-nums ${t.totalText}`}>
-                {fmt(total)}
-              </span>
+            <div className="w-full max-w-[200px] flex justify-between pt-3 border-t border-gray-300">
+              <span className="text-sm text-gray-800" style={{ fontFamily: "Georgia, serif" }}>Total</span>
+              <span className="text-lg tabular-nums text-gray-900" style={{ fontFamily: "Georgia, serif" }}>{fmt(total)}</span>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Bank Details - Structured */}
-      {bankData && (bankData.iban || bankData.bankName) && (
-        <div className="px-6 pb-4">
-          <div className={`rounded-lg border p-3 ${t.bankBg}`}>
-            <p className={`text-[10px] font-semibold mb-1.5 ${t.labelColor}`}>
-              Payment Information
-            </p>
-            <div className="space-y-0.5 text-xs">
-              {bankData.iban && (
-                <div className="flex gap-2">
-                  <span className="text-gray-400 w-10 flex-shrink-0">IBAN</span>
-                  <span className="text-gray-700 font-mono font-medium">{formatIBAN(bankData.iban)}</span>
-                </div>
-              )}
-              {bankData.bic && (
-                <div className="flex gap-2">
-                  <span className="text-gray-400 w-10 flex-shrink-0">BIC</span>
-                  <span className="text-gray-700 font-mono font-medium">{bankData.bic}</span>
-                </div>
-              )}
-              {bankData.bankName && (
-                <div className="flex gap-2">
-                  <span className="text-gray-400 w-10 flex-shrink-0">Bank</span>
-                  <span className="text-gray-700 font-medium">{bankData.bankName}</span>
-                </div>
-              )}
-              {(bankData.accountHolder || user?.businessName) && (
-                <div className="flex gap-2">
-                  <span className="text-gray-400 w-10 flex-shrink-0">Name</span>
-                  <span className="text-gray-700 font-medium">{bankData.accountHolder || user?.businessName}</span>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
-      {/* Fallback: legacy plain-text bank details */}
-      {user?.bankDetails && !bankData && (
-        <div className="px-6 pb-4">
-          <div className={`rounded-lg border p-3 ${t.bankBg}`}>
-            <p className={`text-[10px] font-semibold mb-0.5 ${t.labelColor}`}>
-              Payment Information
-            </p>
-            <p className="text-gray-700 text-xs whitespace-pre-line leading-relaxed">
-              {user.bankDetails}
-            </p>
-          </div>
-        </div>
-      )}
-
-      {/* Payment Notes */}
-      {paymentNotes && (
-        <div className="px-6 pb-4">
-          <div className="bg-amber-50 rounded-lg border border-amber-200/80 p-3">
-            <p className="text-[10px] font-semibold text-amber-900 mb-0.5">
-              Payment Notes
-            </p>
-            <p className="text-amber-800 text-xs whitespace-pre-line leading-relaxed">
-              {paymentNotes}
-            </p>
-          </div>
-        </div>
-      )}
+      {/* Bank + Payment Notes */}
+      <div className="px-6 sm:px-8 pb-5 space-y-3" style={{ fontFamily: "system-ui, sans-serif" }}>
+        <BankSection labelClass="text-gray-400" bgClass="bg-transparent border-gray-200" />
+        <PaymentNotesSection />
+      </div>
 
       {/* Footer */}
-      <div className={`px-6 py-3 ${t.footerBg}`}>
-        {(user?.kvkNumber || user?.vatNumber) && (
-          <p className="text-[10px] text-gray-400 text-center mb-1">
-            {formatComplianceFooter(countryConfig, user?.kvkNumber || null, user?.vatNumber || null)}
-          </p>
-        )}
-        {invoiceCountry === "BE" && invoiceType === "credit_note" && referenceInvoice && (
-          <p className="text-[10px] text-amber-600 text-center mb-1">
-            {countryConfig.creditNoteText}
-          </p>
-        )}
-        {!user?.plan || user.plan !== "pro" ? (
-          <div className="bg-gray-100 border-2 border-dashed border-gray-300 rounded-lg p-2 mt-1">
-            <p className="text-[11px] text-gray-500 text-center font-medium">
-              Invoice created with <span className="text-indigo-600 font-bold">TradeInvoice.app</span>
-            </p>
-            <p className="text-[9px] text-gray-400 text-center">
-              Upgrade to remove this notice
-            </p>
-          </div>
-        ) : null}
+      <div className="px-6 sm:px-8 py-4 border-t border-gray-200">
+        <ComplianceFooter />
+        <WatermarkFooter />
       </div>
     </div>
   );
@@ -1114,9 +1318,9 @@ function NewInvoiceForm() {
                 <p className="text-xs text-gray-500 mb-3">Choose a visual style for your PDF invoice</p>
                 <div className="grid grid-cols-3 gap-3">
                   {[
-                    { id: "classic", label: "Classic", desc: "Traditional blue", color: "bg-blue-600" },
-                    { id: "modern", label: "Modern", desc: "Bold accent", color: "bg-indigo-500" },
-                    { id: "minimal", label: "Minimal", desc: "Clean & sparse", color: "bg-gray-500" },
+                    { id: "classic", label: "Classic", desc: "Corporate" },
+                    { id: "modern", label: "Modern", desc: "Bold & sleek" },
+                    { id: "minimal", label: "Minimal", desc: "Elegant" },
                   ].map((theme) => (
                     <button
                       key={theme.id}
@@ -1134,7 +1338,88 @@ function NewInvoiceForm() {
                           : "border-gray-700/50 hover:border-gray-600/50"
                       } ${!isPro && theme.id !== "classic" ? "opacity-60" : ""}`}
                     >
-                      <div className={`w-full h-2 rounded-full ${theme.color} mb-2`} />
+                      {/* Mini layout preview */}
+                      <div className="w-full aspect-[3/4] rounded bg-white mb-2 overflow-hidden border border-gray-600/30">
+                        {theme.id === "classic" && (
+                          <div className="w-full h-full flex flex-col">
+                            <div className="h-[2px] bg-blue-700" />
+                            <div className="px-1.5 pt-1.5 flex items-center gap-1">
+                              <div className="w-2 h-2 rounded-sm bg-blue-700 flex-shrink-0" />
+                              <div className="h-1 w-6 bg-blue-700/30 rounded-full" />
+                            </div>
+                            <div className="px-1.5 mt-1.5 flex justify-between">
+                              <div className="space-y-0.5">
+                                <div className="h-0.5 w-5 bg-gray-300 rounded-full" />
+                                <div className="h-0.5 w-4 bg-gray-200 rounded-full" />
+                              </div>
+                              <div className="space-y-0.5 items-end flex flex-col">
+                                <div className="h-0.5 w-4 bg-gray-300 rounded-full" />
+                                <div className="h-0.5 w-3 bg-gray-200 rounded-full" />
+                              </div>
+                            </div>
+                            <div className="px-1.5 mt-1.5 flex-1">
+                              <div className="h-1 w-full bg-blue-700/10 rounded-sm mb-0.5" />
+                              <div className="h-0.5 w-full bg-gray-100 rounded-full mb-0.5" />
+                              <div className="h-0.5 w-full bg-gray-100 rounded-full" />
+                            </div>
+                            <div className="px-1.5 pb-1 mt-auto">
+                              <div className="h-0.5 w-full bg-blue-700/20 rounded-full" />
+                            </div>
+                          </div>
+                        )}
+                        {theme.id === "modern" && (
+                          <div className="w-full h-full flex flex-col">
+                            <div className="h-[3px] bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500" />
+                            <div className="bg-slate-800 px-1.5 py-1.5">
+                              <div className="flex items-center gap-1">
+                                <div className="w-2 h-2 rounded-full bg-gradient-to-br from-amber-500 to-orange-500 flex-shrink-0" />
+                                <div className="h-1 w-5 bg-white/40 rounded-full" />
+                              </div>
+                              <div className="h-1.5 w-8 bg-white/20 rounded mt-1 ml-auto" />
+                            </div>
+                            <div className="px-1.5 mt-1">
+                              <div className="flex gap-1">
+                                <div className="h-2 w-4 bg-slate-100 rounded-sm" />
+                                <div className="h-2 w-4 bg-amber-50 rounded-sm" />
+                              </div>
+                            </div>
+                            <div className="px-1.5 mt-1 flex-1">
+                              <div className="rounded overflow-hidden border border-slate-200">
+                                <div className="h-1 bg-slate-800" />
+                                <div className="h-0.5 w-full bg-gray-100 mt-0.5" />
+                                <div className="h-0.5 w-full bg-gray-50 mt-0.5" />
+                              </div>
+                            </div>
+                            <div className="px-1.5 pb-1 mt-1 flex justify-end">
+                              <div className="h-2 w-7 bg-slate-800 rounded-sm" />
+                            </div>
+                          </div>
+                        )}
+                        {theme.id === "minimal" && (
+                          <div className="w-full h-full flex flex-col">
+                            <div className="px-1.5 pt-2 flex justify-between items-baseline border-b border-gray-200 pb-1 mx-1.5">
+                              <div className="h-0.5 w-5 bg-gray-300 rounded-full" />
+                              <div className="h-0.5 w-3 bg-gray-200 rounded-full" />
+                            </div>
+                            <div className="text-center py-2">
+                              <div className="h-0.5 w-3 bg-gray-200 rounded-full mx-auto mb-0.5" />
+                              <div className="h-1.5 w-10 bg-gray-200 rounded mx-auto" />
+                            </div>
+                            <div className="px-1.5 border-t border-gray-200 mx-1.5 pt-1 flex-1">
+                              <div className="h-0.5 w-full bg-gray-200 rounded-full mb-1" />
+                              <div className="border-b border-gray-100 pb-0.5 mb-0.5">
+                                <div className="h-0.5 w-full bg-gray-100 rounded-full" />
+                              </div>
+                              <div className="border-b border-gray-100 pb-0.5">
+                                <div className="h-0.5 w-full bg-gray-100 rounded-full" />
+                              </div>
+                            </div>
+                            <div className="px-1.5 pb-1.5 mt-auto flex justify-end">
+                              <div className="h-0.5 w-6 bg-gray-300 rounded-full" />
+                            </div>
+                          </div>
+                        )}
+                      </div>
                       <p className="text-sm font-medium text-white">{theme.label}</p>
                       <p className="text-xs text-gray-500">{theme.desc}</p>
                       {!isPro && theme.id !== "classic" && (
