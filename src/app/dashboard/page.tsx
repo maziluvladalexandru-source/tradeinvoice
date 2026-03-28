@@ -394,14 +394,7 @@ export default function DashboardPage() {
             <h2 className="text-xl font-semibold text-white">
               Recent Invoices
             </h2>
-            {data.totalInvoiceCount > 5 && (
-              <Link
-                href="/invoices/new"
-                className="text-amber-500 font-medium text-sm"
-              >
-                View all
-              </Link>
-            )}
+            {/* View all link - needs dedicated invoices list page */}
           </div>
 
           {recentInvoices.length === 0 ? (
