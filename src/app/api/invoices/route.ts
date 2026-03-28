@@ -60,6 +60,7 @@ export async function POST(req: NextRequest) {
       clientId, description, dueDate, lineItems, taxRate, paymentNotes,
       notesToClient, serviceDate, invoiceNumber, type, currency,
       isRecurring, recurringInterval, reverseCharge, referenceInvoice, language,
+      invoiceTheme,
     } = await req.json();
 
     if (!clientId || !lineItems?.length || !dueDate) {
@@ -160,6 +161,7 @@ export async function POST(req: NextRequest) {
         reverseCharge: !!reverseCharge,
         referenceInvoice: referenceInvoice || null,
         language: language || "en",
+        invoiceTheme: invoiceTheme && ["classic", "modern", "minimal"].includes(invoiceTheme) ? invoiceTheme : "classic",
         lineItems: {
           create: lineItems.map(
             (item: {

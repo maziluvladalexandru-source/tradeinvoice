@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Link from "next/link";
+import UpgradeModal, { ProBadge } from "@/components/UpgradeModal";
 
 interface Invoice {
   id: string;
@@ -33,7 +34,7 @@ interface Invoice {
   paidAmount: number;
   client: { id: string; name: string; email: string; phone: string | null; address: string | null };
   lineItems: { id: string; description: string; quantity: number; unitPrice: number; total: number }[];
-  user: { businessName: string | null; email: string };
+  user: { businessName: string | null; email: string; plan?: string };
 }
 
 export default function InvoiceDetailPage() {
@@ -42,6 +43,10 @@ export default function InvoiceDetailPage() {
   const [invoice, setInvoice] = useState<Invoice | null>(null);
   const [loading, setLoading] = useState(true);
   const [sending, setSending] = useState(false);
+  const [userPlan, setUserPlan] = useState("free");
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  const [upgradeFeature, setUpgradeFeature] = useState("");
+  const isPro = userPlan === "pro";
   const [markingPaid, setMarkingPaid] = useState(false);
   const [showPaidModal, setShowPaidModal] = useState(false);
   const [paidDate, setPaidDate] = useState(() => new Date().toISOString().split("T")[0]);
@@ -58,6 +63,10 @@ export default function InvoiceDetailPage() {
       .then(setInvoice)
       .catch(() => router.push("/dashboard"))
       .finally(() => setLoading(false));
+    fetch("/api/user")
+      .then((r) => r.json())
+      .then((u) => setUserPlan(u.plan || "free"))
+      .catch(() => {});
   }, [params.id, router]);
 
   async function sendInvoice() {
@@ -460,23 +469,29 @@ export default function InvoiceDetailPage() {
             </div>
           )}
 
-          {/* Reminder Toggle */}
+          {/* Reminder Toggle (Pro) */}
           {invoice.status !== "paid" && invoice.status !== "draft" && (
             <div className="p-6 border-t border-gray-800">
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className="text-sm font-medium text-white">Payment Reminders</h3>
+                  <h3 className="text-sm font-medium text-white flex items-center gap-2">
+                    Payment Reminders
+                    {!isPro && <ProBadge onClick={() => { setUpgradeFeature("Payment reminders"); setShowUpgradeModal(true); }} />}
+                  </h3>
                   <p className="text-xs text-gray-500 mt-0.5">Automatically remind client before due date</p>
                 </div>
                 <button
-                  onClick={toggleReminders}
+                  onClick={() => {
+                    if (!isPro) { setUpgradeFeature("Payment reminders"); setShowUpgradeModal(true); return; }
+                    toggleReminders();
+                  }}
                   className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                    invoice.remindersEnabled ? "bg-amber-500" : "bg-gray-600"
-                  }`}
+                    invoice.remindersEnabled && isPro ? "bg-amber-500" : "bg-gray-600"
+                  } ${!isPro ? "opacity-50 cursor-not-allowed" : ""}`}
                 >
                   <span
                     className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                      invoice.remindersEnabled ? "translate-x-6" : "translate-x-1"
+                      invoice.remindersEnabled && isPro ? "translate-x-6" : "translate-x-1"
                     }`}
                   />
                 </button>
@@ -605,6 +620,9 @@ export default function InvoiceDetailPage() {
             </div>
           </div>
         )}
+      {showUpgradeModal && (
+        <UpgradeModal feature={upgradeFeature} onClose={() => setShowUpgradeModal(false)} />
+      )}
     </div>
   );
 }

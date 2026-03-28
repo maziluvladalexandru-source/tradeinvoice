@@ -10,6 +10,31 @@ function escapeHtml(text: string): string {
     .replace(/"/g, "&quot;");
 }
 
+// Theme color configs
+const themeColors: Record<string, { primary: string; primaryLight: string; headerBg: string; tableBg: string; bodyFont: string }> = {
+  classic: {
+    primary: "#1e40af",
+    primaryLight: "#dbeafe",
+    headerBg: "#1e40af",
+    tableBg: "#f9fafb",
+    bodyFont: "'Helvetica Neue', Arial, sans-serif",
+  },
+  modern: {
+    primary: "#4f46e5",
+    primaryLight: "#e0e7ff",
+    headerBg: "#4f46e5",
+    tableBg: "#f5f3ff",
+    bodyFont: "'Inter', 'Helvetica Neue', Arial, sans-serif",
+  },
+  minimal: {
+    primary: "#374151",
+    primaryLight: "#f3f4f6",
+    headerBg: "#374151",
+    tableBg: "#fafafa",
+    bodyFont: "'Georgia', 'Times New Roman', serif",
+  },
+};
+
 // Multi-language translations
 const translations: Record<string, Record<string, string>> = {
   en: {
@@ -161,6 +186,17 @@ export async function GET(
   const isPartiallyPaid = invoice.paidAmount > 0 && invoice.paidAmount < invoice.total;
   const isFullyPaid = invoice.status === "paid";
 
+  // Theme support
+  const theme = invoice.invoiceTheme || "classic";
+  const colors = themeColors[theme] || themeColors.classic;
+  const accentColor = isCreditNote ? "#dc2626" : colors.primary;
+  const isPro = invoice.user.plan === "pro";
+  const showWatermark = !isPro;
+
+  // Minimal theme uses lighter borders and simpler styling
+  const isMinimal = theme === "minimal";
+  const borderStyle = isMinimal ? "1px solid #e5e7eb" : `3px solid ${accentColor}`;
+
   const html = `
     <!DOCTYPE html>
     <html>
@@ -169,14 +205,14 @@ export async function GET(
       <title>${docLabel} ${escapeHtml(invoice.invoiceNumber)}</title>
       <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Helvetica Neue', Arial, sans-serif; color: #1f2937; background: white; font-size: 14px; line-height: 1.5; }
-        .invoice { max-width: 800px; margin: 0 auto; padding: 48px; }
+        body { font-family: ${colors.bodyFont}; color: #1f2937; background: white; font-size: 14px; line-height: 1.5; }
+        .invoice { max-width: 800px; margin: 0 auto; padding: 48px; position: relative; }
 
         /* Header */
-        .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 40px; padding-bottom: 24px; border-bottom: 3px solid ${isCreditNote ? "#dc2626" : "#1e40af"}; }
-        .brand { font-size: 28px; font-weight: 700; color: ${isCreditNote ? "#dc2626" : "#1e40af"}; margin-bottom: 4px; }
+        .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 40px; padding-bottom: 24px; border-bottom: ${borderStyle}; }
+        .brand { font-size: ${isMinimal ? "24px" : "28px"}; font-weight: 700; color: ${accentColor}; margin-bottom: 4px; }
         .brand-details { color: #6b7280; font-size: 13px; line-height: 1.7; }
-        .invoice-title { font-size: 32px; font-weight: 800; color: ${isCreditNote ? "#dc2626" : "#1e40af"}; text-transform: uppercase; letter-spacing: 0.02em; }
+        .invoice-title { font-size: ${isMinimal ? "24px" : "32px"}; font-weight: 800; color: ${accentColor}; text-transform: uppercase; letter-spacing: ${isMinimal ? "0.1em" : "0.02em"}; }
         .invoice-number { font-size: 16px; font-weight: 600; color: #374151; margin-top: 4px; }
         .status { display: inline-block; padding: 5px 14px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 8px; }
         .status-paid { background: #d1fae5; color: #065f46; }
@@ -188,7 +224,7 @@ export async function GET(
         /* Address blocks */
         .addresses { display: flex; justify-content: space-between; margin-bottom: 32px; }
         .address-block { width: 48%; }
-        .address-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: ${isCreditNote ? "#dc2626" : "#1e40af"}; font-weight: 700; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 2px solid #e5e7eb; }
+        .address-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: ${accentColor}; font-weight: 700; margin-bottom: 10px; padding-bottom: 6px; border-bottom: ${isMinimal ? "1px solid #e5e7eb" : "2px solid #e5e7eb"}; }
         .address-block p { font-size: 13px; line-height: 1.7; color: #374151; }
         .address-block .name { font-weight: 600; font-size: 14px; color: #111827; }
 
@@ -197,31 +233,31 @@ export async function GET(
         .meta-table { border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden; }
         .meta-row { display: flex; border-bottom: 1px solid #e5e7eb; }
         .meta-row:last-child { border-bottom: none; }
-        .meta-label { background: #f9fafb; padding: 10px 16px; font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.04em; width: 160px; }
+        .meta-label { background: ${colors.tableBg}; padding: 10px 16px; font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.04em; width: 160px; }
         .meta-value { padding: 10px 16px; font-size: 13px; font-weight: 500; color: #111827; width: 160px; }
 
         /* Table */
         table { width: 100%; border-collapse: collapse; margin-bottom: 32px; }
-        thead th { background: ${isCreditNote ? "#dc2626" : "#1e40af"}; color: white; padding: 12px 16px; text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; }
+        thead th { background: ${isCreditNote ? "#dc2626" : colors.headerBg}; color: white; padding: 12px 16px; text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; }
         thead th:nth-child(2) { text-align: center; }
         thead th:nth-child(3), thead th:nth-child(4) { text-align: right; }
-        tbody tr:nth-child(even) { background: #f9fafb; }
+        tbody tr:nth-child(even) { background: ${colors.tableBg}; }
 
         /* Totals */
         .totals { display: flex; justify-content: flex-end; margin-bottom: 40px; }
         .totals-table { width: 320px; }
         .totals-row { display: flex; justify-content: space-between; padding: 10px 16px; font-size: 14px; }
-        .totals-row.subtotal { background: #f9fafb; border-radius: 6px 6px 0 0; }
-        .totals-row.tax { background: #f9fafb; }
-        .totals-row.total { background: ${isCreditNote ? "#dc2626" : "#1e40af"}; color: white; border-radius: 0 0 6px 6px; padding: 14px 16px; font-size: 18px; font-weight: 700; }
+        .totals-row.subtotal { background: ${colors.tableBg}; border-radius: 6px 6px 0 0; }
+        .totals-row.tax { background: ${colors.tableBg}; }
+        .totals-row.total { background: ${isCreditNote ? "#dc2626" : colors.headerBg}; color: white; border-radius: 0 0 6px 6px; padding: 14px 16px; font-size: 18px; font-weight: 700; }
         .totals-row.paid { background: #d1fae5; border-radius: 0; }
         .totals-row.balance { background: #fef3c7; border-radius: 0 0 6px 6px; font-weight: 700; }
         .totals-label { color: inherit; }
         .totals-value { font-weight: 600; }
 
         /* Payment section */
-        .payment-section { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 24px; margin-bottom: 32px; }
-        .payment-title { font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em; color: ${isCreditNote ? "#dc2626" : "#1e40af"}; font-weight: 700; margin-bottom: 12px; }
+        .payment-section { background: ${colors.tableBg}; border: 1px solid #e5e7eb; border-radius: 8px; padding: 24px; margin-bottom: 32px; }
+        .payment-title { font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em; color: ${accentColor}; font-weight: 700; margin-bottom: 12px; }
         .payment-terms { font-size: 13px; color: #374151; line-height: 1.7; }
         .payment-terms strong { color: #111827; }
 
@@ -232,7 +268,12 @@ export async function GET(
         /* Footer */
         .footer { margin-top: 40px; padding-top: 20px; border-top: 2px solid #e5e7eb; text-align: center; }
         .footer p { color: #9ca3af; font-size: 12px; line-height: 1.8; }
-        .footer .business-name { color: ${isCreditNote ? "#dc2626" : "#1e40af"}; font-weight: 600; font-size: 13px; }
+        .footer .business-name { color: ${accentColor}; font-weight: 600; font-size: 13px; }
+
+        /* Watermark for free users */
+        .watermark { text-align: center; margin-top: 24px; padding-top: 16px; border-top: 1px dashed #d1d5db; }
+        .watermark p { font-size: 11px; color: #9ca3af; letter-spacing: 0.02em; }
+        .watermark a { color: #9ca3af; text-decoration: none; }
       </style>
     </head>
     <body>
@@ -240,7 +281,7 @@ export async function GET(
         <!-- Header -->
         <div class="header">
           <div>
-            ${logoUrl ? `<img src="${logoUrl}" alt="Logo" style="max-height: 60px; max-width: 200px; margin-bottom: 8px;" />` : ""}
+            ${logoUrl && isPro ? `<img src="${logoUrl}" alt="Logo" style="max-height: 60px; max-width: 200px; margin-bottom: 8px;" />` : ""}
             <div class="brand">${businessName}</div>
             <div class="brand-details">
               ${invoice.user.businessAddress ? `${escapeHtml(invoice.user.businessAddress)}<br>` : ""}
@@ -304,8 +345,8 @@ export async function GET(
         ${invoice.description ? `<p style="margin-bottom: 24px; color: #6b7280; font-size: 14px;"><strong>${t("description")}:</strong> ${escapeHtml(invoice.description)}</p>` : ""}
 
         ${invoice.notesToClient ? `
-        <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 16px 20px; margin-bottom: 24px;">
-          <p style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: #1e40af; font-weight: 700; margin-bottom: 8px;">${t("noteToClient")}</p>
+        <div style="background: ${colors.primaryLight}; border: 1px solid ${accentColor}33; border-radius: 8px; padding: 16px 20px; margin-bottom: 24px;">
+          <p style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: ${accentColor}; font-weight: 700; margin-bottom: 8px;">${t("noteToClient")}</p>
           <p style="font-size: 14px; color: #1e3a5f; line-height: 1.7; white-space: pre-line;">${escapeHtml(invoice.notesToClient)}</p>
         </div>` : ""}
 
@@ -383,6 +424,12 @@ export async function GET(
           ${btwNumber ? `<p>BTW: ${escapeHtml(btwNumber)}</p>` : ""}
           <p>${t("thankYou")}</p>
         </div>
+
+        ${showWatermark ? `
+        <!-- Free tier watermark -->
+        <div class="watermark">
+          <p>Created with <strong>TradeInvoice</strong></p>
+        </div>` : ""}
       </div>
     </body>
     </html>

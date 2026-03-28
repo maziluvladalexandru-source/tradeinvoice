@@ -4,6 +4,7 @@ import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import BottomNav from "@/components/BottomNav";
+import UpgradeModal, { ProBadge } from "@/components/UpgradeModal";
 
 export default function SettingsPage() {
   return (
@@ -52,6 +53,15 @@ function SettingsContent() {
   const [deleteConfirmation, setDeleteConfirmation] = useState("");
   const [deleting, setDeleting] = useState(false);
   const [deleteError, setDeleteError] = useState("");
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  const [upgradeFeature, setUpgradeFeature] = useState("");
+
+  const isPro = user?.plan === "pro";
+
+  function showProPrompt(feature: string) {
+    setUpgradeFeature(feature);
+    setShowUpgradeModal(true);
+  }
 
   useEffect(() => {
     fetch("/api/user")
@@ -205,16 +215,28 @@ function SettingsContent() {
         </div>
 
         {/* Logo Upload */}
-        <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-800/50 mb-6">
+        <div className={`bg-gray-900/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-800/50 mb-6 relative ${!isPro ? "overflow-hidden" : ""}`}>
           <h2 className="text-lg font-semibold text-white mb-2 flex items-center gap-2">
             <svg className="w-5 h-5 text-amber-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0022.5 18.75V5.25A2.25 2.25 0 0020.25 3H3.75A2.25 2.25 0 001.5 5.25v13.5A2.25 2.25 0 003.75 21z" />
             </svg>
             Invoice Logo
+            {!isPro && <ProBadge onClick={() => showProPrompt("Custom branding & logo")} />}
           </h2>
           <p className="text-sm text-gray-400 mb-4">
             Upload your business logo to display on invoices and client views. JPG or PNG, max 2MB.
           </p>
+          {!isPro && (
+            <div
+              className="absolute inset-0 bg-gray-950/60 backdrop-blur-[2px] rounded-2xl flex items-center justify-center cursor-pointer z-10"
+              onClick={() => showProPrompt("Custom branding & logo")}
+            >
+              <div className="text-center">
+                <span className="text-2xl mb-2 block">🔒</span>
+                <p className="text-amber-400 font-semibold text-sm">Upgrade to Pro to add your logo</p>
+              </div>
+            </div>
+          )}
           <div className={logoUrl ? "flex items-center gap-6" : ""}>
             {logoUrl ? (
               <>
@@ -478,6 +500,9 @@ function SettingsContent() {
         )}
       </div>
       <BottomNav />
+      {showUpgradeModal && (
+        <UpgradeModal feature={upgradeFeature} onClose={() => setShowUpgradeModal(false)} />
+      )}
     </div>
   );
 }
