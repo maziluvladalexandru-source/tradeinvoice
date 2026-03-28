@@ -31,6 +31,8 @@ export async function POST(req: NextRequest) {
   switch (event.type) {
     case "checkout.session.completed": {
       const session = event.data.object as Stripe.Checkout.Session;
+
+      // Handle Pro subscription upgrade
       const userId = session.metadata?.userId;
       if (userId && session.subscription) {
         await prisma.user.update({
@@ -40,6 +42,21 @@ export async function POST(req: NextRequest) {
             stripeSubscriptionId: session.subscription as string,
           },
         });
+      }
+
+      // Handle invoice payment via payment link
+      const invoiceId = session.metadata?.invoiceId;
+      if (invoiceId && session.payment_status === "paid") {
+        const invoice = await prisma.invoice.update({
+          where: { id: invoiceId },
+          data: { status: "paid", paidAt: new Date() },
+          include: { client: true, user: true },
+        });
+        await sendInvoicePaidNotification(
+          invoice.user.email,
+          invoice.invoiceNumber,
+          invoice.client.name
+        );
       }
       break;
     }
