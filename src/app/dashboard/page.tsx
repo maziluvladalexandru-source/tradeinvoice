@@ -140,6 +140,16 @@ export default async function DashboardPage() {
   const quarterVat = quarterPaid.reduce((s, i) => s + i.taxAmount, 0);
   const quarterRevenueExVat = quarterPaid.reduce((s, i) => s + i.subtotal, 0);
 
+  // Expenses this month
+  const expenses = await prisma.expense.findMany({
+    where: {
+      userId: user.id,
+      date: { gte: monthStart },
+    },
+  });
+  const expensesThisMonth = expenses.reduce((sum, e) => sum + e.amount, 0);
+  const profitThisMonth = paidThisMonth - expensesThisMonth;
+
   // Onboarding data
   const hasBusinessName = !!user.businessName;
   const hasSentInvoice = invoices.some((i) => i.sentAt !== null);
@@ -257,6 +267,28 @@ export default async function DashboardPage() {
             </p>
             <p className="text-sm text-gray-500 mt-1">last 90 days</p>
           </div>
+          <Link href="/expenses" className="relative overflow-hidden bg-gray-900/50 backdrop-blur-sm rounded-2xl p-5 md:p-6 border border-gray-800/50 hover:border-gray-700/50 hover:shadow-lg hover:shadow-orange-500/5 transition-all duration-300 group">
+            <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 to-transparent pointer-events-none" />
+            <p className="text-sm font-medium text-gray-400 mb-1">
+              Expenses This Month
+            </p>
+            <p className="text-lg md:text-2xl font-bold text-orange-400 truncate">
+              {formatCurrency(expensesThisMonth)}
+            </p>
+            <p className="text-sm text-gray-500 mt-1 group-hover:text-amber-500 transition-colors">View all &rarr;</p>
+          </Link>
+          {paidThisMonth > 0 && (
+            <div className="relative overflow-hidden bg-gray-900/50 backdrop-blur-sm rounded-2xl p-5 md:p-6 border border-gray-800/50 hover:border-gray-700/50 hover:shadow-lg hover:shadow-emerald-500/5 transition-all duration-300">
+              <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent pointer-events-none" />
+              <p className="text-sm font-medium text-gray-400 mb-1">
+                Profit This Month
+              </p>
+              <p className={`text-lg md:text-2xl font-bold truncate ${profitThisMonth >= 0 ? "text-emerald-400" : "text-red-400"}`}>
+                {formatCurrency(profitThisMonth)}
+              </p>
+              <p className="text-sm text-gray-500 mt-1">revenue &minus; expenses</p>
+            </div>
+          )}
         </div>
 
         {/* Plan info */}

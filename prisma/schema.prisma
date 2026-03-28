@@ -30,6 +30,7 @@ model User {
   clients      Client[]
   sessions     Session[]
   serviceItems ServiceItem[]
+  expenses     Expense[]
 }
 
 model Session {
@@ -124,6 +125,23 @@ model ServiceItem {
   unit        String   @default("unit") // unit | hour | day | fixed | m² | m
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Expense {
+  id            String   @id @default(uuid())
+  userId        String
+  description   String
+  amount        Float
+  category      String   // materials, fuel, tools, subcontractor, office, other
+  date          DateTime
+  receiptUrl    String?  // base64 image of receipt
+  vendor        String?  // supplier/shop name
+  taxDeductible Boolean  @default(true)
+  notes         String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
