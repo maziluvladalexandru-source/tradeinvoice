@@ -1028,6 +1028,47 @@ function NewInvoiceForm() {
                 )}
               </div>
 
+              {/* Invoice Theme (Pro) */}
+              <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl p-5 border border-gray-800/50">
+                <h2 className="text-base font-semibold text-white mb-1 flex items-center gap-2">
+                  <svg className="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M4.098 19.902a3.75 3.75 0 005.304 0l6.401-6.402M6.75 21A3.75 3.75 0 013 17.25V4.125C3 3.504 3.504 3 4.125 3h5.25c.621 0 1.125.504 1.125 1.125v4.072M6.75 21a3.75 3.75 0 003.75-3.75V8.197M6.75 21h13.125c.621 0 1.125-.504 1.125-1.125v-5.25c0-.621-.504-1.125-1.125-1.125h-4.072M10.5 8.197l2.88-2.88c.438-.439 1.15-.439 1.59 0l3.712 3.713c.44.44.44 1.152 0 1.59l-2.879 2.88M6.75 17.25h.008v.008H6.75v-.008z" /></svg>
+                  Invoice Theme
+                  {!isPro && <ProBadge onClick={() => showProPrompt("Invoice themes")} />}
+                </h2>
+                <p className="text-xs text-gray-500 mb-3">Choose a visual style for your PDF invoice</p>
+                <div className="grid grid-cols-3 gap-3">
+                  {[
+                    { id: "classic", label: "Classic", desc: "Traditional blue", color: "bg-blue-600" },
+                    { id: "modern", label: "Modern", desc: "Bold accent", color: "bg-indigo-500" },
+                    { id: "minimal", label: "Minimal", desc: "Clean & sparse", color: "bg-gray-500" },
+                  ].map((theme) => (
+                    <button
+                      key={theme.id}
+                      type="button"
+                      onClick={() => {
+                        if (!isPro && theme.id !== "classic") {
+                          showProPrompt("Invoice themes");
+                          return;
+                        }
+                        setInvoiceTheme(theme.id);
+                      }}
+                      className={`relative p-3 rounded-xl border text-left transition-all ${
+                        invoiceTheme === theme.id
+                          ? "border-amber-500 bg-amber-500/5"
+                          : "border-gray-700/50 hover:border-gray-600/50"
+                      } ${!isPro && theme.id !== "classic" ? "opacity-60" : ""}`}
+                    >
+                      <div className={`w-full h-2 rounded-full ${theme.color} mb-2`} />
+                      <p className="text-sm font-medium text-white">{theme.label}</p>
+                      <p className="text-xs text-gray-500">{theme.desc}</p>
+                      {!isPro && theme.id !== "classic" && (
+                        <span className="absolute top-2 right-2 text-xs">🔒</span>
+                      )}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
               {/* Client */}
               <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl p-5 border border-gray-800/50">
                 <h2 className="text-base font-semibold text-white mb-3 flex items-center gap-2">
@@ -1328,47 +1369,6 @@ function NewInvoiceForm() {
                   rows={2}
                   className="w-full px-3 py-2.5 rounded-xl border border-gray-800/50 text-sm focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 transition-all outline-none bg-gray-900/80 text-white placeholder-gray-500 resize-none"
                 />
-              </div>
-
-              {/* Invoice Theme (Pro) */}
-              <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl p-5 border border-gray-800/50">
-                <h2 className="text-base font-semibold text-white mb-1 flex items-center gap-2">
-                  <svg className="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M4.098 19.902a3.75 3.75 0 005.304 0l6.401-6.402M6.75 21A3.75 3.75 0 013 17.25V4.125C3 3.504 3.504 3 4.125 3h5.25c.621 0 1.125.504 1.125 1.125v4.072M6.75 21a3.75 3.75 0 003.75-3.75V8.197M6.75 21h13.125c.621 0 1.125-.504 1.125-1.125v-5.25c0-.621-.504-1.125-1.125-1.125h-4.072M10.5 8.197l2.88-2.88c.438-.439 1.15-.439 1.59 0l3.712 3.713c.44.44.44 1.152 0 1.59l-2.879 2.88M6.75 17.25h.008v.008H6.75v-.008z" /></svg>
-                  Invoice Theme
-                  {!isPro && <ProBadge onClick={() => showProPrompt("Invoice themes")} />}
-                </h2>
-                <p className="text-xs text-gray-500 mb-3">Choose a visual style for your PDF invoice</p>
-                <div className="grid grid-cols-3 gap-3">
-                  {[
-                    { id: "classic", label: "Classic", desc: "Traditional blue", color: "bg-blue-600" },
-                    { id: "modern", label: "Modern", desc: "Bold accent", color: "bg-indigo-500" },
-                    { id: "minimal", label: "Minimal", desc: "Clean & sparse", color: "bg-gray-500" },
-                  ].map((theme) => (
-                    <button
-                      key={theme.id}
-                      type="button"
-                      onClick={() => {
-                        if (!isPro && theme.id !== "classic") {
-                          showProPrompt("Invoice themes");
-                          return;
-                        }
-                        setInvoiceTheme(theme.id);
-                      }}
-                      className={`relative p-3 rounded-xl border text-left transition-all ${
-                        invoiceTheme === theme.id
-                          ? "border-amber-500 bg-amber-500/5"
-                          : "border-gray-700/50 hover:border-gray-600/50"
-                      } ${!isPro && theme.id !== "classic" ? "opacity-60" : ""}`}
-                    >
-                      <div className={`w-full h-2 rounded-full ${theme.color} mb-2`} />
-                      <p className="text-sm font-medium text-white">{theme.label}</p>
-                      <p className="text-xs text-gray-500">{theme.desc}</p>
-                      {!isPro && theme.id !== "classic" && (
-                        <span className="absolute top-2 right-2 text-xs">🔒</span>
-                      )}
-                    </button>
-                  ))}
-                </div>
               </div>
 
               {/* Line Items */}
