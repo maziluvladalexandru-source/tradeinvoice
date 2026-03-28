@@ -797,7 +797,7 @@ function NewInvoiceForm() {
   const [serviceDate, setServiceDate] = useState("");
   const [paymentNotes, setPaymentNotes] = useState("");
   const [notesToClient, setNotesToClient] = useState("");
-  const [taxRate, setTaxRate] = useState(0);
+  const [taxRate, setTaxRate] = useState(getCountryConfig("NL").vatRates[0].rate);
   const [lineItems, setLineItems] = useState<LineItem[]>([
     { description: "", quantity: 1, unitPrice: 0 },
   ]);

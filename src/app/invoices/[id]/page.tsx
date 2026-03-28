@@ -151,7 +151,7 @@ export default function InvoiceDetailPage() {
   }
 
   async function deleteInvoice() {
-    if (!invoice || !confirm("Delete this invoice?")) return;
+    if (!invoice || !confirm(`Are you sure you want to delete invoice ${invoice.invoiceNumber}? This cannot be undone.`)) return;
     const res = await fetch(`/api/invoices/${invoice.id}`, { method: "DELETE" });
     if (res.ok) router.push("/dashboard");
   }
@@ -247,6 +247,10 @@ export default function InvoiceDetailPage() {
               <h1 className="text-4xl font-bold tracking-tight text-white">
                 {invoice.invoiceNumber}
               </h1>
+              <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold capitalize ${statusColors[invoice.status] || ""}`}>
+                <span className={`w-2 h-2 rounded-full ${statusDot[invoice.status] || ""}`} />
+                {invoice.status}
+              </span>
               {invoice.type === "quote" && (
                 <span className="bg-purple-500/20 text-purple-300 ring-1 ring-purple-400/40 px-3 py-1 rounded-full text-xs font-semibold uppercase">
                   Quote
@@ -514,12 +518,10 @@ export default function InvoiceDetailPage() {
                 <span>Subtotal</span>
                 <span>{fmt(invoice.subtotal)}</span>
               </div>
-              {invoice.taxRate > 0 && (
-                <div className="flex justify-between text-gray-400">
-                  <span>Tax ({invoice.taxRate}%)</span>
-                  <span>{fmt(invoice.taxAmount)}</span>
-                </div>
-              )}
+              <div className="flex justify-between text-gray-400">
+                <span>Tax ({invoice.taxRate}%)</span>
+                <span>{fmt(invoice.taxAmount)}</span>
+              </div>
               <div className="flex justify-between text-xl font-bold text-white pt-3 border-t border-white/10">
                 <span>Total</span>
                 <span>{fmt(invoice.total)}</span>

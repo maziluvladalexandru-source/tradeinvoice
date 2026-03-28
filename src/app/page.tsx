@@ -450,7 +450,7 @@ export default function Home() {
           <Reveal>
             <div className="text-center mb-16">
               <h2 className="text-3xl sm:text-4xl font-bold text-[#1e293b] mb-3">
-                Trusted by Growing Businesses
+                Built for Tradespeople Across Europe
               </h2>
               <p className="text-gray-500 max-w-xl mx-auto">
                 Tradespeople across Europe rely on TradeInvoice to get paid on time.
@@ -461,9 +461,9 @@ export default function Home() {
           <Reveal>
             <div className="grid sm:grid-cols-3 gap-8 mb-16">
               {[
-                { number: "500+", label: "Invoices Created", color: "text-amber-500" },
-                { number: "€2M+", label: "Total Invoiced", color: "text-emerald-500" },
-                { number: "4", label: "Countries Supported", color: "text-blue-500" },
+                { number: "4", label: "Countries Supported", color: "text-amber-500" },
+                { number: "60s", label: "Average Invoice Creation Time", color: "text-emerald-500" },
+                { number: "€15", label: "Flat Monthly Price", color: "text-blue-500" },
               ].map((stat) => (
                 <div key={stat.label} className="text-center">
                   <div className={`text-4xl sm:text-5xl font-extrabold ${stat.color} mb-2`}>{stat.number}</div>
@@ -475,17 +475,9 @@ export default function Home() {
 
           <Reveal>
             <div className="max-w-2xl mx-auto bg-white rounded-2xl p-8 sm:p-10 shadow-sm border border-gray-100 text-center">
-              <svg className="w-10 h-10 text-amber-400 mx-auto mb-4" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
-              </svg>
-              <blockquote className="text-lg sm:text-xl text-[#1e293b] font-medium leading-relaxed mb-6">
-                &quot;I used to spend hours chasing payments. Now I create an invoice in a minute, and the reminders do the rest. Best tool I&apos;ve found for my plumbing business.&quot;
-              </blockquote>
-              <div className="text-gray-500 font-medium">
-                Mark de Vries
-                <span className="text-gray-300 mx-2">-</span>
-                Plumber, Amsterdam
-              </div>
+              <p className="text-lg sm:text-xl text-[#1e293b] font-medium leading-relaxed">
+                Built by tradespeople, for tradespeople. We use TradeInvoice ourselves every day.
+              </p>
             </div>
           </Reveal>
         </div>
