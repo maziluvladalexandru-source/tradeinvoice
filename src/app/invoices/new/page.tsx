@@ -126,6 +126,7 @@ function InvoicePreview({
   referenceInvoice,
   user,
   invoiceCountry,
+  invoiceTheme = "classic",
 }: {
   invoiceNumber: string;
   invoiceType: string;
@@ -142,7 +143,73 @@ function InvoicePreview({
   referenceInvoice: string;
   user: UserProfile | null;
   invoiceCountry: string;
+  invoiceTheme?: string;
 }) {
+  // Theme styles
+  const themes = {
+    classic: {
+      primary: "#1e40af",
+      wrapper: "bg-white rounded-2xl shadow-sm border border-gray-200",
+      headerBg: "",
+      headerAccent: "border-b-2 border-b-[#1e40af]",
+      businessName: "text-[#1e40af]",
+      labelColor: "text-[#1e40af]",
+      invoiceNum: "text-gray-900 font-mono",
+      tableHead: "bg-[#1e40af]/10 border-y border-[#1e40af]/20",
+      tableHeadText: "text-[#1e40af]",
+      totalBorder: "border-t-2 border-[#1e40af]",
+      totalText: "text-[#1e40af]",
+      footerBg: "bg-[#1e40af]/5 border-t border-[#1e40af]/10",
+      notesBg: "bg-blue-50 border-blue-200/80",
+      notesTitle: "text-blue-900",
+      notesText: "text-blue-800",
+      bankBg: "bg-gray-50 border-gray-200",
+      fontFamily: "",
+      accentBar: "",
+    },
+    modern: {
+      primary: "#4f46e5",
+      wrapper: "bg-white rounded-2xl shadow-lg border border-indigo-100",
+      headerBg: "bg-gradient-to-r from-[#4f46e5] to-[#7c3aed]",
+      headerAccent: "",
+      businessName: "text-white",
+      labelColor: "text-[#4f46e5]",
+      invoiceNum: "text-[#4f46e5] font-mono",
+      tableHead: "bg-gradient-to-r from-[#4f46e5] to-[#6366f1] border-none",
+      tableHeadText: "text-white",
+      totalBorder: "border-t-2 border-[#4f46e5]",
+      totalText: "text-[#4f46e5]",
+      footerBg: "bg-gradient-to-r from-[#4f46e5]/5 to-[#7c3aed]/5 border-t border-indigo-100",
+      notesBg: "bg-indigo-50 border-indigo-200/80",
+      notesTitle: "text-indigo-900",
+      notesText: "text-indigo-800",
+      bankBg: "bg-indigo-50/50 border-indigo-100",
+      fontFamily: "",
+      accentBar: "h-1.5 bg-gradient-to-r from-[#4f46e5] via-[#7c3aed] to-[#a855f7]",
+    },
+    minimal: {
+      primary: "#374151",
+      wrapper: "bg-white rounded-lg shadow-none border border-gray-300",
+      headerBg: "",
+      headerAccent: "border-b border-gray-200",
+      businessName: "text-gray-800",
+      labelColor: "text-gray-500",
+      invoiceNum: "text-gray-800",
+      tableHead: "bg-transparent border-y border-gray-300",
+      tableHeadText: "text-gray-600",
+      totalBorder: "border-t border-gray-300",
+      totalText: "text-gray-900",
+      footerBg: "bg-transparent border-t border-gray-200",
+      notesBg: "bg-gray-50 border-gray-200",
+      notesTitle: "text-gray-700",
+      notesText: "text-gray-600",
+      bankBg: "bg-transparent border-gray-200",
+      fontFamily: "font-serif",
+      accentBar: "",
+    },
+  };
+  const t = themes[invoiceTheme as keyof typeof themes] || themes.classic;
+
   const countryConfig = getCountryConfig(invoiceCountry);
   const fmt = (n: number) =>
     new Intl.NumberFormat("en-IE", { style: "currency", currency }).format(n);
@@ -175,24 +242,26 @@ function InvoicePreview({
   const bankData = parseBankDetails(user?.bankDetails || null);
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden text-gray-900 text-sm">
+    <div className={`${t.wrapper} overflow-hidden text-gray-900 text-sm ${t.fontFamily} transition-all duration-300`}>
+      {/* Accent bar for modern theme */}
+      {t.accentBar && <div className={t.accentBar} />}
       {/* Header */}
-      <header className="px-4 sm:px-6 pt-5 sm:pt-6 pb-4 sm:pb-5 border-b border-gray-100">
+      <header className={`px-4 sm:px-6 pt-5 sm:pt-6 pb-4 sm:pb-5 ${t.headerAccent} ${t.headerBg}`}>
         <div className="flex items-center gap-3">
           {user?.logoUrl ? (
             <img src={user.logoUrl} alt="" className="w-10 h-10 rounded-xl object-cover flex-shrink-0" />
           ) : (
-            <div className="w-10 h-10 rounded-xl bg-slate-900 flex items-center justify-center flex-shrink-0">
+            <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${invoiceTheme === "modern" ? "bg-white/20" : invoiceTheme === "minimal" ? "bg-gray-200" : "bg-slate-900"}`}>
               <span className="text-lg font-bold text-white leading-none">
                 {(user?.businessName || user?.name || "?").charAt(0).toUpperCase()}
               </span>
             </div>
           )}
           <div>
-            <h2 className="text-base font-bold text-gray-900">
+            <h2 className={`text-base font-bold ${t.businessName}`}>
               {user?.businessName || user?.name || "Your Business"}
             </h2>
-            <div className="text-gray-400 text-xs space-y-0.5">
+            <div className={`text-xs space-y-0.5 ${invoiceTheme === "modern" ? "text-white/70" : "text-gray-400"}`}>
               {user?.businessAddress && <p>{user.businessAddress}</p>}
               <p>
                 {user?.email || "your@email.com"}
@@ -202,7 +271,7 @@ function InvoicePreview({
           </div>
         </div>
         {(user?.kvkNumber || user?.vatNumber) && (
-          <div className="text-[10px] text-gray-400 text-right space-y-0.5 mt-1">
+          <div className={`text-[10px] text-right space-y-0.5 mt-1 ${invoiceTheme === "modern" ? "text-white/60" : "text-gray-400"}`}>
             {user.kvkNumber && <p>{countryConfig.businessRegLabel}: {user.kvkNumber}</p>}
             {user.vatNumber && <p>{countryConfig.taxIdLabel}: {user.vatNumber}</p>}
           </div>
@@ -214,10 +283,10 @@ function InvoicePreview({
         <div className="flex flex-col sm:flex-row sm:justify-between gap-4 sm:gap-6">
           {/* Meta */}
           <div className="flex-1 min-w-0">
-            <p className="text-[10px] font-semibold uppercase tracking-widest text-gray-400 mb-1">
+            <p className={`text-[10px] font-semibold uppercase tracking-widest mb-1 ${t.labelColor}`}>
               {docLabel}
             </p>
-            <p className="text-base sm:text-xl font-bold text-gray-900 font-mono tracking-tight break-all">
+            <p className={`text-base sm:text-xl font-bold tracking-tight break-all ${t.invoiceNum}`}>
               {invoiceNumber || "INV-0000"}
             </p>
             {description && (
@@ -261,7 +330,7 @@ function InvoicePreview({
 
           {/* Bill To */}
           <div className="text-left sm:text-right flex-shrink-0">
-            <p className="text-[10px] font-semibold uppercase tracking-widest text-gray-400 mb-1">
+            <p className={`text-[10px] font-semibold uppercase tracking-widest mb-1 ${t.labelColor}`}>
               Bill To
             </p>
             {selectedClient ? (
@@ -291,11 +360,11 @@ function InvoicePreview({
       {/* Notes to Client */}
       {notesToClient && (
         <div className="px-6 pb-4">
-          <div className="bg-blue-50 rounded-lg border border-blue-200/80 p-3">
-            <p className="text-[10px] font-semibold text-blue-900 mb-0.5">
+          <div className={`rounded-lg border p-3 ${t.notesBg}`}>
+            <p className={`text-[10px] font-semibold mb-0.5 ${t.notesTitle}`}>
               Note
             </p>
-            <p className="text-blue-800 text-xs whitespace-pre-line leading-relaxed">
+            <p className={`text-xs whitespace-pre-line leading-relaxed ${t.notesText}`}>
               {notesToClient}
             </p>
           </div>
@@ -306,17 +375,17 @@ function InvoicePreview({
       <div className="px-4 sm:px-6">
         <table className="w-full text-xs sm:text-sm">
           <thead>
-            <tr className="border-y border-gray-200 bg-gray-50/50">
-              <th className="text-left text-[10px] font-semibold uppercase tracking-wider text-gray-500 py-2 pr-2">
+            <tr className={`${t.tableHead} ${invoiceTheme === "minimal" ? "" : "rounded"}`}>
+              <th className={`text-left text-[10px] font-semibold uppercase tracking-wider py-2 pr-2 ${t.tableHeadText}`}>
                 Description
               </th>
-              <th className="text-center text-[10px] font-semibold uppercase tracking-wider text-gray-500 py-2 px-2 w-12">
+              <th className={`text-center text-[10px] font-semibold uppercase tracking-wider py-2 px-2 w-12 ${t.tableHeadText}`}>
                 Qty
               </th>
-              <th className="text-right text-[10px] font-semibold uppercase tracking-wider text-gray-500 py-2 px-2 w-20">
+              <th className={`text-right text-[10px] font-semibold uppercase tracking-wider py-2 px-2 w-20 ${t.tableHeadText}`}>
                 Price
               </th>
-              <th className="text-right text-[10px] font-semibold uppercase tracking-wider text-gray-500 py-2 pl-2 w-20">
+              <th className={`text-right text-[10px] font-semibold uppercase tracking-wider py-2 pl-2 w-20 ${t.tableHeadText}`}>
                 Amount
               </th>
             </tr>
@@ -379,9 +448,9 @@ function InvoicePreview({
                 </p>
               </div>
             )}
-            <div className="w-full max-w-[200px] flex justify-between pt-2 border-t border-gray-200">
-              <span className="text-sm font-bold text-gray-900">Total</span>
-              <span className="text-base sm:text-lg font-bold text-gray-900 tabular-nums">
+            <div className={`w-full max-w-[200px] flex justify-between pt-2 ${t.totalBorder}`}>
+              <span className={`text-sm font-bold ${t.totalText}`}>Total</span>
+              <span className={`text-base sm:text-lg font-bold tabular-nums ${t.totalText}`}>
                 {fmt(total)}
               </span>
             </div>
@@ -392,8 +461,8 @@ function InvoicePreview({
       {/* Bank Details - Structured */}
       {bankData && (bankData.iban || bankData.bankName) && (
         <div className="px-6 pb-4">
-          <div className="bg-gray-50 rounded-lg border border-gray-200 p-3">
-            <p className="text-[10px] font-semibold text-gray-600 mb-1.5">
+          <div className={`rounded-lg border p-3 ${t.bankBg}`}>
+            <p className={`text-[10px] font-semibold mb-1.5 ${t.labelColor}`}>
               Payment Information
             </p>
             <div className="space-y-0.5 text-xs">
@@ -428,8 +497,8 @@ function InvoicePreview({
       {/* Fallback: legacy plain-text bank details */}
       {user?.bankDetails && !bankData && (
         <div className="px-6 pb-4">
-          <div className="bg-gray-50 rounded-lg border border-gray-200 p-3">
-            <p className="text-[10px] font-semibold text-gray-600 mb-0.5">
+          <div className={`rounded-lg border p-3 ${t.bankBg}`}>
+            <p className={`text-[10px] font-semibold mb-0.5 ${t.labelColor}`}>
               Payment Information
             </p>
             <p className="text-gray-700 text-xs whitespace-pre-line leading-relaxed">
@@ -454,7 +523,7 @@ function InvoicePreview({
       )}
 
       {/* Footer */}
-      <div className="px-6 py-3 border-t border-gray-100 bg-gray-50/30">
+      <div className={`px-6 py-3 ${t.footerBg}`}>
         {(user?.kvkNumber || user?.vatNumber) && (
           <p className="text-[10px] text-gray-400 text-center mb-1">
             {formatComplianceFooter(countryConfig, user?.kvkNumber || null, user?.vatNumber || null)}
@@ -1613,6 +1682,7 @@ function NewInvoiceForm() {
                   referenceInvoice={referenceInvoice}
                   user={user}
                   invoiceCountry={invoiceCountry}
+                  invoiceTheme={invoiceTheme}
                 />
               </div>
             </div>
