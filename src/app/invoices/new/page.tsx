@@ -89,14 +89,14 @@ export default function NewInvoicePage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen bg-gray-950">
+        <div className="min-h-screen bg-[#0a0f1e]">
           <Navbar />
           <div className="max-w-3xl mx-auto px-4 py-8">
-            <div className="h-10 w-48 bg-gray-800 rounded-xl animate-pulse mb-6" />
+            <div className="h-10 w-48 bg-white/10 rounded-xl animate-pulse mb-6" />
             <div className="space-y-4">
               {[1, 2, 3].map((i) => (
-                <div key={i} className="bg-gray-900/50 rounded-2xl p-5 border border-gray-800/50">
-                  <div className="h-5 w-32 bg-gray-800 rounded animate-pulse mb-3" />
+                <div key={i} className="bg-white/5 rounded-2xl p-5 border border-white/10">
+                  <div className="h-5 w-32 bg-white/10 rounded animate-pulse mb-3" />
                   <div className="h-12 bg-gray-800/30 rounded-xl animate-pulse" />
                 </div>
               ))}
@@ -1171,7 +1171,7 @@ function NewInvoiceForm() {
   if (invoiceCountry === "DE" && !serviceDate) missingFields.push("Service date (required for DE)");
 
   return (
-    <div className="min-h-screen bg-gray-950">
+    <div className="min-h-screen bg-[#0a0f1e] premium-glow">
       <Navbar />
 
       {/* Mobile floating preview toggle */}
@@ -1217,10 +1217,10 @@ function NewInvoiceForm() {
                         return next;
                       });
                     }}
-                    className={`w-32 px-3 py-1.5 rounded-lg border text-sm font-mono focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 transition-all outline-none bg-gray-800/50 text-white text-center ${
+                    className={`w-32 px-3 py-1.5 rounded-lg border text-sm font-mono focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 transition-all outline-none bg-white/5 text-white text-center ${
                       fieldErrors.invoiceNumber
                         ? "border-red-500"
-                        : "border-gray-700/50"
+                        : "border-white/10"
                     }`}
                   />
                 </div>
@@ -1245,7 +1245,7 @@ function NewInvoiceForm() {
 
             <div className="space-y-6">
               {/* Country & Type & Currency */}
-              <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-800/50">
+              <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
                 {/* Country Selector - Prominent with flag */}
                 <div className="mb-4">
                   <label className="block text-xs font-semibold text-gray-400 mb-1.5 uppercase tracking-wider">
@@ -1264,7 +1264,7 @@ function NewInvoiceForm() {
                         className={`flex flex-col items-center gap-1 px-3 py-2.5 rounded-xl border text-center transition-all ${
                           invoiceCountry === c.countryCode
                             ? "border-amber-500 bg-amber-500/10 ring-1 ring-amber-500/30"
-                            : "border-gray-700/50 hover:border-gray-600/50 bg-gray-900/50"
+                            : "border-white/10 hover:border-gray-600/50 bg-white/5"
                         }`}
                       >
                         <FlagIcon countryCode={c.countryCode} />
@@ -1284,7 +1284,7 @@ function NewInvoiceForm() {
                     <select
                       value={invoiceType}
                       onChange={(e) => setInvoiceType(e.target.value)}
-                      className="w-full px-3 py-2.5 rounded-xl border border-gray-700/50 text-sm focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 transition-all outline-none bg-gray-800/50 text-white"
+                      className="w-full px-3 py-2.5 rounded-xl border border-white/10 text-sm focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 transition-all outline-none bg-white/5 text-white"
                     >
                       <option value="invoice">Invoice</option>
                       <option value="quote">Quote / Estimate</option>
@@ -1298,7 +1298,7 @@ function NewInvoiceForm() {
                     <select
                       value={currency}
                       onChange={(e) => setCurrency(e.target.value)}
-                      className="w-full px-3 py-2.5 rounded-xl border border-gray-700/50 text-sm focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 transition-all outline-none bg-gray-800/50 text-white"
+                      className="w-full px-3 py-2.5 rounded-xl border border-white/10 text-sm focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 transition-all outline-none bg-white/5 text-white"
                     >
                       <option value="EUR">EUR - Euro</option>
                       <option value="GBP">GBP - British Pound</option>
@@ -1318,7 +1318,7 @@ function NewInvoiceForm() {
                     <select
                       value={language}
                       onChange={(e) => setLanguage(e.target.value)}
-                      className="w-full px-3 py-2.5 rounded-xl border border-gray-700/50 text-sm focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 transition-all outline-none bg-gray-800/50 text-white"
+                      className="w-full px-3 py-2.5 rounded-xl border border-white/10 text-sm focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 transition-all outline-none bg-white/5 text-white"
                     >
                       <option value="en">English</option>
                       <option value="nl">Dutch (Nederlands)</option>
@@ -1334,7 +1334,7 @@ function NewInvoiceForm() {
                         placeholder="e.g. INV-0001"
                         value={referenceInvoice}
                         onChange={(e) => setReferenceInvoice(e.target.value)}
-                        className="w-full px-3 py-2.5 rounded-xl border border-gray-700/50 text-sm focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 transition-all outline-none bg-gray-800/50 text-white placeholder-gray-500"
+                        className="w-full px-3 py-2.5 rounded-xl border border-white/10 text-sm focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 transition-all outline-none bg-white/5 text-white placeholder-gray-500"
                       />
                     </div>
                   )}
@@ -1377,7 +1377,7 @@ function NewInvoiceForm() {
                         <select
                           value={recurringInterval}
                           onChange={(e) => setRecurringInterval(e.target.value)}
-                          className="w-full px-3 py-2.5 rounded-xl border border-gray-700/50 text-sm focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 transition-all outline-none bg-gray-800/50 text-white"
+                          className="w-full px-3 py-2.5 rounded-xl border border-white/10 text-sm focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 transition-all outline-none bg-white/5 text-white"
                         >
                           <option value="weekly">Weekly</option>
                           <option value="monthly">Monthly</option>
@@ -1432,7 +1432,7 @@ function NewInvoiceForm() {
                               className={`px-3 py-2 rounded-xl text-sm font-medium transition-all ${
                                 depositPercent === pct && !customDepositPercent
                                   ? "bg-amber-500 text-gray-950"
-                                  : "bg-gray-800 text-gray-400 hover:bg-gray-700"
+                                  : "bg-white/10 text-gray-400 hover:bg-white/10"
                               }`}
                             >
                               {pct}%
@@ -1444,7 +1444,7 @@ function NewInvoiceForm() {
                             className={`px-3 py-2 rounded-xl text-sm font-medium transition-all ${
                               customDepositPercent
                                 ? "bg-amber-500 text-gray-950"
-                                : "bg-gray-800 text-gray-400 hover:bg-gray-700"
+                                : "bg-white/10 text-gray-400 hover:bg-white/10"
                             }`}
                           >
                             Custom
@@ -1463,7 +1463,7 @@ function NewInvoiceForm() {
                                 if (val >= 1 && val <= 99) setDepositPercent(val);
                               }}
                               placeholder="Enter percentage (1-99)"
-                              className="w-full px-3 py-2.5 rounded-xl border border-gray-700/50 text-sm focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 transition-all outline-none bg-gray-800/50 text-white placeholder-gray-500"
+                              className="w-full px-3 py-2.5 rounded-xl border border-white/10 text-sm focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 transition-all outline-none bg-white/5 text-white placeholder-gray-500"
                             />
                           </div>
                         )}
@@ -1524,7 +1524,7 @@ function NewInvoiceForm() {
               </div>
 
               {/* Invoice Theme (Pro) */}
-              <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-800/50">
+              <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
                 <h2 className="text-base font-bold text-white mb-1 flex items-center gap-2">
                   <svg className="w-4 h-4 text-amber-500/70" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M4.098 19.902a3.75 3.75 0 005.304 0l6.401-6.402M6.75 21A3.75 3.75 0 013 17.25V4.125C3 3.504 3.504 3 4.125 3h5.25c.621 0 1.125.504 1.125 1.125v4.072M6.75 21a3.75 3.75 0 003.75-3.75V8.197M6.75 21h13.125c.621 0 1.125-.504 1.125-1.125v-5.25c0-.621-.504-1.125-1.125-1.125h-4.072M10.5 8.197l2.88-2.88c.438-.439 1.15-.439 1.59 0l3.712 3.713c.44.44.44 1.152 0 1.59l-2.879 2.88M6.75 17.25h.008v.008H6.75v-.008z" /></svg>
                   Invoice Theme
@@ -1550,7 +1550,7 @@ function NewInvoiceForm() {
                       className={`relative p-3 rounded-xl border text-left transition-all duration-200 ${
                         invoiceTheme === theme.id
                           ? "border-amber-500 bg-amber-500/10 ring-1 ring-amber-500/30 shadow-lg shadow-amber-500/10"
-                          : "border-gray-700/50 hover:border-gray-500/60 hover:bg-gray-800/40 hover:shadow-md hover:shadow-black/20 hover:-translate-y-0.5"
+                          : "border-white/10 hover:border-gray-500/60 hover:bg-white/5 hover:shadow-md hover:shadow-black/20 hover:-translate-y-0.5"
                       } ${!isPro && theme.id !== "classic" ? "opacity-60" : ""}`}
                     >
                       {/* Mini layout preview */}
@@ -1654,7 +1654,7 @@ function NewInvoiceForm() {
               )}
 
               {/* Client */}
-              <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-800/50">
+              <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
                 <h2 className="text-base font-bold text-white mb-3 flex items-center gap-2">
                   <svg className="w-4 h-4 text-amber-500/70" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
                   Client <span className="text-red-500">*</span>
@@ -1671,10 +1671,10 @@ function NewInvoiceForm() {
                           return next;
                         });
                       }}
-                      className={`w-full px-3 py-2.5 rounded-xl border text-sm focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 transition-all outline-none bg-gray-800/50 text-white ${
+                      className={`w-full px-3 py-2.5 rounded-xl border text-sm focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 transition-all outline-none bg-white/5 text-white ${
                         fieldErrors.clientId
                           ? "border-red-500"
-                          : "border-gray-700/50"
+                          : "border-white/10"
                       }`}
                     >
                       <option value="">Select a client...</option>
@@ -1746,32 +1746,32 @@ function NewInvoiceForm() {
                         placeholder="Client name *"
                         value={newClientName}
                         onChange={(e) => setNewClientName(e.target.value)}
-                        className="px-3 py-2.5 rounded-xl border border-gray-700/50 text-sm focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 transition-all outline-none bg-gray-800/50 text-white placeholder-gray-500"
+                        className="px-3 py-2.5 rounded-xl border border-white/10 text-sm focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 transition-all outline-none bg-white/5 text-white placeholder-gray-500"
                       />
                       <input
                         placeholder="Client email *"
                         type="email"
                         value={newClientEmail}
                         onChange={(e) => setNewClientEmail(e.target.value)}
-                        className="px-3 py-2.5 rounded-xl border border-gray-700/50 text-sm focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 transition-all outline-none bg-gray-800/50 text-white placeholder-gray-500"
+                        className="px-3 py-2.5 rounded-xl border border-white/10 text-sm focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 transition-all outline-none bg-white/5 text-white placeholder-gray-500"
                       />
                       <input
                         placeholder="Phone (optional)"
                         value={newClientPhone}
                         onChange={(e) => setNewClientPhone(e.target.value)}
-                        className="px-3 py-2.5 rounded-xl border border-gray-700/50 text-sm focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 transition-all outline-none bg-gray-800/50 text-white placeholder-gray-500"
+                        className="px-3 py-2.5 rounded-xl border border-white/10 text-sm focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 transition-all outline-none bg-white/5 text-white placeholder-gray-500"
                       />
                       <input
                         placeholder="Address (required for legal)"
                         value={newClientAddress}
                         onChange={(e) => setNewClientAddress(e.target.value)}
-                        className="px-3 py-2.5 rounded-xl border border-gray-700/50 text-sm focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 transition-all outline-none bg-gray-800/50 text-white placeholder-gray-500"
+                        className="px-3 py-2.5 rounded-xl border border-white/10 text-sm focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 transition-all outline-none bg-white/5 text-white placeholder-gray-500"
                       />
                       <input
                         placeholder="VAT number (optional)"
                         value={newClientVatNumber}
                         onChange={(e) => setNewClientVatNumber(e.target.value)}
-                        className="px-3 py-2.5 rounded-xl border border-gray-700/50 text-sm focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 transition-all outline-none bg-gray-800/50 text-white placeholder-gray-500"
+                        className="px-3 py-2.5 rounded-xl border border-white/10 text-sm focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 transition-all outline-none bg-white/5 text-white placeholder-gray-500"
                       />
                     </div>
                     <div className="flex gap-2">
@@ -1795,7 +1795,7 @@ function NewInvoiceForm() {
               </div>
 
               {/* Job Details */}
-              <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-800/50">
+              <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
                 <h2 className="text-base font-bold text-white mb-1 flex items-center gap-2">
                   <svg className="w-4 h-4 text-amber-500/70" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 00.75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 00-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0112 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 01-.673-.38m0 0A2.18 2.18 0 013 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 013.413-.387m7.5 0V5.25A2.25 2.25 0 0013.5 3h-3a2.25 2.25 0 00-2.25 2.25v.894m7.5 0a48.667 48.667 0 00-7.5 0" /></svg>
                   Job Details
@@ -1807,7 +1807,7 @@ function NewInvoiceForm() {
                   placeholder="e.g. Bathroom renovation, boiler repair, electrical work..."
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  className="w-full px-3 py-2.5 rounded-xl border border-gray-700/50 text-sm focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 transition-all outline-none bg-gray-800/50 text-white placeholder-gray-500 mb-3"
+                  className="w-full px-3 py-2.5 rounded-xl border border-white/10 text-sm focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 transition-all outline-none bg-white/5 text-white placeholder-gray-500 mb-3"
                 />
 
                 {/* Payment Terms + Due Date */}
@@ -1830,7 +1830,7 @@ function NewInvoiceForm() {
                           });
                         }
                       }}
-                      className="w-full px-3 py-2.5 rounded-xl border border-gray-700/50 text-sm focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 transition-all outline-none bg-gray-800/50 text-white"
+                      className="w-full px-3 py-2.5 rounded-xl border border-white/10 text-sm focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 transition-all outline-none bg-white/5 text-white"
                       style={{ minHeight: "44px" }}
                     >
                       {PAYMENT_TERMS.map((pt) => (
@@ -1855,10 +1855,10 @@ function NewInvoiceForm() {
                         });
                       }}
                       disabled={paymentTerms !== -1}
-                      className={`w-full px-3 py-2.5 rounded-xl border text-sm focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 outline-none bg-gray-800/50 text-white appearance-none [color-scheme:dark] [&::-webkit-calendar-picker-indicator]:opacity-70 [&::-webkit-calendar-picker-indicator]:invert ${
+                      className={`w-full px-3 py-2.5 rounded-xl border text-sm focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 outline-none bg-white/5 text-white appearance-none [color-scheme:dark] [&::-webkit-calendar-picker-indicator]:opacity-70 [&::-webkit-calendar-picker-indicator]:invert ${
                         fieldErrors.dueDate
                           ? "border-red-500"
-                          : "border-gray-700/50"
+                          : "border-white/10"
                       } ${paymentTerms !== -1 ? "opacity-60" : ""}`}
                       style={{ minHeight: "44px" }}
                     />
@@ -1880,8 +1880,8 @@ function NewInvoiceForm() {
                       type="date"
                       value={serviceDate}
                       onChange={(e) => setServiceDate(e.target.value)}
-                      className={`w-full px-3 py-2.5 rounded-xl border text-sm focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 transition-all outline-none bg-gray-800/50 text-white appearance-none [color-scheme:dark] [&::-webkit-calendar-picker-indicator]:opacity-70 [&::-webkit-calendar-picker-indicator]:invert ${
-                        invoiceCountry === "DE" && !serviceDate ? "border-amber-500/50" : "border-gray-700/50"
+                      className={`w-full px-3 py-2.5 rounded-xl border text-sm focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 transition-all outline-none bg-white/5 text-white appearance-none [color-scheme:dark] [&::-webkit-calendar-picker-indicator]:opacity-70 [&::-webkit-calendar-picker-indicator]:invert ${
+                        invoiceCountry === "DE" && !serviceDate ? "border-amber-500/50" : "border-white/10"
                       }`}
                       style={{ minHeight: "44px" }}
                     />
@@ -1899,7 +1899,7 @@ function NewInvoiceForm() {
                       value={taxRate}
                       onChange={(e) => setTaxRate(Number(e.target.value))}
                       disabled={reverseCharge}
-                      className={`w-full px-3 py-2.5 rounded-xl border border-gray-700/50 text-sm focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 transition-all outline-none bg-gray-800/50 text-white ${
+                      className={`w-full px-3 py-2.5 rounded-xl border border-white/10 text-sm focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 transition-all outline-none bg-white/5 text-white ${
                         reverseCharge ? "opacity-50 cursor-not-allowed" : ""
                       }`}
                       style={{ minHeight: "44px" }}
@@ -1920,7 +1920,7 @@ function NewInvoiceForm() {
               </div>
 
               {/* Payment Notes */}
-              <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-800/50">
+              <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
                 <h2 className="text-base font-bold text-white mb-1 flex items-center gap-2">
                   <svg className="w-4 h-4 text-amber-500/70" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z" /></svg>
                   Payment Notes
@@ -1933,12 +1933,12 @@ function NewInvoiceForm() {
                   value={paymentNotes}
                   onChange={(e) => setPaymentNotes(e.target.value)}
                   rows={2}
-                  className="w-full px-3 py-2.5 rounded-xl border border-gray-700/50 text-sm focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 transition-all outline-none bg-gray-800/50 text-white placeholder-gray-500 resize-none"
+                  className="w-full px-3 py-2.5 rounded-xl border border-white/10 text-sm focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 transition-all outline-none bg-white/5 text-white placeholder-gray-500 resize-none"
                 />
               </div>
 
               {/* Notes to Client */}
-              <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-800/50">
+              <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
                 <h2 className="text-base font-bold text-white mb-1 flex items-center gap-2">
                   <svg className="w-4 h-4 text-amber-500/70" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 01-2.555-.337A5.972 5.972 0 015.41 20.97a5.969 5.969 0 01-.474-.065 4.48 4.48 0 00.978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z" /></svg>
                   Notes to Client
@@ -1951,12 +1951,12 @@ function NewInvoiceForm() {
                   value={notesToClient}
                   onChange={(e) => setNotesToClient(e.target.value)}
                   rows={2}
-                  className="w-full px-3 py-2.5 rounded-xl border border-gray-700/50 text-sm focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 transition-all outline-none bg-gray-800/50 text-white placeholder-gray-500 resize-none"
+                  className="w-full px-3 py-2.5 rounded-xl border border-white/10 text-sm focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 transition-all outline-none bg-white/5 text-white placeholder-gray-500 resize-none"
                 />
               </div>
 
               {/* Line Items */}
-              <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-800/50">
+              <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
                 <h2 className="text-base font-bold text-white mb-3 flex items-center gap-2">
                   <svg className="w-4 h-4 text-amber-500/70" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zM3.75 12h.007v.008H3.75V12zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm-.375 5.25h.007v.008H3.75v-.008zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" /></svg>
                   Line Items <span className="text-red-500">*</span>
@@ -1970,7 +1970,7 @@ function NewInvoiceForm() {
                   {lineItems.map((item, index) => (
                     <div
                       key={index}
-                      className="bg-gray-950/40 sm:bg-gray-800/20 rounded-xl p-3 sm:p-3 border border-gray-700/40 sm:border-gray-700/30 space-y-2 sm:space-y-0 sm:flex sm:gap-2 sm:items-start hover:border-gray-600/40 transition-colors"
+                      className="bg-[#0a0f1e]/40 sm:bg-gray-800/20 rounded-xl p-3 sm:p-3 border border-gray-700/40 sm:border-gray-700/30 space-y-2 sm:space-y-0 sm:flex sm:gap-2 sm:items-start hover:border-gray-600/40 transition-colors"
                     >
                       <div className="relative w-full sm:flex-1">
                         <input
@@ -1980,11 +1980,11 @@ function NewInvoiceForm() {
                             updateLineItem(index, "description", e.target.value)
                           }
                           onFocus={() => setShowSuggestions(index)}
-                          className="w-full px-3 py-2.5 rounded-xl border border-gray-700/50 text-sm focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 transition-all outline-none bg-gray-800/50 text-white placeholder-gray-500"
+                          className="w-full px-3 py-2.5 rounded-xl border border-white/10 text-sm focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 transition-all outline-none bg-white/5 text-white placeholder-gray-500"
                         />
                         {/* Saved + Common items suggestions */}
                         {showSuggestions === index && !item.description && (
-                          <div className="absolute z-20 top-full left-0 right-0 mt-1 bg-gray-800 border border-gray-700 rounded-xl shadow-xl overflow-hidden max-h-64 overflow-y-auto">
+                          <div className="absolute z-20 top-full left-0 right-0 mt-1 bg-white/10 border border-white/10 rounded-xl shadow-xl overflow-hidden max-h-64 overflow-y-auto">
                             {savedItems.length > 0 && (
                               <>
                                 <p className="px-3 py-1.5 text-[10px] font-semibold text-amber-500/80 uppercase tracking-wider">Your saved items</p>
@@ -1997,7 +1997,7 @@ function NewInvoiceForm() {
                                       updateLineItem(index, "unitPrice", si.unitPrice);
                                       setShowSuggestions(null);
                                     }}
-                                    className="w-full text-left px-3 py-2 text-sm text-gray-300 hover:bg-gray-700/50 hover:text-white transition-colors flex items-center justify-between gap-2"
+                                    className="w-full text-left px-3 py-2 text-sm text-gray-300 hover:bg-white/10 hover:text-white transition-colors flex items-center justify-between gap-2"
                                   >
                                     <span className="truncate">{si.name}{si.description ? ` - ${si.description}` : ""}</span>
                                     <span className="text-xs text-gray-500 shrink-0 tabular-nums">{new Intl.NumberFormat("en-IE", { style: "currency", currency }).format(si.unitPrice)}/{si.unit}</span>
@@ -2014,7 +2014,7 @@ function NewInvoiceForm() {
                                   updateLineItem(index, "description", ci.desc);
                                   setShowSuggestions(null);
                                 }}
-                                className="w-full text-left px-3 py-2 text-sm text-gray-300 hover:bg-gray-700/50 hover:text-white transition-colors"
+                                className="w-full text-left px-3 py-2 text-sm text-gray-300 hover:bg-white/10 hover:text-white transition-colors"
                               >
                                 {ci.desc}
                               </button>
@@ -2035,7 +2035,7 @@ function NewInvoiceForm() {
                               Number(e.target.value)
                             )
                           }
-                          className="w-16 shrink-0 px-2 py-2.5 rounded-xl border border-gray-700/50 text-sm text-center focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 transition-all outline-none bg-gray-800/50 text-white"
+                          className="w-16 shrink-0 px-2 py-2.5 rounded-xl border border-white/10 text-sm text-center focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 transition-all outline-none bg-white/5 text-white"
                         />
                         <input
                           type="number"
@@ -2050,7 +2050,7 @@ function NewInvoiceForm() {
                               Number(e.target.value)
                             )
                           }
-                          className="min-w-0 flex-1 sm:w-24 sm:flex-none px-2 py-2.5 rounded-xl border border-gray-700/50 text-sm text-right focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 transition-all outline-none bg-gray-800/50 text-white"
+                          className="min-w-0 flex-1 sm:w-24 sm:flex-none px-2 py-2.5 rounded-xl border border-white/10 text-sm text-right focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 transition-all outline-none bg-white/5 text-white"
                         />
                         <button
                           type="button"
@@ -2088,7 +2088,7 @@ function NewInvoiceForm() {
               </div>
 
               {/* Totals */}
-              <div className="bg-gradient-to-br from-gray-900/80 to-gray-800/30 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 shadow-lg shadow-black/20">
+              <div className="bg-gradient-to-br from-gray-900/80 to-gray-800/30 backdrop-blur-sm rounded-2xl p-6 border border-white/10 shadow-lg shadow-black/20">
                 <div className="space-y-1.5 text-right">
                   <div className="flex justify-between text-gray-400 text-sm">
                     <span>Subtotal</span>
@@ -2153,7 +2153,7 @@ function NewInvoiceForm() {
                   <button
                     onClick={() => handleSubmit(true)}
                     disabled={loading || !isValid}
-                    className="flex-1 bg-gray-900/50 backdrop-blur-sm text-gray-300 py-3 rounded-xl font-medium text-sm hover:bg-gray-800/80 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed border border-gray-700/50 hover:border-gray-600/50 hover:text-white"
+                    className="flex-1 bg-white/5 backdrop-blur-sm text-gray-300 py-3 rounded-xl font-medium text-sm hover:bg-white/5 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed border border-white/10 hover:border-gray-600/50 hover:text-white"
                   >
                     {loading ? (isEditMode ? "Updating..." : "Creating...") : (isEditMode ? "Update & Send" : "Create & Send")}
                   </button>
@@ -2163,7 +2163,7 @@ function NewInvoiceForm() {
                     className={`flex-1 py-3 rounded-xl font-medium text-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 ${
                       showSchedulePicker
                         ? "bg-blue-500/20 text-blue-300 border border-blue-500/40"
-                        : "bg-gray-900/50 text-gray-300 border border-gray-700/50 hover:bg-gray-800/80 hover:border-gray-600/50"
+                        : "bg-white/5 text-gray-300 border border-white/10 hover:bg-white/5 hover:border-gray-600/50"
                     }`}
                   >
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
@@ -2173,7 +2173,7 @@ function NewInvoiceForm() {
                   </button>
                 </div>
                 {showSchedulePicker && (
-                  <div className="bg-gray-900/50 backdrop-blur-sm border border-gray-700/50 rounded-xl p-4 space-y-3">
+                  <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-4 space-y-3">
                     <label className="block text-sm font-medium text-gray-300">
                       Send date & time
                     </label>
@@ -2182,7 +2182,7 @@ function NewInvoiceForm() {
                       value={scheduledSendAt}
                       onChange={(e) => setScheduledSendAt(e.target.value)}
                       min={new Date().toISOString().slice(0, 16)}
-                      className="w-full px-4 py-3 rounded-xl border border-gray-700/50 text-sm focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 outline-none bg-gray-800/50 text-white [color-scheme:dark]"
+                      className="w-full px-4 py-3 rounded-xl border border-white/10 text-sm focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 outline-none bg-white/5 text-white [color-scheme:dark]"
                     />
                     <button
                       onClick={() => {
@@ -2203,7 +2203,7 @@ function NewInvoiceForm() {
                   <button
                     onClick={handleDownloadPreview}
                     disabled={loading || !isValid}
-                    className="flex-1 bg-gray-900/50 backdrop-blur-sm text-gray-300 py-3 rounded-xl font-medium text-sm hover:bg-gray-800/80 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed border border-gray-700/50 hover:border-gray-600/50 hover:text-white flex items-center justify-center gap-2"
+                    className="flex-1 bg-white/5 backdrop-blur-sm text-gray-300 py-3 rounded-xl font-medium text-sm hover:bg-white/5 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed border border-white/10 hover:border-gray-600/50 hover:text-white flex items-center justify-center gap-2"
                   >
                     <svg
                       className="w-4 h-4"

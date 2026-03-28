@@ -88,7 +88,7 @@ export default function OnboardingChecklist({
       </div>
 
       {/* Progress bar */}
-      <div className="w-full bg-gray-700 rounded-full h-1.5 mb-5">
+      <div className="w-full bg-white/10 rounded-full h-1.5 mb-5">
         <div
           className="bg-amber-500 h-1.5 rounded-full transition-all duration-500"
           style={{ width: `${(completedCount / 3) * 100}%` }}
@@ -102,7 +102,7 @@ export default function OnboardingChecklist({
             className={`flex items-start gap-3 rounded-xl p-3 transition-colors ${
               step.done
                 ? "bg-green-500/5"
-                : "bg-gray-700/30 hover:bg-gray-700/50"
+                : "bg-white/5 hover:bg-white/10"
             }`}
           >
             <div

@@ -143,7 +143,7 @@ export default function ServicesPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-950">
+    <div className="min-h-screen bg-[#0a0f1e] premium-glow">
       <Navbar />
       <div className="max-w-3xl mx-auto px-4 py-8 pb-24 md:pb-8">
         {/* Header */}
@@ -170,7 +170,7 @@ export default function ServicesPage() {
 
         {/* Add/Edit Form */}
         {showForm && (
-          <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-800/50 mb-8 animate-fade-in">
+          <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 mb-8 animate-fade-in">
             <h2 className="text-base font-semibold text-white mb-4">
               {editingId ? "Edit Service Item" : "New Service Item"}
             </h2>
@@ -183,7 +183,7 @@ export default function ServicesPage() {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="e.g. Boiler repair"
-                  className="w-full px-3 py-2.5 rounded-xl border border-gray-700/50 text-sm focus:ring-1 focus:ring-amber-500/20 focus:border-amber-500/50 transition-all outline-none bg-gray-800/50 text-white placeholder-gray-500"
+                  className="w-full px-3 py-2.5 rounded-xl border border-white/10 text-sm focus:ring-1 focus:ring-amber-500/20 focus:border-amber-500/50 transition-all outline-none bg-white/5 text-white placeholder-gray-500"
                   autoFocus
                 />
               </div>
@@ -193,7 +193,7 @@ export default function ServicesPage() {
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   placeholder="e.g. Standard boiler service and repair"
-                  className="w-full px-3 py-2.5 rounded-xl border border-gray-700/50 text-sm focus:ring-1 focus:ring-amber-500/20 focus:border-amber-500/50 transition-all outline-none bg-gray-800/50 text-white placeholder-gray-500"
+                  className="w-full px-3 py-2.5 rounded-xl border border-white/10 text-sm focus:ring-1 focus:ring-amber-500/20 focus:border-amber-500/50 transition-all outline-none bg-white/5 text-white placeholder-gray-500"
                 />
               </div>
               <div className="flex gap-3">
@@ -208,7 +208,7 @@ export default function ServicesPage() {
                     value={unitPrice}
                     onChange={(e) => setUnitPrice(e.target.value === "" ? "" : Number(e.target.value))}
                     placeholder="0.00"
-                    className="w-full px-3 py-2.5 rounded-xl border border-gray-700/50 text-sm focus:ring-1 focus:ring-amber-500/20 focus:border-amber-500/50 transition-all outline-none bg-gray-800/50 text-white placeholder-gray-500"
+                    className="w-full px-3 py-2.5 rounded-xl border border-white/10 text-sm focus:ring-1 focus:ring-amber-500/20 focus:border-amber-500/50 transition-all outline-none bg-white/5 text-white placeholder-gray-500"
                   />
                 </div>
                 <div className="w-32">
@@ -216,7 +216,7 @@ export default function ServicesPage() {
                   <select
                     value={unit}
                     onChange={(e) => setUnit(e.target.value)}
-                    className="w-full px-3 py-2.5 rounded-xl border border-gray-700/50 text-sm focus:ring-1 focus:ring-amber-500/20 focus:border-amber-500/50 transition-all outline-none bg-gray-800/50 text-white"
+                    className="w-full px-3 py-2.5 rounded-xl border border-white/10 text-sm focus:ring-1 focus:ring-amber-500/20 focus:border-amber-500/50 transition-all outline-none bg-white/5 text-white"
                   >
                     {UNITS.map((u) => (
                       <option key={u.value} value={u.value}>
@@ -238,7 +238,7 @@ export default function ServicesPage() {
                 <button
                   type="button"
                   onClick={resetForm}
-                  className="px-4 py-2.5 rounded-xl text-sm text-gray-400 hover:text-white hover:bg-gray-800/60 transition-all"
+                  className="px-4 py-2.5 rounded-xl text-sm text-gray-400 hover:text-white hover:bg-white/5 transition-all"
                 >
                   Cancel
                 </button>
@@ -251,14 +251,14 @@ export default function ServicesPage() {
         {loading ? (
           <div className="space-y-3">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="bg-gray-900/50 rounded-2xl p-5 border border-gray-800/50">
-                <div className="h-5 w-40 bg-gray-800 rounded animate-pulse mb-2" />
-                <div className="h-4 w-24 bg-gray-800/50 rounded animate-pulse" />
+              <div key={i} className="bg-white/5 rounded-2xl p-5 border border-white/10">
+                <div className="h-5 w-40 bg-white/10 rounded animate-pulse mb-2" />
+                <div className="h-4 w-24 bg-white/5 rounded animate-pulse" />
               </div>
             ))}
           </div>
         ) : items.length === 0 ? (
-          <div className="relative overflow-hidden bg-gray-900/50 backdrop-blur-sm rounded-2xl p-12 border border-gray-800/50 text-center">
+          <div className="relative overflow-hidden bg-white/5 backdrop-blur-sm rounded-2xl p-12 border border-white/10 text-center">
             <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent pointer-events-none" />
             <div className="relative w-20 h-20 mx-auto mb-6 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center">
               <svg className="w-10 h-10 text-amber-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -284,12 +284,12 @@ export default function ServicesPage() {
             {items.map((item) => (
               <div
                 key={item.id}
-                className="bg-white/5 backdrop-blur-sm rounded-2xl p-4 border border-gray-800/50 flex items-center gap-4 group hover:border-gray-700/50 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300"
+                className="bg-white/5 backdrop-blur-sm rounded-2xl p-4 border border-white/10 flex items-center gap-4 group hover:border-white/20 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300"
               >
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
                     <h3 className="text-white font-medium text-sm truncate">{item.name}</h3>
-                    <span className="text-[10px] font-medium text-gray-500 bg-gray-800/80 px-2 py-0.5 rounded-full shrink-0">
+                    <span className="text-[10px] font-medium text-gray-500 bg-white/10 px-2 py-0.5 rounded-full shrink-0">
                       per {item.unit}
                     </span>
                   </div>
@@ -305,7 +305,7 @@ export default function ServicesPage() {
                 <div className="flex gap-1 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
                   <button
                     onClick={() => startEdit(item)}
-                    className="p-2 text-gray-400 hover:text-amber-400 transition-colors rounded-lg hover:bg-gray-800/50"
+                    className="p-2 text-gray-400 hover:text-amber-400 transition-colors rounded-lg hover:bg-white/5"
                     title="Edit"
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -330,7 +330,7 @@ export default function ServicesPage() {
                   ) : (
                     <button
                       onClick={() => setDeleteConfirm(item.id)}
-                      className="p-2 text-gray-400 hover:text-red-400 transition-colors rounded-lg hover:bg-gray-800/50"
+                      className="p-2 text-gray-400 hover:text-red-400 transition-colors rounded-lg hover:bg-white/5"
                       title="Delete"
                     >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

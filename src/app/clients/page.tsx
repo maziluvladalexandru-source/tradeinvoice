@@ -70,20 +70,20 @@ function getCountryFlag(address: string | null): string | null {
 
 function SkeletonCard() {
   return (
-    <div className="bg-gray-900/50 rounded-2xl border border-gray-800/50 p-5">
+    <div className="bg-white/5 rounded-2xl border border-white/10 p-5">
       <div className="flex items-start gap-4">
-        <div className="w-11 h-11 rounded-full bg-gray-800 animate-pulse" />
+        <div className="w-11 h-11 rounded-full bg-white/10 animate-pulse" />
         <div className="flex-1 space-y-2">
-          <div className="h-5 w-40 bg-gray-800 rounded animate-pulse" />
-          <div className="h-4 w-56 bg-gray-800/50 rounded animate-pulse" />
+          <div className="h-5 w-40 bg-white/10 rounded animate-pulse" />
+          <div className="h-4 w-56 bg-white/10/50 rounded animate-pulse" />
         </div>
-        <div className="h-9 w-28 bg-gray-800 rounded-xl animate-pulse" />
+        <div className="h-9 w-28 bg-white/10 rounded-xl animate-pulse" />
       </div>
-      <div className="grid grid-cols-4 gap-3 mt-4 pt-4 border-t border-gray-700/50">
+      <div className="grid grid-cols-4 gap-3 mt-4 pt-4 border-t border-white/10">
         {[1, 2, 3, 4].map((i) => (
           <div key={i} className="space-y-1">
-            <div className="h-3 w-16 bg-gray-800/50 rounded animate-pulse" />
-            <div className="h-6 w-20 bg-gray-800 rounded animate-pulse" />
+            <div className="h-3 w-16 bg-white/10/50 rounded animate-pulse" />
+            <div className="h-6 w-20 bg-white/10 rounded animate-pulse" />
           </div>
         ))}
       </div>
@@ -218,7 +218,7 @@ export default function ClientsPage() {
   const primaryCurrency = clients[0]?.currency || "EUR";
 
   return (
-    <div className="min-h-screen bg-gray-950 pb-20 md:pb-0">
+    <div className="min-h-screen bg-[#0a0f1e] pb-20 md:pb-0 premium-glow">
       <Navbar />
       <div className="max-w-6xl mx-auto px-4 py-8">
         <div className="flex items-center justify-between mb-8">
@@ -237,7 +237,7 @@ export default function ClientsPage() {
         {/* Summary Cards */}
         {clients.length > 0 && (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-            <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl p-5 border border-gray-800/50 hover:border-gray-700/50 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300 relative overflow-hidden">
+            <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-5 border border-white/10 hover:border-white/20 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300 relative overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent pointer-events-none" />
               <div className="relative">
                 <p className="text-xs uppercase tracking-wider text-gray-500 font-semibold flex items-center gap-1.5">
@@ -247,7 +247,7 @@ export default function ClientsPage() {
                 <p className="text-2xl font-bold text-white mt-1">{clients.length}</p>
               </div>
             </div>
-            <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl p-5 border border-gray-800/50 hover:border-gray-700/50 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300 relative overflow-hidden">
+            <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-5 border border-white/10 hover:border-white/20 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300 relative overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent pointer-events-none" />
               <div className="relative">
                 <p className="text-xs uppercase tracking-wider text-gray-500 font-semibold flex items-center gap-1.5">
@@ -257,7 +257,7 @@ export default function ClientsPage() {
                 <p className="text-2xl font-bold text-amber-400 mt-1">{formatCurrency(totalRevenue, primaryCurrency)}</p>
               </div>
             </div>
-            <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl p-5 border border-gray-800/50 hover:border-gray-700/50 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300 relative overflow-hidden">
+            <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-5 border border-white/10 hover:border-white/20 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300 relative overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent pointer-events-none" />
               <div className="relative">
                 <p className="text-xs uppercase tracking-wider text-gray-500 font-semibold flex items-center gap-1.5">
@@ -267,7 +267,7 @@ export default function ClientsPage() {
                 <p className="text-2xl font-bold text-white mt-1">{totalInvoices}</p>
               </div>
             </div>
-            <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl p-5 border border-gray-800/50 hover:border-gray-700/50 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300 relative overflow-hidden">
+            <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-5 border border-white/10 hover:border-white/20 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300 relative overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent pointer-events-none" />
               <div className="relative">
                 <p className="text-xs uppercase tracking-wider text-gray-500 font-semibold flex items-center gap-1.5">
@@ -285,7 +285,7 @@ export default function ClientsPage() {
         {showForm && (
           <form
             onSubmit={handleSubmit}
-            className="bg-gray-900/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-800/50 mb-8 space-y-4"
+            className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 mb-8 space-y-4"
           >
             <div className="grid md:grid-cols-2 gap-4">
               <input
@@ -293,7 +293,7 @@ export default function ClientsPage() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
-                className="px-4 py-3 rounded-xl border border-gray-800/50 text-lg focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-gray-900 text-white placeholder-gray-500 transition-all"
+                className="px-4 py-3 rounded-xl border border-white/10 text-lg focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-white/5 text-white placeholder-gray-500 transition-all"
               />
               <input
                 placeholder="Email *"
@@ -301,25 +301,25 @@ export default function ClientsPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="px-4 py-3 rounded-xl border border-gray-800/50 text-lg focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-gray-900 text-white placeholder-gray-500 transition-all"
+                className="px-4 py-3 rounded-xl border border-white/10 text-lg focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-white/5 text-white placeholder-gray-500 transition-all"
               />
               <input
                 placeholder="Phone (optional)"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                className="px-4 py-3 rounded-xl border border-gray-800/50 text-lg focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-gray-900 text-white placeholder-gray-500 transition-all"
+                className="px-4 py-3 rounded-xl border border-white/10 text-lg focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-white/5 text-white placeholder-gray-500 transition-all"
               />
               <input
                 placeholder="Address (optional)"
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
-                className="px-4 py-3 rounded-xl border border-gray-800/50 text-lg focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-gray-900 text-white placeholder-gray-500 transition-all"
+                className="px-4 py-3 rounded-xl border border-white/10 text-lg focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-white/5 text-white placeholder-gray-500 transition-all"
               />
               <input
                 placeholder="VAT number (optional)"
                 value={vatNumber}
                 onChange={(e) => setVatNumber(e.target.value)}
-                className="px-4 py-3 rounded-xl border border-gray-800/50 text-lg focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-gray-900 text-white placeholder-gray-500 transition-all"
+                className="px-4 py-3 rounded-xl border border-white/10 text-lg focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-white/5 text-white placeholder-gray-500 transition-all"
               />
             </div>
             <button
@@ -341,13 +341,13 @@ export default function ClientsPage() {
                 placeholder="Search clients..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="flex-1 w-full pl-10 px-4 py-2.5 rounded-xl border border-gray-800/50 bg-gray-900/50 text-white placeholder-gray-500 focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none transition-all"
+                className="flex-1 w-full pl-10 px-4 py-2.5 rounded-xl border border-white/10 bg-white/5 text-white placeholder-gray-500 focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none transition-all"
               />
             </div>
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
-              className="px-4 py-2.5 rounded-xl border border-gray-800/50 bg-gray-900/50 text-gray-300 focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none transition-all"
+              className="px-4 py-2.5 rounded-xl border border-white/10 bg-white/5 text-gray-300 focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none transition-all"
             >
               <option value="name">Sort by Name</option>
               <option value="totalInvoiced">Sort by Revenue</option>
@@ -362,7 +362,7 @@ export default function ClientsPage() {
             {[1, 2, 3].map((i) => <SkeletonCard key={i} />)}
           </div>
         ) : clients.length === 0 ? (
-          <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl p-16 border border-gray-800/50 text-center relative overflow-hidden">
+          <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-16 border border-white/10 text-center relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent pointer-events-none" />
             <div className="relative">
               <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-amber-500/10 flex items-center justify-center">
@@ -383,7 +383,7 @@ export default function ClientsPage() {
             </div>
           </div>
         ) : filtered.length === 0 ? (
-          <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl p-12 border border-gray-800/50 text-center">
+          <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-12 border border-white/10 text-center">
             <p className="text-gray-400 text-lg">No clients match your search.</p>
           </div>
         ) : (
@@ -393,22 +393,22 @@ export default function ClientsPage() {
               return (
                 <div
                   key={client.id}
-                  className="bg-gray-900/50 backdrop-blur-sm rounded-2xl border border-gray-800/50 p-5 hover:border-gray-700/50 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300"
+                  className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-5 hover:border-white/20 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300"
                 >
                   {editingId === client.id ? (
                     <form onSubmit={handleEditSubmit} className="space-y-3">
                       <div className="grid md:grid-cols-2 gap-3">
-                        <input placeholder="Client name *" value={editName} onChange={(e) => setEditName(e.target.value)} required className="px-3 py-2 rounded-xl border border-gray-800/50 text-sm focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-gray-900 text-white placeholder-gray-500 transition-all" />
-                        <input placeholder="Email *" type="email" value={editEmail} onChange={(e) => setEditEmail(e.target.value)} required className="px-3 py-2 rounded-xl border border-gray-800/50 text-sm focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-gray-900 text-white placeholder-gray-500 transition-all" />
-                        <input placeholder="Phone" value={editPhone} onChange={(e) => setEditPhone(e.target.value)} className="px-3 py-2 rounded-xl border border-gray-800/50 text-sm focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-gray-900 text-white placeholder-gray-500 transition-all" />
-                        <input placeholder="Address" value={editAddress} onChange={(e) => setEditAddress(e.target.value)} className="px-3 py-2 rounded-xl border border-gray-800/50 text-sm focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-gray-900 text-white placeholder-gray-500 transition-all" />
-                        <input placeholder="VAT number" value={editVatNumber} onChange={(e) => setEditVatNumber(e.target.value)} className="px-3 py-2 rounded-xl border border-gray-800/50 text-sm focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-gray-900 text-white placeholder-gray-500 transition-all" />
+                        <input placeholder="Client name *" value={editName} onChange={(e) => setEditName(e.target.value)} required className="px-3 py-2 rounded-xl border border-white/10 text-sm focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-white/5 text-white placeholder-gray-500 transition-all" />
+                        <input placeholder="Email *" type="email" value={editEmail} onChange={(e) => setEditEmail(e.target.value)} required className="px-3 py-2 rounded-xl border border-white/10 text-sm focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-white/5 text-white placeholder-gray-500 transition-all" />
+                        <input placeholder="Phone" value={editPhone} onChange={(e) => setEditPhone(e.target.value)} className="px-3 py-2 rounded-xl border border-white/10 text-sm focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-white/5 text-white placeholder-gray-500 transition-all" />
+                        <input placeholder="Address" value={editAddress} onChange={(e) => setEditAddress(e.target.value)} className="px-3 py-2 rounded-xl border border-white/10 text-sm focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-white/5 text-white placeholder-gray-500 transition-all" />
+                        <input placeholder="VAT number" value={editVatNumber} onChange={(e) => setEditVatNumber(e.target.value)} className="px-3 py-2 rounded-xl border border-white/10 text-sm focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-white/5 text-white placeholder-gray-500 transition-all" />
                       </div>
                       <div className="flex gap-2">
                         <button type="submit" disabled={editSaving} className="bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-gray-950 px-4 py-2 rounded-xl text-sm font-semibold shadow-sm shadow-amber-500/20 transition-all disabled:opacity-50">
                           {editSaving ? "Saving..." : "Save Changes"}
                         </button>
-                        <button type="button" onClick={() => setEditingId(null)} className="px-4 py-2 rounded-xl text-sm text-gray-400 hover:text-white hover:bg-gray-800/50 transition-colors">
+                        <button type="button" onClick={() => setEditingId(null)} className="px-4 py-2 rounded-xl text-sm text-gray-400 hover:text-white hover:bg-white/5 transition-colors">
                           Cancel
                         </button>
                       </div>
@@ -441,7 +441,7 @@ export default function ClientsPage() {
                         <div className="flex items-center gap-2 flex-shrink-0">
                           <button
                             onClick={() => startEditing(client)}
-                            className="p-2 rounded-lg text-gray-400 hover:text-amber-400 hover:bg-gray-800/50 transition-colors"
+                            className="p-2 rounded-lg text-gray-400 hover:text-amber-400 hover:bg-white/5 transition-colors"
                             title="Edit client"
                           >
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -451,7 +451,7 @@ export default function ClientsPage() {
                           <button
                             onClick={() => handleDelete(client)}
                             disabled={deleting === client.id}
-                            className="p-2 rounded-lg text-gray-400 hover:text-red-400 hover:bg-gray-800/50 transition-colors disabled:opacity-50"
+                            className="p-2 rounded-lg text-gray-400 hover:text-red-400 hover:bg-white/5 transition-colors disabled:opacity-50"
                             title={client.invoiceCount > 0 ? `Cannot delete — has ${client.invoiceCount} invoice(s)` : "Delete client"}
                           >
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -470,7 +470,7 @@ export default function ClientsPage() {
                   )}
 
                   {/* Stats Row */}
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4 pt-4 border-t border-gray-700/50">
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4 pt-4 border-t border-white/10">
                     <div>
                       <p className="text-xs text-gray-500 uppercase tracking-wider">Total Invoiced</p>
                       <p className="text-lg font-bold text-white mt-0.5">

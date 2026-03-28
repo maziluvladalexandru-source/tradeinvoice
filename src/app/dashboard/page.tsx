@@ -100,40 +100,40 @@ function fmtDate(d: string) {
 
 function LoadingSkeleton() {
   return (
-    <div className="min-h-screen bg-gray-950 pb-20 md:pb-0">
+    <div className="min-h-screen bg-[#0a0f1e] pb-20 md:pb-0 premium-glow">
       <Navbar />
       <div className="max-w-6xl mx-auto px-4 py-8">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
           <div>
-            <div className="h-10 w-48 bg-gray-800 rounded-lg animate-pulse" />
-            <div className="h-5 w-32 bg-gray-800 rounded-lg animate-pulse mt-2" />
+            <div className="h-10 w-48 bg-white/10 rounded-lg animate-pulse" />
+            <div className="h-5 w-32 bg-white/10 rounded-lg animate-pulse mt-2" />
           </div>
-          <div className="h-10 w-40 bg-gray-800 rounded-lg animate-pulse" />
+          <div className="h-10 w-40 bg-white/10 rounded-lg animate-pulse" />
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-8">
           {[1, 2, 3].map((i) => (
             <div
               key={i}
-              className="bg-gray-900/50 rounded-2xl p-5 md:p-6 border border-gray-800/50"
+              className="bg-white/5 rounded-2xl p-5 md:p-6 border border-white/10"
             >
-              <div className="h-4 w-28 bg-gray-800 rounded animate-pulse mb-3" />
-              <div className="h-8 w-36 bg-gray-800 rounded animate-pulse" />
+              <div className="h-4 w-28 bg-white/10 rounded animate-pulse mb-3" />
+              <div className="h-8 w-36 bg-white/10 rounded animate-pulse" />
             </div>
           ))}
         </div>
-        <div className="bg-gray-900/50 rounded-2xl border border-gray-800/50">
-          <div className="p-6 border-b border-gray-800/50">
-            <div className="h-6 w-40 bg-gray-800 rounded animate-pulse" />
+        <div className="bg-white/5 rounded-2xl border border-white/10">
+          <div className="p-6 border-b border-white/10">
+            <div className="h-6 w-40 bg-white/10 rounded animate-pulse" />
           </div>
           {[1, 2, 3, 4, 5].map((i) => (
             <div
               key={i}
-              className="p-4 border-b border-gray-800/50 flex items-center gap-3"
+              className="p-4 border-b border-white/10 flex items-center gap-3"
             >
-              <div className="h-5 w-24 bg-gray-800 rounded animate-pulse" />
+              <div className="h-5 w-24 bg-white/10 rounded animate-pulse" />
               <div className="flex-1" />
-              <div className="h-5 w-16 bg-gray-800 rounded animate-pulse" />
-              <div className="h-5 w-20 bg-gray-800 rounded animate-pulse" />
+              <div className="h-5 w-16 bg-white/10 rounded animate-pulse" />
+              <div className="h-5 w-20 bg-white/10 rounded animate-pulse" />
             </div>
           ))}
         </div>
@@ -165,7 +165,7 @@ export default function DashboardPage() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-950 flex items-center justify-center">
+      <div className="min-h-screen bg-[#0a0f1e] flex items-center justify-center premium-glow">
         <div className="text-center">
           <p className="text-red-400 text-lg mb-4">
             Failed to load dashboard
@@ -187,7 +187,7 @@ export default function DashboardPage() {
   const fc = (amount: number) => formatCurrency(amount, primaryCurrency);
 
   return (
-    <div className="min-h-screen bg-gray-950 pb-20 md:pb-0">
+    <div className="min-h-screen bg-[#0a0f1e] pb-20 md:pb-0 premium-glow">
       <Navbar />
       <div className="max-w-6xl mx-auto px-4 py-8">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
@@ -212,7 +212,7 @@ export default function DashboardPage() {
 
         {/* Stats */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-8">
-          <div className="relative overflow-hidden bg-gray-900/50 backdrop-blur-sm rounded-2xl p-5 md:p-6 border border-gray-800/50 hover:border-gray-700/50 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300">
+          <div className="relative overflow-hidden bg-white/5 backdrop-blur-sm rounded-2xl p-5 md:p-6 border border-white/10 hover:border-white/20 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300">
             <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent pointer-events-none" />
             <p className="text-sm font-medium text-gray-400 mb-1">
               Total Outstanding
@@ -221,7 +221,7 @@ export default function DashboardPage() {
               {fc(stats.totalOutstanding)}
             </p>
           </div>
-          <div className="relative overflow-hidden bg-gray-900/50 backdrop-blur-sm rounded-2xl p-5 md:p-6 border border-gray-800/50 hover:border-gray-700/50 hover:shadow-lg hover:shadow-emerald-500/5 transition-all duration-300">
+          <div className="relative overflow-hidden bg-white/5 backdrop-blur-sm rounded-2xl p-5 md:p-6 border border-white/10 hover:border-white/20 hover:shadow-lg hover:shadow-emerald-500/5 transition-all duration-300">
             <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent pointer-events-none" />
             <p className="text-sm font-medium text-gray-400 mb-1">
               Paid This Month
@@ -238,7 +238,7 @@ export default function DashboardPage() {
               </p>
             )}
           </div>
-          <div className="relative overflow-hidden bg-gray-900/50 backdrop-blur-sm rounded-2xl p-5 md:p-6 border border-gray-800/50 hover:border-gray-700/50 hover:shadow-lg hover:shadow-red-500/5 transition-all duration-300">
+          <div className="relative overflow-hidden bg-white/5 backdrop-blur-sm rounded-2xl p-5 md:p-6 border border-white/10 hover:border-white/20 hover:shadow-lg hover:shadow-red-500/5 transition-all duration-300">
             <div className="absolute inset-0 bg-gradient-to-br from-red-500/5 to-transparent pointer-events-none" />
             <p className="text-sm font-medium text-gray-400 mb-1">
               Overdue Invoices
@@ -265,7 +265,7 @@ export default function DashboardPage() {
             </div>
           </div>
           {stats.avgDaysToPayment !== null && (
-            <div className="relative overflow-hidden bg-gray-900/50 backdrop-blur-sm rounded-2xl p-5 md:p-6 border border-gray-800/50 hover:border-gray-700/50 hover:shadow-lg hover:shadow-blue-500/5 transition-all duration-300">
+            <div className="relative overflow-hidden bg-white/5 backdrop-blur-sm rounded-2xl p-5 md:p-6 border border-white/10 hover:border-white/20 hover:shadow-lg hover:shadow-blue-500/5 transition-all duration-300">
               <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent pointer-events-none" />
               <p className="text-sm font-medium text-gray-400 mb-1">
                 Avg. Days to Payment
@@ -276,7 +276,7 @@ export default function DashboardPage() {
               <p className="text-sm text-gray-500 mt-1">days</p>
             </div>
           )}
-          <div className="relative overflow-hidden bg-gray-900/50 backdrop-blur-sm rounded-2xl p-5 md:p-6 border border-gray-800/50 hover:border-gray-700/50 hover:shadow-lg hover:shadow-purple-500/5 transition-all duration-300">
+          <div className="relative overflow-hidden bg-white/5 backdrop-blur-sm rounded-2xl p-5 md:p-6 border border-white/10 hover:border-white/20 hover:shadow-lg hover:shadow-purple-500/5 transition-all duration-300">
             <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent pointer-events-none" />
             <p className="text-sm font-medium text-gray-400 mb-1">
               Active Clients
@@ -292,7 +292,7 @@ export default function DashboardPage() {
         {data.totalInvoiceCount > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-8">
             {/* Invoice Status */}
-            <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl border border-gray-800/50 p-5 md:p-6">
+            <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-5 md:p-6">
               <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">Invoice Status</h3>
               <DonutChart
                 segments={[
@@ -309,7 +309,7 @@ export default function DashboardPage() {
             </div>
 
             {/* Revenue This Month */}
-            <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl border border-gray-800/50 p-5 md:p-6">
+            <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-5 md:p-6">
               <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">Revenue This Month</h3>
               <DonutChart
                 segments={[
@@ -324,7 +324,7 @@ export default function DashboardPage() {
             </div>
 
             {/* Collection Rate */}
-            <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl border border-gray-800/50 p-5 md:p-6">
+            <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-5 md:p-6">
               <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">Collection Rate</h3>
               <DonutChart
                 segments={[
@@ -389,8 +389,8 @@ export default function DashboardPage() {
         )}
 
         {/* Recent invoices */}
-        <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl border border-gray-800/50">
-          <div className="p-6 border-b border-gray-800/50 flex items-center justify-between">
+        <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10">
+          <div className="p-6 border-b border-white/10 flex items-center justify-between">
             <h2 className="text-xl font-semibold text-white">
               Recent Invoices
             </h2>
@@ -531,11 +531,11 @@ export default function DashboardPage() {
               </Link>
             </div>
           ) : (
-            <div className="divide-y divide-gray-800/50">
+            <div className="divide-y divide-white/10">
               {recentInvoices.map((invoice) => (
                 <div
                   key={invoice.id}
-                  className={`p-4 hover:bg-gray-800/50 transition-colors border-l-4 ${statusBorder[invoice.status] || "border-l-gray-600"}`}
+                  className={`p-4 hover:bg-white/5 transition-colors border-l-4 ${statusBorder[invoice.status] || "border-l-gray-600"}`}
                 >
                   <div className="flex items-center gap-3">
                     <Link
@@ -652,8 +652,8 @@ export default function DashboardPage() {
 
         {/* Recent Quotes */}
         {recentQuotes.length > 0 && (
-          <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl border border-gray-800/50 mt-8">
-            <div className="p-6 border-b border-gray-800/50 flex items-center justify-between">
+          <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 mt-8">
+            <div className="p-6 border-b border-white/10 flex items-center justify-between">
               <h2 className="text-xl font-semibold text-white flex items-center gap-2">
                 Recent Quotes
                 <span className="bg-purple-500/20 text-purple-300 ring-1 ring-purple-400/40 px-2 py-0.5 rounded-full text-xs font-semibold">
@@ -661,11 +661,11 @@ export default function DashboardPage() {
                 </span>
               </h2>
             </div>
-            <div className="divide-y divide-gray-800/50">
+            <div className="divide-y divide-white/10">
               {recentQuotes.map((quote) => (
                 <div
                   key={quote.id}
-                  className={`p-4 hover:bg-gray-800/50 transition-colors border-l-4 ${statusBorder[quote.status] || "border-l-gray-600"}`}
+                  className={`p-4 hover:bg-white/5 transition-colors border-l-4 ${statusBorder[quote.status] || "border-l-gray-600"}`}
                 >
                   <Link
                     href={`/invoices/${quote.id}`}

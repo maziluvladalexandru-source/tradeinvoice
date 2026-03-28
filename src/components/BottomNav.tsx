@@ -74,7 +74,7 @@ export default function BottomNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-gray-900/95 backdrop-blur-xl border-t border-gray-700/80 pb-[env(safe-area-inset-bottom)]">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-[#0a0f1e] backdrop-blur-xl border-t border-white/10 pb-[env(safe-area-inset-bottom)]">
       {/* Subtle amber gradient line at the top */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-amber-500/30 to-transparent" />
       <div className="flex items-center justify-around h-16">

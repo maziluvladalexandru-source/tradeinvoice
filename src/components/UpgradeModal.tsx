@@ -16,7 +16,7 @@ export default function UpgradeModal({ feature, onClose }: UpgradeModalProps) {
 
   return (
     <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 px-4" onClick={onClose}>
-      <div className="bg-gray-900 border border-gray-700/50 rounded-2xl p-8 max-w-md w-full shadow-2xl" onClick={(e) => e.stopPropagation()}>
+      <div className="bg-white/5 border border-white/10 rounded-2xl p-8 max-w-md w-full shadow-2xl" onClick={(e) => e.stopPropagation()}>
         <div className="text-center">
           <div className="w-16 h-16 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center mx-auto mb-4">
             <span className="text-3xl">🔒</span>
@@ -26,7 +26,7 @@ export default function UpgradeModal({ feature, onClose }: UpgradeModalProps) {
             <span className="text-amber-400 font-medium">{feature}</span> is a Pro feature. Upgrade to unlock it and get unlimited invoices, custom branding, recurring invoices, and more.
           </p>
 
-          <div className="bg-gray-800/50 rounded-xl p-4 mb-6 border border-gray-700/30">
+          <div className="bg-white/5 rounded-xl p-4 mb-6 border border-white/5">
             <div className="flex items-baseline justify-center gap-1">
               <span className="text-3xl font-bold text-white">&euro;15</span>
               <span className="text-gray-400">/month</span>
@@ -62,7 +62,7 @@ export default function UpgradeModal({ feature, onClose }: UpgradeModalProps) {
           <div className="flex gap-3">
             <button
               onClick={onClose}
-              className="flex-1 bg-gray-800 text-gray-300 py-3 rounded-xl font-semibold hover:bg-gray-700 transition-all border border-gray-700/50"
+              className="flex-1 bg-white/10 text-gray-300 py-3 rounded-xl font-semibold hover:bg-white/10 transition-all border border-white/10"
             >
               Maybe Later
             </button>

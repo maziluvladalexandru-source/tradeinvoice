@@ -87,7 +87,7 @@ export default function BulkInvoiceActions({
         }`}
       >
         <div className="max-w-4xl mx-auto px-4 pb-4 md:pb-6">
-          <div className="bg-gray-900 border border-gray-700 rounded-2xl shadow-2xl shadow-black/50 px-4 py-3 flex items-center gap-3 flex-wrap">
+          <div className="bg-white/5 border border-white/10 rounded-2xl shadow-2xl shadow-black/50 px-4 py-3 flex items-center gap-3 flex-wrap">
             {/* Count + deselect */}
             <div className="flex items-center gap-2 mr-auto">
               <span className="text-sm font-semibold text-white">
@@ -95,7 +95,7 @@ export default function BulkInvoiceActions({
               </span>
               <button
                 onClick={clearSelection}
-                className="p-1 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 transition-colors"
+                className="p-1 rounded-md text-gray-400 hover:text-white hover:bg-white/10 transition-colors"
                 title="Deselect all"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -178,7 +178,7 @@ export default function BulkInvoiceActions({
       {/* Delete confirmation modal */}
       {showDeleteConfirm && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-sm">
-          <div className="bg-gray-900 border border-gray-700 rounded-2xl p-6 max-w-sm mx-4 shadow-2xl">
+          <div className="bg-white/5 border border-white/10 rounded-2xl p-6 max-w-sm mx-4 shadow-2xl">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center">
                 <svg className="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -193,7 +193,7 @@ export default function BulkInvoiceActions({
             <div className="flex gap-3 justify-end">
               <button
                 onClick={() => setShowDeleteConfirm(false)}
-                className="px-4 py-2 rounded-xl text-sm font-semibold text-gray-300 hover:bg-gray-800 transition-colors"
+                className="px-4 py-2 rounded-xl text-sm font-semibold text-gray-300 hover:bg-white/5 transition-colors"
               >
                 Cancel
               </button>

@@ -74,9 +74,9 @@ function LoginContent() {
 
   if (sent) {
     return (
-      <div className="min-h-screen bg-gray-950 flex items-center justify-center px-4">
+      <div className="min-h-screen bg-[#0a0f1e] flex items-center justify-center px-4 premium-glow">
         <div className="max-w-md w-full text-center">
-          <div className="bg-gray-800/60 border border-gray-700 rounded-2xl p-10">
+          <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-10">
             <div className="w-16 h-16 bg-amber-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
               <svg className="w-8 h-8 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -94,14 +94,14 @@ function LoginContent() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-950 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-[#0a0f1e] flex items-center justify-center px-4 premium-glow">
       <div className="max-w-md w-full">
         <div className="text-center mb-8">
           <Link href="/" className="text-2xl font-bold text-amber-400">TradeInvoice</Link>
           <p className="text-gray-400 mt-2">Sign in to your account</p>
         </div>
 
-        <div className="bg-gray-800/60 border border-gray-700 rounded-2xl p-8">
+        <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-8">
           {(errorParam || error) && (
             <div className="bg-red-500/10 border border-red-500/30 text-red-400 p-4 rounded-xl mb-6 text-sm">
               {errorParam === "invalid_token" ? "This link has expired. Please request a new one."
@@ -122,7 +122,7 @@ function LoginContent() {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
                 required
-                className="w-full px-4 py-3 rounded-xl bg-gray-900 border border-gray-600 text-white placeholder-gray-500 text-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none"
+                className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 text-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none"
               />
             </div>
 
@@ -131,7 +131,7 @@ function LoginContent() {
                 type="checkbox"
                 checked={agreedToTerms}
                 onChange={(e) => setAgreedToTerms(e.target.checked)}
-                className="mt-1 w-4 h-4 rounded border-gray-600 bg-gray-900 text-amber-500 focus:ring-amber-500 focus:ring-offset-0 accent-amber-500"
+                className="mt-1 w-4 h-4 rounded border-white/10 bg-white/5 text-amber-500 focus:ring-amber-500 focus:ring-offset-0 accent-amber-500"
               />
               <span className="text-sm text-gray-400">
                 I agree to the{" "}

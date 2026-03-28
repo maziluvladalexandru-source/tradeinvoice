@@ -136,7 +136,7 @@ export default function ReportsPage() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <div className="min-h-screen bg-gray-950 pb-20 md:pb-0">
+    <div className="min-h-screen bg-[#0a0f1e] pb-20 md:pb-0 premium-glow">
       <Navbar />
       <div className="max-w-6xl mx-auto px-4 py-8">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
@@ -158,7 +158,7 @@ export default function ReportsPage() {
         </div>
 
         {userPlan !== "pro" ? (
-          <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl border border-gray-800/50 p-16 text-center">
+          <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-16 text-center">
             <svg className="w-16 h-16 text-gray-700 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
             </svg>
@@ -176,7 +176,7 @@ export default function ReportsPage() {
           <>
             {/* Period Filters */}
             <div className="flex flex-wrap gap-3 mb-8">
-              <div className="flex gap-1 bg-gray-900/50 rounded-xl p-1 border border-gray-800/50">
+              <div className="flex gap-1 bg-white/5 rounded-xl p-1 border border-white/10">
                 {(["month", "quarter", "year"] as const).map((p) => (
                   <button
                     key={p}
@@ -195,7 +195,7 @@ export default function ReportsPage() {
               <select
                 value={year}
                 onChange={(e) => setYear(parseInt(e.target.value))}
-                className="bg-gray-900/50 border border-gray-800/50 rounded-xl px-4 py-2 text-sm text-gray-300 focus:outline-none focus:border-amber-500/50"
+                className="bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-sm text-gray-300 focus:outline-none focus:border-amber-500/50"
               >
                 {[currentYear, currentYear - 1, currentYear - 2].map((y) => (
                   <option key={y} value={y}>{y}</option>
@@ -206,7 +206,7 @@ export default function ReportsPage() {
                 <select
                   value={month}
                   onChange={(e) => setMonth(parseInt(e.target.value))}
-                  className="bg-gray-900/50 border border-gray-800/50 rounded-xl px-4 py-2 text-sm text-gray-300 focus:outline-none focus:border-amber-500/50"
+                  className="bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-sm text-gray-300 focus:outline-none focus:border-amber-500/50"
                 >
                   {MONTHS.map((m, i) => (
                     <option key={i} value={i + 1}>{m}</option>
@@ -218,7 +218,7 @@ export default function ReportsPage() {
                 <select
                   value={quarter}
                   onChange={(e) => setQuarter(parseInt(e.target.value))}
-                  className="bg-gray-900/50 border border-gray-800/50 rounded-xl px-4 py-2 text-sm text-gray-300 focus:outline-none focus:border-amber-500/50"
+                  className="bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-sm text-gray-300 focus:outline-none focus:border-amber-500/50"
                 >
                   {[1, 2, 3, 4].map((q) => (
                     <option key={q} value={q}>Q{q}</option>
@@ -235,25 +235,25 @@ export default function ReportsPage() {
               <>
                 {/* Summary Cards */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-                  <div className="relative overflow-hidden bg-gray-900/50 backdrop-blur-sm rounded-2xl p-5 border border-gray-800/50 hover:border-gray-700/50 transition-all duration-300">
+                  <div className="relative overflow-hidden bg-white/5 backdrop-blur-sm rounded-2xl p-5 border border-white/10 hover:border-white/20 transition-all duration-300">
                     <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent pointer-events-none" />
                     <p className="text-sm font-medium text-gray-400 mb-1">Revenue</p>
                     <p className="text-2xl font-bold text-emerald-400">{fmtCurrency(data.revenue)}</p>
                     <p className="text-sm text-gray-500 mt-1">{data.invoicesPaid} invoice{data.invoicesPaid !== 1 ? "s" : ""} paid</p>
                   </div>
-                  <div className="relative overflow-hidden bg-gray-900/50 backdrop-blur-sm rounded-2xl p-5 border border-gray-800/50 hover:border-gray-700/50 transition-all duration-300">
+                  <div className="relative overflow-hidden bg-white/5 backdrop-blur-sm rounded-2xl p-5 border border-white/10 hover:border-white/20 transition-all duration-300">
                     <div className="absolute inset-0 bg-gradient-to-br from-red-500/5 to-transparent pointer-events-none" />
                     <p className="text-sm font-medium text-gray-400 mb-1">Expenses</p>
                     <p className="text-2xl font-bold text-red-400">{fmtCurrency(data.totalExpenses)}</p>
                     <p className="text-sm text-gray-500 mt-1">{fmtCurrency(data.deductibleExpenses)} deductible</p>
                   </div>
-                  <div className="relative overflow-hidden bg-gray-900/50 backdrop-blur-sm rounded-2xl p-5 border border-gray-800/50 hover:border-gray-700/50 transition-all duration-300">
+                  <div className="relative overflow-hidden bg-white/5 backdrop-blur-sm rounded-2xl p-5 border border-white/10 hover:border-white/20 transition-all duration-300">
                     <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent pointer-events-none" />
                     <p className="text-sm font-medium text-gray-400 mb-1">Mileage Deduction</p>
                     <p className="text-2xl font-bold text-blue-400">{fmtCurrency(data.mileageDeduction)}</p>
                     <p className="text-sm text-gray-500 mt-1">{data.totalKm.toFixed(1)} km</p>
                   </div>
-                  <div className="relative overflow-hidden bg-gray-900/50 backdrop-blur-sm rounded-2xl p-5 border border-gray-800/50 hover:border-gray-700/50 transition-all duration-300">
+                  <div className="relative overflow-hidden bg-white/5 backdrop-blur-sm rounded-2xl p-5 border border-white/10 hover:border-white/20 transition-all duration-300">
                     <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent pointer-events-none" />
                     <p className="text-sm font-medium text-gray-400 mb-1">Net Profit</p>
                     <p className={`text-2xl font-bold ${data.netProfit >= 0 ? "text-amber-400" : "text-red-400"}`}>
@@ -265,7 +265,7 @@ export default function ReportsPage() {
 
                 {/* Revenue vs Expenses Donut */}
                 {(data.revenue > 0 || data.totalExpenses > 0) && (
-                  <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl border border-gray-800/50 p-6 mb-8">
+                  <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-6 mb-8">
                     <h2 className="text-lg font-semibold text-white mb-4">Profit Overview</h2>
                     <div className="flex justify-center">
                       <DonutChart
@@ -283,10 +283,10 @@ export default function ReportsPage() {
 
                 {/* P&L Statement */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-                  <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl border border-gray-800/50 p-6">
+                  <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-6">
                     <h2 className="text-lg font-semibold text-white mb-4">Profit &amp; Loss Statement</h2>
                     <div className="space-y-3">
-                      <div className="pb-3 border-b border-gray-800/50">
+                      <div className="pb-3 border-b border-white/10">
                         <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Income</p>
                         <div className="flex justify-between text-sm">
                           <span className="text-gray-400">Revenue (incl. VAT)</span>
@@ -296,13 +296,13 @@ export default function ReportsPage() {
                           <span className="text-gray-400">VAT Collected</span>
                           <span className="text-gray-300">-{fmtCurrency(data.taxCollected)}</span>
                         </div>
-                        <div className="flex justify-between text-sm mt-1 pt-1 border-t border-gray-800/30">
+                        <div className="flex justify-between text-sm mt-1 pt-1 border-t border-white/5">
                           <span className="text-gray-300 font-medium">Revenue (excl. VAT)</span>
                           <span className="text-white font-semibold">{fmtCurrency(data.revenueBeforeTax)}</span>
                         </div>
                       </div>
 
-                      <div className="pb-3 border-b border-gray-800/50">
+                      <div className="pb-3 border-b border-white/10">
                         <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Expenses</p>
                         {Object.entries(data.expenseByCategory).sort((a, b) => b[1] - a[1]).map(([cat, amount]) => (
                           <div key={cat} className="flex justify-between text-sm mt-1">
@@ -313,13 +313,13 @@ export default function ReportsPage() {
                         {Object.keys(data.expenseByCategory).length === 0 && (
                           <p className="text-sm text-gray-500">No expenses</p>
                         )}
-                        <div className="flex justify-between text-sm mt-1 pt-1 border-t border-gray-800/30">
+                        <div className="flex justify-between text-sm mt-1 pt-1 border-t border-white/5">
                           <span className="text-gray-300 font-medium">Total Expenses</span>
                           <span className="text-red-400 font-semibold">-{fmtCurrency(data.totalExpenses)}</span>
                         </div>
                       </div>
 
-                      <div className="pb-3 border-b border-gray-800/50">
+                      <div className="pb-3 border-b border-white/10">
                         <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Deductions</p>
                         <div className="flex justify-between text-sm">
                           <span className="text-gray-400">Mileage ({data.totalKm.toFixed(1)} km)</span>
@@ -329,7 +329,7 @@ export default function ReportsPage() {
                           <span className="text-gray-400">Deductible Expenses</span>
                           <span className="text-blue-400">{fmtCurrency(data.deductibleExpenses)}</span>
                         </div>
-                        <div className="flex justify-between text-sm mt-1 pt-1 border-t border-gray-800/30">
+                        <div className="flex justify-between text-sm mt-1 pt-1 border-t border-white/5">
                           <span className="text-gray-300 font-medium">Total Deductions</span>
                           <span className="text-blue-400 font-semibold">{fmtCurrency(data.totalDeductions)}</span>
                         </div>
@@ -352,10 +352,10 @@ export default function ReportsPage() {
 
                   {/* Monthly Breakdown */}
                   {data.monthlyData.length > 1 && (
-                    <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl border border-gray-800/50 p-6">
+                    <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-6">
                       <h2 className="text-lg font-semibold text-white mb-4">Monthly Breakdown</h2>
                       <div className="space-y-3">
-                        <div className="grid grid-cols-5 gap-2 text-xs font-semibold text-gray-500 uppercase tracking-wider pb-2 border-b border-gray-800/50">
+                        <div className="grid grid-cols-5 gap-2 text-xs font-semibold text-gray-500 uppercase tracking-wider pb-2 border-b border-white/10">
                           <span>Month</span>
                           <span className="text-right">Revenue</span>
                           <span className="text-right">Expenses</span>
@@ -363,7 +363,7 @@ export default function ReportsPage() {
                           <span className="text-right">Profit</span>
                         </div>
                         {data.monthlyData.map((m) => (
-                          <div key={m.month} className="grid grid-cols-5 gap-2 text-sm py-1.5 border-b border-gray-800/30">
+                          <div key={m.month} className="grid grid-cols-5 gap-2 text-sm py-1.5 border-b border-white/5">
                             <span className="text-gray-300 font-medium">{m.month}</span>
                             <span className="text-right text-emerald-400">{fmtCurrency(m.revenue)}</span>
                             <span className="text-right text-red-400">{fmtCurrency(m.expenses)}</span>

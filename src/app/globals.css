@@ -3,7 +3,25 @@
 @tailwind utilities;
 
 body {
-  background-color: #f9fafb;
+  background-color: #0a0f1e;
+}
+
+/* Premium radial gradient glow for page backgrounds */
+.premium-glow {
+  position: relative;
+}
+.premium-glow::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 1200px;
+  height: 600px;
+  background: radial-gradient(ellipse at top, rgba(245,158,11,0.08) 0%, rgba(59,130,246,0.04) 40%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
 }
 
 /* Fix date inputs on mobile - ensure full date is visible */

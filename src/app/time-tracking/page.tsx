@@ -307,7 +307,7 @@ export default function TimeTrackingPage() {
         </div>
 
         {/* Timer */}
-        <div className={`relative overflow-hidden bg-gray-900/50 backdrop-blur-sm rounded-2xl border p-6 mb-8 transition-all duration-300 ${timerRunning ? "border-amber-500/30 shadow-lg shadow-amber-500/10" : "border-gray-800/50"}`}>
+        <div className={`relative overflow-hidden bg-white/5 backdrop-blur-sm rounded-2xl border p-6 mb-8 transition-all duration-300 ${timerRunning ? "border-amber-500/30 shadow-lg shadow-amber-500/10" : "border-white/10"}`}>
           {timerRunning && <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent pointer-events-none" />}
           <div className="relative flex flex-col md:flex-row items-center gap-4">
             <div className="flex-1 w-full">
@@ -316,7 +316,7 @@ export default function TimeTrackingPage() {
                 placeholder="What are you working on?"
                 value={timerDescription}
                 onChange={(e) => setTimerDescription(e.target.value)}
-                className="w-full bg-gray-800/50 border border-gray-700/50 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20 transition-all"
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20 transition-all"
               />
             </div>
             <div className="flex items-center gap-3">
@@ -326,7 +326,7 @@ export default function TimeTrackingPage() {
                   const client = clients.find(c => c.id === e.target.value);
                   setTimerClientId(e.target.value, client?.name || "");
                 }}
-                className="bg-gray-800/50 border border-gray-700/50 rounded-xl px-3 py-3 text-gray-300 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20 transition-all"
+                className="bg-white/5 border border-white/10 rounded-xl px-3 py-3 text-gray-300 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20 transition-all"
               >
                 <option value="">No client</option>
                 {clients.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
@@ -337,7 +337,7 @@ export default function TimeTrackingPage() {
                   type="number"
                   value={timerRate}
                   onChange={(e) => setTimerRate(e.target.value)}
-                  className="w-20 bg-gray-800/50 border border-gray-700/50 rounded-xl px-3 py-3 text-white focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20 transition-all"
+                  className="w-20 bg-white/5 border border-white/10 rounded-xl px-3 py-3 text-white focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20 transition-all"
                   min="0"
                   step="0.01"
                 />
@@ -369,17 +369,17 @@ export default function TimeTrackingPage() {
 
         {/* Summary Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-          <div className="relative overflow-hidden bg-white/5 backdrop-blur-sm rounded-2xl border border-gray-800/50 p-5 hover:border-gray-700/50 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300">
+          <div className="relative overflow-hidden bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-5 hover:border-white/20 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300">
             <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent pointer-events-none" />
             <p className="relative text-gray-400 text-sm mb-1">This Week</p>
             <p className="relative text-2xl font-bold text-white">{weekHours.toFixed(1)}h</p>
           </div>
-          <div className="relative overflow-hidden bg-white/5 backdrop-blur-sm rounded-2xl border border-gray-800/50 p-5 hover:border-gray-700/50 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300">
+          <div className="relative overflow-hidden bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-5 hover:border-white/20 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300">
             <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent pointer-events-none" />
             <p className="relative text-gray-400 text-sm mb-1">This Month</p>
             <p className="relative text-2xl font-bold text-white">{monthHours.toFixed(1)}h</p>
           </div>
-          <div className="relative overflow-hidden bg-white/5 backdrop-blur-sm rounded-2xl border border-gray-800/50 p-5 hover:border-gray-700/50 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300">
+          <div className="relative overflow-hidden bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-5 hover:border-white/20 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300">
             <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent pointer-events-none" />
             <p className="relative text-gray-400 text-sm mb-1">Unbilled</p>
             <p className="relative text-2xl font-bold text-amber-400">&euro;{unbilledAmount.toFixed(2)}</p>
@@ -391,28 +391,28 @@ export default function TimeTrackingPage() {
           <select
             value={filterClient}
             onChange={(e) => setFilterClient(e.target.value)}
-            className="bg-gray-800/50 border border-gray-700/50 rounded-xl px-4 py-2 text-gray-300 text-sm focus:outline-none focus:border-amber-500/50"
+            className="bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-gray-300 text-sm focus:outline-none focus:border-amber-500/50"
           >
             <option value="">All Clients</option>
             {clients.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
           </select>
-          <div className="flex rounded-xl border border-gray-700/50 overflow-hidden">
+          <div className="flex rounded-xl border border-white/10 overflow-hidden">
             {(["all", "week", "month"] as FilterRange[]).map((r) => (
               <button
                 key={r}
                 onClick={() => setFilterRange(r)}
-                className={`px-4 py-2 text-sm font-medium transition-colors ${filterRange === r ? "bg-amber-500/15 text-amber-400" : "text-gray-400 hover:bg-gray-800/60 hover:text-white"}`}
+                className={`px-4 py-2 text-sm font-medium transition-colors ${filterRange === r ? "bg-amber-500/15 text-amber-400" : "text-gray-400 hover:bg-white/10/60 hover:text-white"}`}
               >
                 {r === "all" ? "All Time" : r === "week" ? "This Week" : "This Month"}
               </button>
             ))}
           </div>
-          <div className="flex rounded-xl border border-gray-700/50 overflow-hidden">
+          <div className="flex rounded-xl border border-white/10 overflow-hidden">
             {(["all", "billable", "non-billable"] as FilterBillable[]).map((b) => (
               <button
                 key={b}
                 onClick={() => setFilterBillable(b)}
-                className={`px-4 py-2 text-sm font-medium transition-colors ${filterBillable === b ? "bg-amber-500/15 text-amber-400" : "text-gray-400 hover:bg-gray-800/60 hover:text-white"}`}
+                className={`px-4 py-2 text-sm font-medium transition-colors ${filterBillable === b ? "bg-amber-500/15 text-amber-400" : "text-gray-400 hover:bg-white/10/60 hover:text-white"}`}
               >
                 {b === "all" ? "All" : b === "billable" ? "Billable" : "Non-billable"}
               </button>
@@ -440,7 +440,7 @@ export default function TimeTrackingPage() {
 
         {/* Manual Entry Form */}
         {showForm && (
-          <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl border border-gray-800/50 p-6 mb-8 animate-fade-in">
+          <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-6 mb-8 animate-fade-in">
             <h3 className="text-lg font-semibold text-white mb-4">{editingId ? "Edit Entry" : "Add Time Entry"}</h3>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -452,7 +452,7 @@ export default function TimeTrackingPage() {
                     value={formData.description}
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                     placeholder="Boiler repair at 42 Main St"
-                    className="w-full bg-gray-800/50 border border-gray-700/50 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50"
+                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50"
                   />
                 </div>
                 <div>
@@ -462,7 +462,7 @@ export default function TimeTrackingPage() {
                     required
                     value={formData.date}
                     onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                    className="w-full bg-gray-800/50 border border-gray-700/50 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-amber-500/50"
+                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-amber-500/50"
                   />
                 </div>
                 <div>
@@ -475,7 +475,7 @@ export default function TimeTrackingPage() {
                     value={formData.hours}
                     onChange={(e) => setFormData({ ...formData, hours: e.target.value })}
                     placeholder="2.5"
-                    className="w-full bg-gray-800/50 border border-gray-700/50 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50"
+                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50"
                   />
                 </div>
                 <div>
@@ -487,7 +487,7 @@ export default function TimeTrackingPage() {
                     min="0.01"
                     value={formData.hourlyRate}
                     onChange={(e) => setFormData({ ...formData, hourlyRate: e.target.value })}
-                    className="w-full bg-gray-800/50 border border-gray-700/50 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-amber-500/50"
+                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-amber-500/50"
                   />
                 </div>
                 <div>
@@ -495,7 +495,7 @@ export default function TimeTrackingPage() {
                   <select
                     value={formData.clientId}
                     onChange={(e) => setFormData({ ...formData, clientId: e.target.value })}
-                    className="w-full bg-gray-800/50 border border-gray-700/50 rounded-xl px-4 py-3 text-gray-300 focus:outline-none focus:border-amber-500/50"
+                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-gray-300 focus:outline-none focus:border-amber-500/50"
                   >
                     <option value="">No client</option>
                     {clients.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
@@ -508,7 +508,7 @@ export default function TimeTrackingPage() {
                     type="checkbox"
                     checked={formData.billable}
                     onChange={(e) => setFormData({ ...formData, billable: e.target.checked })}
-                    className="w-4 h-4 rounded border-gray-600 text-amber-500 focus:ring-amber-500/50 bg-gray-800"
+                    className="w-4 h-4 rounded border-gray-600 text-amber-500 focus:ring-amber-500/50 bg-white/10"
                   />
                   <span className="text-sm text-gray-300">Billable</span>
                 </label>
@@ -523,7 +523,7 @@ export default function TimeTrackingPage() {
                 <button
                   type="button"
                   onClick={() => { setShowForm(false); setEditingId(null); }}
-                  className="bg-gray-800 text-gray-300 px-6 py-3 rounded-xl font-semibold hover:bg-gray-700 transition-all border border-gray-700/50"
+                  className="bg-white/10 text-gray-300 px-6 py-3 rounded-xl font-semibold hover:bg-white/10 transition-all border border-white/10"
                 >
                   Cancel
                 </button>
@@ -536,11 +536,11 @@ export default function TimeTrackingPage() {
         {loading ? (
           <div className="space-y-4">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="bg-gray-900/50 rounded-2xl border border-gray-800/50 p-6 animate-pulse">
-                <div className="h-4 bg-gray-800 rounded w-32 mb-4" />
+              <div key={i} className="bg-white/5 rounded-2xl border border-white/10 p-6 animate-pulse">
+                <div className="h-4 bg-white/10 rounded w-32 mb-4" />
                 <div className="space-y-3">
-                  <div className="h-12 bg-gray-800 rounded-xl" />
-                  <div className="h-12 bg-gray-800 rounded-xl" />
+                  <div className="h-12 bg-white/10 rounded-xl" />
+                  <div className="h-12 bg-white/10 rounded-xl" />
                 </div>
               </div>
             ))}
@@ -562,8 +562,8 @@ export default function TimeTrackingPage() {
                   {dateEntries.map((entry) => (
                     <div
                       key={entry.id}
-                      className={`bg-gray-900/50 backdrop-blur-sm rounded-xl border p-4 flex flex-col sm:flex-row items-start sm:items-center gap-3 transition-all duration-300 hover:shadow-lg hover:shadow-amber-500/5 ${
-                        entry.invoiced ? "border-gray-800/30 opacity-60" : "border-gray-800/50 hover:border-gray-700/50"
+                      className={`bg-white/5 backdrop-blur-sm rounded-xl border p-4 flex flex-col sm:flex-row items-start sm:items-center gap-3 transition-all duration-300 hover:shadow-lg hover:shadow-amber-500/5 ${
+                        entry.invoiced ? "border-white/5 opacity-60" : "border-white/10 hover:border-white/20"
                       }`}
                     >
                       {!entry.invoiced && entry.billable && (
@@ -571,17 +571,17 @@ export default function TimeTrackingPage() {
                           type="checkbox"
                           checked={selectedIds.has(entry.id)}
                           onChange={() => toggleSelect(entry.id)}
-                          className="w-4 h-4 rounded border-gray-600 text-amber-500 focus:ring-amber-500/50 bg-gray-800 mt-1 shrink-0"
+                          className="w-4 h-4 rounded border-gray-600 text-amber-500 focus:ring-amber-500/50 bg-white/10 mt-1 shrink-0"
                         />
                       )}
                       <div className="flex-1 min-w-0">
                         <p className="text-white font-medium truncate">{entry.description}</p>
                         <div className="flex flex-wrap items-center gap-2 mt-1">
                           {entry.client && (
-                            <span className="text-xs bg-gray-800 text-gray-400 px-2 py-0.5 rounded-md">{entry.client.name}</span>
+                            <span className="text-xs bg-white/10 text-gray-400 px-2 py-0.5 rounded-md">{entry.client.name}</span>
                           )}
                           {!entry.billable && (
-                            <span className="text-xs bg-gray-800 text-gray-500 px-2 py-0.5 rounded-md">Non-billable</span>
+                            <span className="text-xs bg-white/10 text-gray-500 px-2 py-0.5 rounded-md">Non-billable</span>
                           )}
                           {entry.invoiced && (
                             <span className="text-xs bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded-md">Invoiced</span>
@@ -600,14 +600,14 @@ export default function TimeTrackingPage() {
                           <div className="flex items-center gap-1">
                             <button
                               onClick={() => handleEdit(entry)}
-                              className="p-2 text-gray-500 hover:text-white hover:bg-gray-800 rounded-lg transition-colors"
+                              className="p-2 text-gray-500 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
                               title="Edit"
                             >
                               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
                             </button>
                             <button
                               onClick={() => handleDelete(entry.id)}
-                              className="p-2 text-gray-500 hover:text-red-400 hover:bg-gray-800 rounded-lg transition-colors"
+                              className="p-2 text-gray-500 hover:text-red-400 hover:bg-white/10 rounded-lg transition-colors"
                               title="Delete"
                             >
                               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>

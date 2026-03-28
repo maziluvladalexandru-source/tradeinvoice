@@ -45,9 +45,9 @@ export default function NewInvoiceButton({ isNewUser }: NewInvoiceButtonProps) {
           ref={tipRef}
           className="absolute right-0 top-full mt-3 w-72 z-50 animate-fade-in"
         >
-          <div className="bg-gray-800 border border-gray-600 rounded-xl p-4 shadow-xl relative">
+          <div className="bg-white/10 border border-white/10 rounded-xl p-4 shadow-xl relative">
             {/* Arrow */}
-            <div className="absolute -top-2 right-6 w-4 h-4 bg-gray-800 border-l border-t border-gray-600 rotate-45" />
+            <div className="absolute -top-2 right-6 w-4 h-4 bg-white/10 border-l border-t border-white/10 rotate-45" />
             <div className="flex items-start gap-3">
               <span className="text-amber-500 text-lg flex-shrink-0">💡</span>
               <div className="flex-1">

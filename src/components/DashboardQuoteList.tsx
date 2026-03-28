@@ -35,8 +35,8 @@ export default function DashboardQuoteList({
   if (quotes.length === 0) return null;
 
   return (
-    <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl border border-gray-800/50 mt-8">
-      <div className="p-6 border-b border-gray-800/50 flex items-center justify-between">
+    <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 mt-8">
+      <div className="p-6 border-b border-white/10 flex items-center justify-between">
         <h2 className="text-xl font-semibold text-white flex items-center gap-2">
           Recent Quotes
           <span className="bg-purple-500/20 text-purple-300 ring-1 ring-purple-400/40 px-2 py-0.5 rounded-full text-xs font-semibold">
@@ -44,11 +44,11 @@ export default function DashboardQuoteList({
           </span>
         </h2>
       </div>
-      <div className="divide-y divide-gray-800/50">
+      <div className="divide-y divide-white/10">
         {quotes.map((quote) => (
           <div
             key={quote.id}
-            className={`p-4 hover:bg-gray-800/50 transition-colors border-l-4 ${statusBorder[quote.status] || "border-l-gray-600"}`}
+            className={`p-4 hover:bg-white/5 transition-colors border-l-4 ${statusBorder[quote.status] || "border-l-gray-600"}`}
           >
             <Link
               href={`/invoices/${quote.id}`}

@@ -71,7 +71,7 @@ export default function RevenueDashboard({
       {/* Section header */}
       <div className="flex items-center gap-3">
         <h2 className="text-xl font-semibold text-white">Revenue Insights</h2>
-        <div className="h-px flex-1 bg-gray-800" />
+        <div className="h-px flex-1 bg-white/10" />
         {trendUp ? (
           <span className="flex items-center gap-1 text-sm font-medium text-emerald-400">
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -91,14 +91,14 @@ export default function RevenueDashboard({
 
       {/* Stats cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-        <div className="relative overflow-hidden bg-gray-900/50 backdrop-blur-sm rounded-2xl p-5 border border-gray-800/50 hover:border-amber-500/20 transition-all">
+        <div className="relative overflow-hidden bg-white/5 backdrop-blur-sm rounded-2xl p-5 border border-white/10 hover:border-amber-500/20 transition-all">
           <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent pointer-events-none" />
           <p className="text-xs font-medium text-gray-400 mb-1 uppercase tracking-wider">Total Revenue</p>
           <p className="text-xl font-bold text-amber-400">{fmt(totalRevenue, currency)}</p>
           <p className="text-xs text-gray-500 mt-1">all time</p>
         </div>
 
-        <div className="relative overflow-hidden bg-gray-900/50 backdrop-blur-sm rounded-2xl p-5 border border-gray-800/50 hover:border-emerald-500/20 transition-all">
+        <div className="relative overflow-hidden bg-white/5 backdrop-blur-sm rounded-2xl p-5 border border-white/10 hover:border-emerald-500/20 transition-all">
           <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent pointer-events-none" />
           <p className="text-xs font-medium text-gray-400 mb-1 uppercase tracking-wider">This Month</p>
           <p className="text-xl font-bold text-emerald-400">{fmt(thisMonthRevenue, currency)}</p>
@@ -109,21 +109,21 @@ export default function RevenueDashboard({
           )}
         </div>
 
-        <div className="relative overflow-hidden bg-gray-900/50 backdrop-blur-sm rounded-2xl p-5 border border-gray-800/50 hover:border-blue-500/20 transition-all">
+        <div className="relative overflow-hidden bg-white/5 backdrop-blur-sm rounded-2xl p-5 border border-white/10 hover:border-blue-500/20 transition-all">
           <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent pointer-events-none" />
           <p className="text-xs font-medium text-gray-400 mb-1 uppercase tracking-wider">Avg Invoice</p>
           <p className="text-xl font-bold text-blue-400">{fmt(avgInvoiceValue, currency)}</p>
           <p className="text-xs text-gray-500 mt-1">per invoice</p>
         </div>
 
-        <div className="relative overflow-hidden bg-gray-900/50 backdrop-blur-sm rounded-2xl p-5 border border-gray-800/50 hover:border-purple-500/20 transition-all">
+        <div className="relative overflow-hidden bg-white/5 backdrop-blur-sm rounded-2xl p-5 border border-white/10 hover:border-purple-500/20 transition-all">
           <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent pointer-events-none" />
           <p className="text-xs font-medium text-gray-400 mb-1 uppercase tracking-wider">Avg Days to Pay</p>
           <p className="text-xl font-bold text-purple-400">{avgDaysToPayment ?? "—"}</p>
           <p className="text-xs text-gray-500 mt-1">days</p>
         </div>
 
-        <div className="relative overflow-hidden bg-gray-900/50 backdrop-blur-sm rounded-2xl p-5 border border-gray-800/50 hover:border-cyan-500/20 transition-all">
+        <div className="relative overflow-hidden bg-white/5 backdrop-blur-sm rounded-2xl p-5 border border-white/10 hover:border-cyan-500/20 transition-all">
           <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-transparent pointer-events-none" />
           <p className="text-xs font-medium text-gray-400 mb-1 uppercase tracking-wider">Collection Rate</p>
           <p className="text-xl font-bold text-cyan-400">{Math.round(collectionRate)}%</p>
@@ -134,13 +134,13 @@ export default function RevenueDashboard({
       {/* Charts row */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Monthly Revenue Bar Chart */}
-        <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl border border-gray-800/50 p-6">
+        <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-6">
           <h3 className="text-sm font-semibold text-white mb-4 uppercase tracking-wider">Monthly Revenue</h3>
           <div className="space-y-3">
             {chartData.map((month) => (
               <div key={month.label} className="flex items-center gap-3">
                 <span className="text-xs text-gray-400 w-12 shrink-0 text-right">{month.label}</span>
-                <div className="flex-1 h-7 bg-gray-800/50 rounded-lg overflow-hidden relative">
+                <div className="flex-1 h-7 bg-white/5 rounded-lg overflow-hidden relative">
                   <div
                     className="h-full bg-gradient-to-r from-amber-500/80 to-amber-400/60 rounded-lg transition-all duration-500"
                     style={{ width: `${Math.max((month.revenue / maxRevenue) * 100, 0)}%` }}
@@ -160,7 +160,7 @@ export default function RevenueDashboard({
         </div>
 
         {/* Top Clients */}
-        <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl border border-gray-800/50 p-6">
+        <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-6">
           <h3 className="text-sm font-semibold text-white mb-4 uppercase tracking-wider">Top Clients by Revenue</h3>
           <div className="space-y-3">
             {topClients.map((client, i) => (
@@ -171,7 +171,7 @@ export default function RevenueDashboard({
                     <span className="text-sm text-white truncate">{client.name}</span>
                     <span className="text-sm font-semibold text-amber-400 shrink-0 ml-2">{fmt(client.total, currency)}</span>
                   </div>
-                  <div className="h-2 bg-gray-800/50 rounded-full overflow-hidden">
+                  <div className="h-2 bg-white/5 rounded-full overflow-hidden">
                     <div
                       className="h-full bg-gradient-to-r from-emerald-500/80 to-emerald-400/60 rounded-full"
                       style={{ width: `${(client.total / maxClientRevenue) * 100}%` }}
@@ -188,10 +188,10 @@ export default function RevenueDashboard({
       </div>
 
       {/* Monthly Breakdown Table */}
-      <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl border border-gray-800/50">
+      <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10">
         <button
           onClick={() => setShowBreakdown(!showBreakdown)}
-          className="w-full flex items-center justify-between p-6 text-left hover:bg-gray-800/30 transition-colors rounded-2xl"
+          className="w-full flex items-center justify-between p-6 text-left hover:bg-white/5 transition-colors rounded-2xl"
         >
           <h3 className="text-sm font-semibold text-white uppercase tracking-wider">Monthly Breakdown</h3>
           <svg
@@ -208,7 +208,7 @@ export default function RevenueDashboard({
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="text-gray-400 border-b border-gray-800">
+                  <tr className="text-gray-400 border-b border-white/10">
                     <th className="text-left py-2 pr-4 font-medium">Month</th>
                     <th className="text-right py-2 px-4 font-medium">Sent</th>
                     <th className="text-right py-2 px-4 font-medium">Paid</th>
@@ -216,9 +216,9 @@ export default function RevenueDashboard({
                     <th className="text-right py-2 pl-4 font-medium">Outstanding</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-800/50">
+                <tbody className="divide-y divide-white/10">
                   {monthlyData.map((m) => (
-                    <tr key={m.label} className="text-gray-300 hover:bg-gray-800/30 transition-colors">
+                    <tr key={m.label} className="text-gray-300 hover:bg-white/5 transition-colors">
                       <td className="py-2.5 pr-4 text-white font-medium">{m.label}</td>
                       <td className="py-2.5 px-4 text-right">{m.invoicesSent}</td>
                       <td className="py-2.5 px-4 text-right text-emerald-400">{m.invoicesPaid}</td>
@@ -237,7 +237,7 @@ export default function RevenueDashboard({
       </div>
 
       {/* Tax Summary — Pro Feature */}
-      <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl border border-gray-800/50 p-6 relative">
+      <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-6 relative">
         <div className="flex items-center gap-2 mb-4">
           <h3 className="text-sm font-semibold text-white uppercase tracking-wider">Tax Summary</h3>
           <span className="text-xs text-gray-500">This Quarter</span>
@@ -253,11 +253,11 @@ export default function RevenueDashboard({
 
         {isPro ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="bg-gray-800/30 rounded-xl p-4 border border-gray-700/30">
+            <div className="bg-white/5 rounded-xl p-4 border border-white/5">
               <p className="text-xs text-gray-400 mb-1 uppercase tracking-wider">VAT Collected</p>
               <p className="text-lg font-bold text-amber-400">{fmt(quarterVat, currency)}</p>
             </div>
-            <div className="bg-gray-800/30 rounded-xl p-4 border border-gray-700/30">
+            <div className="bg-white/5 rounded-xl p-4 border border-white/5">
               <p className="text-xs text-gray-400 mb-1 uppercase tracking-wider">Revenue excl. VAT</p>
               <p className="text-lg font-bold text-emerald-400">{fmt(quarterRevenueExVat, currency)}</p>
             </div>
@@ -265,11 +265,11 @@ export default function RevenueDashboard({
         ) : (
           <div className="relative">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 blur-sm pointer-events-none select-none">
-              <div className="bg-gray-800/30 rounded-xl p-4 border border-gray-700/30">
+              <div className="bg-white/5 rounded-xl p-4 border border-white/5">
                 <p className="text-xs text-gray-400 mb-1">VAT Collected</p>
                 <p className="text-lg font-bold text-gray-600">€0,000.00</p>
               </div>
-              <div className="bg-gray-800/30 rounded-xl p-4 border border-gray-700/30">
+              <div className="bg-white/5 rounded-xl p-4 border border-white/5">
                 <p className="text-xs text-gray-400 mb-1">Revenue excl. VAT</p>
                 <p className="text-lg font-bold text-gray-600">€0,000.00</p>
               </div>

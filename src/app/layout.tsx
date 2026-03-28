@@ -57,7 +57,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} antialiased bg-gray-950`}>
+      <body className={`${inter.className} antialiased bg-[#0a0f1e]`}>
         <ToastProvider>
           <TimerProvider>
             <GlobalTimerBar />

@@ -363,7 +363,7 @@ export default function ExpensesPage() {
     CATEGORIES.find((c) => c.value === value)?.label || value;
 
   return (
-    <div className="min-h-screen bg-gray-950 pb-20 md:pb-0">
+    <div className="min-h-screen bg-[#0a0f1e] pb-20 md:pb-0 premium-glow">
       <Navbar />
       <div className="max-w-6xl mx-auto px-4 py-8">
         {/* Header */}
@@ -404,7 +404,7 @@ export default function ExpensesPage() {
         </div>
 
         {/* Tab Toggle */}
-        <div className="flex gap-1 bg-gray-900/50 rounded-xl p-1 border border-gray-800/50 mb-10 w-fit">
+        <div className="flex gap-1 bg-white/5 rounded-xl p-1 border border-white/10 mb-10 w-fit">
           <button
             onClick={() => setActiveTab("expenses")}
             className={`px-5 py-2 rounded-lg text-sm font-medium transition-all ${
@@ -434,14 +434,14 @@ export default function ExpensesPage() {
           <>
             {/* Summary Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
-              <div className="relative overflow-hidden bg-gray-900/50 backdrop-blur-sm rounded-2xl p-5 border border-gray-800/50 hover:border-gray-700/50 hover:shadow-lg hover:shadow-red-500/5 transition-all duration-300 col-span-1 sm:col-span-2 lg:col-span-1">
+              <div className="relative overflow-hidden bg-white/5 backdrop-blur-sm rounded-2xl p-5 border border-white/10 hover:border-white/20 hover:shadow-lg hover:shadow-red-500/5 transition-all duration-300 col-span-1 sm:col-span-2 lg:col-span-1">
                 <div className="absolute inset-0 bg-gradient-to-br from-red-500/5 to-transparent pointer-events-none" />
                 <p className="text-sm font-medium text-gray-400 mb-1">Total Expenses</p>
                 <p className="text-2xl font-bold text-red-400">{fmtCurrency(totalExpenses)}</p>
                 <p className="text-sm text-gray-500 mt-1">{TIME_FILTERS.find((f) => f.value === timeFilter)?.label}</p>
               </div>
               {categoryBreakdown.slice(0, 3).map((cat) => (
-                <div key={cat.value} className="relative overflow-hidden bg-gray-900/50 backdrop-blur-sm rounded-2xl p-5 border border-gray-800/50 hover:border-gray-700/50 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300">
+                <div key={cat.value} className="relative overflow-hidden bg-white/5 backdrop-blur-sm rounded-2xl p-5 border border-white/10 hover:border-white/20 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300">
                   <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent pointer-events-none" />
                   <p className="text-sm font-medium text-gray-400 mb-1">{cat.label}</p>
                   <p className="text-xl font-bold text-white">{fmtCurrency(cat.total)}</p>
@@ -452,7 +452,7 @@ export default function ExpensesPage() {
 
             {/* Filters */}
             <div className="flex flex-wrap gap-3 mb-6">
-              <div className="flex gap-1 bg-gray-900/50 rounded-xl p-1 border border-gray-800/50">
+              <div className="flex gap-1 bg-white/5 rounded-xl p-1 border border-white/10">
                 {TIME_FILTERS.map((f) => (
                   <button
                     key={f.value}
@@ -470,7 +470,7 @@ export default function ExpensesPage() {
               <select
                 value={categoryFilter}
                 onChange={(e) => setCategoryFilter(e.target.value)}
-                className="bg-gray-800/50 border border-gray-700/50 rounded-xl px-4 py-2 text-sm text-gray-300 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20"
+                className="bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-sm text-gray-300 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20"
               >
                 <option value="">All Categories</option>
                 {CATEGORIES.map((cat) => (
@@ -481,7 +481,7 @@ export default function ExpensesPage() {
 
             {/* Add/Edit Form */}
             {showForm && (
-              <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl border border-gray-800/50 hover:border-gray-700/50 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300 p-6 mb-10">
+              <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 hover:border-white/20 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300 p-6 mb-10">
                 <h2 className="text-lg font-semibold text-white mb-4">
                   {editingId ? "Edit Expense" : "New Expense"}
                 </h2>
@@ -495,7 +495,7 @@ export default function ExpensesPage() {
                         value={form.description}
                         onChange={(e) => setForm({ ...form, description: e.target.value })}
                         placeholder="e.g. Screws and fixings for kitchen job"
-                        className="w-full bg-gray-800/50 border border-gray-700/50 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20"
+                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20"
                       />
                     </div>
                     <div>
@@ -505,7 +505,7 @@ export default function ExpensesPage() {
                         value={form.vendor}
                         onChange={(e) => setForm({ ...form, vendor: e.target.value })}
                         placeholder="e.g. Screwfix, Toolstation"
-                        className="w-full bg-gray-800/50 border border-gray-700/50 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20"
+                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20"
                       />
                     </div>
                     <div>
@@ -518,7 +518,7 @@ export default function ExpensesPage() {
                         value={form.amount}
                         onChange={(e) => setForm({ ...form, amount: e.target.value })}
                         placeholder="0.00"
-                        className="w-full bg-gray-800/50 border border-gray-700/50 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20"
+                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20"
                       />
                     </div>
                     <div>
@@ -528,7 +528,7 @@ export default function ExpensesPage() {
                         required
                         value={form.date}
                         onChange={(e) => setForm({ ...form, date: e.target.value })}
-                        className="w-full bg-gray-800/50 border border-gray-700/50 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20"
+                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20"
                       />
                     </div>
                   </div>
@@ -545,7 +545,7 @@ export default function ExpensesPage() {
                           className={`flex items-center gap-2 px-3 py-2 rounded-xl border text-sm font-medium transition-all ${
                             form.category === cat.value
                               ? "bg-amber-500/15 border-amber-500/30 text-amber-400"
-                              : "bg-gray-800/30 border-gray-700/50 text-gray-400 hover:border-gray-600"
+                              : "bg-white/10/30 border-white/10 text-gray-400 hover:border-gray-600"
                           }`}
                         >
                           <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -564,7 +564,7 @@ export default function ExpensesPage() {
                       onChange={(e) => setForm({ ...form, notes: e.target.value })}
                       rows={2}
                       placeholder="Job reference, PO number, etc."
-                      className="w-full bg-gray-800/50 border border-gray-700/50 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50 resize-none"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50 resize-none"
                     />
                   </div>
 
@@ -579,7 +579,7 @@ export default function ExpensesPage() {
                       </label>
                       {userPlan === "pro" ? (
                         <div className="flex items-center gap-3">
-                          <label className="cursor-pointer inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gray-800/50 border border-gray-700/50 text-gray-300 hover:border-gray-600 transition-all text-sm">
+                          <label className="cursor-pointer inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-gray-300 hover:border-gray-600 transition-all text-sm">
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -612,7 +612,7 @@ export default function ExpensesPage() {
                         <button
                           type="button"
                           onClick={() => { setUpgradeFeature("Receipt Upload"); setShowUpgrade(true); }}
-                          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gray-800/30 border border-gray-700/30 text-gray-500 text-sm cursor-pointer hover:border-amber-500/30 transition-all"
+                          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/10/30 border border-white/10/30 text-gray-500 text-sm cursor-pointer hover:border-amber-500/30 transition-all"
                         >
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
@@ -629,7 +629,7 @@ export default function ExpensesPage() {
                         type="checkbox"
                         checked={form.taxDeductible}
                         onChange={(e) => setForm({ ...form, taxDeductible: e.target.checked })}
-                        className="w-4 h-4 rounded border-gray-600 bg-gray-800 text-amber-500 focus:ring-amber-500 focus:ring-offset-0"
+                        className="w-4 h-4 rounded border-gray-600 bg-white/10 text-amber-500 focus:ring-amber-500 focus:ring-offset-0"
                       />
                       <span className="text-sm text-gray-300">Tax Deductible</span>
                     </label>
@@ -645,7 +645,7 @@ export default function ExpensesPage() {
                     <button
                       type="button"
                       onClick={() => { setShowForm(false); resetForm(); }}
-                      className="px-6 py-2.5 rounded-xl font-semibold text-gray-400 bg-gray-800/50 border border-gray-700/50 hover:border-gray-600 transition-all"
+                      className="px-6 py-2.5 rounded-xl font-semibold text-gray-400 bg-white/5 border border-white/10 hover:border-gray-600 transition-all"
                     >
                       Cancel
                     </button>
@@ -657,7 +657,7 @@ export default function ExpensesPage() {
             {/* Category Breakdown */}
             {categoryBreakdown.length > 0 && (
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 mb-10">
-                <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl border border-gray-800/50 hover:border-gray-700/50 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300 p-6">
+                <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 hover:border-white/20 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300 p-6">
                   <h2 className="text-lg font-semibold text-white mb-4">Spending by Category</h2>
                   <div className="space-y-3">
                     {categoryBreakdown.sort((a, b) => b.total - a.total).map((cat) => {
@@ -668,7 +668,7 @@ export default function ExpensesPage() {
                             <span className="text-sm font-medium text-gray-300">{cat.label}</span>
                             <span className="text-sm font-semibold text-white">{fmtCurrency(cat.total)}</span>
                           </div>
-                          <div className="h-2 bg-gray-800 rounded-full overflow-hidden">
+                          <div className="h-2 bg-white/10 rounded-full overflow-hidden">
                             <div
                               className="h-full bg-gradient-to-r from-amber-500 to-amber-400 rounded-full transition-all duration-500"
                               style={{ width: `${pct}%` }}
@@ -679,7 +679,7 @@ export default function ExpensesPage() {
                     })}
                   </div>
                 </div>
-                <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl border border-gray-800/50 hover:border-gray-700/50 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300 p-6 flex items-center justify-center">
+                <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 hover:border-white/20 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300 p-6 flex items-center justify-center">
                   <DonutChart
                     segments={categoryBreakdown.sort((a, b) => b.total - a.total).map((cat) => ({
                       label: cat.label,
@@ -696,8 +696,8 @@ export default function ExpensesPage() {
             )}
 
             {/* Expenses List */}
-            <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl border border-gray-800/50 hover:border-gray-700/50 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300">
-              <div className="p-6 border-b border-gray-800/50">
+            <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 hover:border-white/20 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300">
+              <div className="p-6 border-b border-white/10">
                 <h2 className="text-xl font-semibold text-white">
                   Expenses
                   <span className="ml-2 text-sm font-normal text-gray-500">({expenses.length})</span>
@@ -726,9 +726,9 @@ export default function ExpensesPage() {
                   </button>
                 </div>
               ) : (
-                <div className="divide-y divide-gray-800/50">
+                <div className="divide-y divide-white/10/50">
                   {expenses.map((expense) => (
-                    <div key={expense.id} className="p-4 hover:bg-gray-800/30 transition-all duration-200">
+                    <div key={expense.id} className="p-4 hover:bg-white/10/30 transition-all duration-200">
                       <div className="flex items-start gap-3">
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 mb-1">
@@ -770,7 +770,7 @@ export default function ExpensesPage() {
                         <div className="flex items-center gap-1 shrink-0">
                           <button
                             onClick={() => handleEdit(expense)}
-                            className="p-2 rounded-lg text-gray-400 hover:text-amber-500 hover:bg-gray-700 transition-colors"
+                            className="p-2 rounded-lg text-gray-400 hover:text-amber-500 hover:bg-white/10 transition-colors"
                             title="Edit"
                           >
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -779,7 +779,7 @@ export default function ExpensesPage() {
                           </button>
                           <button
                             onClick={() => handleDelete(expense.id)}
-                            className="p-2 rounded-lg text-gray-400 hover:text-red-400 hover:bg-gray-700 transition-colors"
+                            className="p-2 rounded-lg text-gray-400 hover:text-red-400 hover:bg-white/10 transition-colors"
                             title="Delete"
                           >
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -798,7 +798,7 @@ export default function ExpensesPage() {
           /* ==================== MILEAGE TAB ==================== */
           <>
             {userPlan !== "pro" ? (
-              <div className="relative overflow-hidden bg-gray-900/50 backdrop-blur-sm rounded-2xl border border-gray-800/50 hover:border-gray-700/50 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300 p-16 text-center">
+              <div className="relative overflow-hidden bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 hover:border-white/20 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300 p-16 text-center">
                 <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent pointer-events-none" />
                 <svg className="w-16 h-16 text-gray-700 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l5.447 2.724A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
@@ -817,19 +817,19 @@ export default function ExpensesPage() {
               <>
                 {/* Mileage Summary Cards */}
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10">
-                  <div className="relative overflow-hidden bg-gray-900/50 backdrop-blur-sm rounded-2xl p-5 border border-gray-800/50 hover:border-gray-700/50 hover:shadow-lg hover:shadow-blue-500/5 transition-all duration-300">
+                  <div className="relative overflow-hidden bg-white/5 backdrop-blur-sm rounded-2xl p-5 border border-white/10 hover:border-white/20 hover:shadow-lg hover:shadow-blue-500/5 transition-all duration-300">
                     <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent pointer-events-none" />
                     <p className="text-sm font-medium text-gray-400 mb-1">Total Distance</p>
                     <p className="text-2xl font-bold text-blue-400">{totalKm.toFixed(1)} km</p>
                     <p className="text-sm text-gray-500 mt-1">{TIME_FILTERS.find((f) => f.value === timeFilter)?.label}</p>
                   </div>
-                  <div className="relative overflow-hidden bg-gray-900/50 backdrop-blur-sm rounded-2xl p-5 border border-gray-800/50 hover:border-gray-700/50 hover:shadow-lg hover:shadow-emerald-500/5 transition-all duration-300">
+                  <div className="relative overflow-hidden bg-white/5 backdrop-blur-sm rounded-2xl p-5 border border-white/10 hover:border-white/20 hover:shadow-lg hover:shadow-emerald-500/5 transition-all duration-300">
                     <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent pointer-events-none" />
                     <p className="text-sm font-medium text-gray-400 mb-1">Tax Deduction</p>
                     <p className="text-2xl font-bold text-emerald-400">{fmtCurrency(totalDeduction)}</p>
                     <p className="text-sm text-gray-500 mt-1">at standard rates</p>
                   </div>
-                  <div className="relative overflow-hidden bg-gray-900/50 backdrop-blur-sm rounded-2xl p-5 border border-gray-800/50 hover:border-gray-700/50 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300">
+                  <div className="relative overflow-hidden bg-white/5 backdrop-blur-sm rounded-2xl p-5 border border-white/10 hover:border-white/20 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300">
                     <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent pointer-events-none" />
                     <p className="text-sm font-medium text-gray-400 mb-1">Billable</p>
                     <p className="text-2xl font-bold text-amber-400">{billableKm.toFixed(1)} km</p>
@@ -850,7 +850,7 @@ export default function ExpensesPage() {
 
                 {/* Time Filters */}
                 <div className="flex flex-wrap gap-3 mb-6">
-                  <div className="flex gap-1 bg-gray-900/50 rounded-xl p-1 border border-gray-800/50">
+                  <div className="flex gap-1 bg-white/5 rounded-xl p-1 border border-white/10">
                     {TIME_FILTERS.map((f) => (
                       <button
                         key={f.value}
@@ -869,7 +869,7 @@ export default function ExpensesPage() {
 
                 {/* Add Mileage Form */}
                 {showMileageForm && (
-                  <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl border border-gray-800/50 hover:border-gray-700/50 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300 p-6 mb-10">
+                  <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 hover:border-white/20 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300 p-6 mb-10">
                     <h2 className="text-lg font-semibold text-white mb-4">Log Mileage</h2>
                     <form onSubmit={handleMileageSubmit} className="space-y-4">
                       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -880,7 +880,7 @@ export default function ExpensesPage() {
                             required
                             value={mileageForm.date}
                             onChange={(e) => setMileageForm({ ...mileageForm, date: e.target.value })}
-                            className="w-full bg-gray-800/50 border border-gray-700/50 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20"
+                            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20"
                           />
                         </div>
                         <div>
@@ -891,7 +891,7 @@ export default function ExpensesPage() {
                             value={mileageForm.fromLocation}
                             onChange={(e) => setMileageForm({ ...mileageForm, fromLocation: e.target.value })}
                             placeholder="e.g. Office, Amsterdam"
-                            className="w-full bg-gray-800/50 border border-gray-700/50 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20"
+                            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20"
                           />
                         </div>
                         <div>
@@ -902,7 +902,7 @@ export default function ExpensesPage() {
                             value={mileageForm.toLocation}
                             onChange={(e) => setMileageForm({ ...mileageForm, toLocation: e.target.value })}
                             placeholder="e.g. Client site, Rotterdam"
-                            className="w-full bg-gray-800/50 border border-gray-700/50 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20"
+                            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20"
                           />
                         </div>
                         <div>
@@ -915,7 +915,7 @@ export default function ExpensesPage() {
                             value={mileageForm.distance}
                             onChange={(e) => setMileageForm({ ...mileageForm, distance: e.target.value })}
                             placeholder="0.0"
-                            className="w-full bg-gray-800/50 border border-gray-700/50 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20"
+                            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20"
                           />
                         </div>
                         <div>
@@ -926,7 +926,7 @@ export default function ExpensesPage() {
                             value={mileageForm.purpose}
                             onChange={(e) => setMileageForm({ ...mileageForm, purpose: e.target.value })}
                             placeholder="e.g. Client visit - John Smith"
-                            className="w-full bg-gray-800/50 border border-gray-700/50 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20"
+                            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20"
                           />
                         </div>
                         <div>
@@ -937,7 +937,7 @@ export default function ExpensesPage() {
                             step="0.01"
                             value={mileageForm.ratePerKm}
                             onChange={(e) => setMileageForm({ ...mileageForm, ratePerKm: e.target.value })}
-                            className="w-full bg-gray-800/50 border border-gray-700/50 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20"
+                            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20"
                           />
                         </div>
                       </div>
@@ -948,7 +948,7 @@ export default function ExpensesPage() {
                           <select
                             value={mileageForm.clientId}
                             onChange={(e) => setMileageForm({ ...mileageForm, clientId: e.target.value })}
-                            className="w-full bg-gray-800/50 border border-gray-700/50 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20"
+                            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20"
                           >
                             <option value="">No client</option>
                             {clients.map((c) => (
@@ -961,14 +961,14 @@ export default function ExpensesPage() {
                             type="checkbox"
                             checked={mileageForm.billable}
                             onChange={(e) => setMileageForm({ ...mileageForm, billable: e.target.checked })}
-                            className="w-4 h-4 rounded border-gray-600 bg-gray-800 text-amber-500 focus:ring-amber-500 focus:ring-offset-0"
+                            className="w-4 h-4 rounded border-gray-600 bg-white/10 text-amber-500 focus:ring-amber-500 focus:ring-offset-0"
                           />
                           <span className="text-sm text-gray-300">Billable to client</span>
                         </label>
                       </div>
 
                       {mileageForm.distance && (
-                        <div className="bg-gray-800/30 rounded-xl px-4 py-3 text-sm border border-gray-700/30">
+                        <div className="bg-white/10/30 rounded-xl px-4 py-3 text-sm border border-white/10/30">
                           <span className="text-gray-400">Deduction: </span>
                           <span className="text-emerald-400 font-semibold">
                             {fmtCurrency(parseFloat(mileageForm.distance || "0") * parseFloat(mileageForm.ratePerKm || "0.23"))}
@@ -987,7 +987,7 @@ export default function ExpensesPage() {
                         <button
                           type="button"
                           onClick={() => { setShowMileageForm(false); resetMileageForm(); }}
-                          className="px-6 py-2.5 rounded-xl font-semibold text-gray-400 bg-gray-800/50 border border-gray-700/50 hover:border-gray-600 transition-all"
+                          className="px-6 py-2.5 rounded-xl font-semibold text-gray-400 bg-white/5 border border-white/10 hover:border-gray-600 transition-all"
                         >
                           Cancel
                         </button>
@@ -997,8 +997,8 @@ export default function ExpensesPage() {
                 )}
 
                 {/* Mileage List */}
-                <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl border border-gray-800/50 hover:border-gray-700/50 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300">
-                  <div className="p-6 border-b border-gray-800/50">
+                <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 hover:border-white/20 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300">
+                  <div className="p-6 border-b border-white/10">
                     <h2 className="text-xl font-semibold text-white">
                       Mileage Log
                       <span className="ml-2 text-sm font-normal text-gray-500">({mileageEntries.length})</span>
@@ -1027,9 +1027,9 @@ export default function ExpensesPage() {
                       </button>
                     </div>
                   ) : (
-                    <div className="divide-y divide-gray-800/50">
+                    <div className="divide-y divide-white/10/50">
                       {mileageEntries.map((entry) => (
-                        <div key={entry.id} className="p-4 hover:bg-gray-800/30 transition-all duration-200">
+                        <div key={entry.id} className="p-4 hover:bg-white/10/30 transition-all duration-200">
                           <div className="flex items-start gap-3">
                             <div className="flex-1 min-w-0">
                               <div className="flex items-center gap-2 mb-1">
@@ -1058,7 +1058,7 @@ export default function ExpensesPage() {
                             <div className="flex items-center gap-1 shrink-0">
                               <button
                                 onClick={() => handleDeleteMileage(entry.id)}
-                                className="p-2 rounded-lg text-gray-400 hover:text-red-400 hover:bg-gray-700 transition-colors"
+                                className="p-2 rounded-lg text-gray-400 hover:text-red-400 hover:bg-white/10 transition-colors"
                                 title="Delete"
                               >
                                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1087,7 +1087,7 @@ export default function ExpensesPage() {
           <div className="relative max-w-2xl max-h-[80vh]" onClick={(e) => e.stopPropagation()}>
             <button
               onClick={() => setViewingReceipt(null)}
-              className="absolute -top-3 -right-3 w-8 h-8 bg-gray-800 border border-gray-700 rounded-full flex items-center justify-center text-gray-400 hover:text-white transition-colors z-10"
+              className="absolute -top-3 -right-3 w-8 h-8 bg-white/10 border border-white/10 rounded-full flex items-center justify-center text-gray-400 hover:text-white transition-colors z-10"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -1097,7 +1097,7 @@ export default function ExpensesPage() {
             <img
               src={viewingReceipt}
               alt="Receipt"
-              className="max-h-[80vh] rounded-xl border border-gray-700/50 object-contain"
+              className="max-h-[80vh] rounded-xl border border-white/10 object-contain"
             />
           </div>
         </div>

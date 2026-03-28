@@ -39,8 +39,8 @@ export default function DashboardInvoiceList({
   return (
     <BulkInvoiceActions invoices={recentInvoices.map((i) => ({ id: i.id, invoiceNumber: i.invoiceNumber, status: i.status }))}>
       {({ selectedIds, toggleSelect, toggleAll, allSelected }) => (
-        <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl border border-gray-800/50">
-          <div className="p-6 border-b border-gray-800/50 flex items-center justify-between">
+        <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10">
+          <div className="p-6 border-b border-white/10 flex items-center justify-between">
             <div className="flex items-center gap-3">
               {recentInvoices.length > 0 && (
                 <label className="flex items-center cursor-pointer" onClick={(e) => e.stopPropagation()}>
@@ -48,7 +48,7 @@ export default function DashboardInvoiceList({
                     type="checkbox"
                     checked={allSelected}
                     onChange={toggleAll}
-                    className="w-4 h-4 rounded border-gray-600 bg-gray-800 text-amber-500 focus:ring-amber-500 focus:ring-offset-0 cursor-pointer"
+                    className="w-4 h-4 rounded border-white/10 bg-white/10 text-amber-500 focus:ring-amber-500 focus:ring-offset-0 cursor-pointer"
                   />
                 </label>
               )}
@@ -104,11 +104,11 @@ export default function DashboardInvoiceList({
               </Link>
             </div>
           ) : (
-            <div className="divide-y divide-gray-800/50">
+            <div className="divide-y divide-white/10">
               {recentInvoices.map((invoice) => (
                 <div
                   key={invoice.id}
-                  className={`p-4 hover:bg-gray-800/50 transition-colors border-l-4 ${statusBorder[invoice.status] || "border-l-gray-600"} ${selectedIds.has(invoice.id) ? "bg-amber-500/5" : ""}`}
+                  className={`p-4 hover:bg-white/5 transition-colors border-l-4 ${statusBorder[invoice.status] || "border-l-gray-600"} ${selectedIds.has(invoice.id) ? "bg-amber-500/5" : ""}`}
                 >
                   <div className="flex items-center gap-3">
                     <label className="flex items-center cursor-pointer shrink-0" onClick={(e) => e.stopPropagation()}>
@@ -116,7 +116,7 @@ export default function DashboardInvoiceList({
                         type="checkbox"
                         checked={selectedIds.has(invoice.id)}
                         onChange={() => toggleSelect(invoice.id)}
-                        className="w-4 h-4 rounded border-gray-600 bg-gray-800 text-amber-500 focus:ring-amber-500 focus:ring-offset-0 cursor-pointer"
+                        className="w-4 h-4 rounded border-white/10 bg-white/10 text-amber-500 focus:ring-amber-500 focus:ring-offset-0 cursor-pointer"
                       />
                     </label>
                     <Link
@@ -177,7 +177,7 @@ export default function DashboardInvoiceList({
                     <a
                       href={`/api/invoices/${invoice.id}/pdf`}
                       target="_blank"
-                      className="p-2 rounded-lg text-gray-400 hover:text-amber-500 hover:bg-gray-700 transition-colors"
+                      className="p-2 rounded-lg text-gray-400 hover:text-amber-500 hover:bg-white/10 transition-colors"
                       title="Download PDF"
                       aria-label="Download PDF"
                     >

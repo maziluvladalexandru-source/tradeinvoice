@@ -162,7 +162,7 @@ export default function InvoicesListPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-950">
+    <div className="min-h-screen bg-[#0a0f1e] premium-glow">
       <Navbar />
       <main className="max-w-6xl mx-auto px-4 py-8 pb-24 md:pb-8">
         {/* Header */}
@@ -190,13 +190,13 @@ export default function InvoicesListPage() {
               placeholder="Search by invoice number or client name..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-800/50 text-sm focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-gray-900/50 text-white placeholder-gray-500 transition-all"
+              className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-white/10 text-sm focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-white/5 text-white placeholder-gray-500 transition-all"
             />
           </div>
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="px-4 py-2.5 rounded-xl border border-gray-800/50 text-sm focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-gray-900/50 text-white transition-all"
+            className="px-4 py-2.5 rounded-xl border border-white/10 text-sm focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-white/5 text-white transition-all"
           >
             <option value="all">All statuses</option>
             <option value="draft">Draft</option>
@@ -209,13 +209,13 @@ export default function InvoicesListPage() {
 
         {/* Sort buttons */}
         <div className="flex gap-2 mb-4">
-          <button onClick={() => toggleSort("date")} className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${sortField === "date" ? "bg-amber-500/15 text-amber-400" : "text-gray-400 hover:text-white hover:bg-gray-800/50"}`}>
+          <button onClick={() => toggleSort("date")} className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${sortField === "date" ? "bg-amber-500/15 text-amber-400" : "text-gray-400 hover:text-white hover:bg-white/5"}`}>
             Date <SortIcon field="date" />
           </button>
-          <button onClick={() => toggleSort("amount")} className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${sortField === "amount" ? "bg-amber-500/15 text-amber-400" : "text-gray-400 hover:text-white hover:bg-gray-800/50"}`}>
+          <button onClick={() => toggleSort("amount")} className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${sortField === "amount" ? "bg-amber-500/15 text-amber-400" : "text-gray-400 hover:text-white hover:bg-white/5"}`}>
             Amount <SortIcon field="amount" />
           </button>
-          <button onClick={() => toggleSort("status")} className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${sortField === "status" ? "bg-amber-500/15 text-amber-400" : "text-gray-400 hover:text-white hover:bg-gray-800/50"}`}>
+          <button onClick={() => toggleSort("status")} className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${sortField === "status" ? "bg-amber-500/15 text-amber-400" : "text-gray-400 hover:text-white hover:bg-white/5"}`}>
             Status <SortIcon field="status" />
           </button>
           <span className="ml-auto text-xs text-gray-500 self-center">
@@ -224,7 +224,7 @@ export default function InvoicesListPage() {
         </div>
 
         {/* Invoice list */}
-        <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl border border-gray-800/50 overflow-hidden">
+        <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 overflow-hidden">
           {loading ? (
             <div className="p-12 text-center">
               <div className="w-8 h-8 border-2 border-amber-500 border-t-transparent rounded-full animate-spin mx-auto" />
@@ -239,11 +239,11 @@ export default function InvoicesListPage() {
               </p>
             </div>
           ) : (
-            <div className="divide-y divide-gray-800/50">
+            <div className="divide-y divide-white/10">
               {filtered.map((invoice) => (
                 <div
                   key={invoice.id}
-                  className={`p-4 hover:bg-gray-800/30 transition-colors border-l-4 ${statusBorder[invoice.status] || "border-l-gray-600"}`}
+                  className={`p-4 hover:bg-white/5 transition-colors border-l-4 ${statusBorder[invoice.status] || "border-l-gray-600"}`}
                 >
                   <div className="flex items-center gap-3">
                     <Link
@@ -286,7 +286,7 @@ export default function InvoicesListPage() {
                     <div className="flex items-center gap-1 ml-2">
                       <Link
                         href={`/invoices/${invoice.id}`}
-                        className="p-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800/50 transition-colors"
+                        className="p-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-colors"
                         title="View"
                       >
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -297,7 +297,7 @@ export default function InvoicesListPage() {
                       <a
                         href={`/api/invoices/${invoice.id}/pdf`}
                         target="_blank"
-                        className="p-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800/50 transition-colors"
+                        className="p-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-colors"
                         title="Download PDF"
                       >
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -308,7 +308,7 @@ export default function InvoicesListPage() {
                         <button
                           onClick={() => handleMarkPaid(invoice.id)}
                           disabled={markingPaid === invoice.id}
-                          className="p-1.5 rounded-lg text-gray-400 hover:text-emerald-400 hover:bg-gray-800/50 transition-colors disabled:opacity-50"
+                          className="p-1.5 rounded-lg text-gray-400 hover:text-emerald-400 hover:bg-white/5 transition-colors disabled:opacity-50"
                           title="Mark as paid"
                         >
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -319,7 +319,7 @@ export default function InvoicesListPage() {
                       <button
                         onClick={() => handleDuplicate(invoice.id)}
                         disabled={duplicating === invoice.id}
-                        className="p-1.5 rounded-lg text-gray-400 hover:text-amber-400 hover:bg-gray-800/50 transition-colors disabled:opacity-50"
+                        className="p-1.5 rounded-lg text-gray-400 hover:text-amber-400 hover:bg-white/5 transition-colors disabled:opacity-50"
                         title="Duplicate"
                       >
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

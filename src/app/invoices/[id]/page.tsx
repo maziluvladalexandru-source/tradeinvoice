@@ -206,7 +206,7 @@ export default function InvoiceDetailPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-950">
+      <div className="min-h-screen bg-[#0a0f1e]">
         <Navbar />
         <div className="flex items-center justify-center py-32">
           <div className="flex flex-col items-center gap-4">
@@ -228,7 +228,7 @@ export default function InvoiceDetailPage() {
   ].filter((e) => e.always || e.date);
 
   return (
-    <div className="min-h-screen bg-gray-950">
+    <div className="min-h-screen bg-[#0a0f1e] premium-glow">
       <Navbar />
       <div className="max-w-4xl mx-auto px-4 py-10">
         <Link
@@ -381,7 +381,7 @@ export default function InvoiceDetailPage() {
           <a
             href={`/api/invoices/${invoice.id}/pdf`}
             target="_blank"
-            className="bg-gray-800/50 text-gray-300 px-6 py-3 rounded-xl font-semibold text-lg hover:bg-gray-700/50 border border-gray-700/50 transition-all duration-200 hover:scale-[1.02] backdrop-blur-sm"
+            className="bg-white/5 text-gray-300 px-6 py-3 rounded-xl font-semibold text-lg hover:bg-white/10/50 border border-white/10 transition-all duration-200 hover:scale-[1.02] backdrop-blur-sm"
           >
             View PDF
           </a>
@@ -408,8 +408,8 @@ export default function InvoiceDetailPage() {
         </div>
 
         {/* Invoice details */}
-        <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl border border-gray-800/50 overflow-hidden mb-10 shadow-xl shadow-black/20">
-          <div className="p-8 border-b border-gray-800/50">
+        <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 overflow-hidden mb-10 shadow-xl shadow-black/20">
+          <div className="p-8 border-b border-white/10">
             <div className="grid md:grid-cols-2 gap-8">
               <div>
                 <h3 className="text-xs uppercase tracking-wide text-gray-500 mb-2">
@@ -480,16 +480,16 @@ export default function InvoiceDetailPage() {
           {/* Line items table */}
           <table className="w-full">
             <thead>
-              <tr className="bg-gray-800/30 text-xs uppercase tracking-wider text-gray-500">
+              <tr className="bg-white/10/30 text-xs uppercase tracking-wider text-gray-500">
                 <th className="px-6 py-4 text-left font-semibold">Description</th>
                 <th className="px-6 py-4 text-center font-semibold">Qty</th>
                 <th className="px-6 py-4 text-right font-semibold">Unit Price</th>
                 <th className="px-6 py-4 text-right font-semibold">Amount</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-800/50">
+            <tbody className="divide-y divide-white/10/50">
               {invoice.lineItems.map((item, idx) => (
-                <tr key={item.id} className={`transition-colors hover:bg-gray-800/30 ${idx % 2 === 1 ? "bg-gray-800/10" : ""}`}>
+                <tr key={item.id} className={`transition-colors hover:bg-white/10/30 ${idx % 2 === 1 ? "bg-white/10/10" : ""}`}>
                   <td className="px-6 py-4 text-white">
                     {item.description}
                   </td>
@@ -508,7 +508,7 @@ export default function InvoiceDetailPage() {
           </table>
 
           {/* Totals */}
-          <div className="p-8 border-t border-gray-800/50 bg-gray-800/20">
+          <div className="p-8 border-t border-white/10 bg-white/10/20">
             <div className="max-w-xs ml-auto space-y-2">
               <div className="flex justify-between text-gray-400">
                 <span>Subtotal</span>
@@ -520,7 +520,7 @@ export default function InvoiceDetailPage() {
                   <span>{fmt(invoice.taxAmount)}</span>
                 </div>
               )}
-              <div className="flex justify-between text-xl font-bold text-white pt-3 border-t border-gray-700/50">
+              <div className="flex justify-between text-xl font-bold text-white pt-3 border-t border-white/10">
                 <span>Total</span>
                 <span>{fmt(invoice.total)}</span>
               </div>
@@ -564,7 +564,7 @@ export default function InvoiceDetailPage() {
 
           {/* Bank Details */}
           {invoice.user.bankDetails && (
-            <div className="p-8 border-t border-gray-800/50">
+            <div className="p-8 border-t border-white/10">
               <h3 className="text-xs uppercase tracking-wider text-gray-500 mb-3 font-semibold">
                 Payment Information
               </h3>
@@ -590,7 +590,7 @@ export default function InvoiceDetailPage() {
 
           {/* Payment Notes */}
           {invoice.paymentNotes && (
-            <div className="p-8 border-t border-gray-800/50">
+            <div className="p-8 border-t border-white/10">
               <h3 className="text-xs uppercase tracking-wider text-gray-500 mb-3 font-semibold">
                 Payment Notes
               </h3>
@@ -600,7 +600,7 @@ export default function InvoiceDetailPage() {
 
           {/* Notes to Client */}
           {invoice.notesToClient && (
-            <div className="p-8 border-t border-gray-800/50">
+            <div className="p-8 border-t border-white/10">
               <h3 className="text-xs uppercase tracking-wider text-gray-500 mb-3 font-semibold">
                 Notes to Client
               </h3>
@@ -610,7 +610,7 @@ export default function InvoiceDetailPage() {
 
           {/* Reminder Toggle (Pro) */}
           {invoice.status !== "paid" && invoice.status !== "draft" && (
-            <div className="p-8 border-t border-gray-800/50">
+            <div className="p-8 border-t border-white/10">
               <div className="flex items-center justify-between">
                 <div>
                   <h3 className="text-sm font-medium text-white flex items-center gap-2">
@@ -640,8 +640,8 @@ export default function InvoiceDetailPage() {
         </div>
 
         {/* Timeline / Activity */}
-        <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl border border-gray-800/50 overflow-hidden shadow-xl shadow-black/20">
-          <div className="p-8 border-b border-gray-800/50">
+        <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 overflow-hidden shadow-xl shadow-black/20">
+          <div className="p-8 border-b border-white/10">
             <h2 className="text-lg font-semibold text-white tracking-tight">Activity Timeline</h2>
           </div>
           <div className="p-8">
@@ -653,7 +653,7 @@ export default function InvoiceDetailPage() {
                   <div key={event.icon} className="flex gap-4 relative">
                     {/* Vertical line */}
                     {!isLast && (
-                      <div className={`absolute left-[15px] top-8 w-0.5 h-full ${isCompleted ? "bg-gradient-to-b from-gray-600 to-gray-700" : "bg-gray-800/50"}`} />
+                      <div className={`absolute left-[15px] top-8 w-0.5 h-full ${isCompleted ? "bg-gradient-to-b from-gray-600 to-gray-700" : "bg-white/5"}`} />
                     )}
                     {/* Dot */}
                     <div className="relative z-10 flex-shrink-0">
@@ -668,7 +668,7 @@ export default function InvoiceDetailPage() {
                           ? "bg-amber-500/20 ring-1 ring-amber-500/40 shadow-lg shadow-amber-500/10"
                           : isCompleted
                           ? "bg-gray-700 ring-1 ring-gray-600"
-                          : "bg-gray-800/50 ring-1 ring-gray-700/50"
+                          : "bg-white/5 ring-1 ring-gray-700/50"
                       }`}>
                         {event.icon === "create" && (
                           <svg className="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -717,7 +717,7 @@ export default function InvoiceDetailPage() {
         {/* Mark as Paid Modal */}
         {showPaidModal && (
           <div className="fixed inset-0 bg-black/70 backdrop-blur-md z-50 flex items-center justify-center p-4">
-            <div className="bg-gray-900/90 backdrop-blur-sm rounded-2xl border border-gray-800/50 p-8 w-full max-w-sm shadow-2xl shadow-black/40">
+            <div className="bg-white/5/90 backdrop-blur-sm rounded-2xl border border-white/10 p-8 w-full max-w-sm shadow-2xl shadow-black/40">
               <h3 className="text-lg font-semibold text-white mb-1 tracking-tight">Record Payment</h3>
               <p className="text-sm text-gray-400 mb-6">
                 {invoice.paidAmount > 0
@@ -731,14 +731,14 @@ export default function InvoiceDetailPage() {
                 step="0.01"
                 value={paymentAmount}
                 onChange={(e) => setPaymentAmount(Number(e.target.value))}
-                className="w-full px-4 py-3 rounded-xl border border-gray-700/50 text-lg focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-gray-800/50 text-white mb-4 transition-colors"
+                className="w-full px-4 py-3 rounded-xl border border-white/10 text-lg focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-white/5 text-white mb-4 transition-colors"
               />
               <label className="block text-sm font-medium text-gray-400 mb-1">Payment Date</label>
               <input
                 type="date"
                 value={paidDate}
                 onChange={(e) => setPaidDate(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl border border-gray-700/50 text-lg focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-gray-800/50 text-white mb-6 transition-colors"
+                className="w-full px-4 py-3 rounded-xl border border-white/10 text-lg focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-white/5 text-white mb-6 transition-colors"
               />
               {paymentAmount > 0 && paymentAmount < (invoice.total - (invoice.paidAmount || 0)) && (
                 <p className="text-sm text-amber-400 mb-4">This is a partial payment. Status will remain until fully paid.</p>
@@ -753,7 +753,7 @@ export default function InvoiceDetailPage() {
                 </button>
                 <button
                   onClick={() => setShowPaidModal(false)}
-                  className="px-4 py-3 rounded-xl text-gray-400 hover:text-white hover:bg-gray-800/50 transition-all duration-200"
+                  className="px-4 py-3 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 transition-all duration-200"
                 >
                   Cancel
                 </button>
