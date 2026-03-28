@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { formatCurrency, formatDate } from "@/lib/utils";
+import { getCountryConfig, formatComplianceFooter } from "@/lib/country-config";
 import { notFound } from "next/navigation";
 import PayNowButton from "./PayNowButton";
 import ViewTracker from "./ViewTracker";
@@ -28,6 +29,7 @@ export default async function PublicInvoicePage({
   const isQuote = invoice.type === "quote";
   const docLabel = isQuote ? "Quote" : "Invoice";
   const logoUrl = invoice.user.logoUrl || null;
+  const countryConfig = getCountryConfig(invoice.invoiceCountry || "NL");
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -111,8 +113,8 @@ export default async function PublicInvoicePage({
               </div>
               {(invoice.user.kvkNumber || invoice.user.vatNumber) && (
                 <div className="text-xs text-gray-400 sm:text-right space-y-0.5 pl-[4.5rem] sm:pl-0">
-                  {invoice.user.kvkNumber && <p>KVK: {invoice.user.kvkNumber}</p>}
-                  {invoice.user.vatNumber && <p>BTW: {invoice.user.vatNumber}</p>}
+                  {invoice.user.kvkNumber && <p>{countryConfig.businessRegLabel}: {invoice.user.kvkNumber}</p>}
+                  {invoice.user.vatNumber && <p>{countryConfig.taxIdLabel}: {invoice.user.vatNumber}</p>}
                 </div>
               )}
             </div>
@@ -137,9 +139,16 @@ export default async function PublicInvoicePage({
                   </div>
                   {invoice.serviceDate && (
                     <div className="flex gap-3">
-                      <span className="text-gray-400 w-16">Service</span>
+                      <span className="text-gray-400 w-20">{countryConfig.serviceDateLabel}</span>
                       <span className="text-gray-700 font-medium">{formatDate(invoice.serviceDate)}</span>
                     </div>
+                  )}
+                  {invoice.invoiceCountry === "DE" &&
+                    invoice.serviceDate &&
+                    formatDate(invoice.serviceDate) === formatDate(invoice.createdAt) && (
+                    <p className="text-xs text-amber-600 italic ml-0">
+                      {countryConfig.serviceDateNote}
+                    </p>
                   )}
                   <div className="flex gap-3">
                     <span className={`w-16 ${isOverdue && !isPaid ? "text-red-500" : "text-gray-400"}`}>Due</span>
@@ -159,7 +168,7 @@ export default async function PublicInvoicePage({
                   <p className="text-gray-500 text-sm mt-0.5 whitespace-pre-line">{invoice.client.address}</p>
                 )}
                 {invoice.client.vatNumber && (
-                  <p className="text-gray-400 text-xs mt-1">VAT: {invoice.client.vatNumber}</p>
+                  <p className="text-gray-400 text-xs mt-1">{countryConfig.taxIdLabel}: {invoice.client.vatNumber}</p>
                 )}
               </div>
             </div>

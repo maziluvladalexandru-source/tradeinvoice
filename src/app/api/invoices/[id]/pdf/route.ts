@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { formatCurrency, formatDate } from "@/lib/utils";
+import { getCountryConfig, formatComplianceFooter } from "@/lib/country-config";
 
 function escapeHtml(text: string): string {
   return text
@@ -158,6 +159,9 @@ export async function GET(
   const lang = translations[invoice.language] || translations.en;
   const t = (key: string) => lang[key] || translations.en[key] || key;
 
+  // Country-aware config
+  const countryConfig = getCountryConfig(invoice.invoiceCountry || "NL");
+
   const lineItemsHtml = invoice.lineItems
     .map(
       (item) => `
@@ -287,8 +291,8 @@ export async function GET(
               ${invoice.user.businessAddress ? `${escapeHtml(invoice.user.businessAddress)}<br>` : ""}
               ${invoice.user.businessPhone ? `${escapeHtml(invoice.user.businessPhone)}<br>` : ""}
               ${escapeHtml(invoice.user.email)}
-              ${kvkNumber ? `<br>KVK: ${escapeHtml(kvkNumber)}` : ""}
-              ${btwNumber ? `<br>BTW: ${escapeHtml(btwNumber)}` : ""}
+              ${kvkNumber ? `<br>${escapeHtml(countryConfig.businessRegLabel)}: ${escapeHtml(kvkNumber)}` : ""}
+              ${btwNumber ? `<br>${escapeHtml(countryConfig.taxIdLabel)}: ${escapeHtml(btwNumber)}` : ""}
             </div>
           </div>
           <div style="text-align: right;">
@@ -313,7 +317,7 @@ export async function GET(
             <p>${escapeHtml(invoice.client.email)}</p>
             ${invoice.client.address ? `<p>${escapeHtml(invoice.client.address)}</p>` : ""}
             ${invoice.client.phone ? `<p>${escapeHtml(invoice.client.phone)}</p>` : ""}
-            ${invoice.client.vatNumber ? `<p>VAT: ${escapeHtml(invoice.client.vatNumber)}</p>` : ""}
+            ${invoice.client.vatNumber ? `<p>${escapeHtml(countryConfig.taxIdLabel)}: ${escapeHtml(invoice.client.vatNumber)}</p>` : ""}
           </div>
         </div>
 
@@ -325,8 +329,14 @@ export async function GET(
               <div class="meta-value">${formatDate(invoice.createdAt)}</div>
             </div>
             ${invoice.serviceDate ? `<div class="meta-row">
-              <div class="meta-label">${t("serviceDate")}</div>
-              <div class="meta-value">${formatDate(invoice.serviceDate)}</div>
+              <div class="meta-label">${escapeHtml(countryConfig.serviceDateLabel)}</div>
+              <div class="meta-value">${formatDate(invoice.serviceDate)}${
+                invoice.invoiceCountry === "DE" &&
+                invoice.serviceDate &&
+                formatDate(invoice.serviceDate) === formatDate(invoice.createdAt)
+                  ? `<br><span style="font-size: 11px; color: #6b7280; font-style: italic;">${escapeHtml(countryConfig.serviceDateNote)}</span>`
+                  : ""
+              }</div>
             </div>` : ""}
             <div class="meta-row">
               <div class="meta-label">${t("dueDate")}</div>
@@ -404,7 +414,7 @@ export async function GET(
         ${invoice.reverseCharge ? `
         <!-- Reverse Charge Notice -->
         <div class="reverse-charge">
-          <p>${t("reverseChargeNote")}</p>
+          <p>${escapeHtml(countryConfig.reverseChargeText)}</p>
         </div>` : ""}
 
         <!-- Payment Instructions -->
@@ -421,8 +431,10 @@ export async function GET(
         <!-- Footer -->
         <div class="footer">
           <p class="business-name">${businessName}</p>
-          ${kvkNumber ? `<p>KVK: ${escapeHtml(kvkNumber)}</p>` : ""}
-          ${btwNumber ? `<p>BTW: ${escapeHtml(btwNumber)}</p>` : ""}
+          ${(kvkNumber || btwNumber) ? `<p>${escapeHtml(formatComplianceFooter(countryConfig, kvkNumber, btwNumber))}</p>` : ""}
+          ${invoice.invoiceCountry === "BE" && invoice.type === "credit_note" && invoice.referenceInvoice
+            ? `<p style="color: #92400e; font-weight: 600; margin-top: 8px;">${escapeHtml(countryConfig.creditNoteText)}</p>`
+            : ""}
           <p>${t("thankYou")}</p>
         </div>
 

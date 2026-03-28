@@ -60,8 +60,12 @@ export async function POST(req: NextRequest) {
       clientId, description, dueDate, lineItems, taxRate, paymentNotes,
       notesToClient, serviceDate, invoiceNumber, type, currency,
       isRecurring, recurringInterval, reverseCharge, referenceInvoice, language,
-      invoiceTheme,
+      invoiceTheme, invoiceCountry,
     } = await req.json();
+
+    // Validate invoiceCountry
+    const validCountries = ["NL", "UK", "DE", "BE"];
+    const validatedCountry = invoiceCountry && validCountries.includes(invoiceCountry) ? invoiceCountry : "NL";
 
     if (!clientId || !lineItems?.length || !dueDate) {
       return NextResponse.json(
@@ -160,6 +164,7 @@ export async function POST(req: NextRequest) {
         recurringNextDate,
         reverseCharge: !!reverseCharge,
         referenceInvoice: referenceInvoice || null,
+        invoiceCountry: validatedCountry,
         language: language || "en",
         invoiceTheme: invoiceTheme && ["classic", "modern", "minimal"].includes(invoiceTheme) ? invoiceTheme : "classic",
         lineItems: {

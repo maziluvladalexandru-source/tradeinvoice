@@ -4,6 +4,8 @@ import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import UpgradeModal, { ProBadge } from "@/components/UpgradeModal";
+import { COUNTRY_CONFIGS, getCountryConfig, formatComplianceFooter } from "@/lib/country-config";
+import type { CountryConfig } from "@/lib/country-config";
 
 interface Client {
   id: string;
@@ -66,6 +68,7 @@ function InvoicePreview({
   selectedClient,
   referenceInvoice,
   user,
+  invoiceCountry,
 }: {
   invoiceNumber: string;
   invoiceType: string;
@@ -81,7 +84,9 @@ function InvoicePreview({
   selectedClient: Client | undefined;
   referenceInvoice: string;
   user: UserProfile | null;
+  invoiceCountry: string;
 }) {
+  const countryConfig = getCountryConfig(invoiceCountry);
   const fmt = (n: number) =>
     new Intl.NumberFormat("en-IE", { style: "currency", currency }).format(n);
 
@@ -139,8 +144,8 @@ function InvoicePreview({
         </div>
         {(user?.kvkNumber || user?.vatNumber) && (
           <div className="text-[10px] text-gray-400 text-right space-y-0.5 mt-1">
-            {user.kvkNumber && <p>KVK: {user.kvkNumber}</p>}
-            {user.vatNumber && <p>BTW: {user.vatNumber}</p>}
+            {user.kvkNumber && <p>{countryConfig.businessRegLabel}: {user.kvkNumber}</p>}
+            {user.vatNumber && <p>{countryConfig.taxIdLabel}: {user.vatNumber}</p>}
           </div>
         )}
       </header>
@@ -170,11 +175,16 @@ function InvoicePreview({
               </div>
               {serviceDate && (
                 <div className="flex gap-2">
-                  <span className="text-gray-400 shrink-0">Service</span>
+                  <span className="text-gray-400 shrink-0">{countryConfig.serviceDateLabel}</span>
                   <span className="text-gray-700 font-medium whitespace-nowrap">
                     {fmtDate(serviceDate)}
                   </span>
                 </div>
+              )}
+              {invoiceCountry === "DE" && serviceDate && serviceDate === today && (
+                <p className="text-[10px] text-amber-600 italic mt-0.5">
+                  {countryConfig.serviceDateNote}
+                </p>
               )}
               <div className="flex gap-2">
                 <span className="text-gray-400 shrink-0">Due</span>
@@ -306,7 +316,7 @@ function InvoicePreview({
             {reverseCharge && (
               <div className="w-full max-w-[200px]">
                 <p className="text-[10px] text-amber-600 italic">
-                  VAT reverse-charged
+                  {countryConfig.reverseChargeText}
                 </p>
               </div>
             )}
@@ -352,9 +362,12 @@ function InvoicePreview({
       <div className="px-6 py-3 border-t border-gray-100 bg-gray-50/30">
         {(user?.kvkNumber || user?.vatNumber) && (
           <p className="text-[10px] text-gray-400 text-center mb-1">
-            {user.kvkNumber && <>KVK: {user.kvkNumber}</>}
-            {user.kvkNumber && user.vatNumber && <> | </>}
-            {user.vatNumber && <>BTW: {user.vatNumber}</>}
+            {formatComplianceFooter(countryConfig, user?.kvkNumber || null, user?.vatNumber || null)}
+          </p>
+        )}
+        {invoiceCountry === "BE" && invoiceType === "credit_note" && referenceInvoice && (
+          <p className="text-[10px] text-amber-600 text-center mb-1">
+            {countryConfig.creditNoteText}
           </p>
         )}
         <p className="text-[10px] text-gray-400 text-center">
@@ -400,6 +413,7 @@ function NewInvoiceForm() {
   const [recurringInterval, setRecurringInterval] = useState("monthly");
   const [reverseCharge, setReverseCharge] = useState(false);
   const [referenceInvoice, setReferenceInvoice] = useState("");
+  const [invoiceCountry, setInvoiceCountry] = useState("NL");
   const [language, setLanguage] = useState("en");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -548,6 +562,7 @@ function NewInvoiceForm() {
           reverseCharge,
           referenceInvoice:
             invoiceType === "credit_note" ? referenceInvoice || null : null,
+          invoiceCountry,
           language,
           invoiceTheme: isPro ? invoiceTheme : "classic",
           lineItems: lineItems.filter(
@@ -612,6 +627,7 @@ function NewInvoiceForm() {
           reverseCharge,
           referenceInvoice:
             invoiceType === "credit_note" ? referenceInvoice || null : null,
+          invoiceCountry,
           language,
           invoiceTheme: isPro ? invoiceTheme : "classic",
           lineItems: lineItems.filter(
@@ -705,8 +721,33 @@ function NewInvoiceForm() {
             )}
 
             <div className="space-y-5">
-              {/* Type & Currency */}
+              {/* Country & Type & Currency */}
               <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl p-5 border border-gray-800/50">
+                {/* Country Selector */}
+                <div className="mb-3">
+                  <label className="block text-xs font-medium text-gray-400 mb-1">
+                    Invoice Country
+                  </label>
+                  <select
+                    value={invoiceCountry}
+                    onChange={(e) => {
+                      const code = e.target.value;
+                      setInvoiceCountry(code);
+                      const config = getCountryConfig(code);
+                      setCurrency(config.defaultCurrency);
+                      // Set tax rate to first (standard) VAT rate
+                      setTaxRate(config.vatRates[0].rate);
+                    }}
+                    className="w-full px-3 py-2.5 rounded-xl border border-gray-800/50 text-sm focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 transition-all outline-none bg-gray-900/80 text-white"
+                  >
+                    {Object.values(COUNTRY_CONFIGS).map((c) => (
+                      <option key={c.countryCode} value={c.countryCode}>
+                        {c.flag} {c.countryName}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
                 <div className="grid grid-cols-2 gap-3">
                   <div>
                     <label className="block text-xs font-medium text-gray-400 mb-1">
@@ -852,8 +893,7 @@ function NewInvoiceForm() {
                     </div>
                     {reverseCharge && (
                       <p className="mt-1.5 text-xs text-amber-400">
-                        Tax rate set to 0%. &quot;VAT reverse-charged (BTW
-                        verlegd)&quot; will appear on the invoice.
+                        Tax rate set to 0%. &quot;{getCountryConfig(invoiceCountry).reverseChargeText}&quot; will appear on the invoice.
                       </p>
                     )}
                   </div>
@@ -1019,15 +1059,23 @@ function NewInvoiceForm() {
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   <div>
                     <label className="block text-xs font-medium text-gray-400 mb-1">
-                      Service Date
+                      {getCountryConfig(invoiceCountry).serviceDateLabel}
+                      {invoiceCountry === "DE" && <span className="text-red-500"> *</span>}
                     </label>
                     <input
                       type="date"
                       value={serviceDate}
                       onChange={(e) => setServiceDate(e.target.value)}
-                      className="w-full px-3 py-2.5 rounded-xl border border-gray-800/50 text-sm focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 transition-all outline-none bg-gray-900/80 text-white appearance-none [color-scheme:dark] [&::-webkit-calendar-picker-indicator]:opacity-70 [&::-webkit-calendar-picker-indicator]:invert"
+                      className={`w-full px-3 py-2.5 rounded-xl border text-sm focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 transition-all outline-none bg-gray-900/80 text-white appearance-none [color-scheme:dark] [&::-webkit-calendar-picker-indicator]:opacity-70 [&::-webkit-calendar-picker-indicator]:invert ${
+                        invoiceCountry === "DE" && !serviceDate ? "border-amber-500/50" : "border-gray-800/50"
+                      }`}
                       style={{ minHeight: "44px" }}
                     />
+                    {invoiceCountry === "DE" && !serviceDate && (
+                      <p className="text-xs text-amber-400 mt-1">
+                        Required for German invoices (Leistungsdatum)
+                      </p>
+                    )}
                   </div>
                   <div>
                     <label className="block text-xs font-medium text-gray-400 mb-1">
@@ -1059,12 +1107,9 @@ function NewInvoiceForm() {
                   </div>
                   <div>
                     <label className="block text-xs font-medium text-gray-400 mb-1">
-                      Tax Rate (%)
+                      VAT Rate
                     </label>
-                    <input
-                      type="number"
-                      min="0"
-                      max="100"
+                    <select
                       value={taxRate}
                       onChange={(e) => setTaxRate(Number(e.target.value))}
                       disabled={reverseCharge}
@@ -1072,7 +1117,13 @@ function NewInvoiceForm() {
                         reverseCharge ? "opacity-50 cursor-not-allowed" : ""
                       }`}
                       style={{ minHeight: "44px" }}
-                    />
+                    >
+                      {getCountryConfig(invoiceCountry).vatRates.map((vr) => (
+                        <option key={vr.rate} value={vr.rate}>
+                          {vr.name}
+                        </option>
+                      ))}
+                    </select>
                     {reverseCharge && (
                       <p className="text-xs text-amber-400 mt-1">
                         Disabled (reverse charge)
@@ -1375,6 +1426,7 @@ function NewInvoiceForm() {
                   selectedClient={selectedClient}
                   referenceInvoice={referenceInvoice}
                   user={user}
+                  invoiceCountry={invoiceCountry}
                 />
               </div>
             </div>

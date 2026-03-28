@@ -87,6 +87,7 @@ model Invoice {
   reverseCharge Boolean  @default(false)
   referenceInvoice String? // Original invoice number for credit notes
   invoiceTheme  String   @default("classic") // classic | modern | minimal
+  invoiceCountry String  @default("NL") // NL, UK, DE, BE
   language      String   @default("en") // en | nl | de
   paidAmount    Float    @default(0) // Partial payment tracking
   createdAt     DateTime @default(now())
