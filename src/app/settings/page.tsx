@@ -30,6 +30,15 @@ interface User {
   invoiceCount: number;
 }
 
+interface TeamMember {
+  id: string;
+  email: string;
+  name: string | null;
+  role: string;
+  acceptedAt: string | null;
+  invitedAt: string;
+}
+
 interface BankDetailsStructured {
   iban: string;
   bankName: string;
@@ -97,6 +106,15 @@ function SettingsContent() {
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const [upgradeFeature, setUpgradeFeature] = useState("");
 
+  // Team state
+  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
+  const [teamLoading, setTeamLoading] = useState(false);
+  const [showInviteForm, setShowInviteForm] = useState(false);
+  const [inviteEmail, setInviteEmail] = useState("");
+  const [inviteName, setInviteName] = useState("");
+  const [inviteRole, setInviteRole] = useState("member");
+  const [inviting, setInviting] = useState(false);
+
   const isPro = user?.plan === "pro";
 
   function showProPrompt(feature: string) {
@@ -128,6 +146,60 @@ function SettingsContent() {
       .catch(() => router.push("/auth/login"))
       .finally(() => setLoading(false));
   }, [router]);
+
+  useEffect(() => {
+    if (user?.plan === "pro") {
+      setTeamLoading(true);
+      fetch("/api/team").then((r) => r.json()).then((data) => {
+        if (Array.isArray(data)) setTeamMembers(data);
+      }).catch(() => {}).finally(() => setTeamLoading(false));
+    }
+  }, [user?.plan]);
+
+  async function handleInvite(e: React.FormEvent) {
+    e.preventDefault();
+    setInviting(true);
+    try {
+      const res = await fetch("/api/team/invite", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: inviteEmail, name: inviteName || undefined, role: inviteRole }),
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        toast(data.error || "Failed to invite", "error");
+        return;
+      }
+      const member = await res.json();
+      setTeamMembers((prev) => [member, ...prev]);
+      setInviteEmail("");
+      setInviteName("");
+      setInviteRole("member");
+      setShowInviteForm(false);
+      toast("Invitation sent!");
+    } catch {
+      toast("Failed to send invite", "error");
+    } finally {
+      setInviting(false);
+    }
+  }
+
+  async function handleRemoveMember(id: string) {
+    if (!confirm("Remove this team member?")) return;
+    try {
+      const res = await fetch("/api/team", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id }),
+      });
+      if (res.ok) {
+        setTeamMembers((prev) => prev.filter((m) => m.id !== id));
+        toast("Team member removed");
+      }
+    } catch {
+      toast("Failed to remove member", "error");
+    }
+  }
 
   async function handleSave(e: React.FormEvent) {
     e.preventDefault();
@@ -276,6 +348,141 @@ function SettingsContent() {
               </span>
             )}
           </div>
+        </div>
+
+        {/* Team Management */}
+        <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-800/50 mb-6">
+          <h2 className="text-lg font-semibold text-white mb-2 flex items-center gap-2">
+            <svg className="w-5 h-5 text-amber-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" />
+            </svg>
+            Team Members
+            {!isPro && <ProBadge onClick={() => showProPrompt("Team management")} />}
+          </h2>
+          <p className="text-sm text-gray-400 mb-4">
+            Invite team members to create invoices, view clients, and log time. Pro plan: up to 3 members.
+          </p>
+
+          {!isPro ? (
+            <button
+              onClick={() => showProPrompt("Team management")}
+              className="text-sm text-amber-400 hover:text-amber-300 transition-colors"
+            >
+              Upgrade to Pro to invite team members
+            </button>
+          ) : (
+            <>
+              {teamLoading ? (
+                <div className="py-4 text-center">
+                  <div className="w-6 h-6 border-2 border-amber-500/30 border-t-amber-500 rounded-full animate-spin mx-auto" />
+                </div>
+              ) : (
+                <>
+                  {teamMembers.length > 0 && (
+                    <div className="space-y-2 mb-4">
+                      {teamMembers.map((member) => (
+                        <div key={member.id} className="flex items-center justify-between p-3 bg-gray-800/30 rounded-xl border border-gray-700/30">
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2">
+                              <p className="text-sm font-medium text-white truncate">{member.name || member.email}</p>
+                              <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
+                                member.role === "admin"
+                                  ? "bg-amber-500/10 text-amber-400 border border-amber-500/20"
+                                  : "bg-gray-700/50 text-gray-400 border border-gray-600/30"
+                              }`}>
+                                {member.role}
+                              </span>
+                              {member.acceptedAt ? (
+                                <span className="text-xs text-emerald-400">Active</span>
+                              ) : (
+                                <span className="text-xs text-gray-500">Pending</span>
+                              )}
+                            </div>
+                            {member.name && <p className="text-xs text-gray-500 truncate">{member.email}</p>}
+                          </div>
+                          <button
+                            onClick={() => handleRemoveMember(member.id)}
+                            className="p-1.5 rounded-lg text-gray-400 hover:text-red-400 hover:bg-gray-700/50 transition-colors shrink-0"
+                            title="Remove member"
+                          >
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {showInviteForm ? (
+                    <form onSubmit={handleInvite} className="space-y-3 p-4 bg-gray-800/20 rounded-xl border border-gray-700/30">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                          <label className="block text-sm font-medium text-gray-400 mb-1">Email *</label>
+                          <input
+                            type="email"
+                            required
+                            value={inviteEmail}
+                            onChange={(e) => setInviteEmail(e.target.value)}
+                            placeholder="teammate@example.com"
+                            className="w-full bg-gray-800/50 border border-gray-700/50 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-400 mb-1">Name</label>
+                          <input
+                            type="text"
+                            value={inviteName}
+                            onChange={(e) => setInviteName(e.target.value)}
+                            placeholder="John"
+                            className="w-full bg-gray-800/50 border border-gray-700/50 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50"
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-400 mb-1">Role</label>
+                        <select
+                          value={inviteRole}
+                          onChange={(e) => setInviteRole(e.target.value)}
+                          className="bg-gray-800/50 border border-gray-700/50 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-amber-500/50"
+                        >
+                          <option value="member">Member - can create invoices, view clients, log time/expenses</option>
+                          <option value="admin">Admin - same as member plus team management</option>
+                        </select>
+                      </div>
+                      <div className="flex gap-2">
+                        <button
+                          type="submit"
+                          disabled={inviting}
+                          className="bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-gray-950 px-5 py-2 rounded-xl font-semibold shadow-lg shadow-amber-500/20 transition-all disabled:opacity-50 text-sm"
+                        >
+                          {inviting ? "Sending..." : "Send Invite"}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setShowInviteForm(false)}
+                          className="px-5 py-2 rounded-xl font-semibold text-gray-400 bg-gray-800/50 border border-gray-700/50 hover:border-gray-600 transition-all text-sm"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </form>
+                  ) : (
+                    <button
+                      onClick={() => setShowInviteForm(true)}
+                      disabled={teamMembers.length >= 3}
+                      className="inline-flex items-center gap-2 text-sm font-medium text-amber-400 hover:text-amber-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                      </svg>
+                      {teamMembers.length >= 3 ? "Team limit reached (3/3)" : "Invite Team Member"}
+                    </button>
+                  )}
+                </>
+              )}
+            </>
+          )}
         </div>
 
         {/* Logo Upload */}

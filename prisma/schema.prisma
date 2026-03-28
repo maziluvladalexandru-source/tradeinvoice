@@ -33,6 +33,8 @@ model User {
   expenses       Expense[]
   timeEntries    TimeEntry[]
   mileageEntries MileageEntry[]
+  teamMembers    TeamMember[]
+  teamMemberships TeamMember[] @relation("MemberUser")
 }
 
 model Session {
@@ -188,5 +190,22 @@ model MileageEntry {
 
   user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   client Client? @relation(fields: [clientId], references: [id])
+}
+
+model TeamMember {
+  id         String    @id @default(uuid())
+  userId     String    // team owner
+  email      String
+  name       String?
+  role       String    @default("member") // admin | member
+  memberUserId String? // linked user account (after accepting invite)
+  inviteToken  String?   @unique
+  invitedAt  DateTime  @default(now())
+  acceptedAt DateTime?
+
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  memberUser User?     @relation("MemberUser", fields: [memberUserId], references: [id])
+
+  @@unique([userId, email])
 }
 
