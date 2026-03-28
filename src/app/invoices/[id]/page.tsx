@@ -131,11 +131,12 @@ export default function InvoiceDetailPage() {
     setConverting(true);
     try {
       const res = await fetch(`/api/invoices/${invoice.id}/convert`, { method: "POST" });
+      const data = await res.json();
       if (res.ok) {
-        const updated = await res.json();
-        setInvoice({ ...invoice, type: "invoice", invoiceNumber: updated.invoiceNumber });
+        router.push(`/invoices/${data.id}`);
+      } else if (res.status === 409 && data.invoiceId) {
+        router.push(`/invoices/${data.invoiceId}`);
       } else {
-        const data = await res.json();
         alert(data.error || "Failed to convert");
       }
     } catch {
@@ -293,7 +294,7 @@ export default function InvoiceDetailPage() {
             <button
               onClick={convertToInvoice}
               disabled={converting}
-              className="bg-green-500 text-white px-6 py-3 rounded-xl font-semibold text-lg hover:bg-green-400 disabled:opacity-50 transition-colors flex items-center gap-2"
+              className="bg-gradient-to-r from-amber-500 to-orange-500 text-gray-950 px-6 py-3 rounded-xl font-semibold text-lg hover:from-amber-400 hover:to-orange-400 disabled:opacity-50 transition-all shadow-lg shadow-amber-500/25 flex items-center gap-2"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />

@@ -339,7 +339,7 @@ export default async function DashboardPage() {
                       )}
                     </div>
                     {/* Quick actions */}
-                    <InvoiceCardActions invoiceId={invoice.id} status={invoice.status} />
+                    <InvoiceCardActions invoiceId={invoice.id} status={invoice.status} type={invoice.type} />
                     <a
                       href={`/api/invoices/${invoice.id}/pdf`}
                       target="_blank"
@@ -400,6 +400,7 @@ export default async function DashboardPage() {
                     <p className="text-base font-bold text-white text-right whitespace-nowrap">
                       {formatCurrency(quote.total, quote.currency)}
                     </p>
+                    <InvoiceCardActions invoiceId={quote.id} status={quote.status} type="quote" />
                   </div>
                 </div>
               ))}

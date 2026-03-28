@@ -6,9 +6,10 @@ import { useState } from "react";
 interface Props {
   invoiceId: string;
   status: string;
+  type?: string;
 }
 
-export default function InvoiceCardActions({ invoiceId, status }: Props) {
+export default function InvoiceCardActions({ invoiceId, status, type }: Props) {
   const router = useRouter();
   const [loading, setLoading] = useState<string | null>(null);
 
@@ -54,9 +55,47 @@ export default function InvoiceCardActions({ invoiceId, status }: Props) {
     setLoading(null);
   }
 
+  async function handleConvert() {
+    setLoading("convert");
+    try {
+      const res = await fetch(`/api/invoices/${invoiceId}/convert`, { method: "POST" });
+      const data = await res.json();
+      if (data.id) {
+        router.push(`/invoices/${data.id}`);
+      } else if (res.status === 409 && data.invoiceId) {
+        router.push(`/invoices/${data.invoiceId}`);
+      } else {
+        router.refresh();
+      }
+    } catch {
+      // silent fail
+    }
+    setLoading(null);
+  }
+
   return (
     <div className="flex items-center gap-1" onClick={(e) => e.preventDefault()}>
-      {status === "draft" && (
+      {type === "quote" && (
+        <button
+          onClick={handleConvert}
+          disabled={loading === "convert"}
+          className="p-1.5 rounded-md text-amber-400 hover:bg-amber-500/20 hover:text-amber-300 transition-colors disabled:opacity-50"
+          title="Convert to Invoice"
+          aria-label="Convert to invoice"
+        >
+          {loading === "convert" ? (
+            <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+            </svg>
+          ) : (
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+          )}
+        </button>
+      )}
+      {status === "draft" && type !== "quote" && (
         <button
           onClick={handleSend}
           disabled={loading === "send"}
@@ -69,7 +108,7 @@ export default function InvoiceCardActions({ invoiceId, status }: Props) {
           </svg>
         </button>
       )}
-      {status !== "paid" && (
+      {status !== "paid" && type !== "quote" && (
         <button
           onClick={handleMarkPaid}
           disabled={loading === "paid"}
