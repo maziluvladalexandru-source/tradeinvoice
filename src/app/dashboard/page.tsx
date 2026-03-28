@@ -9,6 +9,7 @@ import InvoiceCardActions from "@/components/InvoiceCardActions";
 import BulkInvoiceActions from "@/components/BulkInvoiceActions";
 import OnboardingChecklist from "@/components/OnboardingChecklist";
 import NewInvoiceButton from "@/components/NewInvoiceButton";
+import RevenueDashboard from "@/components/RevenueDashboard";
 import Link from "next/link";
 
 export default async function DashboardPage() {
@@ -91,6 +92,53 @@ export default async function DashboardPage() {
 
   const recentInvoices = actualInvoices.slice(0, 5);
   const recentQuotes = quotes.slice(0, 5);
+
+  // === Revenue Dashboard Data ===
+  const paidInvoices = actualInvoices.filter((i) => i.status === "paid");
+  const totalRevenue = paidInvoices.reduce((sum, i) => sum + i.total, 0);
+  const avgInvoiceValue = paidInvoices.length > 0 ? totalRevenue / paidInvoices.length : 0;
+
+  // Collection rate: paid / (sent + viewed + paid + overdue)
+  const sentOrBeyond = actualInvoices.filter((i) => ["sent", "viewed", "paid", "overdue"].includes(i.status));
+  const collectionRate = sentOrBeyond.length > 0 ? (paidInvoices.length / sentOrBeyond.length) * 100 : 0;
+
+  // Monthly data (last 12 months)
+  const monthlyData = [];
+  for (let m = 0; m < 12; m++) {
+    const mStart = new Date(now.getFullYear(), now.getMonth() - m, 1);
+    const mEnd = new Date(now.getFullYear(), now.getMonth() - m + 1, 0, 23, 59, 59);
+    const label = mStart.toLocaleDateString("en-IE", { month: "short", year: "2-digit" });
+    const monthInvoices = actualInvoices.filter((i) => {
+      const d = new Date(i.createdAt);
+      return d >= mStart && d <= mEnd;
+    });
+    const invoicesSent = monthInvoices.filter((i) => i.status !== "draft").length;
+    const invoicesPaid = monthInvoices.filter((i) => i.status === "paid").length;
+    const revenue = monthInvoices.filter((i) => i.status === "paid").reduce((s, i) => s + i.total, 0);
+    const outstanding = monthInvoices.filter((i) => ["sent", "viewed", "overdue"].includes(i.status)).reduce((s, i) => s + i.total, 0);
+    monthlyData.push({ label, revenue, invoicesSent, invoicesPaid, outstanding });
+  }
+
+  // Top 5 clients by revenue
+  const clientRevenueMap = new Map<string, { name: string; total: number }>();
+  for (const inv of paidInvoices) {
+    const key = inv.clientId;
+    const existing = clientRevenueMap.get(key);
+    if (existing) {
+      existing.total += inv.total;
+    } else {
+      clientRevenueMap.set(key, { name: inv.client.name, total: inv.total });
+    }
+  }
+  const topClients = Array.from(clientRevenueMap.values())
+    .sort((a, b) => b.total - a.total)
+    .slice(0, 5);
+
+  // Quarter tax summary
+  const quarterStart = new Date(now.getFullYear(), Math.floor(now.getMonth() / 3) * 3, 1);
+  const quarterPaid = paidInvoices.filter((i) => i.paidAt && new Date(i.paidAt) >= quarterStart);
+  const quarterVat = quarterPaid.reduce((s, i) => s + i.taxAmount, 0);
+  const quarterRevenueExVat = quarterPaid.reduce((s, i) => s + i.subtotal, 0);
 
   // Onboarding data
   const hasBusinessName = !!user.businessName;
@@ -450,6 +498,24 @@ export default async function DashboardPage() {
                 </div>
               ))}
             </div>
+          </div>
+        )}
+        {/* Revenue Dashboard */}
+        {actualInvoices.length > 0 && (
+          <div className="mt-8">
+            <RevenueDashboard
+              totalRevenue={totalRevenue}
+              thisMonthRevenue={paidThisMonth}
+              lastMonthRevenue={revenueLastMonth}
+              avgInvoiceValue={avgInvoiceValue}
+              avgDaysToPayment={avgDaysToPayment}
+              collectionRate={collectionRate}
+              monthlyData={monthlyData}
+              topClients={topClients}
+              quarterVat={quarterVat}
+              quarterRevenueExVat={quarterRevenueExVat}
+              isPro={user.plan === "pro"}
+            />
           </div>
         )}
       </div>
