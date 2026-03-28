@@ -366,10 +366,10 @@ export default function ReportsPage() {
                         {data.monthlyData.map((m) => (
                           <div key={m.month} className="grid grid-cols-5 gap-2 text-sm py-1.5 border-b border-white/5">
                             <span className="text-gray-300 font-medium">{m.month}</span>
-                            <span className="text-right text-emerald-400">{fmtCurrency(m.revenue)}</span>
-                            <span className="text-right text-red-400">{fmtCurrency(m.expenses)}</span>
-                            <span className="text-right text-blue-400">{fmtCurrency(m.mileageDeduction)}</span>
-                            <span className={`text-right font-semibold ${m.netProfit >= 0 ? "text-white" : "text-red-400"}`}>
+                            <span className={`text-right ${m.revenue === 0 ? "text-gray-500" : "text-emerald-400"}`}>{fmtCurrency(m.revenue)}</span>
+                            <span className={`text-right ${m.expenses === 0 ? "text-gray-500" : "text-red-400"}`}>{fmtCurrency(m.expenses)}</span>
+                            <span className={`text-right ${m.mileageDeduction === 0 ? "text-gray-500" : "text-blue-400"}`}>{fmtCurrency(m.mileageDeduction)}</span>
+                            <span className={`text-right font-semibold ${m.netProfit === 0 ? "text-gray-500" : m.netProfit > 0 ? "text-white" : "text-red-400"}`}>
                               {fmtCurrency(m.netProfit)}
                             </span>
                           </div>

@@ -131,10 +131,10 @@ export default function DonutChart({
           textAnchor="middle"
           dominantBaseline="middle"
           className="fill-white font-bold"
-          fontSize="22"
+          fontSize={centerText.length > 12 ? "11" : centerText.length > 8 ? "14" : "18"}
           style={{ transform: "rotate(90deg)", transformOrigin: "100px 100px" }}
         >
-          {centerText}
+          {centerText.length > 14 ? centerText.slice(0, 13) + "..." : centerText}
         </text>
         {centerSubtext && (
           <text

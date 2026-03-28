@@ -362,9 +362,9 @@ export default function DashboardPage() {
 
         {/* Recently viewed banner */}
         {stats.recentlyViewedCount > 0 && (
-          <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-2xl p-4 mb-8 flex items-center gap-3">
+          <div className="bg-[#111827] border border-amber-500/20 rounded-xl p-4 mb-8 flex items-center gap-3">
             <svg
-              className="w-5 h-5 text-yellow-400 shrink-0"
+              className="w-5 h-5 text-amber-400 shrink-0"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -382,8 +382,8 @@ export default function DashboardPage() {
                 d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
               />
             </svg>
-            <p className="text-sm font-medium text-yellow-300">
-              {stats.recentlyViewedCount} invoice
+            <p className="text-sm font-medium text-gray-300">
+              <span className="text-amber-400 font-bold">{stats.recentlyViewedCount}</span> invoice
               {stats.recentlyViewedCount !== 1 ? "s were" : " was"} viewed today
             </p>
           </div>
