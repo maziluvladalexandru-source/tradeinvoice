@@ -32,6 +32,7 @@ interface Invoice {
   referenceInvoice: string | null;
   language: string;
   paidAmount: number;
+  scheduledSendAt: string | null;
   client: { id: string; name: string; email: string; phone: string | null; address: string | null; vatNumber: string | null };
   lineItems: { id: string; description: string; quantity: number; unitPrice: number; total: number }[];
   user: { businessName: string | null; email: string; plan?: string; businessAddress?: string | null; businessPhone?: string | null; kvkNumber?: string | null; vatNumber?: string | null; bankDetails?: string | null; logoUrl?: string | null };
@@ -164,6 +165,18 @@ export default function InvoiceDetailPage() {
     }
   }
 
+  async function cancelSchedule() {
+    if (!invoice) return;
+    const res = await fetch(`/api/invoices/${invoice.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ scheduledSendAt: null }),
+    });
+    if (res.ok) {
+      setInvoice({ ...invoice, scheduledSendAt: null });
+    }
+  }
+
   const fmt = (n: number) =>
     new Intl.NumberFormat("en-IE", { style: "currency", currency: invoice?.currency || "EUR" }).format(n);
   const fmtDate = (d: string) =>
@@ -244,6 +257,14 @@ export default function InvoiceDetailPage() {
                   Recurring ({invoice.recurringInterval})
                 </span>
               )}
+              {invoice.scheduledSendAt && invoice.status === "draft" && (
+                <span className="bg-blue-500/20 text-blue-300 ring-1 ring-blue-400/40 px-3 py-1 rounded-full text-xs font-semibold inline-flex items-center gap-1">
+                  <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  Scheduled for {fmtDateTime(invoice.scheduledSendAt)}
+                </span>
+              )}
             </div>
             <p className="text-gray-400 mt-1">
               {invoice.client.name} &middot; {fmtDate(invoice.createdAt)}
@@ -273,6 +294,17 @@ export default function InvoiceDetailPage() {
               className="bg-blue-500 text-white px-6 py-3 rounded-xl font-semibold text-lg hover:bg-blue-400 disabled:opacity-50 transition-colors"
             >
               {sending ? "Sending..." : "Send to Client"}
+            </button>
+          )}
+          {invoice.status === "draft" && invoice.scheduledSendAt && (
+            <button
+              onClick={cancelSchedule}
+              className="bg-red-500/10 text-red-400 px-6 py-3 rounded-xl font-semibold text-lg hover:bg-red-500/20 ring-1 ring-red-500/30 transition-colors flex items-center gap-2"
+            >
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+              Cancel Schedule
             </button>
           )}
           {["sent", "viewed", "overdue"].includes(invoice.status) && (

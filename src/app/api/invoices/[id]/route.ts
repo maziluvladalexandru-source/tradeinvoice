@@ -78,6 +78,9 @@ export async function PATCH(
     if (body.remindersEnabled !== undefined) {
       data.remindersEnabled = !!body.remindersEnabled;
     }
+    if (body.scheduledSendAt !== undefined) {
+      data.scheduledSendAt = body.scheduledSendAt ? new Date(body.scheduledSendAt) : null;
+    }
 
     const updated = await prisma.invoice.update({
       where: { id: params.id },

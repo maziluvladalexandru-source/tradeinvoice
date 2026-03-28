@@ -348,6 +348,14 @@ export default async function DashboardPage() {
                               Recurring
                             </span>
                           )}
+                          {invoice.scheduledSendAt && invoice.status === "draft" && (
+                            <span className="bg-blue-500/20 text-blue-300 ring-1 ring-blue-400/40 px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase hidden sm:inline-flex items-center gap-1">
+                              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                              </svg>
+                              Scheduled
+                            </span>
+                          )}
                           <p className="text-xs text-gray-500 hidden sm:block">
                             Due {fmtDate(invoice.dueDate)}
                           </p>

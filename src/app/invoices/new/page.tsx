@@ -815,6 +815,10 @@ function NewInvoiceForm() {
     setShowUpgradeModal(true);
   }
 
+  // Schedule send
+  const [showSchedulePicker, setShowSchedulePicker] = useState(false);
+  const [scheduledSendAt, setScheduledSendAt] = useState("");
+
   // Mobile preview toggle
   const [showMobilePreview, setShowMobilePreview] = useState(false);
 
@@ -920,7 +924,7 @@ function NewInvoiceForm() {
     }
   }
 
-  async function handleSubmit(sendNow: boolean) {
+  async function handleSubmit(sendNow: boolean, scheduleAt?: string) {
     setError("");
     const errors: Record<string, string> = {};
     if (!clientId) errors.clientId = "Select a client to bill";
@@ -960,6 +964,7 @@ function NewInvoiceForm() {
           invoiceCountry,
           language,
           invoiceTheme: isPro ? invoiceTheme : "classic",
+          scheduledSendAt: scheduleAt ? new Date(scheduleAt).toISOString() : null,
           lineItems: lineItems.filter(
             (item) => item.description && item.unitPrice > 0
           ),
@@ -1934,6 +1939,49 @@ function NewInvoiceForm() {
                   >
                     {loading ? "Creating..." : "Create & Send"}
                   </button>
+                  <button
+                    onClick={() => setShowSchedulePicker(!showSchedulePicker)}
+                    disabled={loading || !isValid}
+                    className={`flex-1 py-3 rounded-xl font-medium text-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 ${
+                      showSchedulePicker
+                        ? "bg-blue-500/20 text-blue-300 border border-blue-500/40"
+                        : "bg-gray-900/50 text-gray-300 border border-gray-800/50 hover:bg-gray-800/80 hover:border-gray-700/50"
+                    }`}
+                  >
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    Schedule Send
+                  </button>
+                </div>
+                {showSchedulePicker && (
+                  <div className="bg-gray-800/50 border border-gray-700/50 rounded-xl p-4 space-y-3">
+                    <label className="block text-sm font-medium text-gray-300">
+                      Send date & time
+                    </label>
+                    <input
+                      type="datetime-local"
+                      value={scheduledSendAt}
+                      onChange={(e) => setScheduledSendAt(e.target.value)}
+                      min={new Date().toISOString().slice(0, 16)}
+                      className="w-full px-4 py-3 rounded-xl border border-gray-600 text-sm focus:ring-2 focus:ring-blue-500 outline-none bg-gray-900 text-white [color-scheme:dark]"
+                    />
+                    <button
+                      onClick={() => {
+                        if (!scheduledSendAt) return;
+                        handleSubmit(false, scheduledSendAt);
+                      }}
+                      disabled={loading || !isValid || !scheduledSendAt}
+                      className="w-full bg-blue-500 text-white py-3 rounded-xl font-semibold text-sm hover:bg-blue-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
+                    >
+                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      {loading ? "Scheduling..." : `Schedule for ${scheduledSendAt ? new Date(scheduledSendAt).toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" }) : "..."}`}
+                    </button>
+                  </div>
+                )}
+                <div className="flex gap-3">
                   <button
                     onClick={handleDownloadPreview}
                     disabled={loading || !isValid}
