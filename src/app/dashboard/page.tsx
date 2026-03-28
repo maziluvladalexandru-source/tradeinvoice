@@ -1,48 +1,40 @@
-import { redirect } from "next/navigation";
+﻿import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { formatCurrency } from "@/lib/utils";
 import Navbar from "@/components/Navbar";
 import BottomNav from "@/components/BottomNav";
 import FloatingCreateButton from "@/components/FloatingCreateButton";
-import InvoiceCardActions from "@/components/InvoiceCardActions";
 import OnboardingChecklist from "@/components/OnboardingChecklist";
 import NewInvoiceButton from "@/components/NewInvoiceButton";
 import RevenueDashboard from "@/components/RevenueDashboard";
 import DashboardInvoiceList from "@/components/DashboardInvoiceList";
+import DashboardQuoteList from "@/components/DashboardQuoteList";
 import Link from "next/link";
-
 export default async function DashboardPage() {
   const user = await getCurrentUser();
   if (!user) redirect("/auth/login");
-
   const invoices = await prisma.invoice.findMany({
     where: { userId: user.id },
     include: { client: true },
     orderBy: { createdAt: "desc" },
   });
-
   const now = new Date();
   const hour = now.getHours();
   const greeting = hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening";
   const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
-
   // Separate invoices and quotes
   const actualInvoices = invoices.filter((i) => i.type !== "quote");
   const quotes = invoices.filter((i) => i.type === "quote");
-
   const totalOutstanding = actualInvoices
     .filter((i) => ["sent", "viewed", "overdue"].includes(i.status))
     .reduce((sum, i) => sum + i.total, 0);
-
   const paidThisMonth = actualInvoices
     .filter(
       (i) => i.status === "paid" && i.paidAt && new Date(i.paidAt) >= monthStart
     )
     .reduce((sum, i) => sum + i.total, 0);
-
   const overdueCount = actualInvoices.filter((i) => i.status === "overdue").length;
-
   // Average days to payment (for paid invoices)
   const paidInvoicesWithDates = actualInvoices.filter(
     (i) => i.status === "paid" && i.paidAt && i.sentAt
@@ -57,7 +49,6 @@ export default async function DashboardPage() {
           }, 0) / paidInvoicesWithDates.length
         )
       : null;
-
   // Revenue this month vs last month
   const lastMonthStart = new Date(now.getFullYear(), now.getMonth() - 1, 1);
   const lastMonthEnd = new Date(now.getFullYear(), now.getMonth(), 0);
@@ -70,11 +61,9 @@ export default async function DashboardPage() {
         new Date(i.paidAt) <= lastMonthEnd
     )
     .reduce((sum, i) => sum + i.total, 0);
-
   const revenueChange = revenueLastMonth > 0
     ? ((paidThisMonth - revenueLastMonth) / revenueLastMonth) * 100
     : paidThisMonth > 0 ? 100 : 0;
-
   // Active clients (clients with non-draft invoices in last 90 days)
   const ninetyDaysAgo = new Date(now.getTime() - 90 * 24 * 60 * 60 * 1000);
   const activeClientIds = new Set(
@@ -83,25 +72,20 @@ export default async function DashboardPage() {
       .map((i) => i.clientId)
   );
   const activeClientsCount = activeClientIds.size;
-
   // Invoices viewed in the last 24 hours
   const twentyFourHoursAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
   const recentlyViewedCount = actualInvoices.filter(
     (i) => i.viewedAt && new Date(i.viewedAt) >= twentyFourHoursAgo
   ).length;
-
   const recentInvoices = actualInvoices.slice(0, 5);
   const recentQuotes = quotes.slice(0, 5);
-
   // === Revenue Dashboard Data ===
   const paidInvoices = actualInvoices.filter((i) => i.status === "paid");
   const totalRevenue = paidInvoices.reduce((sum, i) => sum + i.total, 0);
   const avgInvoiceValue = paidInvoices.length > 0 ? totalRevenue / paidInvoices.length : 0;
-
   // Collection rate: paid / (sent + viewed + paid + overdue)
   const sentOrBeyond = actualInvoices.filter((i) => ["sent", "viewed", "paid", "overdue"].includes(i.status));
   const collectionRate = sentOrBeyond.length > 0 ? (paidInvoices.length / sentOrBeyond.length) * 100 : 0;
-
   // Monthly data (last 12 months)
   const monthlyData = [];
   for (let m = 0; m < 12; m++) {
@@ -118,7 +102,6 @@ export default async function DashboardPage() {
     const outstanding = monthInvoices.filter((i) => ["sent", "viewed", "overdue"].includes(i.status)).reduce((s, i) => s + i.total, 0);
     monthlyData.push({ label, revenue, invoicesSent, invoicesPaid, outstanding });
   }
-
   // Top 5 clients by revenue
   const clientRevenueMap = new Map<string, { name: string; total: number }>();
   for (const inv of paidInvoices) {
@@ -133,13 +116,11 @@ export default async function DashboardPage() {
   const topClients = Array.from(clientRevenueMap.values())
     .sort((a, b) => b.total - a.total)
     .slice(0, 5);
-
   // Quarter tax summary
   const quarterStart = new Date(now.getFullYear(), Math.floor(now.getMonth() / 3) * 3, 1);
   const quarterPaid = paidInvoices.filter((i) => i.paidAt && new Date(i.paidAt) >= quarterStart);
   const quarterVat = quarterPaid.reduce((s, i) => s + i.taxAmount, 0);
   const quarterRevenueExVat = quarterPaid.reduce((s, i) => s + i.subtotal, 0);
-
   // Expenses this month
   const expenses = await prisma.expense.findMany({
     where: {
@@ -149,7 +130,6 @@ export default async function DashboardPage() {
   });
   const expensesThisMonth = expenses.reduce((sum, e) => sum + e.amount, 0);
   const profitThisMonth = paidThisMonth - expensesThisMonth;
-
   // Recurring invoices data
   const recurringInvoices = actualInvoices.filter((i) => i.isRecurring);
   const recurringCount = recurringInvoices.length;
@@ -160,15 +140,10 @@ export default async function DashboardPage() {
     if (interval === "yearly") return sum + i.total / 12;
     return sum + i.total; // monthly
   }, 0);
-
   // Onboarding data
   const hasBusinessName = !!user.businessName;
   const hasSentInvoice = invoices.some((i) => i.sentAt !== null);
   const isNewUser = invoices.length === 0 && !hasBusinessName;
-
-  const fmtDate = (d: Date | string) =>
-    new Date(d).toLocaleDateString("en-IE", { day: "numeric", month: "short" });
-
   const statusColors: Record<string, string> = {
     draft: "bg-gray-500/10 text-gray-400 border border-gray-500/20",
     sent: "bg-blue-500/10 text-blue-400 border border-blue-500/20",
@@ -176,7 +151,6 @@ export default async function DashboardPage() {
     paid: "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20",
     overdue: "bg-red-500/10 text-red-400 border border-red-500/20",
   };
-
   const statusDot: Record<string, string> = {
     draft: "bg-gray-400",
     sent: "bg-blue-400",
@@ -184,7 +158,6 @@ export default async function DashboardPage() {
     paid: "bg-green-400",
     overdue: "bg-red-400 animate-pulse",
   };
-
   // Color-coded left border stripe per status
   const statusBorder: Record<string, string> = {
     draft: "border-l-gray-500",
@@ -193,7 +166,6 @@ export default async function DashboardPage() {
     paid: "border-l-green-500",
     overdue: "border-l-red-500",
   };
-
   return (
     <div className="min-h-screen bg-gray-950 pb-20 md:pb-0">
       <Navbar />
@@ -207,14 +179,12 @@ export default async function DashboardPage() {
           </div>
           <NewInvoiceButton isNewUser={isNewUser} />
         </div>
-
         {/* Onboarding checklist */}
         <OnboardingChecklist
           hasBusinessName={hasBusinessName}
           invoiceCount={invoices.length}
           hasSentInvoice={hasSentInvoice}
         />
-
         {/* Stats */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-8">
           <div className="relative overflow-hidden bg-gray-900/50 backdrop-blur-sm rounded-2xl p-5 md:p-6 border border-gray-800/50 hover:border-gray-700/50 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300">
@@ -301,7 +271,6 @@ export default async function DashboardPage() {
             </div>
           )}
         </div>
-
         {/* Plan info */}
         {user.plan === "free" && (
           <div className="bg-gradient-to-r from-amber-500/10 via-amber-500/5 to-orange-500/10 border border-amber-500/20 rounded-2xl p-5 mb-8 flex items-center justify-between">
@@ -321,7 +290,6 @@ export default async function DashboardPage() {
             </Link>
           </div>
         )}
-
         {/* Recently viewed banner */}
         {recentlyViewedCount > 0 && (
           <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-2xl p-4 mb-8 flex items-center gap-3">
@@ -334,7 +302,6 @@ export default async function DashboardPage() {
             </p>
           </div>
         )}
-
         {/* Recurring invoices summary */}
         {recurringCount > 0 && (
           <div className="bg-cyan-500/5 border border-cyan-500/20 rounded-2xl p-5 mb-8">
@@ -373,7 +340,6 @@ export default async function DashboardPage() {
             </div>
           </div>
         )}
-
         {/* Recent invoices */}
         <DashboardInvoiceList
           recentInvoices={recentInvoices.map((i) => ({
@@ -395,55 +361,21 @@ export default async function DashboardPage() {
           statusBorder={statusBorder}
         />
         {/* Recent Quotes */}
-        {recentQuotes.length > 0 && (
-          <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl border border-gray-800/50 mt-8">
-            <div className="p-6 border-b border-gray-800/50 flex items-center justify-between">
-              <h2 className="text-xl font-semibold text-white flex items-center gap-2">
-                Recent Quotes
-                <span className="bg-purple-500/20 text-purple-300 ring-1 ring-purple-400/40 px-2 py-0.5 rounded-full text-xs font-semibold">
-                  {quotes.length}
-                </span>
-              </h2>
-            </div>
-            <div className="divide-y divide-gray-800/50">
-              {recentQuotes.map((quote) => (
-                <div
-                  key={quote.id}
-                  className={`p-4 hover:bg-gray-800/50 transition-colors border-l-4 ${statusBorder[quote.status] || "border-l-gray-600"}`}
-                >
-                  <Link
-                    href={`/invoices/${quote.id}`}
-                    className="flex items-center gap-2 flex-1 min-w-0 overflow-hidden"
-                  >
-                    <div className="flex-1 min-w-0">
-                      <p className="font-medium text-white">
-                        {quote.invoiceNumber}
-                      </p>
-                      <p className="text-sm text-gray-400">
-                        {quote.client.name}
-                      </p>
-                    </div>
-                    <p className="text-xs text-gray-500 hidden sm:block">
-                      {fmtDate(quote.createdAt)}
-                    </p>
-                  </Link>
-                  <div className="flex items-center gap-3">
-                    <span
-                      className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold capitalize ${statusColors[quote.status] || ""}`}
-                    >
-                      <span className={`w-1.5 h-1.5 rounded-full ${statusDot[quote.status] || ""}`} />
-                      {quote.status}
-                    </span>
-                    <p className="text-base font-bold text-white text-right whitespace-nowrap">
-                      {formatCurrency(quote.total, quote.currency)}
-                    </p>
-                    <InvoiceCardActions invoiceId={quote.id} status={quote.status} type="quote" />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
+        <DashboardQuoteList
+          quotes={recentQuotes.map((q) => ({
+            id: q.id,
+            invoiceNumber: q.invoiceNumber,
+            status: q.status,
+            total: q.total,
+            currency: q.currency,
+            createdAt: q.createdAt.toISOString(),
+            client: { name: q.client.name },
+          }))}
+          totalQuoteCount={quotes.length}
+          statusColors={statusColors}
+          statusDot={statusDot}
+          statusBorder={statusBorder}
+        />
         {/* Revenue Dashboard */}
         {actualInvoices.length > 0 && (
           <div className="mt-8">
@@ -463,12 +395,9 @@ export default async function DashboardPage() {
           </div>
         )}
       </div>
-
       {/* Floating create button & bottom nav (mobile only) */}
       <FloatingCreateButton />
       <BottomNav />
     </div>
   );
 }
-/ /   f o r c e   r e d e p l o y  
- 
