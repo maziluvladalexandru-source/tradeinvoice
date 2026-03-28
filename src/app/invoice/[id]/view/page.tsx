@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { formatCurrency, formatDate } from "@/lib/utils";
-import { getCountryConfig, formatComplianceFooter } from "@/lib/country-config";
+import { getCountryConfig } from "@/lib/country-config";
 import { notFound } from "next/navigation";
 import PayNowButton from "./PayNowButton";
 import ViewTracker from "./ViewTracker";

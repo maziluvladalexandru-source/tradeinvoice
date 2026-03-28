@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import UpgradeModal, { ProBadge } from "@/components/UpgradeModal";
 import { COUNTRY_CONFIGS, getCountryConfig, formatComplianceFooter } from "@/lib/country-config";
-import type { CountryConfig } from "@/lib/country-config";
+// CountryConfig type used via getCountryConfig return
 
 interface Client {
   id: string;
