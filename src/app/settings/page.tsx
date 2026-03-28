@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import BottomNav from "@/components/BottomNav";
 import UpgradeModal, { ProBadge } from "@/components/UpgradeModal";
+import { toast } from "@/components/Toast";
 
 export default function SettingsPage() {
   return (
@@ -29,6 +30,41 @@ interface User {
   invoiceCount: number;
 }
 
+interface BankDetailsStructured {
+  iban: string;
+  bankName: string;
+  bic: string;
+  accountHolder: string;
+}
+
+function formatIBAN(value: string): string {
+  const clean = value.replace(/\s/g, "").toUpperCase();
+  return clean.replace(/(.{4})/g, "$1 ").trim();
+}
+
+function parseBankDetails(raw: string | null): BankDetailsStructured {
+  if (!raw) return { iban: "", bankName: "", bic: "", accountHolder: "" };
+  try {
+    const parsed = JSON.parse(raw);
+    if (parsed.iban !== undefined) return parsed;
+  } catch {
+    // Legacy format: parse from text
+  }
+  const lines = raw.split("\n");
+  let iban = "";
+  let bankName = "";
+  for (const line of lines) {
+    const lower = line.toLowerCase();
+    if (lower.startsWith("iban:")) iban = line.replace(/^iban:\s*/i, "").trim();
+    else if (lower.startsWith("bank:")) bankName = line.replace(/^bank:\s*/i, "").trim();
+  }
+  return { iban, bankName, bic: "", accountHolder: "" };
+}
+
+function serializeBankDetails(details: BankDetailsStructured): string {
+  return JSON.stringify(details);
+}
+
 function SettingsContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -45,9 +81,14 @@ function SettingsContent() {
   const [businessPhone, setBusinessPhone] = useState("");
   const [kvkNumber, setKvkNumber] = useState("");
   const [vatNumber, setVatNumber] = useState("");
-  const [bankDetails, setBankDetails] = useState("");
   const [logoUrl, setLogoUrl] = useState("");
   const [logoUploading, setLogoUploading] = useState(false);
+
+  // Structured bank details
+  const [iban, setIban] = useState("");
+  const [bankName, setBankName] = useState("");
+  const [bic, setBic] = useState("");
+  const [accountHolder, setAccountHolder] = useState("");
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteConfirmation, setDeleteConfirmation] = useState("");
@@ -77,8 +118,12 @@ function SettingsContent() {
         setBusinessPhone(u.businessPhone || "");
         setKvkNumber(u.kvkNumber || "");
         setVatNumber(u.vatNumber || "");
-        setBankDetails(u.bankDetails || "");
         setLogoUrl(u.logoUrl || "");
+        const bd = parseBankDetails(u.bankDetails);
+        setIban(bd.iban);
+        setBankName(bd.bankName);
+        setBic(bd.bic);
+        setAccountHolder(bd.accountHolder);
       })
       .catch(() => router.push("/auth/login"))
       .finally(() => setLoading(false));
@@ -87,6 +132,7 @@ function SettingsContent() {
   async function handleSave(e: React.FormEvent) {
     e.preventDefault();
     setSaving(true);
+    const bankDetails = serializeBankDetails({ iban: iban.replace(/\s/g, ""), bankName, bic, accountHolder });
     const res = await fetch("/api/user", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
@@ -95,6 +141,9 @@ function SettingsContent() {
     if (res.ok) {
       const updated = await res.json();
       setUser(updated);
+      toast("Settings saved successfully");
+    } else {
+      toast("Failed to save settings", "error");
     }
     setSaving(false);
   }
@@ -114,11 +163,11 @@ function SettingsContent() {
     if (!file) return;
 
     if (!file.type.match(/^image\/(jpeg|png)$/)) {
-      alert("Please upload a JPG or PNG image");
+      toast("Please upload a JPG or PNG image", "error");
       return;
     }
     if (file.size > 2 * 1024 * 1024) {
-      alert("Logo must be under 2MB");
+      toast("Logo must be under 2MB", "error");
       return;
     }
 
@@ -135,6 +184,7 @@ function SettingsContent() {
         setLogoUrl(base64);
         const updated = await res.json();
         setUser(updated);
+        toast("Logo uploaded");
       }
       setLogoUploading(false);
     };
@@ -151,15 +201,29 @@ function SettingsContent() {
       setLogoUrl("");
       const updated = await res.json();
       setUser(updated);
+      toast("Logo removed");
     }
   }
+
+  const hasBankDetails = iban || bankName;
 
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-950 pb-20 md:pb-0">
         <Navbar />
-        <div className="flex items-center justify-center py-20">
-          <p className="text-gray-400">Loading...</p>
+        <div className="max-w-3xl mx-auto px-4 py-8">
+          <div className="h-10 w-32 bg-gray-800 rounded-xl animate-pulse mb-8" />
+          {/* Skeleton cards */}
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="bg-gray-900/50 rounded-2xl p-6 border border-gray-800/50 mb-6 space-y-4">
+              <div className="h-5 w-40 bg-gray-800 rounded animate-pulse" />
+              <div className="h-4 w-64 bg-gray-800/50 rounded animate-pulse" />
+              <div className="space-y-3">
+                <div className="h-12 bg-gray-800/30 rounded-xl animate-pulse" />
+                <div className="h-12 bg-gray-800/30 rounded-xl animate-pulse" />
+              </div>
+            </div>
+          ))}
         </div>
         <BottomNav />
       </div>
@@ -288,107 +352,214 @@ function SettingsContent() {
         {/* Profile */}
         <form
           onSubmit={handleSave}
-          className="bg-gray-900/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-800/50 space-y-4"
+          className="space-y-6"
         >
-          <h2 className="text-lg font-semibold text-white mb-2 flex items-center gap-2">
-            <svg className="w-5 h-5 text-amber-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21" />
-            </svg>
-            Business Details
-          </h2>
-          <p className="text-sm text-gray-400 mb-4">
-            These details appear on your invoices.
-          </p>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-400 mb-1">
-              Your Name
-            </label>
-            <input
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="John Murphy"
-              className="w-full px-4 py-3 rounded-xl border border-gray-800/50 text-lg focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-gray-900/50 text-white placeholder-gray-500 transition-all"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-400 mb-1">
-              Business Name
-            </label>
-            <input
-              value={businessName}
-              onChange={(e) => setBusinessName(e.target.value)}
-              placeholder="Murphy Plumbing Ltd"
-              className="w-full px-4 py-3 rounded-xl border border-gray-800/50 text-lg focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-gray-900/50 text-white placeholder-gray-500 transition-all"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-400 mb-1">
-              Business Address
-            </label>
-            <input
-              value={businessAddress}
-              onChange={(e) => setBusinessAddress(e.target.value)}
-              placeholder="123 Main St, Dublin"
-              className="w-full px-4 py-3 rounded-xl border border-gray-800/50 text-lg focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-gray-900/50 text-white placeholder-gray-500 transition-all"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-400 mb-1">
-              Business Phone
-            </label>
-            <input
-              value={businessPhone}
-              onChange={(e) => setBusinessPhone(e.target.value)}
-              placeholder="+353 1 234 5678"
-              className="w-full px-4 py-3 rounded-xl border border-gray-800/50 text-lg focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-gray-900/50 text-white placeholder-gray-500 transition-all"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-400 mb-1">
-              Business Registration Number <span className="text-gray-500">(optional, shown on invoices)</span>
-            </label>
-            <input
-              value={kvkNumber}
-              onChange={(e) => setKvkNumber(e.target.value)}
-              placeholder="12345678"
-              className="w-full px-4 py-3 rounded-xl border border-gray-800/50 text-lg focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-gray-900/50 text-white placeholder-gray-500 transition-all"
-            />
-            <p className="text-xs text-gray-500 mt-1">
-              e.g. KVK (NL), Companies House (UK), Handelsregister (DE)
+          {/* Business Information */}
+          <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-800/50 space-y-4">
+            <h2 className="text-lg font-semibold text-white mb-2 flex items-center gap-2">
+              <svg className="w-5 h-5 text-amber-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21" />
+              </svg>
+              Business Information
+            </h2>
+            <p className="text-sm text-gray-400">
+              These details appear on your invoices and client communications.
             </p>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-400 mb-1">
+                  Your Name
+                </label>
+                <input
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="John Murphy"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-800/50 text-lg focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-gray-900/50 text-white placeholder-gray-500 transition-all"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-400 mb-1">
+                  Business Name
+                </label>
+                <input
+                  value={businessName}
+                  onChange={(e) => setBusinessName(e.target.value)}
+                  placeholder="Murphy Plumbing Ltd"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-800/50 text-lg focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-gray-900/50 text-white placeholder-gray-500 transition-all"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-400 mb-1">
+                Business Address
+              </label>
+              <input
+                value={businessAddress}
+                onChange={(e) => setBusinessAddress(e.target.value)}
+                placeholder="123 Main St, Amsterdam"
+                className="w-full px-4 py-3 rounded-xl border border-gray-800/50 text-lg focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-gray-900/50 text-white placeholder-gray-500 transition-all"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-400 mb-1">
+                Business Phone
+              </label>
+              <input
+                value={businessPhone}
+                onChange={(e) => setBusinessPhone(e.target.value)}
+                placeholder="+31 20 123 4567"
+                className="w-full px-4 py-3 rounded-xl border border-gray-800/50 text-lg focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-gray-900/50 text-white placeholder-gray-500 transition-all"
+              />
+            </div>
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-400 mb-1">
-              Tax ID / VAT Number <span className="text-gray-500">(optional, required for VAT-registered businesses)</span>
-            </label>
-            <input
-              value={vatNumber}
-              onChange={(e) => setVatNumber(e.target.value)}
-              placeholder="NL123456789B01"
-              className="w-full px-4 py-3 rounded-xl border border-gray-800/50 text-lg focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-gray-900/50 text-white placeholder-gray-500 transition-all"
-            />
-            <p className="text-xs text-gray-500 mt-1">
-              e.g. BTW-id (NL), VAT number (UK), USt-IdNr (DE)
+          {/* Tax & Registration */}
+          <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-800/50 space-y-4">
+            <h2 className="text-lg font-semibold text-white mb-2 flex items-center gap-2">
+              <svg className="w-5 h-5 text-amber-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+              </svg>
+              Tax &amp; Registration
+            </h2>
+            <p className="text-sm text-gray-400">
+              Registration numbers shown on invoices for legal compliance.
             </p>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-400 mb-1">
+                  Business Registration Number
+                </label>
+                <input
+                  value={kvkNumber}
+                  onChange={(e) => setKvkNumber(e.target.value)}
+                  placeholder="12345678"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-800/50 text-lg focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-gray-900/50 text-white placeholder-gray-500 transition-all"
+                />
+                <p className="text-xs text-gray-500 mt-1">
+                  KVK (NL), Companies House (UK), Handelsregister (DE)
+                </p>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-400 mb-1">
+                  Tax ID / VAT Number
+                </label>
+                <input
+                  value={vatNumber}
+                  onChange={(e) => setVatNumber(e.target.value)}
+                  placeholder="NL123456789B01"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-800/50 text-lg focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-gray-900/50 text-white placeholder-gray-500 transition-all"
+                />
+                <p className="text-xs text-gray-500 mt-1">
+                  BTW-id (NL), VAT number (UK), USt-IdNr (DE)
+                </p>
+              </div>
+            </div>
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-400 mb-1">
-              Bank Details <span className="text-gray-500">(IBAN + bank name, shown on all invoices)</span>
-            </label>
-            <textarea
-              value={bankDetails}
-              onChange={(e) => setBankDetails(e.target.value)}
-              placeholder={"IBAN: NL91 ABNA 0417 1643 00\nBank: ABN AMRO"}
-              rows={3}
-              className="w-full px-4 py-3 rounded-xl border border-gray-800/50 text-base focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-gray-900/50 text-white placeholder-gray-500 transition-all resize-none"
-            />
+          {/* Bank / Payment Details */}
+          <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-800/50 space-y-4">
+            <h2 className="text-lg font-semibold text-white mb-2 flex items-center gap-2">
+              <svg className="w-5 h-5 text-amber-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z" />
+              </svg>
+              Payment Details
+            </h2>
+            <p className="text-sm text-gray-400">
+              Bank account details shown on all your invoices so clients know where to pay.
+            </p>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-400 mb-1">
+                IBAN
+              </label>
+              <input
+                value={formatIBAN(iban)}
+                onChange={(e) => setIban(e.target.value.replace(/\s/g, "").toUpperCase())}
+                placeholder="NL91 ABNA 0417 1643 00"
+                maxLength={42}
+                className="w-full px-4 py-3 rounded-xl border border-gray-800/50 text-lg focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-gray-900/50 text-white placeholder-gray-500 transition-all font-mono tracking-wider"
+              />
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-400 mb-1">
+                  Bank Name
+                </label>
+                <input
+                  value={bankName}
+                  onChange={(e) => setBankName(e.target.value)}
+                  placeholder="ABN AMRO"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-800/50 text-lg focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-gray-900/50 text-white placeholder-gray-500 transition-all"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-400 mb-1">
+                  BIC/SWIFT <span className="text-gray-600">(optional)</span>
+                </label>
+                <input
+                  value={bic}
+                  onChange={(e) => setBic(e.target.value.toUpperCase())}
+                  placeholder="ABNANL2A"
+                  maxLength={11}
+                  className="w-full px-4 py-3 rounded-xl border border-gray-800/50 text-lg focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-gray-900/50 text-white placeholder-gray-500 transition-all font-mono"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-400 mb-1">
+                Account Holder Name <span className="text-gray-600">(optional, defaults to business name)</span>
+              </label>
+              <input
+                value={accountHolder}
+                onChange={(e) => setAccountHolder(e.target.value)}
+                placeholder={businessName || "Your business name"}
+                className="w-full px-4 py-3 rounded-xl border border-gray-800/50 text-lg focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-gray-900/50 text-white placeholder-gray-500 transition-all"
+              />
+            </div>
+
+            {/* Invoice Preview */}
+            {hasBankDetails && (
+              <div className="mt-4 pt-4 border-t border-gray-700/50">
+                <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Preview on invoice</p>
+                <div className="bg-white rounded-xl p-4 text-gray-900">
+                  <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Payment Information</p>
+                  <div className="space-y-1 text-sm">
+                    {iban && (
+                      <div className="flex gap-2">
+                        <span className="text-gray-400 w-14 flex-shrink-0">IBAN</span>
+                        <span className="font-mono font-medium">{formatIBAN(iban)}</span>
+                      </div>
+                    )}
+                    {bic && (
+                      <div className="flex gap-2">
+                        <span className="text-gray-400 w-14 flex-shrink-0">BIC</span>
+                        <span className="font-mono font-medium">{bic}</span>
+                      </div>
+                    )}
+                    {bankName && (
+                      <div className="flex gap-2">
+                        <span className="text-gray-400 w-14 flex-shrink-0">Bank</span>
+                        <span className="font-medium">{bankName}</span>
+                      </div>
+                    )}
+                    {(accountHolder || businessName) && (
+                      <div className="flex gap-2">
+                        <span className="text-gray-400 w-14 flex-shrink-0">Name</span>
+                        <span className="font-medium">{accountHolder || businessName}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
 
           <button
@@ -399,6 +570,7 @@ function SettingsContent() {
             {saving ? "Saving..." : "Save Changes"}
           </button>
         </form>
+
         {/* Data Export */}
         <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-800/50 mt-6">
           <h2 className="text-lg font-semibold text-white mb-2 flex items-center gap-2">
@@ -469,7 +641,7 @@ function SettingsContent() {
                     setDeleteConfirmation("");
                     setDeleteError("");
                   }}
-                  className="flex-1 bg-gray-700 text-white py-3 rounded-xl font-semibold hover:bg-gray-600"
+                  className="flex-1 bg-gray-700 text-white py-3 rounded-xl font-semibold hover:bg-gray-600 transition-colors"
                 >
                   Cancel
                 </button>
@@ -496,7 +668,7 @@ function SettingsContent() {
                     }
                   }}
                   disabled={deleteConfirmation !== "DELETE" || deleting}
-                  className="flex-1 bg-red-600 text-white py-3 rounded-xl font-semibold hover:bg-red-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex-1 bg-red-600 text-white py-3 rounded-xl font-semibold hover:bg-red-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
                   {deleting ? "Deleting..." : "Delete Forever"}
                 </button>

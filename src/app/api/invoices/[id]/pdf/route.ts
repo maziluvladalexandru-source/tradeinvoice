@@ -423,7 +423,22 @@ export async function GET(
           <div class="payment-terms">
             <strong>${t("paymentDueBy")} ${formatDate(invoice.dueDate)}</strong><br>
             ${t("reference")}: <strong>${escapeHtml(invoice.invoiceNumber)}</strong>
-            ${bankDetails ? `<br><br><strong>${t("bankDetails")}:</strong><br>${escapeHtml(bankDetails).replace(/\n/g, "<br>")}` : ""}
+            ${bankDetails ? (() => {
+              try {
+                const bd = JSON.parse(bankDetails);
+                if (bd.iban !== undefined) {
+                  const ibanFmt = bd.iban.replace(/(.{4})/g, "$1 ").trim();
+                  let html = `<br><br><strong>${t("bankDetails")}:</strong><br>`;
+                  if (bd.iban) html += `IBAN: <strong>${escapeHtml(ibanFmt)}</strong><br>`;
+                  if (bd.bic) html += `BIC: ${escapeHtml(bd.bic)}<br>`;
+                  if (bd.bankName) html += `Bank: ${escapeHtml(bd.bankName)}<br>`;
+                  if (bd.accountHolder) html += `Name: ${escapeHtml(bd.accountHolder)}`;
+                  else if (invoice.user.businessName) html += `Name: ${escapeHtml(invoice.user.businessName)}`;
+                  return html;
+                }
+              } catch {}
+              return `<br><br><strong>${t("bankDetails")}:</strong><br>${escapeHtml(bankDetails).replace(/\n/g, "<br>")}`;
+            })() : ""}
             ${invoice.paymentNotes ? `<br><br><strong>${t("paymentNotes")}:</strong><br>${escapeHtml(invoice.paymentNotes).replace(/\n/g, "<br>")}` : ""}
           </div>
         </div>

@@ -466,7 +466,7 @@ export default function InvoiceDetailPage() {
             </div>
             {invoice.reverseCharge && (
               <div className="mt-4 bg-amber-500/10 border border-amber-500/30 rounded-lg p-3 text-sm text-amber-400">
-                VAT reverse-charged (BTW verlegd) — Article 44 EU VAT Directive
+                VAT reverse-charged (BTW verlegd) - Article 44 EU VAT Directive
               </div>
             )}
             {invoice.referenceInvoice && (
@@ -482,7 +482,23 @@ export default function InvoiceDetailPage() {
               <h3 className="text-xs uppercase tracking-wide text-gray-500 mb-2">
                 Payment Information
               </h3>
-              <p className="text-gray-300 whitespace-pre-line">{invoice.user.bankDetails}</p>
+              {(() => {
+                try {
+                  const bd = JSON.parse(invoice.user.bankDetails!);
+                  if (bd.iban !== undefined) {
+                    const ibanFmt = bd.iban.replace(/(.{4})/g, "$1 ").trim();
+                    return (
+                      <div className="space-y-1 text-sm">
+                        {bd.iban && <div className="flex gap-3"><span className="text-gray-500 w-12">IBAN</span><span className="text-gray-300 font-mono">{ibanFmt}</span></div>}
+                        {bd.bic && <div className="flex gap-3"><span className="text-gray-500 w-12">BIC</span><span className="text-gray-300 font-mono">{bd.bic}</span></div>}
+                        {bd.bankName && <div className="flex gap-3"><span className="text-gray-500 w-12">Bank</span><span className="text-gray-300">{bd.bankName}</span></div>}
+                        {(bd.accountHolder || invoice.user.businessName) && <div className="flex gap-3"><span className="text-gray-500 w-12">Name</span><span className="text-gray-300">{bd.accountHolder || invoice.user.businessName}</span></div>}
+                      </div>
+                    );
+                  }
+                } catch {}
+                return <p className="text-gray-300 whitespace-pre-line">{invoice.user.bankDetails}</p>;
+              })()}
             </div>
           )}
 

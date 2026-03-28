@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import BottomNav from "@/components/BottomNav";
+import { toast } from "@/components/Toast";
 
 interface StatusBreakdown {
   draft: number;
@@ -54,6 +55,42 @@ function timeAgo(dateStr: string) {
   return `${Math.floor(days / 365)}y ago`;
 }
 
+function getCountryFlag(address: string | null): string | null {
+  if (!address) return null;
+  const lower = address.toLowerCase();
+  if (/\bnl\b|netherland|amsterdam|rotterdam|utrecht|den haag/.test(lower)) return "\u{1F1F3}\u{1F1F1}";
+  if (/\buk\b|\bgb\b|united kingdom|england|london|manchester|birmingham|scotland|wales/.test(lower)) return "\u{1F1EC}\u{1F1E7}";
+  if (/\bde\b|germany|deutschland|berlin|munich|hamburg|frankfurt/.test(lower)) return "\u{1F1E9}\u{1F1EA}";
+  if (/\bbe\b|belgium|belgi[eë]|brussels|bruxelles|antwerp/.test(lower)) return "\u{1F1E7}\u{1F1EA}";
+  if (/\bfr\b|france|paris|lyon|marseille/.test(lower)) return "\u{1F1EB}\u{1F1F7}";
+  if (/\bie\b|ireland|dublin|cork|galway/.test(lower)) return "\u{1F1EE}\u{1F1EA}";
+  if (/\bus\b|usa|united states|new york|california/.test(lower)) return "\u{1F1FA}\u{1F1F8}";
+  return null;
+}
+
+function SkeletonCard() {
+  return (
+    <div className="bg-gray-900/50 rounded-2xl border border-gray-800/50 p-5">
+      <div className="flex items-start gap-4">
+        <div className="w-11 h-11 rounded-full bg-gray-800 animate-pulse" />
+        <div className="flex-1 space-y-2">
+          <div className="h-5 w-40 bg-gray-800 rounded animate-pulse" />
+          <div className="h-4 w-56 bg-gray-800/50 rounded animate-pulse" />
+        </div>
+        <div className="h-9 w-28 bg-gray-800 rounded-xl animate-pulse" />
+      </div>
+      <div className="grid grid-cols-4 gap-3 mt-4 pt-4 border-t border-gray-700/50">
+        {[1, 2, 3, 4].map((i) => (
+          <div key={i} className="space-y-1">
+            <div className="h-3 w-16 bg-gray-800/50 rounded animate-pulse" />
+            <div className="h-6 w-20 bg-gray-800 rounded animate-pulse" />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default function ClientsPage() {
   const [clients, setClients] = useState<Client[]>([]);
   const [loading, setLoading] = useState(true);
@@ -92,6 +129,9 @@ export default function ClientsPage() {
       setAddress("");
       setVatNumber("");
       setShowForm(false);
+      toast("Client added");
+    } else {
+      toast("Failed to add client", "error");
     }
     setSaving(false);
   }
@@ -260,7 +300,9 @@ export default function ClientsPage() {
         )}
 
         {loading ? (
-          <p className="text-gray-400 text-center py-12">Loading...</p>
+          <div className="space-y-3">
+            {[1, 2, 3].map((i) => <SkeletonCard key={i} />)}
+          </div>
         ) : clients.length === 0 ? (
           <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl p-16 border border-gray-800/50 text-center relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent pointer-events-none" />
@@ -288,98 +330,104 @@ export default function ClientsPage() {
           </div>
         ) : (
           <div className="space-y-3">
-            {filtered.map((client) => (
-              <div
-                key={client.id}
-                className="bg-gray-900/50 backdrop-blur-sm rounded-2xl border border-gray-800/50 p-5 hover:border-gray-700/50 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300"
-              >
-                <div className="flex items-start justify-between gap-4">
-                  {/* Left: Client info */}
-                  <div className="flex items-start gap-4 min-w-0 flex-1">
-                    <div className="w-11 h-11 rounded-full bg-gradient-to-br from-amber-500/20 to-amber-600/10 flex items-center justify-center flex-shrink-0 border border-amber-500/20">
-                      <span className="text-amber-400 font-bold text-lg">{client.name.charAt(0).toUpperCase()}</span>
+            {filtered.map((client) => {
+              const flag = getCountryFlag(client.address);
+              return (
+                <div
+                  key={client.id}
+                  className="bg-gray-900/50 backdrop-blur-sm rounded-2xl border border-gray-800/50 p-5 hover:border-gray-700/50 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300"
+                >
+                  <div className="flex items-start justify-between gap-4">
+                    {/* Left: Client info */}
+                    <div className="flex items-start gap-4 min-w-0 flex-1">
+                      <div className="w-11 h-11 rounded-full bg-gradient-to-br from-amber-500/20 to-amber-600/10 flex items-center justify-center flex-shrink-0 border border-amber-500/20">
+                        <span className="text-amber-400 font-bold text-lg">{client.name.charAt(0).toUpperCase()}</span>
+                      </div>
+                      <div className="min-w-0">
+                        <p className="font-semibold text-white text-lg truncate flex items-center gap-2">
+                          {client.name}
+                          {flag && <span className="text-base" title="Detected country">{flag}</span>}
+                        </p>
+                        <p className="text-sm text-gray-400 truncate">{client.email}</p>
+                        {(client.phone || client.address || client.vatNumber) && (
+                          <div className="flex flex-wrap gap-x-4 gap-y-0.5 mt-1">
+                            {client.phone && <p className="text-xs text-gray-500">{client.phone}</p>}
+                            {client.address && <p className="text-xs text-gray-500">{client.address}</p>}
+                            {client.vatNumber && <p className="text-xs text-gray-500">VAT: {client.vatNumber}</p>}
+                          </div>
+                        )}
+                      </div>
                     </div>
-                    <div className="min-w-0">
-                      <p className="font-semibold text-white text-lg truncate">{client.name}</p>
-                      <p className="text-sm text-gray-400 truncate">{client.email}</p>
-                      {(client.phone || client.address || client.vatNumber) && (
-                        <div className="flex flex-wrap gap-x-4 gap-y-0.5 mt-1">
-                          {client.phone && <p className="text-xs text-gray-500">{client.phone}</p>}
-                          {client.address && <p className="text-xs text-gray-500">{client.address}</p>}
-                          {client.vatNumber && <p className="text-xs text-gray-500">VAT: {client.vatNumber}</p>}
-                        </div>
-                      )}
-                    </div>
+
+                    {/* Right: New Invoice button */}
+                    <Link
+                      href={`/invoices/new?clientId=${client.id}`}
+                      className="bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-gray-950 px-4 py-2 rounded-xl text-sm font-semibold shadow-sm shadow-amber-500/20 transition-all whitespace-nowrap flex-shrink-0"
+                    >
+                      + New Invoice
+                    </Link>
                   </div>
 
-                  {/* Right: New Invoice button */}
-                  <Link
-                    href={`/invoices/new?clientId=${client.id}`}
-                    className="bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-gray-950 px-4 py-2 rounded-xl text-sm font-semibold shadow-sm shadow-amber-500/20 transition-all whitespace-nowrap flex-shrink-0"
-                  >
-                    + New Invoice
-                  </Link>
-                </div>
-
-                {/* Stats Row */}
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4 pt-4 border-t border-gray-700/50">
-                  <div>
-                    <p className="text-xs text-gray-500 uppercase tracking-wider">Total Invoiced</p>
-                    <p className="text-lg font-bold text-white mt-0.5">
-                      {client.invoiceCount > 0
-                        ? formatCurrency(client.totalInvoiced, client.currency)
-                        : "--"}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-gray-500 uppercase tracking-wider">Invoices</p>
-                    <p className="text-lg font-bold text-white mt-0.5">{client.invoiceCount}</p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-gray-500 uppercase tracking-wider">Last Invoice</p>
-                    <p className="text-sm font-medium text-gray-300 mt-1">
-                      {client.lastInvoiceDate ? timeAgo(client.lastInvoiceDate) : "Never"}
-                    </p>
-                    {client.lastInvoiceDate && (
-                      <p className="text-xs text-gray-500">{formatDate(client.lastInvoiceDate)}</p>
-                    )}
-                  </div>
-                  <div>
-                    <p className="text-xs text-gray-500 uppercase tracking-wider">Status</p>
-                    <div className="flex flex-wrap gap-1.5 mt-1.5">
-                      {client.statusBreakdown.paid > 0 && (
-                        <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                          {client.statusBreakdown.paid} paid
-                        </span>
+                  {/* Stats Row */}
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4 pt-4 border-t border-gray-700/50">
+                    <div>
+                      <p className="text-xs text-gray-500 uppercase tracking-wider">Total Invoiced</p>
+                      <p className="text-lg font-bold text-white mt-0.5">
+                        {client.invoiceCount > 0
+                          ? formatCurrency(client.totalInvoiced, client.currency)
+                          : "--"}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-500 uppercase tracking-wider">Invoices</p>
+                      <p className="text-lg font-bold text-white mt-0.5">{client.invoiceCount}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-500 uppercase tracking-wider">Last Invoice</p>
+                      <p className="text-sm font-medium text-gray-300 mt-1">
+                        {client.lastInvoiceDate ? timeAgo(client.lastInvoiceDate) : "Never"}
+                      </p>
+                      {client.lastInvoiceDate && (
+                        <p className="text-xs text-gray-500">{formatDate(client.lastInvoiceDate)}</p>
                       )}
-                      {client.statusBreakdown.sent > 0 && (
-                        <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-blue-500/10 text-blue-400 border border-blue-500/20">
-                          {client.statusBreakdown.sent} sent
-                        </span>
-                      )}
-                      {client.statusBreakdown.viewed > 0 && (
-                        <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-yellow-500/10 text-yellow-400 border border-yellow-500/20">
-                          {client.statusBreakdown.viewed} viewed
-                        </span>
-                      )}
-                      {client.statusBreakdown.draft > 0 && (
-                        <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-gray-500/10 text-gray-400 border border-gray-500/20">
-                          {client.statusBreakdown.draft} draft
-                        </span>
-                      )}
-                      {client.statusBreakdown.overdue > 0 && (
-                        <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-red-500/10 text-red-400 border border-red-500/20">
-                          {client.statusBreakdown.overdue} overdue
-                        </span>
-                      )}
-                      {client.invoiceCount === 0 && (
-                        <span className="text-xs text-gray-500">No invoices yet</span>
-                      )}
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-500 uppercase tracking-wider">Status</p>
+                      <div className="flex flex-wrap gap-1.5 mt-1.5">
+                        {client.statusBreakdown.paid > 0 && (
+                          <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                            {client.statusBreakdown.paid} paid
+                          </span>
+                        )}
+                        {client.statusBreakdown.sent > 0 && (
+                          <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-blue-500/10 text-blue-400 border border-blue-500/20">
+                            {client.statusBreakdown.sent} sent
+                          </span>
+                        )}
+                        {client.statusBreakdown.viewed > 0 && (
+                          <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-yellow-500/10 text-yellow-400 border border-yellow-500/20">
+                            {client.statusBreakdown.viewed} viewed
+                          </span>
+                        )}
+                        {client.statusBreakdown.draft > 0 && (
+                          <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-gray-500/10 text-gray-400 border border-gray-500/20">
+                            {client.statusBreakdown.draft} draft
+                          </span>
+                        )}
+                        {client.statusBreakdown.overdue > 0 && (
+                          <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-red-500/10 text-red-400 border border-red-500/20">
+                            {client.statusBreakdown.overdue} overdue
+                          </span>
+                        )}
+                        {client.invoiceCount === 0 && (
+                          <span className="text-xs text-gray-500">No invoices yet</span>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>

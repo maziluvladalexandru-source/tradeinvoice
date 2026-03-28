@@ -314,9 +314,23 @@ export default async function PublicInvoicePage({
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="font-semibold text-gray-900 text-sm mb-2">Bank Transfer</p>
-                      <p className="text-gray-600 text-sm whitespace-pre-line leading-relaxed">
-                        {invoice.user.bankDetails}
-                      </p>
+                      {(() => {
+                        try {
+                          const bd = JSON.parse(invoice.user.bankDetails!);
+                          if (bd.iban !== undefined) {
+                            const ibanFmt = bd.iban.replace(/(.{4})/g, "$1 ").trim();
+                            return (
+                              <div className="space-y-1 text-sm text-gray-600">
+                                {bd.iban && <div className="flex gap-2"><span className="text-gray-400 w-12">IBAN</span><span className="font-mono font-medium text-gray-900">{ibanFmt}</span></div>}
+                                {bd.bic && <div className="flex gap-2"><span className="text-gray-400 w-12">BIC</span><span className="font-mono">{bd.bic}</span></div>}
+                                {bd.bankName && <div className="flex gap-2"><span className="text-gray-400 w-12">Bank</span><span>{bd.bankName}</span></div>}
+                                {(bd.accountHolder || invoice.user.businessName) && <div className="flex gap-2"><span className="text-gray-400 w-12">Name</span><span>{bd.accountHolder || invoice.user.businessName}</span></div>}
+                              </div>
+                            );
+                          }
+                        } catch {}
+                        return <p className="text-gray-600 text-sm whitespace-pre-line leading-relaxed">{invoice.user.bankDetails}</p>;
+                      })()}
                     </div>
                   </div>
                 </div>

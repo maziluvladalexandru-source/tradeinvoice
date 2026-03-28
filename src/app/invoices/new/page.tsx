@@ -1,6 +1,6 @@
 "use client";
 import BottomNav from "@/components/BottomNav";
-import { useState, useEffect, Suspense } from "react";
+import { useState, useEffect, Suspense, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import UpgradeModal, { ProBadge } from "@/components/UpgradeModal";
@@ -35,6 +35,55 @@ interface LineItem {
   unitPrice: number;
 }
 
+interface BankDetailsStructured {
+  iban: string;
+  bankName: string;
+  bic: string;
+  accountHolder: string;
+}
+
+function formatIBAN(value: string): string {
+  const clean = value.replace(/\s/g, "").toUpperCase();
+  return clean.replace(/(.{4})/g, "$1 ").trim();
+}
+
+function parseBankDetails(raw: string | null): BankDetailsStructured | null {
+  if (!raw) return null;
+  try {
+    const parsed = JSON.parse(raw);
+    if (parsed.iban !== undefined) return parsed;
+  } catch {
+    // Legacy format
+  }
+  return null;
+}
+
+const COMMON_ITEMS = [
+  { label: "Labour", desc: "Labour - general work" },
+  { label: "Callout", desc: "Emergency callout fee" },
+  { label: "Materials", desc: "Materials and supplies" },
+  { label: "Bathroom", desc: "Bathroom renovation - labour" },
+  { label: "Boiler", desc: "Boiler service and repair" },
+  { label: "Electrical", desc: "Electrical installation work" },
+  { label: "Plastering", desc: "Plastering and finishing" },
+  { label: "Painting", desc: "Painting and decorating" },
+];
+
+const PAYMENT_TERMS = [
+  { label: "Due on receipt", days: 0 },
+  { label: "Net 14 (14 days)", days: 14 },
+  { label: "Net 30 (30 days)", days: 30 },
+  { label: "Net 45 (45 days)", days: 45 },
+  { label: "Net 60 (60 days)", days: 60 },
+  { label: "Custom date", days: -1 },
+];
+
+function calculateDueDate(days: number): string {
+  const d = new Date();
+  d.setDate(d.getDate() + days);
+  return d.toISOString().split("T")[0];
+}
+
 export default function NewInvoicePage() {
   return (
     <Suspense
@@ -42,7 +91,15 @@ export default function NewInvoicePage() {
         <div className="min-h-screen bg-gray-950">
           <Navbar />
           <div className="max-w-3xl mx-auto px-4 py-8">
-            <p className="text-gray-400">Loading...</p>
+            <div className="h-10 w-48 bg-gray-800 rounded-xl animate-pulse mb-6" />
+            <div className="space-y-4">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="bg-gray-900/50 rounded-2xl p-5 border border-gray-800/50">
+                  <div className="h-5 w-32 bg-gray-800 rounded animate-pulse mb-3" />
+                  <div className="h-12 bg-gray-800/30 rounded-xl animate-pulse" />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       }
@@ -91,7 +148,7 @@ function InvoicePreview({
     new Intl.NumberFormat("en-IE", { style: "currency", currency }).format(n);
 
   const fmtDate = (d: string) => {
-    if (!d) return "—";
+    if (!d) return "--";
     return new Date(d + "T00:00:00").toLocaleDateString("en-IE", {
       day: "numeric",
       month: "short",
@@ -114,6 +171,8 @@ function InvoicePreview({
   );
   const tax = subtotal * (taxRate / 100);
   const total = subtotal + tax;
+
+  const bankData = parseBankDetails(user?.bankDetails || null);
 
   return (
     <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden text-gray-900 text-sm">
@@ -274,7 +333,7 @@ function InvoicePreview({
                   }
                 >
                   <td className="text-gray-800 text-xs py-2.5 pr-2 truncate max-w-[120px]">
-                    {item.description || "—"}
+                    {item.description || "--"}
                   </td>
                   <td className="text-gray-500 text-xs text-center py-2.5 px-2 tabular-nums">
                     {item.quantity}
@@ -330,8 +389,44 @@ function InvoicePreview({
         </div>
       </div>
 
-      {/* Bank Details */}
-      {user?.bankDetails && (
+      {/* Bank Details - Structured */}
+      {bankData && (bankData.iban || bankData.bankName) && (
+        <div className="px-6 pb-4">
+          <div className="bg-gray-50 rounded-lg border border-gray-200 p-3">
+            <p className="text-[10px] font-semibold text-gray-600 mb-1.5">
+              Payment Information
+            </p>
+            <div className="space-y-0.5 text-xs">
+              {bankData.iban && (
+                <div className="flex gap-2">
+                  <span className="text-gray-400 w-10 flex-shrink-0">IBAN</span>
+                  <span className="text-gray-700 font-mono font-medium">{formatIBAN(bankData.iban)}</span>
+                </div>
+              )}
+              {bankData.bic && (
+                <div className="flex gap-2">
+                  <span className="text-gray-400 w-10 flex-shrink-0">BIC</span>
+                  <span className="text-gray-700 font-mono font-medium">{bankData.bic}</span>
+                </div>
+              )}
+              {bankData.bankName && (
+                <div className="flex gap-2">
+                  <span className="text-gray-400 w-10 flex-shrink-0">Bank</span>
+                  <span className="text-gray-700 font-medium">{bankData.bankName}</span>
+                </div>
+              )}
+              {(bankData.accountHolder || user?.businessName) && (
+                <div className="flex gap-2">
+                  <span className="text-gray-400 w-10 flex-shrink-0">Name</span>
+                  <span className="text-gray-700 font-medium">{bankData.accountHolder || user?.businessName}</span>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+      {/* Fallback: legacy plain-text bank details */}
+      {user?.bankDetails && !bankData && (
         <div className="px-6 pb-4">
           <div className="bg-gray-50 rounded-lg border border-gray-200 p-3">
             <p className="text-[10px] font-semibold text-gray-600 mb-0.5">
@@ -389,11 +484,8 @@ function NewInvoiceForm() {
   const [clientId, setClientId] = useState(preselectedClientId);
   const [invoiceNumber, setInvoiceNumber] = useState("");
   const [description, setDescription] = useState("");
-  const [dueDate, setDueDate] = useState(() => {
-    const d = new Date();
-    d.setDate(d.getDate() + 30);
-    return d.toISOString().split("T")[0];
-  });
+  const [paymentTerms, setPaymentTerms] = useState(30); // days, -1 = custom
+  const [dueDate, setDueDate] = useState(() => calculateDueDate(30));
   const [serviceDate, setServiceDate] = useState("");
   const [paymentNotes, setPaymentNotes] = useState("");
   const [notesToClient, setNotesToClient] = useState("");
@@ -446,6 +538,10 @@ function NewInvoiceForm() {
   // Mobile preview toggle
   const [showMobilePreview, setShowMobilePreview] = useState(false);
 
+  // Common items suggestions
+  const [showSuggestions, setShowSuggestions] = useState<number | null>(null);
+  const suggestionsRef = useRef<HTMLDivElement>(null);
+
   const selectedClient = clients.find((c) => c.id === clientId);
 
   useEffect(() => {
@@ -469,6 +565,17 @@ function NewInvoiceForm() {
       .then((data) => setInvoiceNumber(data.nextNumber))
       .catch(() => {});
   }, [preselectedClientId]);
+
+  // Close suggestions on outside click
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (suggestionsRef.current && !suggestionsRef.current.contains(e.target as Node)) {
+        setShowSuggestions(null);
+      }
+    }
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, []);
 
   function addLineItem() {
     setLineItems([
@@ -591,7 +698,6 @@ function NewInvoiceForm() {
   }
 
   async function handleDownloadPreview() {
-    // Create the invoice first as draft, then redirect to PDF
     setError("");
     const errors: Record<string, string> = {};
     if (!clientId) errors.clientId = "Select a client to bill";
@@ -657,17 +763,24 @@ function NewInvoiceForm() {
   const isValid =
     clientId && lineItems.some((i) => i.description && i.unitPrice > 0);
 
+  // Validation warning banner
+  const missingFields: string[] = [];
+  if (!clientId) missingFields.push("Client");
+  if (!lineItems.some((i) => i.description && i.unitPrice > 0)) missingFields.push("Line items");
+  if (!dueDate) missingFields.push("Due date");
+  if (invoiceCountry === "DE" && !serviceDate) missingFields.push("Service date (required for DE)");
+
   return (
     <div className="min-h-screen bg-gray-950">
       <Navbar />
 
-      {/* Mobile floating preview toggle - inline media query to bypass Tailwind JIT */}
+      {/* Mobile floating preview toggle */}
       <button
         onClick={() => setShowMobilePreview(!showMobilePreview)}
         style={{ position: 'fixed', bottom: '7rem', right: '1rem', zIndex: 9999 }}
         className="bg-gradient-to-r from-amber-500 to-amber-400 text-gray-950 rounded-full px-5 py-3 text-base font-bold shadow-lg shadow-amber-500/30 active:scale-95 transition-transform mobile-preview-btn"
       >
-        {showMobilePreview ? "✏️ Edit" : "👁️ Preview"}
+        {showMobilePreview ? "Edit" : "Preview"}
       </button>
 
       <div className="max-w-[1440px] mx-auto px-4 py-6 md:py-8">
@@ -720,32 +833,47 @@ function NewInvoiceForm() {
               </div>
             )}
 
+            {/* Missing fields warning */}
+            {missingFields.length > 0 && (
+              <div className="bg-amber-500/5 border border-amber-500/20 text-amber-400 p-3 rounded-xl mb-5 text-sm flex items-start gap-2">
+                <svg className="w-4 h-4 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                </svg>
+                <span>Required: {missingFields.join(", ")}</span>
+              </div>
+            )}
+
             <div className="space-y-5">
               {/* Country & Type & Currency */}
               <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl p-5 border border-gray-800/50">
-                {/* Country Selector */}
-                <div className="mb-3">
-                  <label className="block text-xs font-medium text-gray-400 mb-1">
+                {/* Country Selector - Prominent with flag */}
+                <div className="mb-4">
+                  <label className="block text-xs font-medium text-gray-400 mb-1.5">
                     Invoice Country
                   </label>
-                  <select
-                    value={invoiceCountry}
-                    onChange={(e) => {
-                      const code = e.target.value;
-                      setInvoiceCountry(code);
-                      const config = getCountryConfig(code);
-                      setCurrency(config.defaultCurrency);
-                      // Set tax rate to first (standard) VAT rate
-                      setTaxRate(config.vatRates[0].rate);
-                    }}
-                    className="w-full px-3 py-2.5 rounded-xl border border-gray-800/50 text-sm focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 transition-all outline-none bg-gray-900/80 text-white"
-                  >
+                  <div className="grid grid-cols-4 gap-2">
                     {Object.values(COUNTRY_CONFIGS).map((c) => (
-                      <option key={c.countryCode} value={c.countryCode}>
-                        {c.flag} {c.countryName}
-                      </option>
+                      <button
+                        key={c.countryCode}
+                        type="button"
+                        onClick={() => {
+                          setInvoiceCountry(c.countryCode);
+                          setCurrency(c.defaultCurrency);
+                          setTaxRate(c.vatRates[0].rate);
+                        }}
+                        className={`flex flex-col items-center gap-1 px-3 py-2.5 rounded-xl border text-center transition-all ${
+                          invoiceCountry === c.countryCode
+                            ? "border-amber-500 bg-amber-500/10 ring-1 ring-amber-500/30"
+                            : "border-gray-700/50 hover:border-gray-600/50 bg-gray-900/50"
+                        }`}
+                      >
+                        <span className="text-xl">{c.flag}</span>
+                        <span className={`text-xs font-medium ${invoiceCountry === c.countryCode ? "text-amber-400" : "text-gray-400"}`}>
+                          {c.countryCode}
+                        </span>
+                      </button>
                     ))}
-                  </select>
+                  </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-3">
@@ -971,7 +1099,7 @@ function NewInvoiceForm() {
                         </div>
                         {!selectedClient.address && (
                           <div className="mt-2 bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-2 text-xs text-yellow-400">
-                            Dutch law requires client address on invoices. Add it
+                            Client address recommended for legal compliance. Add it
                             in Clients page.
                           </div>
                         )}
@@ -1025,14 +1153,14 @@ function NewInvoiceForm() {
                       <button
                         type="button"
                         onClick={handleNewClient}
-                        className="bg-amber-500 text-gray-950 px-4 py-2 rounded-lg font-medium text-sm"
+                        className="bg-amber-500 hover:bg-amber-400 text-gray-950 px-4 py-2 rounded-lg font-medium text-sm transition-colors"
                       >
                         Save Client
                       </button>
                       <button
                         type="button"
                         onClick={() => setShowNewClient(false)}
-                        className="text-gray-400 px-4 py-2 text-sm"
+                        className="text-gray-400 px-4 py-2 text-sm hover:text-gray-300 transition-colors"
                       >
                         Cancel
                       </button>
@@ -1051,12 +1179,73 @@ function NewInvoiceForm() {
                   Describe the work and set dates
                 </p>
                 <input
-                  placeholder="e.g. Bathroom renovation, boiler repair..."
+                  placeholder="e.g. Bathroom renovation, boiler repair, electrical work..."
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   className="w-full px-3 py-2.5 rounded-xl border border-gray-800/50 text-sm focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 transition-all outline-none bg-gray-900/80 text-white placeholder-gray-500 mb-3"
                 />
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+
+                {/* Payment Terms + Due Date */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
+                  <div>
+                    <label className="block text-xs font-medium text-gray-400 mb-1">
+                      Payment Terms
+                    </label>
+                    <select
+                      value={paymentTerms}
+                      onChange={(e) => {
+                        const days = Number(e.target.value);
+                        setPaymentTerms(days);
+                        if (days >= 0) {
+                          setDueDate(calculateDueDate(days));
+                          setFieldErrors((prev) => {
+                            const next = { ...prev };
+                            delete next.dueDate;
+                            return next;
+                          });
+                        }
+                      }}
+                      className="w-full px-3 py-2.5 rounded-xl border border-gray-800/50 text-sm focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 transition-all outline-none bg-gray-900/80 text-white"
+                      style={{ minHeight: "44px" }}
+                    >
+                      {PAYMENT_TERMS.map((pt) => (
+                        <option key={pt.days} value={pt.days}>{pt.label}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-gray-400 mb-1">
+                      Due Date <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="date"
+                      value={dueDate}
+                      onChange={(e) => {
+                        setDueDate(e.target.value);
+                        setPaymentTerms(-1);
+                        setFieldErrors((prev) => {
+                          const next = { ...prev };
+                          delete next.dueDate;
+                          return next;
+                        });
+                      }}
+                      disabled={paymentTerms !== -1}
+                      className={`w-full px-3 py-2.5 rounded-xl border text-sm focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white appearance-none [color-scheme:dark] [&::-webkit-calendar-picker-indicator]:opacity-70 [&::-webkit-calendar-picker-indicator]:invert ${
+                        fieldErrors.dueDate
+                          ? "border-red-500"
+                          : "border-gray-800/50"
+                      } ${paymentTerms !== -1 ? "opacity-60" : ""}`}
+                      style={{ minHeight: "44px" }}
+                    />
+                    {fieldErrors.dueDate && (
+                      <p className="text-red-500 text-xs mt-1">
+                        {fieldErrors.dueDate}
+                      </p>
+                    )}
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
                     <label className="block text-xs font-medium text-gray-400 mb-1">
                       {getCountryConfig(invoiceCountry).serviceDateLabel}
@@ -1074,34 +1263,6 @@ function NewInvoiceForm() {
                     {invoiceCountry === "DE" && !serviceDate && (
                       <p className="text-xs text-amber-400 mt-1">
                         Required for German invoices (Leistungsdatum)
-                      </p>
-                    )}
-                  </div>
-                  <div>
-                    <label className="block text-xs font-medium text-gray-400 mb-1">
-                      Due Date <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="date"
-                      value={dueDate}
-                      onChange={(e) => {
-                        setDueDate(e.target.value);
-                        setFieldErrors((prev) => {
-                          const next = { ...prev };
-                          delete next.dueDate;
-                          return next;
-                        });
-                      }}
-                      className={`w-full px-3 py-2.5 rounded-xl border text-sm focus:ring-2 focus:ring-amber-500 outline-none bg-gray-900 text-white appearance-none [color-scheme:dark] [&::-webkit-calendar-picker-indicator]:opacity-70 [&::-webkit-calendar-picker-indicator]:invert ${
-                        fieldErrors.dueDate
-                          ? "border-red-500"
-                          : "border-gray-800/50"
-                      }`}
-                      style={{ minHeight: "44px" }}
-                    />
-                    {fieldErrors.dueDate && (
-                      <p className="text-red-500 text-xs mt-1">
-                        {fieldErrors.dueDate}
                       </p>
                     )}
                   </div>
@@ -1140,12 +1301,10 @@ function NewInvoiceForm() {
                   Payment Notes
                 </h2>
                 <p className="text-xs text-gray-500 mb-3">
-                  Bank account, payment instructions
+                  Additional payment instructions shown on the invoice
                 </p>
                 <textarea
-                  placeholder={
-                    "e.g. IBAN: NL91 ABNA 0417 1643 00\nPlease include invoice number as reference"
-                  }
+                  placeholder="e.g. Please include invoice number as payment reference"
                   value={paymentNotes}
                   onChange={(e) => setPaymentNotes(e.target.value)}
                   rows={2}
@@ -1163,9 +1322,7 @@ function NewInvoiceForm() {
                   Optional message displayed on the invoice
                 </p>
                 <textarea
-                  placeholder={
-                    "e.g. Thank you for your business! Work completed as agreed."
-                  }
+                  placeholder="e.g. Thank you for your business! Work completed as agreed."
                   value={notesToClient}
                   onChange={(e) => setNotesToClient(e.target.value)}
                   rows={2}
@@ -1225,20 +1382,42 @@ function NewInvoiceForm() {
                     {fieldErrors.lineItems}
                   </p>
                 )}
-                <div className="space-y-3">
+                <div className="space-y-3" ref={suggestionsRef}>
                   {lineItems.map((item, index) => (
                     <div
                       key={index}
                       className="bg-gray-950/40 sm:bg-transparent rounded-xl p-3 sm:p-0 border border-gray-800/50 sm:border-0 space-y-2 sm:space-y-0 sm:flex sm:gap-2 sm:items-start"
                     >
-                      <input
-                        placeholder="Description"
-                        value={item.description}
-                        onChange={(e) =>
-                          updateLineItem(index, "description", e.target.value)
-                        }
-                        className="w-full sm:flex-1 px-3 py-2.5 rounded-xl border border-gray-800/50 text-sm focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 transition-all outline-none bg-gray-900/80 text-white placeholder-gray-500"
-                      />
+                      <div className="relative w-full sm:flex-1">
+                        <input
+                          placeholder="e.g. Bathroom renovation - labour"
+                          value={item.description}
+                          onChange={(e) =>
+                            updateLineItem(index, "description", e.target.value)
+                          }
+                          onFocus={() => setShowSuggestions(index)}
+                          className="w-full px-3 py-2.5 rounded-xl border border-gray-800/50 text-sm focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 transition-all outline-none bg-gray-900/80 text-white placeholder-gray-500"
+                        />
+                        {/* Common items suggestions */}
+                        {showSuggestions === index && !item.description && (
+                          <div className="absolute z-20 top-full left-0 right-0 mt-1 bg-gray-800 border border-gray-700 rounded-xl shadow-xl overflow-hidden">
+                            <p className="px-3 py-1.5 text-[10px] font-semibold text-gray-500 uppercase tracking-wider">Common items</p>
+                            {COMMON_ITEMS.map((ci) => (
+                              <button
+                                key={ci.label}
+                                type="button"
+                                onClick={() => {
+                                  updateLineItem(index, "description", ci.desc);
+                                  setShowSuggestions(null);
+                                }}
+                                className="w-full text-left px-3 py-2 text-sm text-gray-300 hover:bg-gray-700/50 hover:text-white transition-colors"
+                              >
+                                {ci.desc}
+                              </button>
+                            ))}
+                          </div>
+                        )}
+                      </div>
                       <div className="flex gap-2 items-start">
                         <input
                           type="number"
@@ -1272,7 +1451,7 @@ function NewInvoiceForm() {
                         <button
                           type="button"
                           onClick={() => removeLineItem(index)}
-                          className="p-2.5 shrink-0 text-red-400 hover:text-red-300"
+                          className="p-2.5 shrink-0 text-red-400 hover:text-red-300 transition-colors"
                           title="Remove"
                           aria-label="Remove line item"
                         >
@@ -1440,4 +1619,3 @@ function NewInvoiceForm() {
     </div>
   );
 }
-
