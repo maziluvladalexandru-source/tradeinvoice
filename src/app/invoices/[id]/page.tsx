@@ -34,7 +34,7 @@ interface Invoice {
   paidAmount: number;
   client: { id: string; name: string; email: string; phone: string | null; address: string | null };
   lineItems: { id: string; description: string; quantity: number; unitPrice: number; total: number }[];
-  user: { businessName: string | null; email: string; plan?: string };
+  user: { businessName: string | null; email: string; plan?: string; businessAddress?: string | null; businessPhone?: string | null; kvkNumber?: string | null; vatNumber?: string | null; bankDetails?: string | null; logoUrl?: string | null };
 }
 
 export default function InvoiceDetailPage() {
@@ -346,6 +346,28 @@ export default function InvoiceDetailPage() {
             <div className="grid md:grid-cols-2 gap-6">
               <div>
                 <h3 className="text-xs uppercase tracking-wide text-gray-500 mb-2">
+                  From
+                </h3>
+                <p className="font-semibold text-white">
+                  {invoice.user.businessName || "Your Business"}
+                </p>
+                <p className="text-gray-400">{invoice.user.email}</p>
+                {invoice.user.businessPhone && (
+                  <p className="text-gray-400">{invoice.user.businessPhone}</p>
+                )}
+                {invoice.user.businessAddress && (
+                  <p className="text-gray-400">{invoice.user.businessAddress}</p>
+                )}
+                {(invoice.user.kvkNumber || invoice.user.vatNumber) && (
+                  <div className="mt-2 text-xs text-gray-500">
+                    {invoice.user.kvkNumber && <span>KVK: {invoice.user.kvkNumber}</span>}
+                    {invoice.user.kvkNumber && invoice.user.vatNumber && <span> | </span>}
+                    {invoice.user.vatNumber && <span>BTW: {invoice.user.vatNumber}</span>}
+                  </div>
+                )}
+              </div>
+              <div>
+                <h3 className="text-xs uppercase tracking-wide text-gray-500 mb-2">
                   Bill To
                 </h3>
                 <p className="font-semibold text-white">
@@ -359,7 +381,9 @@ export default function InvoiceDetailPage() {
                   <p className="text-gray-400">{invoice.client.address}</p>
                 )}
               </div>
-              <div className="md:text-right">
+            </div>
+            <div className="mt-4 md:text-right">
+              <div>
                 <h3 className="text-xs uppercase tracking-wide text-gray-500 mb-2">
                   Details
                 </h3>
@@ -448,6 +472,16 @@ export default function InvoiceDetailPage() {
               </div>
             )}
           </div>
+
+          {/* Bank Details */}
+          {invoice.user.bankDetails && (
+            <div className="p-6 border-t border-gray-800">
+              <h3 className="text-xs uppercase tracking-wide text-gray-500 mb-2">
+                Payment Information
+              </h3>
+              <p className="text-gray-300 whitespace-pre-line">{invoice.user.bankDetails}</p>
+            </div>
+          )}
 
           {/* Payment Notes */}
           {invoice.paymentNotes && (

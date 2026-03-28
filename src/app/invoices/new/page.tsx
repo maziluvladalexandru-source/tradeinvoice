@@ -19,6 +19,9 @@ interface UserProfile {
   email: string;
   businessAddress: string | null;
   businessPhone: string | null;
+  kvkNumber: string | null;
+  vatNumber: string | null;
+  bankDetails: string | null;
   logoUrl: string | null;
   plan: string;
 }
@@ -124,9 +127,21 @@ function InvoicePreview({
             <h2 className="text-base font-bold text-gray-900">
               {user?.businessName || user?.name || "Your Business"}
             </h2>
-            <p className="text-gray-400 text-xs">{user?.email || "your@email.com"}</p>
+            <div className="text-gray-400 text-xs space-y-0.5">
+              {user?.businessAddress && <p>{user.businessAddress}</p>}
+              <p>
+                {user?.email || "your@email.com"}
+                {user?.businessPhone && ` · ${user.businessPhone}`}
+              </p>
+            </div>
           </div>
         </div>
+        {(user?.kvkNumber || user?.vatNumber) && (
+          <div className="text-[10px] text-gray-400 text-right space-y-0.5 mt-1">
+            {user.kvkNumber && <p>KVK: {user.kvkNumber}</p>}
+            {user.vatNumber && <p>BTW: {user.vatNumber}</p>}
+          </div>
+        )}
       </header>
 
       {/* Invoice Info + Bill To */}
@@ -299,6 +314,20 @@ function InvoicePreview({
         </div>
       </div>
 
+      {/* Bank Details */}
+      {user?.bankDetails && (
+        <div className="px-6 pb-4">
+          <div className="bg-gray-50 rounded-lg border border-gray-200 p-3">
+            <p className="text-[10px] font-semibold text-gray-600 mb-0.5">
+              Payment Information
+            </p>
+            <p className="text-gray-700 text-xs whitespace-pre-line leading-relaxed">
+              {user.bankDetails}
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* Payment Notes */}
       {paymentNotes && (
         <div className="px-6 pb-4">
@@ -315,6 +344,13 @@ function InvoicePreview({
 
       {/* Footer */}
       <div className="px-6 py-3 border-t border-gray-100 bg-gray-50/30">
+        {(user?.kvkNumber || user?.vatNumber) && (
+          <p className="text-[10px] text-gray-400 text-center mb-1">
+            {user.kvkNumber && <>KVK: {user.kvkNumber}</>}
+            {user.kvkNumber && user.vatNumber && <> | </>}
+            {user.vatNumber && <>BTW: {user.vatNumber}</>}
+          </p>
+        )}
         <p className="text-[10px] text-gray-400 text-center">
           Generated with TradeInvoice
         </p>
