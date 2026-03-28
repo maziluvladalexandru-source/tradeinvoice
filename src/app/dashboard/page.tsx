@@ -1,40 +1,47 @@
-﻿import { redirect } from "next/navigation";
+import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { formatCurrency } from "@/lib/utils";
 import Navbar from "@/components/Navbar";
 import BottomNav from "@/components/BottomNav";
 import FloatingCreateButton from "@/components/FloatingCreateButton";
+import InvoiceCardActions from "@/components/InvoiceCardActions";
+import BulkInvoiceActions from "@/components/BulkInvoiceActions";
 import OnboardingChecklist from "@/components/OnboardingChecklist";
 import NewInvoiceButton from "@/components/NewInvoiceButton";
-import RevenueDashboard from "@/components/RevenueDashboard";
-import DashboardInvoiceList from "@/components/DashboardInvoiceList";
-import DashboardQuoteList from "@/components/DashboardQuoteList";
 import Link from "next/link";
+
 export default async function DashboardPage() {
   const user = await getCurrentUser();
   if (!user) redirect("/auth/login");
+
   const invoices = await prisma.invoice.findMany({
     where: { userId: user.id },
     include: { client: true },
     orderBy: { createdAt: "desc" },
   });
+
   const now = new Date();
   const hour = now.getHours();
   const greeting = hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening";
   const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+
   // Separate invoices and quotes
   const actualInvoices = invoices.filter((i) => i.type !== "quote");
   const quotes = invoices.filter((i) => i.type === "quote");
+
   const totalOutstanding = actualInvoices
     .filter((i) => ["sent", "viewed", "overdue"].includes(i.status))
     .reduce((sum, i) => sum + i.total, 0);
+
   const paidThisMonth = actualInvoices
     .filter(
       (i) => i.status === "paid" && i.paidAt && new Date(i.paidAt) >= monthStart
     )
     .reduce((sum, i) => sum + i.total, 0);
+
   const overdueCount = actualInvoices.filter((i) => i.status === "overdue").length;
+
   // Average days to payment (for paid invoices)
   const paidInvoicesWithDates = actualInvoices.filter(
     (i) => i.status === "paid" && i.paidAt && i.sentAt
@@ -49,6 +56,7 @@ export default async function DashboardPage() {
           }, 0) / paidInvoicesWithDates.length
         )
       : null;
+
   // Revenue this month vs last month
   const lastMonthStart = new Date(now.getFullYear(), now.getMonth() - 1, 1);
   const lastMonthEnd = new Date(now.getFullYear(), now.getMonth(), 0);
@@ -61,9 +69,11 @@ export default async function DashboardPage() {
         new Date(i.paidAt) <= lastMonthEnd
     )
     .reduce((sum, i) => sum + i.total, 0);
+
   const revenueChange = revenueLastMonth > 0
     ? ((paidThisMonth - revenueLastMonth) / revenueLastMonth) * 100
     : paidThisMonth > 0 ? 100 : 0;
+
   // Active clients (clients with non-draft invoices in last 90 days)
   const ninetyDaysAgo = new Date(now.getTime() - 90 * 24 * 60 * 60 * 1000);
   const activeClientIds = new Set(
@@ -72,78 +82,24 @@ export default async function DashboardPage() {
       .map((i) => i.clientId)
   );
   const activeClientsCount = activeClientIds.size;
+
   // Invoices viewed in the last 24 hours
   const twentyFourHoursAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
   const recentlyViewedCount = actualInvoices.filter(
     (i) => i.viewedAt && new Date(i.viewedAt) >= twentyFourHoursAgo
   ).length;
+
   const recentInvoices = actualInvoices.slice(0, 5);
   const recentQuotes = quotes.slice(0, 5);
-  // === Revenue Dashboard Data ===
-  const paidInvoices = actualInvoices.filter((i) => i.status === "paid");
-  const totalRevenue = paidInvoices.reduce((sum, i) => sum + i.total, 0);
-  const avgInvoiceValue = paidInvoices.length > 0 ? totalRevenue / paidInvoices.length : 0;
-  // Collection rate: paid / (sent + viewed + paid + overdue)
-  const sentOrBeyond = actualInvoices.filter((i) => ["sent", "viewed", "paid", "overdue"].includes(i.status));
-  const collectionRate = sentOrBeyond.length > 0 ? (paidInvoices.length / sentOrBeyond.length) * 100 : 0;
-  // Monthly data (last 12 months)
-  const monthlyData = [];
-  for (let m = 0; m < 12; m++) {
-    const mStart = new Date(now.getFullYear(), now.getMonth() - m, 1);
-    const mEnd = new Date(now.getFullYear(), now.getMonth() - m + 1, 0, 23, 59, 59);
-    const label = mStart.toLocaleDateString("en-IE", { month: "short", year: "2-digit" });
-    const monthInvoices = actualInvoices.filter((i) => {
-      const d = new Date(i.createdAt);
-      return d >= mStart && d <= mEnd;
-    });
-    const invoicesSent = monthInvoices.filter((i) => i.status !== "draft").length;
-    const invoicesPaid = monthInvoices.filter((i) => i.status === "paid").length;
-    const revenue = monthInvoices.filter((i) => i.status === "paid").reduce((s, i) => s + i.total, 0);
-    const outstanding = monthInvoices.filter((i) => ["sent", "viewed", "overdue"].includes(i.status)).reduce((s, i) => s + i.total, 0);
-    monthlyData.push({ label, revenue, invoicesSent, invoicesPaid, outstanding });
-  }
-  // Top 5 clients by revenue
-  const clientRevenueMap = new Map<string, { name: string; total: number }>();
-  for (const inv of paidInvoices) {
-    const key = inv.clientId;
-    const existing = clientRevenueMap.get(key);
-    if (existing) {
-      existing.total += inv.total;
-    } else {
-      clientRevenueMap.set(key, { name: inv.client.name, total: inv.total });
-    }
-  }
-  const topClients = Array.from(clientRevenueMap.values())
-    .sort((a, b) => b.total - a.total)
-    .slice(0, 5);
-  // Quarter tax summary
-  const quarterStart = new Date(now.getFullYear(), Math.floor(now.getMonth() / 3) * 3, 1);
-  const quarterPaid = paidInvoices.filter((i) => i.paidAt && new Date(i.paidAt) >= quarterStart);
-  const quarterVat = quarterPaid.reduce((s, i) => s + i.taxAmount, 0);
-  const quarterRevenueExVat = quarterPaid.reduce((s, i) => s + i.subtotal, 0);
-  // Expenses this month
-  const expenses = await prisma.expense.findMany({
-    where: {
-      userId: user.id,
-      date: { gte: monthStart },
-    },
-  });
-  const expensesThisMonth = expenses.reduce((sum, e) => sum + e.amount, 0);
-  const profitThisMonth = paidThisMonth - expensesThisMonth;
-  // Recurring invoices data
-  const recurringInvoices = actualInvoices.filter((i) => i.isRecurring);
-  const recurringCount = recurringInvoices.length;
-  const recurringMonthlyValue = recurringInvoices.reduce((sum, i) => {
-    const interval = i.recurringInterval || "monthly";
-    if (interval === "weekly") return sum + i.total * 4.33;
-    if (interval === "quarterly") return sum + i.total / 3;
-    if (interval === "yearly") return sum + i.total / 12;
-    return sum + i.total; // monthly
-  }, 0);
+
   // Onboarding data
   const hasBusinessName = !!user.businessName;
   const hasSentInvoice = invoices.some((i) => i.sentAt !== null);
   const isNewUser = invoices.length === 0 && !hasBusinessName;
+
+  const fmtDate = (d: Date | string) =>
+    new Date(d).toLocaleDateString("en-IE", { day: "numeric", month: "short" });
+
   const statusColors: Record<string, string> = {
     draft: "bg-gray-500/10 text-gray-400 border border-gray-500/20",
     sent: "bg-blue-500/10 text-blue-400 border border-blue-500/20",
@@ -151,6 +107,7 @@ export default async function DashboardPage() {
     paid: "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20",
     overdue: "bg-red-500/10 text-red-400 border border-red-500/20",
   };
+
   const statusDot: Record<string, string> = {
     draft: "bg-gray-400",
     sent: "bg-blue-400",
@@ -158,6 +115,7 @@ export default async function DashboardPage() {
     paid: "bg-green-400",
     overdue: "bg-red-400 animate-pulse",
   };
+
   // Color-coded left border stripe per status
   const statusBorder: Record<string, string> = {
     draft: "border-l-gray-500",
@@ -166,6 +124,7 @@ export default async function DashboardPage() {
     paid: "border-l-green-500",
     overdue: "border-l-red-500",
   };
+
   return (
     <div className="min-h-screen bg-gray-950 pb-20 md:pb-0">
       <Navbar />
@@ -179,12 +138,14 @@ export default async function DashboardPage() {
           </div>
           <NewInvoiceButton isNewUser={isNewUser} />
         </div>
+
         {/* Onboarding checklist */}
         <OnboardingChecklist
           hasBusinessName={hasBusinessName}
           invoiceCount={invoices.length}
           hasSentInvoice={hasSentInvoice}
         />
+
         {/* Stats */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-8">
           <div className="relative overflow-hidden bg-gray-900/50 backdrop-blur-sm rounded-2xl p-5 md:p-6 border border-gray-800/50 hover:border-gray-700/50 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300">
@@ -248,29 +209,8 @@ export default async function DashboardPage() {
             </p>
             <p className="text-sm text-gray-500 mt-1">last 90 days</p>
           </div>
-          <Link href="/expenses" className="relative overflow-hidden bg-gray-900/50 backdrop-blur-sm rounded-2xl p-5 md:p-6 border border-gray-800/50 hover:border-gray-700/50 hover:shadow-lg hover:shadow-orange-500/5 transition-all duration-300 group">
-            <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 to-transparent pointer-events-none" />
-            <p className="text-sm font-medium text-gray-400 mb-1">
-              Expenses This Month
-            </p>
-            <p className="text-lg md:text-2xl font-bold text-orange-400 truncate">
-              {formatCurrency(expensesThisMonth)}
-            </p>
-            <p className="text-sm text-gray-500 mt-1 group-hover:text-amber-500 transition-colors">View all &rarr;</p>
-          </Link>
-          {paidThisMonth > 0 && (
-            <div className="relative overflow-hidden bg-gray-900/50 backdrop-blur-sm rounded-2xl p-5 md:p-6 border border-gray-800/50 hover:border-gray-700/50 hover:shadow-lg hover:shadow-emerald-500/5 transition-all duration-300">
-              <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent pointer-events-none" />
-              <p className="text-sm font-medium text-gray-400 mb-1">
-                Profit This Month
-              </p>
-              <p className={`text-lg md:text-2xl font-bold truncate ${profitThisMonth >= 0 ? "text-emerald-400" : "text-red-400"}`}>
-                {formatCurrency(profitThisMonth)}
-              </p>
-              <p className="text-sm text-gray-500 mt-1">revenue &minus; expenses</p>
-            </div>
-          )}
         </div>
+
         {/* Plan info */}
         {user.plan === "free" && (
           <div className="bg-gradient-to-r from-amber-500/10 via-amber-500/5 to-orange-500/10 border border-amber-500/20 rounded-2xl p-5 mb-8 flex items-center justify-between">
@@ -290,6 +230,7 @@ export default async function DashboardPage() {
             </Link>
           </div>
         )}
+
         {/* Recently viewed banner */}
         {recentlyViewedCount > 0 && (
           <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-2xl p-4 mb-8 flex items-center gap-3">
@@ -302,99 +243,209 @@ export default async function DashboardPage() {
             </p>
           </div>
         )}
-        {/* Recurring invoices summary */}
-        {recurringCount > 0 && (
-          <div className="bg-cyan-500/5 border border-cyan-500/20 rounded-2xl p-5 mb-8">
-            <div className="flex items-center gap-3 mb-3">
-              <svg className="w-5 h-5 text-cyan-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-              </svg>
-              <h3 className="text-sm font-semibold text-cyan-300">Recurring Invoices</h3>
-            </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-              <div>
-                <p className="text-2xl font-bold text-white">{recurringCount}</p>
-                <p className="text-xs text-gray-400">active recurring</p>
+
+        {/* Recent invoices */}
+        <BulkInvoiceActions invoices={recentInvoices.map((i) => ({ id: i.id, invoiceNumber: i.invoiceNumber, status: i.status }))}>
+          {({ selectedIds, toggleSelect, toggleAll, allSelected }) => (
+            <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl border border-gray-800/50">
+              <div className="p-6 border-b border-gray-800/50 flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  {recentInvoices.length > 0 && (
+                    <label className="flex items-center cursor-pointer" onClick={(e) => e.stopPropagation()}>
+                      <input
+                        type="checkbox"
+                        checked={allSelected}
+                        onChange={toggleAll}
+                        className="w-4 h-4 rounded border-gray-600 bg-gray-800 text-amber-500 focus:ring-amber-500 focus:ring-offset-0 cursor-pointer"
+                      />
+                    </label>
+                  )}
+                  <h2 className="text-xl font-semibold text-white">
+                    Recent Invoices
+                  </h2>
+                </div>
+                {invoices.length > 5 && (
+                  <Link
+                    href="/invoices/new"
+                    className="text-amber-500 font-medium text-sm"
+                  >
+                    View all
+                  </Link>
+                )}
               </div>
-              <div>
-                <p className="text-2xl font-bold text-cyan-400">{formatCurrency(recurringMonthlyValue)}</p>
-                <p className="text-xs text-gray-400">est. monthly value</p>
-              </div>
-              <div className="col-span-2 sm:col-span-1">
-                <div className="space-y-1">
-                  {recurringInvoices.slice(0, 3).map((inv) => (
-                    <div key={inv.id} className="flex items-center justify-between text-xs">
-                      <span className="text-gray-300 truncate">{inv.client.name}</span>
-                      <span className="text-gray-400 shrink-0 ml-2">
-                        {inv.recurringInterval} &middot; {formatCurrency(inv.total)}
-                        {inv.recurringNextDate && (
-                          <span className="text-gray-500 ml-1">
-                            next {new Date(inv.recurringNextDate).toLocaleDateString("en-IE", { day: "numeric", month: "short" })}
-                          </span>
-                        )}
-                      </span>
+
+              {recentInvoices.length === 0 ? (
+                <div className="p-16 text-center">
+                  {/* Empty state SVG illustration */}
+                  <div className="w-40 h-40 mx-auto mb-8">
+                    <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+                      <rect x="50" y="30" width="100" height="130" rx="8" fill="#1f2937" stroke="#374151" strokeWidth="2" />
+                      <rect x="50" y="30" width="100" height="130" rx="8" fill="url(#emptyGrad)" opacity="0.5" />
+                      <path d="M120 30 L150 30 L150 60 Z" fill="#111827" stroke="#374151" strokeWidth="1" />
+                      <path d="M120 30 L120 55 C120 57.7614 122.239 60 125 60 L150 60" fill="#1f2937" stroke="#374151" strokeWidth="2" />
+                      <rect x="68" y="75" width="64" height="6" rx="3" fill="#374151" />
+                      <rect x="68" y="90" width="48" height="6" rx="3" fill="#374151" />
+                      <rect x="68" y="105" width="56" height="6" rx="3" fill="#374151" />
+                      <rect x="68" y="120" width="36" height="6" rx="3" fill="#374151" />
+                      <circle cx="140" cy="145" r="24" fill="#f59e0b" opacity="0.15" />
+                      <circle cx="140" cy="145" r="18" fill="#f59e0b" opacity="0.25" />
+                      <path d="M140 137 L140 153 M132 145 L148 145" stroke="#f59e0b" strokeWidth="2.5" strokeLinecap="round" />
+                      <defs>
+                        <linearGradient id="emptyGrad" x1="100" y1="30" x2="100" y2="160">
+                          <stop stopColor="#f59e0b" stopOpacity="0.05" />
+                          <stop offset="1" stopColor="#f59e0b" stopOpacity="0" />
+                        </linearGradient>
+                      </defs>
+                    </svg>
+                  </div>
+                  <h3 className="text-2xl font-semibold text-white mb-3">No invoices yet</h3>
+                  <p className="text-gray-400 mb-8 max-w-sm mx-auto">
+                    Create your first invoice to start tracking payments and getting paid faster.
+                  </p>
+                  <Link
+                    href="/invoices/new"
+                    className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-gray-950 px-8 py-3.5 rounded-xl font-semibold text-lg shadow-lg shadow-amber-500/20 transition-all"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 4v16m8-8H4" />
+                    </svg>
+                    Create Your First Invoice
+                  </Link>
+                </div>
+              ) : (
+                <div className="divide-y divide-gray-800/50">
+                  {recentInvoices.map((invoice) => (
+                    <div
+                      key={invoice.id}
+                      className={`p-4 hover:bg-gray-800/50 transition-colors border-l-4 ${statusBorder[invoice.status] || "border-l-gray-600"} ${selectedIds.has(invoice.id) ? "bg-amber-500/5" : ""}`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <label className="flex items-center cursor-pointer shrink-0" onClick={(e) => e.stopPropagation()}>
+                          <input
+                            type="checkbox"
+                            checked={selectedIds.has(invoice.id)}
+                            onChange={() => toggleSelect(invoice.id)}
+                            className="w-4 h-4 rounded border-gray-600 bg-gray-800 text-amber-500 focus:ring-amber-500 focus:ring-offset-0 cursor-pointer"
+                          />
+                        </label>
+                        <Link
+                          href={`/invoices/${invoice.id}`}
+                          className="flex items-center gap-2 flex-1 min-w-0 overflow-hidden"
+                        >
+                          <div className="flex-1 min-w-0">
+                            <p className="font-medium text-white">
+                              {invoice.invoiceNumber}
+                            </p>
+                            <p className="text-sm text-gray-400">
+                              {invoice.client.name}
+                            </p>
+                          </div>
+                          {invoice.isRecurring && (
+                            <span className="bg-cyan-500/20 text-cyan-300 ring-1 ring-cyan-400/40 px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase hidden sm:inline-flex items-center gap-1">
+                              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                              </svg>
+                              Recurring
+                            </span>
+                          )}
+                          <p className="text-xs text-gray-500 hidden sm:block">
+                            Due {fmtDate(invoice.dueDate)}
+                          </p>
+                        </Link>
+                        <span
+                          className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold capitalize ${statusColors[invoice.status] || ""}`}
+                        >
+                          <span className={`w-1.5 h-1.5 rounded-full ${statusDot[invoice.status] || ""}`} />
+                          {invoice.status}
+                          {invoice.status === "viewed" && (
+                            <svg className="w-3.5 h-3.5 ml-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                            </svg>
+                          )}
+                        </span>
+                        <div className="text-right whitespace-nowrap">
+                          <p className="text-base font-bold text-white">
+                            {formatCurrency(invoice.total, invoice.currency)}
+                          </p>
+                          {invoice.paidAmount > 0 && invoice.paidAmount < invoice.total && (
+                            <p className="text-xs text-amber-400">
+                              Due: {formatCurrency(invoice.total - invoice.paidAmount, invoice.currency)}
+                            </p>
+                          )}
+                        </div>
+                        <InvoiceCardActions invoiceId={invoice.id} status={invoice.status} type={invoice.type} />
+                        <a
+                          href={`/api/invoices/${invoice.id}/pdf`}
+                          target="_blank"
+                          className="p-2 rounded-lg text-gray-400 hover:text-amber-500 hover:bg-gray-700 transition-colors"
+                          title="Download PDF"
+                          aria-label="Download PDF"
+                        >
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                          </svg>
+                        </a>
+                      </div>
                     </div>
                   ))}
                 </div>
-              </div>
+              )}
+            </div>
+          )}
+        </BulkInvoiceActions>
+        {/* Recent Quotes */}
+        {recentQuotes.length > 0 && (
+          <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl border border-gray-800/50 mt-8">
+            <div className="p-6 border-b border-gray-800/50 flex items-center justify-between">
+              <h2 className="text-xl font-semibold text-white flex items-center gap-2">
+                Recent Quotes
+                <span className="bg-purple-500/20 text-purple-300 ring-1 ring-purple-400/40 px-2 py-0.5 rounded-full text-xs font-semibold">
+                  {quotes.length}
+                </span>
+              </h2>
+            </div>
+            <div className="divide-y divide-gray-800/50">
+              {recentQuotes.map((quote) => (
+                <div
+                  key={quote.id}
+                  className={`p-4 hover:bg-gray-800/50 transition-colors border-l-4 ${statusBorder[quote.status] || "border-l-gray-600"}`}
+                >
+                  <Link
+                    href={`/invoices/${quote.id}`}
+                    className="flex items-center gap-2 flex-1 min-w-0 overflow-hidden"
+                  >
+                    <div className="flex-1 min-w-0">
+                      <p className="font-medium text-white">
+                        {quote.invoiceNumber}
+                      </p>
+                      <p className="text-sm text-gray-400">
+                        {quote.client.name}
+                      </p>
+                    </div>
+                    <p className="text-xs text-gray-500 hidden sm:block">
+                      {fmtDate(quote.createdAt)}
+                    </p>
+                  </Link>
+                  <div className="flex items-center gap-3">
+                    <span
+                      className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold capitalize ${statusColors[quote.status] || ""}`}
+                    >
+                      <span className={`w-1.5 h-1.5 rounded-full ${statusDot[quote.status] || ""}`} />
+                      {quote.status}
+                    </span>
+                    <p className="text-base font-bold text-white text-right whitespace-nowrap">
+                      {formatCurrency(quote.total, quote.currency)}
+                    </p>
+                    <InvoiceCardActions invoiceId={quote.id} status={quote.status} type="quote" />
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         )}
-        {/* Recent invoices */}
-        <DashboardInvoiceList
-          recentInvoices={recentInvoices.map((i) => ({
-            id: i.id,
-            invoiceNumber: i.invoiceNumber,
-            status: i.status,
-            type: i.type,
-            total: i.total,
-            currency: i.currency,
-            paidAmount: i.paidAmount,
-            dueDate: i.dueDate.toISOString(),
-            isRecurring: i.isRecurring,
-            scheduledSendAt: i.scheduledSendAt ? i.scheduledSendAt.toISOString() : null,
-            client: { name: i.client.name },
-          }))}
-          totalInvoiceCount={invoices.length}
-          statusColors={statusColors}
-          statusDot={statusDot}
-          statusBorder={statusBorder}
-        />
-        {/* Recent Quotes */}
-        <DashboardQuoteList
-          quotes={recentQuotes.map((q) => ({
-            id: q.id,
-            invoiceNumber: q.invoiceNumber,
-            status: q.status,
-            total: q.total,
-            currency: q.currency,
-            createdAt: q.createdAt.toISOString(),
-            client: { name: q.client.name },
-          }))}
-          totalQuoteCount={quotes.length}
-          statusColors={statusColors}
-          statusDot={statusDot}
-          statusBorder={statusBorder}
-        />
-        {/* Revenue Dashboard */}
-        {actualInvoices.length > 0 && (
-          <div className="mt-8">
-            <RevenueDashboard
-              totalRevenue={totalRevenue}
-              thisMonthRevenue={paidThisMonth}
-              lastMonthRevenue={revenueLastMonth}
-              avgInvoiceValue={avgInvoiceValue}
-              avgDaysToPayment={avgDaysToPayment}
-              collectionRate={collectionRate}
-              monthlyData={monthlyData}
-              topClients={topClients}
-              quarterVat={quarterVat}
-              quarterRevenueExVat={quarterRevenueExVat}
-              isPro={user.plan === "pro"}
-            />
-          </div>
-        )}
       </div>
+
       {/* Floating create button & bottom nav (mobile only) */}
       <FloatingCreateButton />
       <BottomNav />
