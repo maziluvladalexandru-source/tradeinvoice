@@ -275,9 +275,9 @@ export async function GET(
         .footer .business-name { color: ${accentColor}; font-weight: 600; font-size: 13px; }
 
         /* Watermark for free users */
-        .watermark { text-align: center; margin-top: 24px; padding-top: 16px; border-top: 1px dashed #d1d5db; }
-        .watermark p { font-size: 11px; color: #9ca3af; letter-spacing: 0.02em; }
-        .watermark a { color: #9ca3af; text-decoration: none; }
+        .watermark { text-align: center; margin-top: 32px; padding: 16px 24px; background: #f3f4f6; border: 2px dashed #d1d5db; border-radius: 8px; }
+        .watermark p { font-size: 15px; color: #6b7280; letter-spacing: 0.02em; }
+        .watermark a { color: #4f46e5; text-decoration: none; font-weight: 700; }
       </style>
     </head>
     <body>
@@ -456,7 +456,8 @@ export async function GET(
         ${showWatermark ? `
         <!-- Free tier watermark -->
         <div class="watermark">
-          <p>Created with <strong>TradeInvoice</strong></p>
+          <p>Invoice created with <a href="https://tradeinvoice.app">TradeInvoice.app</a></p>
+          <p style="font-size: 12px; margin-top: 4px;">Free invoicing for tradespeople - upgrade to remove this notice</p>
         </div>` : ""}
       </div>
     </body>

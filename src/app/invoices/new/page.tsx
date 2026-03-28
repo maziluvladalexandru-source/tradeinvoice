@@ -465,9 +465,16 @@ function InvoicePreview({
             {countryConfig.creditNoteText}
           </p>
         )}
-        <p className="text-[10px] text-gray-400 text-center">
-          Generated with TradeInvoice
-        </p>
+        {!user?.plan || user.plan !== "pro" ? (
+          <div className="bg-gray-100 border-2 border-dashed border-gray-300 rounded-lg p-2 mt-1">
+            <p className="text-[11px] text-gray-500 text-center font-medium">
+              Invoice created with <span className="text-indigo-600 font-bold">TradeInvoice.app</span>
+            </p>
+            <p className="text-[9px] text-gray-400 text-center">
+              Upgrade to remove this notice
+            </p>
+          </div>
+        ) : null}
       </div>
     </div>
   );
