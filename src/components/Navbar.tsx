@@ -15,6 +15,7 @@ export default function Navbar() {
     { href: "/invoices/new", label: "New Invoice" },
     { href: "/clients", label: "Clients" },
     { href: "/expenses", label: "Expenses" },
+    { href: "/time-tracking", label: "Time" },
     { href: "/services", label: "Services" },
     { href: "/settings", label: "Settings" },
   ];

@@ -31,6 +31,7 @@ model User {
   sessions     Session[]
   serviceItems ServiceItem[]
   expenses     Expense[]
+  timeEntries  TimeEntry[]
 }
 
 model Session {
@@ -54,8 +55,9 @@ model Client {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  invoices Invoice[]
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  invoices    Invoice[]
+  timeEntries TimeEntry[]
 }
 
 model Invoice {
@@ -100,9 +102,10 @@ model Invoice {
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
-  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  client    Client     @relation(fields: [clientId], references: [id])
-  lineItems LineItem[]
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  client      Client      @relation(fields: [clientId], references: [id])
+  lineItems   LineItem[]
+  timeEntries TimeEntry[]
 }
 
 model LineItem {
@@ -144,5 +147,26 @@ model Expense {
   updatedAt     DateTime @updatedAt
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model TimeEntry {
+  id          String    @id @default(uuid())
+  userId      String
+  clientId    String?
+  description String
+  date        DateTime
+  startTime   DateTime?
+  endTime     DateTime?
+  hours       Float
+  hourlyRate  Float
+  billable    Boolean   @default(true)
+  invoiced    Boolean   @default(false)
+  invoiceId   String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  client  Client?  @relation(fields: [clientId], references: [id])
+  invoice Invoice? @relation(fields: [invoiceId], references: [id])
 }
 
