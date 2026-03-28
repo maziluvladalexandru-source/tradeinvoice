@@ -359,7 +359,7 @@ function SettingsContent() {
               className="w-full px-4 py-3 rounded-xl border border-gray-800/50 text-lg focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-gray-900/50 text-white placeholder-gray-500 transition-all"
             />
             <p className="text-xs text-gray-500 mt-1">
-              In the Netherlands this is your KVK number. In Germany, your Handelsregister number. In the UK, your Companies House number. In Belgium, your Ondernemingsnummer.
+              e.g. KVK (NL), Companies House (UK), Handelsregister (DE)
             </p>
           </div>
 
@@ -374,7 +374,7 @@ function SettingsContent() {
               className="w-full px-4 py-3 rounded-xl border border-gray-800/50 text-lg focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-gray-900/50 text-white placeholder-gray-500 transition-all"
             />
             <p className="text-xs text-gray-500 mt-1">
-              In the Netherlands this is your BTW-id (NL + 9 digits + B + 2 digits). In Germany, your Steuernummer or USt-IdNr (DE + 9 digits). In the UK, your VAT number (GB + 9 digits). In Belgium, your BTW-nummer (BE + 10 digits).
+              e.g. BTW-id (NL), VAT number (UK), USt-IdNr (DE)
             </p>
           </div>
 
