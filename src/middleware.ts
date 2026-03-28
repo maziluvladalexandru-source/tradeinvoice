@@ -35,6 +35,16 @@ export function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
+  // Allow tools page (public SEO content)
+  if (pathname.startsWith("/tools")) {
+    return NextResponse.next();
+  }
+
+  // Allow localized landing pages (public SEO content)
+  if (pathname === "/nl" || pathname === "/de") {
+    return NextResponse.next();
+  }
+
   // Allow legal/public pages
   if (["/terms", "/privacy", "/dpa", "/contact"].includes(pathname)) {
     return NextResponse.next();

@@ -47,11 +47,11 @@ function FlagNL() {
 function FlagUK() {
   return (
     <svg width="32" height="22" viewBox="0 0 60 30" className="rounded-sm shadow-sm">
-      <clipPath id="uk"><rect width="60" height="30" /></clipPath>
-      <g clipPath="url(#uk)">
+      <clipPath id="uk-de"><rect width="60" height="30" /></clipPath>
+      <g clipPath="url(#uk-de)">
         <rect width="60" height="30" fill="#012169" />
         <path d="M0,0 L60,30 M60,0 L0,30" stroke="#FFF" strokeWidth="6" />
-        <path d="M0,0 L60,30 M60,0 L0,30" stroke="#C8102E" strokeWidth="4" clipPath="url(#uk)" />
+        <path d="M0,0 L60,30 M60,0 L0,30" stroke="#C8102E" strokeWidth="4" />
         <path d="M30,0V30M0,15H60" stroke="#FFF" strokeWidth="10" />
         <path d="M30,0V30M0,15H60" stroke="#C8102E" strokeWidth="6" />
       </g>
@@ -82,43 +82,41 @@ function InvoiceMockup() {
   return (
     <div className="relative animate-float">
       <div className="w-[280px] md:w-[320px] bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-6 shadow-2xl shadow-amber-500/10">
-        {/* Header */}
         <div className="flex items-center justify-between mb-5">
           <div>
-            <div className="text-xs text-gray-400 uppercase tracking-wider">Invoice</div>
-            <div className="text-white font-bold text-lg">#INV-0042</div>
+            <div className="text-xs text-gray-400 uppercase tracking-wider">Rechnung</div>
+            <div className="text-white font-bold text-lg">#RE-0042</div>
           </div>
           <div className="bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 text-xs font-bold px-3 py-1 rounded-full">
-            PAID
+            BEZAHLT
           </div>
         </div>
-        {/* Line items */}
         <div className="space-y-3 mb-5">
           <div className="flex justify-between text-sm">
-            <span className="text-gray-300">Kitchen renovation</span>
-            <span className="text-white font-medium">€2,400</span>
+            <span className="text-gray-300">Kuchenrenovierung</span>
+            <span className="text-white font-medium">&euro;2.400</span>
           </div>
           <div className="flex justify-between text-sm">
-            <span className="text-gray-300">Materials</span>
-            <span className="text-white font-medium">€850</span>
+            <span className="text-gray-300">Material</span>
+            <span className="text-white font-medium">&euro;850</span>
           </div>
           <div className="flex justify-between text-sm">
-            <span className="text-gray-300">Plumbing work</span>
-            <span className="text-white font-medium">€600</span>
+            <span className="text-gray-300">Klempnerarbeiten</span>
+            <span className="text-white font-medium">&euro;600</span>
           </div>
         </div>
         <div className="border-t border-white/10 pt-3">
           <div className="flex justify-between text-sm text-gray-400 mb-1">
-            <span>Subtotal</span>
-            <span>€3,850</span>
+            <span>Zwischensumme</span>
+            <span>&euro;3.850</span>
           </div>
           <div className="flex justify-between text-sm text-gray-400 mb-2">
-            <span>VAT 21%</span>
-            <span>€808.50</span>
+            <span>MwSt 19%</span>
+            <span>&euro;731,50</span>
           </div>
           <div className="flex justify-between font-bold text-lg">
-            <span className="text-amber-400">Total</span>
-            <span className="text-amber-400">€4,658.50</span>
+            <span className="text-amber-400">Gesamt</span>
+            <span className="text-amber-400">&euro;4.581,50</span>
           </div>
         </div>
       </div>
@@ -126,7 +124,7 @@ function InvoiceMockup() {
   );
 }
 
-/* ──────────────────────────── Feature icons (SVG) ──────────────────────────── */
+/* ──────────────────────────── Feature icons ──────────────────────────── */
 function IconInvoice() {
   return (
     <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -170,7 +168,6 @@ function IconChart() {
   );
 }
 
-/* ──────────────────────────── Check icon ──────────────────────────── */
 function Check({ color = "text-emerald-400" }: { color?: string }) {
   return (
     <svg className={`w-5 h-5 ${color} shrink-0`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
@@ -178,16 +175,9 @@ function Check({ color = "text-emerald-400" }: { color?: string }) {
     </svg>
   );
 }
-function Cross() {
-  return (
-    <svg className="w-5 h-5 text-red-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-    </svg>
-  );
-}
 
 /* ──────────────────────────── PAGE ──────────────────────────── */
-export default function Home() {
+export default function DEPage() {
   const heroRef = useRef<HTMLDivElement>(null);
 
   const handleSmoothScroll = useCallback((e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
@@ -200,28 +190,25 @@ export default function Home() {
       {/* ═══════════════ HEADER ═══════════════ */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-[#0f172a]/80 backdrop-blur-md border-b border-white/5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
-          <Link href="/" className="text-2xl font-bold text-amber-400 tracking-tight">
+          <Link href="/de" className="text-2xl font-bold text-amber-400 tracking-tight">
             TradeInvoice
           </Link>
           <div className="flex items-center gap-4 sm:gap-6">
-            <Link
-              href="/blog"
-              className="text-gray-400 hover:text-white transition-colors font-medium text-sm sm:text-base"
-            >
+            <Link href="/blog" className="text-gray-400 hover:text-white transition-colors font-medium text-sm sm:text-base">
               Blog
             </Link>
             <a
-              href="#pricing"
-              onClick={(e) => handleSmoothScroll(e, "pricing")}
+              href="#preise"
+              onClick={(e) => handleSmoothScroll(e, "preise")}
               className="hidden sm:block text-gray-400 hover:text-white transition-colors font-medium text-sm sm:text-base"
             >
-              Pricing
+              Preise
             </a>
             <Link
               href="/auth/login"
               className="bg-amber-500 text-gray-900 px-5 py-2.5 rounded-xl font-semibold text-sm sm:text-base hover:bg-amber-400 transition-all hover:shadow-lg hover:shadow-amber-500/25"
             >
-              Sign In
+              Anmelden
             </Link>
           </div>
         </div>
@@ -233,47 +220,39 @@ export default function Home() {
         className="relative min-h-screen flex items-center pt-20 overflow-hidden"
         style={{ background: "linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%)" }}
       >
-        {/* Background grid pattern */}
         <div
           className="absolute inset-0 opacity-[0.03]"
-          style={{
-            backgroundImage: "radial-gradient(circle, #fff 1px, transparent 1px)",
-            backgroundSize: "40px 40px",
-          }}
+          style={{ backgroundImage: "radial-gradient(circle, #fff 1px, transparent 1px)", backgroundSize: "40px 40px" }}
         />
-        {/* Gradient orbs */}
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-amber-500/10 rounded-full blur-[128px]" />
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-[128px]" />
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-20 md:py-0">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-            {/* Left: copy */}
             <div className="text-center lg:text-left">
               <div className="inline-block bg-amber-500/10 border border-amber-500/30 text-amber-400 text-sm font-semibold px-4 py-1.5 rounded-full mb-6">
-                Built for tradespeople, not accountants
+                Fur Handwerker gebaut, nicht fur Buchhalter
               </div>
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-[1.1] mb-6">
-                Get Paid Faster.
+                Schneller Bezahlt Werden.
                 <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-amber-500">
-                  No Per-User Fees.
+                  Keine Kosten Pro Benutzer.
                 </span>
               </h1>
               <p className="text-lg sm:text-xl text-gray-400 mb-8 max-w-lg mx-auto lg:mx-0 leading-relaxed">
-                Create professional invoices in 60 seconds. Automatic payment
-                reminders chase your clients for you. One flat price, no hidden fees, no nonsense.
+                Professionelle Rechnungen in 60 Sekunden erstellen. Automatische Zahlungserinnerungen verfolgen Ihre Kunden. Ein fester Preis, keine versteckten Kosten.
               </p>
               <div className="flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start">
                 <Link
                   href="/auth/login"
                   className="inline-block bg-amber-500 text-gray-900 px-8 py-4 rounded-xl font-bold text-lg hover:bg-amber-400 transition-all shadow-lg shadow-amber-500/25 hover:shadow-amber-500/40 hover:scale-[1.02] animate-pulse-glow"
                 >
-                  Start Free - 20 Invoices/Month
+                  Kostenlos Starten - 20 Rechnungen/Monat
                 </Link>
-                <span className="text-gray-500 text-sm">No credit card required</span>
+                <span className="text-gray-500 text-sm">Keine Kreditkarte erforderlich</span>
               </div>
             </div>
-            {/* Right: invoice mockup */}
             <div className="hidden lg:flex justify-center lg:justify-end">
               <InvoiceMockup />
             </div>
@@ -285,55 +264,41 @@ export default function Home() {
       <section className="bg-[#0f172a] border-y border-white/5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
           <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-10">
-            <span className="text-gray-500 text-sm font-medium">Available across Europe</span>
+            <span className="text-gray-500 text-sm font-medium">Europaweit verfugbar</span>
             <div className="flex items-center gap-6 sm:gap-8">
-              <div className="flex items-center gap-2">
-                <FlagNL />
-                <span className="text-gray-400 text-sm">Netherlands</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <FlagUK />
-                <span className="text-gray-400 text-sm">United Kingdom</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <FlagDE />
-                <span className="text-gray-400 text-sm">Germany</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <FlagBE />
-                <span className="text-gray-400 text-sm">Belgium</span>
-              </div>
+              <div className="flex items-center gap-2"><FlagNL /><span className="text-gray-400 text-sm">Niederlande</span></div>
+              <div className="flex items-center gap-2"><FlagUK /><span className="text-gray-400 text-sm">Vereinigtes Konigreich</span></div>
+              <div className="flex items-center gap-2"><FlagDE /><span className="text-gray-400 text-sm">Deutschland</span></div>
+              <div className="flex items-center gap-2"><FlagBE /><span className="text-gray-400 text-sm">Belgien</span></div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ═══════════════ 3. HOW IT WORKS ═══════════════ */}
+      {/* ═══════════════ 3. SO FUNKTIONIERT ES ═══════════════ */}
       <section className="bg-[#faf9f6] py-20 sm:py-28">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <Reveal>
             <div className="text-center mb-16">
               <span className="inline-block bg-amber-100 text-amber-700 text-sm font-semibold px-4 py-1.5 rounded-full mb-4">
-                HOW IT WORKS
+                SO FUNKTIONIERT ES
               </span>
               <h2 className="text-3xl sm:text-4xl font-bold text-[#1e293b] mb-3">
-                Three steps. That&apos;s it.
+                Drei Schritte. Das ist alles.
               </h2>
               <p className="text-gray-500 max-w-xl mx-auto">
-                From creating your invoice to getting paid, the whole process takes minutes.
+                Von der Rechnungserstellung bis zur Bezahlung dauert der gesamte Prozess nur Minuten.
               </p>
             </div>
           </Reveal>
 
           <div className="grid md:grid-cols-3 gap-8 relative">
-            {/* Connecting line (desktop only) */}
             <div className="hidden md:block absolute top-16 left-[20%] right-[20%] h-0.5 bg-gradient-to-r from-amber-300 via-amber-400 to-emerald-400" />
-
             {[
               {
                 step: "1",
-                title: "Create Invoice in 60 Seconds",
-                desc: "Add your client, line items, and due date. A professional PDF gets generated automatically. No templates needed.",
+                title: "Rechnung in 60 Sekunden Erstellen",
+                desc: "Fugen Sie Ihren Kunden, Positionen und Falligkeitsdatum hinzu. Eine professionelle PDF wird automatisch erstellt. Keine Vorlagen notig.",
                 icon: (
                   <svg className="w-7 h-7 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
@@ -342,8 +307,8 @@ export default function Home() {
               },
               {
                 step: "2",
-                title: "Send to Client Instantly",
-                desc: "One click sends a clean invoice straight to your client's inbox. Reminders follow up automatically at 7 days, 3 days, and when overdue.",
+                title: "Sofort an den Kunden Senden",
+                desc: "Ein Klick sendet eine saubere Rechnung direkt in den Posteingang Ihres Kunden. Erinnerungen folgen automatisch nach 7 Tagen, 3 Tagen und bei Uberfallligkeit.",
                 icon: (
                   <svg className="w-7 h-7 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
@@ -352,8 +317,8 @@ export default function Home() {
               },
               {
                 step: "3",
-                title: "Get Paid & Get Notified",
-                desc: "Your client pays online. You get an email the moment the money lands. No more guessing who paid and who didn't.",
+                title: "Zahlung Erhalten und Benachrichtigung",
+                desc: "Ihr Kunde bezahlt online. Sie erhalten eine E-Mail sobald das Geld eingeht. Kein Raten mehr, wer bezahlt hat und wer nicht.",
                 icon: (
                   <svg className="w-7 h-7 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z" />
@@ -376,61 +341,31 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══════════════ 4. FEATURES GRID ═══════════════ */}
+      {/* ═══════════════ 4. FUNKTIONEN ═══════════════ */}
       <section className="bg-[#0f172a] py-20 sm:py-28">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <Reveal>
             <div className="text-center mb-16">
               <span className="inline-block bg-amber-500/10 border border-amber-500/30 text-amber-400 text-sm font-semibold px-4 py-1.5 rounded-full mb-4">
-                FEATURES
+                FUNKTIONEN
               </span>
               <h2 className="text-3xl sm:text-4xl font-bold text-white mb-3">
-                Everything You Need to Get Paid
+                Alles Was Sie Brauchen
               </h2>
               <p className="text-gray-400 max-w-xl mx-auto">
-                No bloat. No learning curve. Just the tools that actually matter.
+                Kein Ballast. Keine Lernkurve. Nur die Werkzeuge, die wirklich zahlen.
               </p>
             </div>
           </Reveal>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
-              {
-                icon: <IconInvoice />,
-                title: "Professional Invoices",
-                desc: "Clean, branded PDF invoices that make you look polished. Add your logo, customize colors, and include all the details your clients need.",
-                color: "text-amber-400",
-              },
-              {
-                icon: <IconBell />,
-                title: "Auto Payment Reminders",
-                desc: "Your clients get polite nudges at 7 days, 3 days, and when overdue. You never have to send that awkward follow-up text again.",
-                color: "text-amber-400",
-              },
-              {
-                icon: <IconGlobe />,
-                title: "Multi-Country Support",
-                desc: "Generate invoices in English, Dutch, or German. Perfect for working across borders in the EU with proper VAT handling.",
-                color: "text-amber-400",
-              },
-              {
-                icon: <IconClock />,
-                title: "Time Tracking",
-                desc: "Track your hours directly in the app. Convert tracked time into invoice line items with a single click.",
-                color: "text-emerald-400",
-              },
-              {
-                icon: <IconReceipt />,
-                title: "Expense Tracking",
-                desc: "Log project expenses and materials. Keep a clear record of costs so nothing slips through the cracks.",
-                color: "text-emerald-400",
-              },
-              {
-                icon: <IconChart />,
-                title: "Financial Reports",
-                desc: "See your revenue, outstanding payments, and overdue invoices at a glance. Know exactly where your business stands.",
-                color: "text-emerald-400",
-              },
+              { icon: <IconInvoice />, title: "Professionelle Rechnungen", desc: "Saubere, professionelle PDF-Rechnungen die Ihr Unternehmen gut aussehen lassen. Fugen Sie Ihr Logo hinzu, passen Sie Farben an und nehmen Sie alle Details auf.", color: "text-amber-400" },
+              { icon: <IconBell />, title: "Automatische Zahlungserinnerungen", desc: "Ihre Kunden bekommen hofliche Erinnerungen nach 7 Tagen, 3 Tagen und bei Uberfallligkeit. Sie mussen nie wieder die unangenehme Nachricht senden.", color: "text-amber-400" },
+              { icon: <IconGlobe />, title: "Mehrere Lander Unterstutzung", desc: "Erstellen Sie Rechnungen auf Deutsch, Englisch oder Niederladisch. Perfekt fur grenzuberschreitendes Arbeiten in der EU mit korrekter MwSt-Abwicklung.", color: "text-amber-400" },
+              { icon: <IconClock />, title: "Zeiterfassung", desc: "Erfassen Sie Ihre Stunden direkt in der App. Wandeln Sie erfasste Zeit mit einem Klick in Rechnungspositionen um.", color: "text-emerald-400" },
+              { icon: <IconReceipt />, title: "Ausgabenverfolgung", desc: "Erfassen Sie Projektkosten und Materialien. Behalten Sie einen klaren Uberblick uber die Kosten, damit nichts durchrutscht.", color: "text-emerald-400" },
+              { icon: <IconChart />, title: "Finanzberichte", desc: "Sehen Sie Ihren Umsatz, ausstehende Zahlungen und uberfallige Rechnungen auf einen Blick. Wissen Sie genau, wo Ihr Unternehmen steht.", color: "text-emerald-400" },
             ].map((feature, i) => (
               <Reveal key={feature.title} className={`delay-${(i % 3) * 100}`}>
                 <div className="group bg-white/[0.03] backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:border-amber-500/30 transition-all duration-300 hover:bg-white/[0.06] h-full">
@@ -450,10 +385,10 @@ export default function Home() {
           <Reveal>
             <div className="text-center mb-16">
               <h2 className="text-3xl sm:text-4xl font-bold text-[#1e293b] mb-3">
-                Built for Tradespeople Across Europe
+                Fur Handwerker in ganz Europa gebaut
               </h2>
               <p className="text-gray-500 max-w-xl mx-auto">
-                TradeInvoice is designed for tradespeople across Europe.
+                TradeInvoice ist fur Handwerker in ganz Europa konzipiert.
               </p>
             </div>
           </Reveal>
@@ -461,9 +396,9 @@ export default function Home() {
           <Reveal>
             <div className="grid sm:grid-cols-3 gap-8 mb-16">
               {[
-                { number: "4", label: "Countries Supported", color: "text-amber-500" },
-                { number: "60s", label: "Average Invoice Creation Time", color: "text-emerald-500" },
-                { number: "€15", label: "Flat Monthly Price", color: "text-blue-500" },
+                { number: "4", label: "Unterstutzte Lander", color: "text-amber-500" },
+                { number: "60s", label: "Durchschnittliche Erstellungszeit", color: "text-emerald-500" },
+                { number: "\u20AC15", label: "Fester Monatspreis", color: "text-blue-500" },
               ].map((stat) => (
                 <div key={stat.label} className="text-center">
                   <div className={`text-4xl sm:text-5xl font-extrabold ${stat.color} mb-2`}>{stat.number}</div>
@@ -476,16 +411,16 @@ export default function Home() {
           <Reveal>
             <div className="max-w-2xl mx-auto bg-white rounded-2xl p-8 sm:p-10 shadow-sm border border-gray-100 text-center">
               <p className="text-lg sm:text-xl text-[#1e293b] font-medium leading-relaxed">
-                Built for tradespeople. Simple, honest, no nonsense.
+                Fur Handwerker gebaut. Einfach, ehrlich, kein Unsinn.
               </p>
             </div>
           </Reveal>
         </div>
       </section>
 
-      {/* ═══════════════ 6. PRICING ═══════════════ */}
+      {/* ═══════════════ 6. PREISE ═══════════════ */}
       <section
-        id="pricing"
+        id="preise"
         className="py-20 sm:py-28"
         style={{ background: "linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%)" }}
       >
@@ -493,82 +428,57 @@ export default function Home() {
           <Reveal>
             <div className="text-center mb-16">
               <span className="inline-block bg-amber-500/10 border border-amber-500/30 text-amber-400 text-sm font-semibold px-4 py-1.5 rounded-full mb-4">
-                PRICING
+                PREISE
               </span>
               <h2 className="text-3xl sm:text-4xl font-bold text-white mb-3">
-                Simple, Honest Pricing
+                Einfache, Ehrliche Preise
               </h2>
               <p className="text-gray-400 max-w-xl mx-auto">
-                No surprises. No per-user fees. Ever.
+                Keine Uberraschungen. Keine Kosten pro Benutzer. Niemals.
               </p>
             </div>
           </Reveal>
 
           <div className="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
-            {/* Free */}
             <Reveal>
               <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8 h-full flex flex-col">
                 <div className="text-center mb-8">
-                  <h3 className="text-xl font-bold text-white mb-2">Free</h3>
+                  <h3 className="text-xl font-bold text-white mb-2">Kostenlos</h3>
                   <div className="flex items-baseline justify-center gap-1">
-                    <span className="text-5xl font-extrabold text-white">€0</span>
-                    <span className="text-gray-500">/month</span>
+                    <span className="text-5xl font-extrabold text-white">&euro;0</span>
+                    <span className="text-gray-500">/Monat</span>
                   </div>
                 </div>
                 <ul className="space-y-3 mb-8 flex-1">
-                  {[
-                    "20 invoices per month",
-                    "Payment reminders",
-                    "Professional PDF invoices",
-                    "Client management",
-                  ].map((f) => (
-                    <li key={f} className="flex items-center gap-3 text-gray-300 text-sm">
-                      <Check />
-                      {f}
-                    </li>
+                  {["20 Rechnungen pro Monat", "Zahlungserinnerungen", "Professionelle PDF-Rechnungen", "Kundenverwaltung"].map((f) => (
+                    <li key={f} className="flex items-center gap-3 text-gray-300 text-sm"><Check />{f}</li>
                   ))}
                 </ul>
-                <Link
-                  href="/auth/login"
-                  className="block w-full bg-white/10 text-white py-3.5 rounded-xl font-semibold text-center hover:bg-white/20 transition-all border border-white/10"
-                >
-                  Get Started
+                <Link href="/auth/login" className="block w-full bg-white/10 text-white py-3.5 rounded-xl font-semibold text-center hover:bg-white/20 transition-all border border-white/10">
+                  Loslegen
                 </Link>
               </div>
             </Reveal>
 
-            {/* Pro */}
             <Reveal>
               <div className="relative bg-amber-500/[0.07] backdrop-blur-sm border-2 border-amber-500/50 rounded-2xl p-8 h-full flex flex-col shadow-lg shadow-amber-500/10">
                 <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-amber-500 to-amber-400 text-gray-900 text-xs font-bold px-4 py-1.5 rounded-full shadow-lg">
-                  MOST POPULAR
+                  AM BELIEBTESTEN
                 </span>
                 <div className="text-center mb-8">
                   <h3 className="text-xl font-bold text-white mb-2">Pro</h3>
                   <div className="flex items-baseline justify-center gap-1">
-                    <span className="text-5xl font-extrabold text-amber-400">€15</span>
-                    <span className="text-gray-500">/month</span>
+                    <span className="text-5xl font-extrabold text-amber-400">&euro;15</span>
+                    <span className="text-gray-500">/Monat</span>
                   </div>
                 </div>
                 <ul className="space-y-3 mb-8 flex-1">
-                  {[
-                    "Unlimited invoices",
-                    "Payment reminders",
-                    "Multi-language invoices",
-                    "Partial payment tracking",
-                    "Priority email support",
-                  ].map((f) => (
-                    <li key={f} className="flex items-center gap-3 text-gray-300 text-sm">
-                      <Check color="text-amber-400" />
-                      {f}
-                    </li>
+                  {["Unbegrenzte Rechnungen", "Zahlungserinnerungen", "Mehrsprachige Rechnungen", "Teilzahlungsverfolgung", "Prioritat E-Mail Support"].map((f) => (
+                    <li key={f} className="flex items-center gap-3 text-gray-300 text-sm"><Check color="text-amber-400" />{f}</li>
                   ))}
                 </ul>
-                <Link
-                  href="/auth/login"
-                  className="block w-full bg-gradient-to-r from-amber-500 to-amber-400 text-gray-900 py-3.5 rounded-xl font-bold text-center hover:from-amber-400 hover:to-amber-300 transition-all shadow-lg shadow-amber-500/25"
-                >
-                  Upgrade to Pro
+                <Link href="/auth/login" className="block w-full bg-gradient-to-r from-amber-500 to-amber-400 text-gray-900 py-3.5 rounded-xl font-bold text-center hover:from-amber-400 hover:to-amber-300 transition-all shadow-lg shadow-amber-500/25">
+                  Auf Pro Upgraden
                 </Link>
               </div>
             </Reveal>
@@ -576,156 +486,35 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══════════════ 7. COMPARISON TABLE ═══════════════ */}
-      <section className="bg-[#f8fafc] py-20 sm:py-28">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6">
-          <Reveal>
-            <div className="text-center mb-12">
-              <span className="inline-block bg-amber-100 text-amber-700 text-sm font-semibold px-4 py-1.5 rounded-full mb-4">
-                COMPARE
-              </span>
-              <h2 className="text-3xl sm:text-4xl font-bold text-[#1e293b] mb-3">
-                Why Tradespeople Choose Us
-              </h2>
-              <p className="text-gray-500 max-w-xl mx-auto">
-                No bloated features you will never use. No per-user fees eating into your margins.
-              </p>
-            </div>
-          </Reveal>
-
-          <Reveal>
-            <div className="overflow-x-auto bg-white rounded-2xl shadow-sm border border-gray-100">
-              <table className="w-full text-sm sm:text-base">
-                <thead>
-                  <tr className="border-b border-gray-100">
-                    <th className="py-4 px-4 sm:px-6 text-left text-gray-400 font-medium">&nbsp;</th>
-                    <th className="py-4 px-4 sm:px-6 text-center">
-                      <span className="text-amber-500 font-bold">TradeInvoice</span>
-                    </th>
-                    <th className="py-4 px-4 sm:px-6 text-center text-gray-500 font-medium">Jobber</th>
-                    <th className="py-4 px-4 sm:px-6 text-center text-gray-500 font-medium">Invoice2go</th>
-                  </tr>
-                </thead>
-                <tbody className="text-[#1e293b]">
-                  {[
-                    {
-                      label: "Price",
-                      us: "€15/mo",
-                      usColor: "text-amber-500 font-bold",
-                      c1: "From €40/mo",
-                      c2: "From €5.99/mo",
-                    },
-                    {
-                      label: "Per-user fees",
-                      us: "check",
-                      c1: "cross",
-                      c2: "cross",
-                    },
-                    {
-                      label: "Unlimited invoices",
-                      us: "check",
-                      c1: "cross",
-                      c2: "cross",
-                    },
-                    {
-                      label: "Auto reminders",
-                      us: "check",
-                      c1: "check",
-                      c2: "cross",
-                    },
-                  ].map((row, i) => (
-                    <tr key={row.label} className={`border-b border-gray-50 ${i % 2 === 0 ? "bg-gray-50/50" : ""}`}>
-                      <td className="py-3.5 px-4 sm:px-6 font-medium">{row.label}</td>
-                      <td className="py-3.5 px-4 sm:px-6 text-center">
-                        {row.us === "check" ? (
-                          <span className="inline-flex justify-center"><Check /></span>
-                        ) : row.us === "cross" ? (
-                          <span className="inline-flex justify-center"><Cross /></span>
-                        ) : (
-                          <span className={row.usColor}>{row.us}</span>
-                        )}
-                      </td>
-                      <td className="py-3.5 px-4 sm:px-6 text-center text-gray-500">
-                        {row.c1 === "check" ? (
-                          <span className="inline-flex justify-center"><Check color="text-gray-400" /></span>
-                        ) : row.c1 === "cross" ? (
-                          <span className="inline-flex justify-center"><Cross /></span>
-                        ) : (
-                          row.c1
-                        )}
-                      </td>
-                      <td className="py-3.5 px-4 sm:px-6 text-center text-gray-500">
-                        {row.c2 === "check" ? (
-                          <span className="inline-flex justify-center"><Check color="text-gray-400" /></span>
-                        ) : row.c2 === "cross" ? (
-                          <span className="inline-flex justify-center"><Cross /></span>
-                        ) : (
-                          row.c2
-                        )}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* ═══════════════ 8. FAQ ═══════════════ */}
+      {/* ═══════════════ 7. FAQ ═══════════════ */}
       <section className="bg-[#0f172a] py-20 sm:py-28">
         <div className="max-w-3xl mx-auto px-4 sm:px-6">
           <Reveal>
             <div className="text-center mb-12">
               <h2 className="text-3xl sm:text-4xl font-bold text-white mb-3">
-                Frequently Asked Questions
+                Haufig Gestellte Fragen
               </h2>
-              <p className="text-gray-400">
-                Everything you need to know before getting started.
-              </p>
+              <p className="text-gray-400">Alles, was Sie wissen mussen, bevor Sie starten.</p>
             </div>
           </Reveal>
 
           <div className="space-y-3">
             {[
-              {
-                q: "Do I need accounting software to use TradeInvoice?",
-                a: "Nope. TradeInvoice works on its own. You don't need Xero, QuickBooks, or anything else. Just create an invoice, send it, and get paid.",
-              },
-              {
-                q: "Is my data safe?",
-                a: "Yes. All data is encrypted and payments go through Stripe. We never see or store any card details.",
-              },
-              {
-                q: "Can I cancel anytime?",
-                a: "Yes. No contracts, no cancellation fees. Downgrade to free or cancel from your settings whenever you want.",
-              },
-              {
-                q: "Do my clients need to sign up to pay?",
-                a: "No. They get an email with a link. They click it, see the invoice, and pay. No account needed.",
-              },
-              {
-                q: "What happens after my 20 free invoices?",
-                a: "You can upgrade to Pro for €15/month for unlimited invoices. Or just wait. Your free plan resets every month, 20 fresh invoices, no cost, no expiry.",
-              },
+              { q: "Brauche ich Buchhaltungssoftware, um TradeInvoice zu nutzen?", a: "Nein. TradeInvoice funktioniert eigenstandig. Sie brauchen kein Xero, QuickBooks oder etwas anderes. Erstellen Sie einfach eine Rechnung, versenden Sie sie und erhalten Sie Ihre Zahlung." },
+              { q: "Sind meine Daten sicher?", a: "Ja. Alle Daten sind verschlusselt und Zahlungen laufen uber Stripe. Wir sehen oder speichern niemals Kartendaten." },
+              { q: "Kann ich jederzeit kundigen?", a: "Ja. Keine Vertrage, keine Kundigungsgebuhren. Downgraden Sie auf kostenlos oder kundigen Sie in Ihren Einstellungen, wann immer Sie mochten." },
+              { q: "Mussen sich meine Kunden anmelden, um zu bezahlen?", a: "Nein. Sie erhalten eine E-Mail mit einem Link. Sie klicken darauf, sehen die Rechnung und bezahlen. Kein Konto erforderlich." },
+              { q: "Was passiert nach meinen 20 kostenlosen Rechnungen?", a: "Sie konnen auf Pro fur \u20AC15/Monat upgraden fur unbegrenzte Rechnungen. Oder warten Sie einfach. Ihr kostenloses Abo wird jeden Monat zuruckgesetzt: 20 neue Rechnungen, keine Kosten, kein Ablaufdatum." },
             ].map((faq) => (
               <Reveal key={faq.q}>
                 <details className="group bg-white/[0.03] border border-white/10 rounded-xl hover:border-amber-500/20 transition-colors">
                   <summary className="flex items-center justify-between cursor-pointer p-5 sm:p-6 text-white font-semibold list-none text-sm sm:text-base">
                     {faq.q}
-                    <svg
-                      className="w-5 h-5 text-amber-400 shrink-0 ml-4 transition-transform group-open:rotate-180"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth={2}
-                    >
+                    <svg className="w-5 h-5 text-amber-400 shrink-0 ml-4 transition-transform group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
                     </svg>
                   </summary>
-                  <p className="px-5 sm:px-6 pb-5 sm:pb-6 text-gray-400 text-sm leading-relaxed">
-                    {faq.a}
-                  </p>
+                  <p className="px-5 sm:px-6 pb-5 sm:pb-6 text-gray-400 text-sm leading-relaxed">{faq.a}</p>
                 </details>
               </Reveal>
             ))}
@@ -733,69 +522,70 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══════════════ 9. FINAL CTA ═══════════════ */}
-      <section
-        className="py-20 sm:py-28"
-        style={{ background: "linear-gradient(135deg, #1e1b4b 0%, #0f172a 50%, #1e1b4b 100%)" }}
-      >
+      {/* ═══════════════ 8. FINAL CTA ═══════════════ */}
+      <section className="py-20 sm:py-28" style={{ background: "linear-gradient(135deg, #1e1b4b 0%, #0f172a 50%, #1e1b4b 100%)" }}>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
           <Reveal>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6">
-              Ready to get paid faster?
+              Bereit, schneller bezahlt zu werden?
             </h2>
             <p className="text-lg text-gray-400 mb-10 max-w-xl mx-auto">
-              Stop chasing payments. Start getting paid on time.
+              Horen Sie auf, Zahlungen hinterherzulaufen. Werden Sie punktlich bezahlt.
             </p>
             <Link
               href="/auth/login"
               className="inline-block bg-amber-500 text-gray-900 px-10 py-4 rounded-xl font-bold text-lg hover:bg-amber-400 transition-all shadow-lg shadow-amber-500/25 hover:shadow-amber-500/40 hover:scale-[1.02]"
             >
-              Start Free - 20 Invoices/Month
+              Kostenlos Starten - 20 Rechnungen/Monat
             </Link>
-            <p className="mt-4 text-gray-500 text-sm">
-              No credit card required. No strings attached.
-            </p>
+            <p className="mt-4 text-gray-500 text-sm">Keine Kreditkarte erforderlich. Keine Verpflichtungen.</p>
           </Reveal>
         </div>
       </section>
 
-      {/* ═══════════════ 10. FOOTER ═══════════════ */}
+      {/* ═══════════════ 9. FOOTER ═══════════════ */}
       <footer className="bg-[#0a0f1a] border-t border-white/5 py-12">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="text-center md:text-left">
               <div className="text-xl font-bold text-amber-400 mb-1">TradeInvoice</div>
-              <p className="text-gray-600 text-sm">Simple invoicing for tradespeople</p>
+              <p className="text-gray-600 text-sm">Einfache Rechnungsstellung fur Handwerker</p>
             </div>
             <div className="flex items-center gap-4 sm:gap-6 flex-wrap justify-center text-sm">
-              <Link href="/blog" className="text-gray-500 hover:text-gray-300 transition-colors">
-                Blog
-              </Link>
-              <Link href="/terms" className="text-gray-500 hover:text-gray-300 transition-colors">
-                Terms of Service
-              </Link>
-              <Link href="/privacy" className="text-gray-500 hover:text-gray-300 transition-colors">
-                Privacy Policy
-              </Link>
-              <Link href="/dpa" className="text-gray-500 hover:text-gray-300 transition-colors">
-                DPA
-              </Link>
-              <Link href="/contact" className="text-gray-500 hover:text-gray-300 transition-colors">
-                Contact
-              </Link>
+              <Link href="/blog" className="text-gray-500 hover:text-gray-300 transition-colors">Blog</Link>
+              <Link href="/tools" className="text-gray-500 hover:text-gray-300 transition-colors">Kostenlose Tools</Link>
+              <Link href="/terms" className="text-gray-500 hover:text-gray-300 transition-colors">Nutzungsbedingungen</Link>
+              <Link href="/privacy" className="text-gray-500 hover:text-gray-300 transition-colors">Datenschutz</Link>
+              <Link href="/contact" className="text-gray-500 hover:text-gray-300 transition-colors">Kontakt</Link>
             </div>
           </div>
           <div className="mt-6 flex items-center justify-center gap-4 text-sm text-gray-500">
-            <span>Also available in:</span>
-            <Link href="/nl" className="text-amber-400 hover:text-amber-300 transition-colors">Nederlands</Link>
+            <span>Auch verfugbar in:</span>
+            <Link href="/" className="text-amber-400 hover:text-amber-300 transition-colors">English</Link>
             <span className="text-gray-700">|</span>
-            <Link href="/de" className="text-amber-400 hover:text-amber-300 transition-colors">Deutsch</Link>
+            <Link href="/nl" className="text-amber-400 hover:text-amber-300 transition-colors">Nederlands</Link>
           </div>
           <div className="mt-6 pt-6 border-t border-white/5 text-center text-gray-600 text-sm">
-            © {new Date().getFullYear()} TradeInvoice. Operated by Vlad Mazilu Alexandru, Netherlands.
+            &copy; {new Date().getFullYear()} TradeInvoice. Betrieben von Vlad Mazilu Alexandru, Niederlande.
           </div>
         </div>
       </footer>
+
+      {/* JSON-LD */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            name: "TradeInvoice - Rechnungssoftware fur Handwerker",
+            description: "Professionelle Rechnungen in 60 Sekunden erstellen. Automatische Zahlungserinnerungen. Speziell fur Handwerker und Freiberufler.",
+            url: "https://tradeinvoice.app/de",
+            inLanguage: "de",
+            isPartOf: { "@type": "WebSite", name: "TradeInvoice", url: "https://tradeinvoice.app" },
+          }),
+        }}
+      />
     </div>
   );
 }
