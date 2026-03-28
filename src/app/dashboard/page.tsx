@@ -9,6 +9,7 @@ import FloatingCreateButton from "@/components/FloatingCreateButton";
 import InvoiceCardActions from "@/components/InvoiceCardActions";
 import OnboardingChecklist from "@/components/OnboardingChecklist";
 import NewInvoiceButton from "@/components/NewInvoiceButton";
+import DonutChart from "@/components/DonutChart";
 import Link from "next/link";
 
 interface DashboardData {
@@ -52,6 +53,13 @@ interface DashboardData {
     createdAt: string;
     clientName: string;
   }[];
+  charts: {
+    statusCounts: Record<string, number>;
+    revenueBreakdown: { paid: number; outstanding: number; overdue: number };
+    collectionRate: number;
+    totalCollected: number;
+    totalInvoiced: number;
+  };
   totalInvoiceCount: number;
   hasBusinessName: boolean;
   hasSentInvoice: boolean;
@@ -277,6 +285,57 @@ export default function DashboardPage() {
             <p className="text-sm text-gray-500 mt-1">last 90 days</p>
           </div>
         </div>
+
+        {/* Donut Charts */}
+        {data.totalInvoiceCount > 0 && (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-8">
+            {/* Invoice Status */}
+            <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl border border-gray-800/50 p-5 md:p-6">
+              <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">Invoice Status</h3>
+              <DonutChart
+                segments={[
+                  { label: "Draft", value: data.charts.statusCounts.draft || 0, color: "#6b7280", displayValue: String(data.charts.statusCounts.draft || 0) },
+                  { label: "Sent", value: data.charts.statusCounts.sent || 0, color: "#3b82f6", displayValue: String(data.charts.statusCounts.sent || 0) },
+                  { label: "Viewed", value: data.charts.statusCounts.viewed || 0, color: "#eab308", displayValue: String(data.charts.statusCounts.viewed || 0) },
+                  { label: "Paid", value: data.charts.statusCounts.paid || 0, color: "#22c55e", displayValue: String(data.charts.statusCounts.paid || 0) },
+                  { label: "Overdue", value: data.charts.statusCounts.overdue || 0, color: "#ef4444", displayValue: String(data.charts.statusCounts.overdue || 0) },
+                ]}
+                centerText={String(data.totalInvoiceCount)}
+                centerSubtext="invoices"
+                size={180}
+              />
+            </div>
+
+            {/* Revenue This Month */}
+            <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl border border-gray-800/50 p-5 md:p-6">
+              <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">Revenue This Month</h3>
+              <DonutChart
+                segments={[
+                  { label: "Paid", value: data.charts.revenueBreakdown.paid, color: "#22c55e", displayValue: formatCurrency(data.charts.revenueBreakdown.paid) },
+                  { label: "Outstanding", value: data.charts.revenueBreakdown.outstanding, color: "#f59e0b", displayValue: formatCurrency(data.charts.revenueBreakdown.outstanding) },
+                  { label: "Overdue", value: data.charts.revenueBreakdown.overdue, color: "#ef4444", displayValue: formatCurrency(data.charts.revenueBreakdown.overdue) },
+                ]}
+                centerText={formatCurrency(data.charts.revenueBreakdown.paid + data.charts.revenueBreakdown.outstanding + data.charts.revenueBreakdown.overdue)}
+                centerSubtext="total"
+                size={180}
+              />
+            </div>
+
+            {/* Collection Rate */}
+            <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl border border-gray-800/50 p-5 md:p-6">
+              <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">Collection Rate</h3>
+              <DonutChart
+                segments={[
+                  { label: "Collected", value: data.charts.totalCollected, color: "#22c55e", displayValue: formatCurrency(data.charts.totalCollected) },
+                  { label: "Uncollected", value: data.charts.totalInvoiced - data.charts.totalCollected, color: "#374151", displayValue: formatCurrency(data.charts.totalInvoiced - data.charts.totalCollected) },
+                ]}
+                centerText={`${data.charts.collectionRate}%`}
+                centerSubtext="collected"
+                size={180}
+              />
+            </div>
+          </div>
+        )}
 
         {/* Plan info */}
         {user.plan === "free" && (

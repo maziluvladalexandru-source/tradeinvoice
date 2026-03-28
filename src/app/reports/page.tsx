@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback } from "react";
 import Navbar from "@/components/Navbar";
 import BottomNav from "@/components/BottomNav";
 import UpgradeModal from "@/components/UpgradeModal";
+import DonutChart from "@/components/DonutChart";
 
 interface ReportData {
   period: { type: string; year: number; month: number; quarter: number; from: string; to: string };
@@ -261,6 +262,24 @@ export default function ReportsPage() {
                     <p className="text-sm text-gray-500 mt-1">{fmtCurrency(data.totalOutstanding)} outstanding</p>
                   </div>
                 </div>
+
+                {/* Revenue vs Expenses Donut */}
+                {(data.revenue > 0 || data.totalExpenses > 0) && (
+                  <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl border border-gray-800/50 p-6 mb-8">
+                    <h2 className="text-lg font-semibold text-white mb-4">Profit Overview</h2>
+                    <div className="flex justify-center">
+                      <DonutChart
+                        segments={[
+                          { label: "Revenue", value: data.revenue, color: "#22c55e", displayValue: fmtCurrency(data.revenue) },
+                          { label: "Expenses", value: data.totalExpenses, color: "#ef4444", displayValue: fmtCurrency(data.totalExpenses) },
+                        ]}
+                        centerText={fmtCurrency(data.netProfit)}
+                        centerSubtext="net profit"
+                        size={200}
+                      />
+                    </div>
+                  </div>
+                )}
 
                 {/* P&L Statement */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">

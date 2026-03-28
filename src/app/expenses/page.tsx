@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import BottomNav from "@/components/BottomNav";
 import UpgradeModal from "@/components/UpgradeModal";
 import { useToast } from "@/components/Toast";
+import DonutChart from "@/components/DonutChart";
 
 interface Expense {
   id: string;
@@ -654,26 +655,41 @@ export default function ExpensesPage() {
 
             {/* Category Breakdown */}
             {categoryBreakdown.length > 0 && (
-              <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl border border-gray-800/50 p-6 mb-8">
-                <h2 className="text-lg font-semibold text-white mb-4">Spending by Category</h2>
-                <div className="space-y-3">
-                  {categoryBreakdown.sort((a, b) => b.total - a.total).map((cat) => {
-                    const pct = totalExpenses > 0 ? (cat.total / totalExpenses) * 100 : 0;
-                    return (
-                      <div key={cat.value}>
-                        <div className="flex items-center justify-between mb-1">
-                          <span className="text-sm font-medium text-gray-300">{cat.label}</span>
-                          <span className="text-sm font-semibold text-white">{fmtCurrency(cat.total)}</span>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 mb-8">
+                <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl border border-gray-800/50 p-6">
+                  <h2 className="text-lg font-semibold text-white mb-4">Spending by Category</h2>
+                  <div className="space-y-3">
+                    {categoryBreakdown.sort((a, b) => b.total - a.total).map((cat) => {
+                      const pct = totalExpenses > 0 ? (cat.total / totalExpenses) * 100 : 0;
+                      return (
+                        <div key={cat.value}>
+                          <div className="flex items-center justify-between mb-1">
+                            <span className="text-sm font-medium text-gray-300">{cat.label}</span>
+                            <span className="text-sm font-semibold text-white">{fmtCurrency(cat.total)}</span>
+                          </div>
+                          <div className="h-2 bg-gray-800 rounded-full overflow-hidden">
+                            <div
+                              className="h-full bg-gradient-to-r from-amber-500 to-amber-400 rounded-full transition-all duration-500"
+                              style={{ width: `${pct}%` }}
+                            />
+                          </div>
                         </div>
-                        <div className="h-2 bg-gray-800 rounded-full overflow-hidden">
-                          <div
-                            className="h-full bg-gradient-to-r from-amber-500 to-amber-400 rounded-full transition-all duration-500"
-                            style={{ width: `${pct}%` }}
-                          />
-                        </div>
-                      </div>
-                    );
-                  })}
+                      );
+                    })}
+                  </div>
+                </div>
+                <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl border border-gray-800/50 p-6 flex items-center justify-center">
+                  <DonutChart
+                    segments={categoryBreakdown.sort((a, b) => b.total - a.total).map((cat) => ({
+                      label: cat.label,
+                      value: cat.total,
+                      color: { materials: "#f97316", fuel: "#eab308", tools: "#3b82f6", subcontractor: "#a855f7", office: "#06b6d4", other: "#6b7280" }[cat.value] || "#6b7280",
+                      displayValue: fmtCurrency(cat.total),
+                    }))}
+                    centerText={fmtCurrency(totalExpenses)}
+                    centerSubtext="total expenses"
+                    size={180}
+                  />
                 </div>
               </div>
             )}
