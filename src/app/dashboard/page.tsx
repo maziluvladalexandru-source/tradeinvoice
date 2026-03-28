@@ -83,6 +83,12 @@ export default async function DashboardPage() {
   );
   const activeClientsCount = activeClientIds.size;
 
+  // Invoices viewed in the last 24 hours
+  const twentyFourHoursAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+  const recentlyViewedCount = actualInvoices.filter(
+    (i) => i.viewedAt && new Date(i.viewedAt) >= twentyFourHoursAgo
+  ).length;
+
   const recentInvoices = actualInvoices.slice(0, 5);
   const recentQuotes = quotes.slice(0, 5);
 
@@ -222,6 +228,19 @@ export default async function DashboardPage() {
             >
               Upgrade
             </Link>
+          </div>
+        )}
+
+        {/* Recently viewed banner */}
+        {recentlyViewedCount > 0 && (
+          <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-2xl p-4 mb-8 flex items-center gap-3">
+            <svg className="w-5 h-5 text-yellow-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+            </svg>
+            <p className="text-sm font-medium text-yellow-300">
+              {recentlyViewedCount} invoice{recentlyViewedCount !== 1 ? "s were" : " was"} viewed today
+            </p>
           </div>
         )}
 

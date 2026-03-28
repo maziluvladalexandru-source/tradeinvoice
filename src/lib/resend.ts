@@ -286,8 +286,10 @@ export async function sendOverdueInvoiceEmail(
 export async function sendInvoiceViewedNotification(
   contractorEmail: string,
   invoiceNumber: string,
-  clientName: string
+  clientName: string,
+  dashboardUrl?: string
 ) {
+  const dashUrl = dashboardUrl || `${process.env.NEXT_PUBLIC_APP_URL || "https://tradeinvoice.app"}/dashboard`;
   await getResend().emails.send({
     from: getFromEmail(),
     to: contractorEmail,
@@ -311,7 +313,20 @@ export async function sendInvoiceViewedNotification(
             <p style="margin: 0 0 4px; font-size: 15px; color: #d6d3d1; line-height: 1.5;">
               <strong style="color: #ffffff;">${clientName}</strong> has viewed invoice <strong style="font-family: monospace; color: #f59e0b;">${invoiceNumber}</strong>.
             </p>
-            <p style="margin: 0; font-size: 13px; color: #78716c;">Just now</p>
+            <p style="margin: 0 0 20px; font-size: 13px; color: #78716c;">Just now</p>
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align: center;">
+            <table role="presentation" cellpadding="0" cellspacing="0" style="margin: 0 auto;">
+              <tr>
+                <td style="background-color: #f59e0b; border-radius: 10px; text-align: center;">
+                  <a href="${dashUrl}" style="display: inline-block; padding: 12px 28px; color: #0c0a09; font-size: 14px; font-weight: 700; text-decoration: none;">
+                    View Dashboard
+                  </a>
+                </td>
+              </tr>
+            </table>
           </td>
         </tr>
       </table>
