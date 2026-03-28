@@ -33,6 +33,10 @@ interface Invoice {
   language: string;
   paidAmount: number;
   scheduledSendAt: string | null;
+  depositPercent: number | null;
+  depositAmount: number | null;
+  depositPaid: boolean;
+  depositPaidAt: string | null;
   client: { id: string; name: string; email: string; phone: string | null; address: string | null; vatNumber: string | null };
   lineItems: { id: string; description: string; quantity: number; unitPrice: number; total: number }[];
   user: { businessName: string | null; email: string; plan?: string; businessAddress?: string | null; businessPhone?: string | null; kvkNumber?: string | null; vatNumber?: string | null; bankDetails?: string | null; logoUrl?: string | null };
@@ -255,6 +259,19 @@ export default function InvoiceDetailPage() {
               {invoice.isRecurring && (
                 <span className="bg-cyan-500/20 text-cyan-300 ring-1 ring-cyan-400/40 px-3 py-1 rounded-full text-xs font-semibold capitalize">
                   Recurring ({invoice.recurringInterval})
+                </span>
+              )}
+              {invoice.depositPercent && !invoice.depositPaid && (
+                <span className="bg-amber-500/20 text-amber-300 ring-1 ring-amber-400/40 px-3 py-1 rounded-full text-xs font-semibold">
+                  Deposit Requested ({invoice.depositPercent}%)
+                </span>
+              )}
+              {invoice.depositPaid && (
+                <span className="bg-emerald-500/20 text-emerald-300 ring-1 ring-emerald-400/40 px-3 py-1 rounded-full text-xs font-semibold inline-flex items-center gap-1">
+                  <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  Deposit Paid
                 </span>
               )}
               {invoice.scheduledSendAt && invoice.status === "draft" && (
@@ -484,6 +501,19 @@ export default function InvoiceDetailPage() {
                 <span>Total</span>
                 <span>{fmt(invoice.total)}</span>
               </div>
+              {invoice.depositPercent && invoice.depositAmount && (
+                <div className={`flex justify-between pt-1 ${invoice.depositPaid ? "text-green-400" : "text-amber-400"}`}>
+                  <span>Deposit ({invoice.depositPercent}%)</span>
+                  <span className="flex items-center gap-2">
+                    {fmt(invoice.depositAmount)}
+                    {invoice.depositPaid ? (
+                      <span className="text-xs bg-green-500/20 text-green-300 px-2 py-0.5 rounded-full">Paid</span>
+                    ) : (
+                      <span className="text-xs bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded-full">Pending</span>
+                    )}
+                  </span>
+                </div>
+              )}
               {invoice.paidAmount > 0 && invoice.paidAmount < invoice.total && (
                 <>
                   <div className="flex justify-between text-green-400 pt-1">

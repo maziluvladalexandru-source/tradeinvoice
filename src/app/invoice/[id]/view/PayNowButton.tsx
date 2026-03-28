@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-export default function PayNowButton({ invoiceId, paymentUrl }: { invoiceId: string; paymentUrl: string | null }) {
+export default function PayNowButton({ invoiceId, paymentUrl, label, isDeposit }: { invoiceId: string; paymentUrl: string | null; label?: string; isDeposit?: boolean }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -17,7 +17,7 @@ export default function PayNowButton({ invoiceId, paymentUrl }: { invoiceId: str
     }
 
     try {
-      const res = await fetch(`/api/invoice/${invoiceId}/pay`, { method: "POST" });
+      const res = await fetch(`/api/invoice/${invoiceId}/pay${isDeposit ? "?deposit=true" : ""}`, { method: "POST" });
       const data = await res.json();
 
       if (!res.ok) {
@@ -53,7 +53,7 @@ export default function PayNowButton({ invoiceId, paymentUrl }: { invoiceId: str
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
             </svg>
-            Pay Now
+            {label || "Pay Now"}
           </>
         )}
       </button>

@@ -47,16 +47,37 @@ export async function POST(req: NextRequest) {
       // Handle invoice payment via payment link
       const invoiceId = session.metadata?.invoiceId;
       if (invoiceId && session.payment_status === "paid") {
-        const invoice = await prisma.invoice.update({
-          where: { id: invoiceId },
-          data: { status: "paid", paidAt: new Date() },
-          include: { client: true, user: true },
-        });
-        await sendInvoicePaidNotification(
-          invoice.user.email,
-          invoice.invoiceNumber,
-          invoice.client.name
-        );
+        const isDeposit = session.metadata?.isDeposit === "true";
+
+        if (isDeposit) {
+          // Mark deposit as paid
+          const invoice = await prisma.invoice.update({
+            where: { id: invoiceId },
+            data: {
+              depositPaid: true,
+              depositPaidAt: new Date(),
+              paidAmount: { increment: (await prisma.invoice.findUnique({ where: { id: invoiceId }, select: { depositAmount: true } }))?.depositAmount || 0 },
+              paymentUrl: null, // Clear so remaining balance gets a new payment link
+            },
+            include: { client: true, user: true },
+          });
+          await sendInvoicePaidNotification(
+            invoice.user.email,
+            invoice.invoiceNumber,
+            invoice.client.name
+          );
+        } else {
+          const invoice = await prisma.invoice.update({
+            where: { id: invoiceId },
+            data: { status: "paid", paidAt: new Date() },
+            include: { client: true, user: true },
+          });
+          await sendInvoicePaidNotification(
+            invoice.user.email,
+            invoice.invoiceNumber,
+            invoice.client.name
+          );
+        }
       }
       break;
     }

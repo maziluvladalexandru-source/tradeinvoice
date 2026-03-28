@@ -60,7 +60,7 @@ export async function POST(req: NextRequest) {
       clientId, description, dueDate, lineItems, taxRate, paymentNotes,
       notesToClient, serviceDate, invoiceNumber, type, currency,
       isRecurring, recurringInterval, reverseCharge, referenceInvoice, language,
-      invoiceTheme, invoiceCountry, scheduledSendAt,
+      invoiceTheme, invoiceCountry, scheduledSendAt, depositPercent,
     } = await req.json();
 
     // Validate invoiceCountry
@@ -168,6 +168,8 @@ export async function POST(req: NextRequest) {
         language: language || "en",
         invoiceTheme: invoiceTheme && ["classic", "modern", "minimal"].includes(invoiceTheme) ? invoiceTheme : "classic",
         scheduledSendAt: scheduledSendAt ? new Date(scheduledSendAt) : null,
+        depositPercent: invoiceType === "quote" && typeof depositPercent === "number" && depositPercent >= 1 && depositPercent <= 99 ? depositPercent : null,
+        depositAmount: invoiceType === "quote" && typeof depositPercent === "number" && depositPercent >= 1 && depositPercent <= 99 ? Math.round(total * depositPercent) / 100 : null,
         lineItems: {
           create: lineItems.map(
             (item: {

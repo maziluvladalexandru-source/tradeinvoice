@@ -127,6 +127,7 @@ function InvoicePreview({
   user,
   invoiceCountry,
   invoiceTheme = "classic",
+  depositPercent,
 }: {
   invoiceNumber: string;
   invoiceType: string;
@@ -144,6 +145,7 @@ function InvoicePreview({
   user: UserProfile | null;
   invoiceCountry: string;
   invoiceTheme?: string;
+  depositPercent?: number | null;
 }) {
   const countryConfig = getCountryConfig(invoiceCountry);
   const fmt = (n: number) =>
@@ -408,6 +410,14 @@ function InvoicePreview({
                 <span className="text-sm font-bold text-[#1e40af]">Total</span>
                 <span className="text-base sm:text-lg font-bold tabular-nums text-[#1e40af]">{fmt(total)}</span>
               </div>
+              {depositPercent && total > 0 && (
+                <div className="w-full max-w-[200px] mt-2 bg-amber-50 border border-amber-200 rounded-lg p-2">
+                  <div className="flex justify-between text-xs">
+                    <span className="text-amber-700 font-semibold">Deposit ({depositPercent}%)</span>
+                    <span className="text-amber-800 font-bold tabular-nums">{fmt(total * depositPercent / 100)}</span>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -576,6 +586,14 @@ function InvoicePreview({
                   <span className="text-sm font-bold text-amber-400">Total</span>
                   <span className="text-lg font-extrabold tabular-nums text-white">{fmt(total)}</span>
                 </div>
+                {depositPercent && total > 0 && (
+                  <div className="mt-2 bg-amber-500/20 border border-amber-500/30 rounded-lg p-2">
+                    <div className="flex justify-between text-xs">
+                      <span className="text-amber-300 font-semibold">Deposit ({depositPercent}%)</span>
+                      <span className="text-amber-200 font-bold tabular-nums">{fmt(total * depositPercent / 100)}</span>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -734,6 +752,14 @@ function InvoicePreview({
               <span className="text-sm text-gray-800" style={{ fontFamily: "Georgia, serif" }}>Total</span>
               <span className="text-lg tabular-nums text-gray-900" style={{ fontFamily: "Georgia, serif" }}>{fmt(total)}</span>
             </div>
+            {depositPercent && total > 0 && (
+              <div className="w-full max-w-[200px] mt-2 bg-amber-50 border border-amber-200 rounded-lg p-2">
+                <div className="flex justify-between text-xs">
+                  <span className="text-amber-700 font-semibold">Deposit ({depositPercent}%)</span>
+                  <span className="text-amber-800 font-bold tabular-nums">{fmt(total * depositPercent / 100)}</span>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -814,6 +840,11 @@ function NewInvoiceForm() {
     setUpgradeFeature(feature);
     setShowUpgradeModal(true);
   }
+
+  // Deposit (quotes only, Pro)
+  const [depositEnabled, setDepositEnabled] = useState(false);
+  const [depositPercent, setDepositPercent] = useState(50);
+  const [customDepositPercent, setCustomDepositPercent] = useState("");
 
   // Schedule send
   const [showSchedulePicker, setShowSchedulePicker] = useState(false);
@@ -965,6 +996,7 @@ function NewInvoiceForm() {
           language,
           invoiceTheme: isPro ? invoiceTheme : "classic",
           scheduledSendAt: scheduleAt ? new Date(scheduleAt).toISOString() : null,
+          depositPercent: invoiceType === "quote" && depositEnabled && isPro ? depositPercent : null,
           lineItems: lineItems.filter(
             (item) => item.description && item.unitPrice > 0
           ),
@@ -1029,6 +1061,7 @@ function NewInvoiceForm() {
           invoiceCountry,
           language,
           invoiceTheme: isPro ? invoiceTheme : "classic",
+          depositPercent: invoiceType === "quote" && depositEnabled && isPro ? depositPercent : null,
           lineItems: lineItems.filter(
             (item) => item.description && item.unitPrice > 0
           ),
@@ -1277,6 +1310,101 @@ function NewInvoiceForm() {
                           <option value="quarterly">Quarterly</option>
                           <option value="yearly">Yearly</option>
                         </select>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Deposit Toggle (Pro, quotes only) */}
+                {invoiceType === "quote" && (
+                  <div className="mt-3 pt-3 border-t border-gray-700">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <div>
+                          <p className="text-sm font-medium text-white flex items-center gap-2">
+                            Request Deposit
+                            {!isPro && <ProBadge onClick={() => showProPrompt("Deposit payments")} />}
+                          </p>
+                          <p className="text-xs text-gray-500 mt-0.5">
+                            Require upfront payment before work begins
+                          </p>
+                        </div>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (!isPro) { showProPrompt("Deposit payments"); return; }
+                          setDepositEnabled(!depositEnabled);
+                        }}
+                        className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                          depositEnabled && isPro ? "bg-amber-500" : "bg-gray-600"
+                        } ${!isPro ? "opacity-50 cursor-not-allowed" : ""}`}
+                      >
+                        <span
+                          className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                            depositEnabled && isPro ? "translate-x-6" : "translate-x-1"
+                          }`}
+                        />
+                      </button>
+                    </div>
+                    {depositEnabled && isPro && (
+                      <div className="mt-3">
+                        <div className="grid grid-cols-4 gap-2">
+                          {[25, 50, 75].map((pct) => (
+                            <button
+                              key={pct}
+                              type="button"
+                              onClick={() => { setDepositPercent(pct); setCustomDepositPercent(""); }}
+                              className={`px-3 py-2 rounded-xl text-sm font-medium transition-all ${
+                                depositPercent === pct && !customDepositPercent
+                                  ? "bg-amber-500 text-gray-950"
+                                  : "bg-gray-800 text-gray-400 hover:bg-gray-700"
+                              }`}
+                            >
+                              {pct}%
+                            </button>
+                          ))}
+                          <button
+                            type="button"
+                            onClick={() => setCustomDepositPercent(String(depositPercent))}
+                            className={`px-3 py-2 rounded-xl text-sm font-medium transition-all ${
+                              customDepositPercent
+                                ? "bg-amber-500 text-gray-950"
+                                : "bg-gray-800 text-gray-400 hover:bg-gray-700"
+                            }`}
+                          >
+                            Custom
+                          </button>
+                        </div>
+                        {customDepositPercent !== "" && (
+                          <div className="mt-2">
+                            <input
+                              type="number"
+                              min="1"
+                              max="99"
+                              value={customDepositPercent}
+                              onChange={(e) => {
+                                setCustomDepositPercent(e.target.value);
+                                const val = parseInt(e.target.value, 10);
+                                if (val >= 1 && val <= 99) setDepositPercent(val);
+                              }}
+                              placeholder="Enter percentage (1-99)"
+                              className="w-full px-3 py-2.5 rounded-xl border border-gray-800/50 text-sm focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 transition-all outline-none bg-gray-900/80 text-white placeholder-gray-500"
+                            />
+                          </div>
+                        )}
+                        {(() => {
+                          const subtotal = lineItems.reduce((sum, item) => sum + item.quantity * item.unitPrice, 0);
+                          const tax = subtotal * (taxRate / 100);
+                          const total = subtotal + tax;
+                          const depAmount = total * (depositPercent / 100);
+                          const fmt = (n: number) => new Intl.NumberFormat("en-IE", { style: "currency", currency }).format(n);
+                          return total > 0 ? (
+                            <p className="mt-2 text-xs text-amber-400">
+                              Deposit required: {fmt(depAmount)} ({depositPercent}% of {fmt(total)})
+                            </p>
+                          ) : null;
+                        })()}
                       </div>
                     )}
                   </div>
@@ -2044,6 +2172,7 @@ function NewInvoiceForm() {
                   user={user}
                   invoiceCountry={invoiceCountry}
                   invoiceTheme={invoiceTheme}
+                  depositPercent={invoiceType === "quote" && depositEnabled && isPro ? depositPercent : null}
                 />
               </div>
             </div>

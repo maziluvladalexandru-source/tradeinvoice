@@ -88,6 +88,9 @@ export async function POST(
     const dueDate = new Date();
     dueDate.setDate(dueDate.getDate() + 30);
 
+    // If deposit was paid on the quote, subtract it from the invoice
+    const depositCredit = quote.depositPaid && quote.depositAmount ? quote.depositAmount : 0;
+
     const newInvoice = await prisma.invoice.create({
       data: {
         userId: user.id,
@@ -109,6 +112,7 @@ export async function POST(
         invoiceCountry: quote.invoiceCountry,
         language: quote.language,
         referenceInvoice: quote.id,
+        paidAmount: depositCredit,
         lineItems: {
           create: quote.lineItems.map((item) => ({
             description: item.description,

@@ -92,6 +92,10 @@ model Invoice {
   language      String   @default("en") // en | nl | de
   paidAmount    Float    @default(0) // Partial payment tracking
   scheduledSendAt DateTime? // null = not scheduled, set = will be sent at this time
+  depositPercent  Float?    // e.g. 50 for 50%
+  depositAmount   Float?    // calculated from total * depositPercent/100
+  depositPaid     Boolean   @default(false)
+  depositPaidAt   DateTime?
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 

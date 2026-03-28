@@ -253,34 +253,87 @@ export default async function PublicInvoicePage({
                     {formatCurrency(invoice.total, invoice.currency)}
                   </span>
                 </div>
+                {invoice.depositPercent && invoice.depositAmount && (
+                  <div className="w-full max-w-xs mt-2">
+                    {invoice.depositPaid ? (
+                      <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4 text-center">
+                        <div className="flex items-center justify-center gap-2 mb-1">
+                          <svg className="w-5 h-5 text-emerald-500" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                          <span className="text-sm font-bold text-emerald-800">Deposit Paid</span>
+                        </div>
+                        <p className="text-emerald-700 text-sm font-semibold tabular-nums">
+                          {formatCurrency(invoice.depositAmount, invoice.currency)}
+                          <span className="text-emerald-500 font-normal"> ({invoice.depositPercent}%)</span>
+                        </p>
+                        {invoice.depositPaidAt && (
+                          <p className="text-emerald-500 text-xs mt-1">Paid on {formatDate(invoice.depositPaidAt)}</p>
+                        )}
+                      </div>
+                    ) : (
+                      <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 text-center">
+                        <p className="text-xs font-semibold uppercase tracking-wider text-amber-600 mb-1">Deposit Required</p>
+                        <p className="text-xl font-bold text-amber-800 tabular-nums">
+                          {formatCurrency(invoice.depositAmount, invoice.currency)}
+                        </p>
+                        <p className="text-amber-600 text-xs mt-0.5">
+                          {invoice.depositPercent}% of {formatCurrency(invoice.total, invoice.currency)}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
           </div>
 
-          {/* Pay Now CTA */}
+          {/* Pay Now / Pay Deposit CTA */}
           {!isPaid && (
             <div className="px-6 sm:px-10 pb-8 sm:pb-10">
-              <div className="bg-slate-900 rounded-xl p-6 sm:p-8 text-center">
-                <p className="text-xs font-semibold uppercase tracking-widest text-slate-400 mb-1">
-                  Total Due
-                </p>
-                <p className="text-3xl sm:text-4xl font-bold text-white tracking-tight tabular-nums mb-1">
-                  {formatCurrency(invoice.total, invoice.currency)}
-                </p>
-                {isOverdue ? (
-                  <p className="text-red-400 text-sm font-medium mb-6">Overdue &mdash; please pay immediately</p>
-                ) : (
-                  <p className="text-slate-400 text-sm mb-6">Due {formatDate(invoice.dueDate)}</p>
-                )}
-
-                <PayNowButton invoiceId={invoice.id} paymentUrl={invoice.paymentUrl || null} />
-
-                {hasBankDetails && (
-                  <p className="text-slate-500 text-xs mt-4">
-                    Or pay by bank transfer &mdash; details below
+              {invoice.depositPercent && invoice.depositAmount && !invoice.depositPaid ? (
+                <div className="bg-slate-900 rounded-xl p-6 sm:p-8 text-center">
+                  <p className="text-xs font-semibold uppercase tracking-widest text-amber-400 mb-1">
+                    Deposit Required
                   </p>
-                )}
-              </div>
+                  <p className="text-3xl sm:text-4xl font-bold text-white tracking-tight tabular-nums mb-1">
+                    {formatCurrency(invoice.depositAmount, invoice.currency)}
+                  </p>
+                  <p className="text-slate-400 text-sm mb-6">
+                    {invoice.depositPercent}% of {formatCurrency(invoice.total, invoice.currency)}
+                  </p>
+
+                  <PayNowButton invoiceId={invoice.id} paymentUrl={invoice.paymentUrl || null} label="Pay Deposit" isDeposit />
+
+                  {hasBankDetails && (
+                    <p className="text-slate-500 text-xs mt-4">
+                      Or pay by bank transfer &mdash; details below
+                    </p>
+                  )}
+                </div>
+              ) : (
+                <div className="bg-slate-900 rounded-xl p-6 sm:p-8 text-center">
+                  <p className="text-xs font-semibold uppercase tracking-widest text-slate-400 mb-1">
+                    {invoice.depositPaid ? "Remaining Balance" : "Total Due"}
+                  </p>
+                  <p className="text-3xl sm:text-4xl font-bold text-white tracking-tight tabular-nums mb-1">
+                    {formatCurrency(invoice.depositPaid && invoice.depositAmount ? invoice.total - invoice.depositAmount : invoice.total, invoice.currency)}
+                  </p>
+                  {isOverdue ? (
+                    <p className="text-red-400 text-sm font-medium mb-6">Overdue &mdash; please pay immediately</p>
+                  ) : (
+                    <p className="text-slate-400 text-sm mb-6">Due {formatDate(invoice.dueDate)}</p>
+                  )}
+
+                  <PayNowButton invoiceId={invoice.id} paymentUrl={invoice.paymentUrl || null} />
+
+                  {hasBankDetails && (
+                    <p className="text-slate-500 text-xs mt-4">
+                      Or pay by bank transfer &mdash; details below
+                    </p>
+                  )}
+                </div>
+              )}
             </div>
           )}
 

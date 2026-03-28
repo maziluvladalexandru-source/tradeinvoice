@@ -48,8 +48,15 @@ export async function POST(
 
     const stripe = getStripeClient();
 
+    // Check if this is a deposit payment
+    const isDeposit = request.nextUrl.searchParams.get("deposit") === "true";
+    const isDepositPayment = isDeposit && invoice.depositPercent && invoice.depositAmount && !invoice.depositPaid;
+
     // Create a one-time price for this invoice amount
-    const amountInCents = Math.round(invoice.total * 100);
+    const amountInCents = Math.round((isDepositPayment ? invoice.depositAmount! : invoice.total) * 100);
+    const productName = isDepositPayment
+      ? `Deposit - ${invoice.invoiceNumber}`
+      : `Invoice ${invoice.invoiceNumber}`;
 
     const paymentLink = await stripe.paymentLinks.create({
       line_items: [
@@ -57,7 +64,7 @@ export async function POST(
           price_data: {
             currency: invoice.currency.toLowerCase(),
             product_data: {
-              name: `Invoice ${invoice.invoiceNumber}`,
+              name: productName,
               description: invoice.description || `Payment to ${invoice.user.businessName || invoice.user.email}`,
             },
             unit_amount: amountInCents,
@@ -68,12 +75,13 @@ export async function POST(
       after_completion: {
         type: "redirect",
         redirect: {
-          url: appUrl(`/invoice/${invoice.id}/view?paid=true`),
+          url: appUrl(`/invoice/${invoice.id}/view?${isDepositPayment ? "deposit_paid=true" : "paid=true"}`),
         },
       },
       metadata: {
         invoiceId: invoice.id,
         invoiceNumber: invoice.invoiceNumber,
+        isDeposit: isDepositPayment ? "true" : "false",
       },
     });
 
