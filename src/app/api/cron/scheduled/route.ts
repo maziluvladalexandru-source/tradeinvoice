@@ -31,7 +31,8 @@ export async function GET(req: NextRequest) {
         formatCurrency(invoice.total, invoice.currency),
         viewUrl,
         invoice.user.businessName || undefined,
-        formatDate(invoice.dueDate)
+        formatDate(invoice.dueDate),
+        invoice.clientId
       );
 
       await prisma.invoice.update({

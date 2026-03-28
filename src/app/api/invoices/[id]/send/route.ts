@@ -29,7 +29,8 @@ export async function POST(
       formatCurrency(invoice.total, invoice.currency),
       viewUrl,
       user.businessName || undefined,
-      formatDate(invoice.dueDate)
+      formatDate(invoice.dueDate),
+      invoice.clientId
     );
 
     await prisma.invoice.update({

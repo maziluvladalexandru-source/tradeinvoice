@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { formatCurrency, formatDate } from "@/lib/utils";
 import { getCountryConfig } from "@/lib/country-config";
+import { portalUrl } from "@/lib/portal";
 import { notFound } from "next/navigation";
 import PayNowButton from "./PayNowButton";
 import ViewTracker from "./ViewTracker";
@@ -435,6 +436,16 @@ export default async function PublicInvoicePage({
               <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
             </svg>
             Contact
+          </a>
+        </div>
+
+        {/* Portal Link */}
+        <div className="text-center mb-2">
+          <a
+            href={portalUrl(invoice.clientId)}
+            className="text-xs text-gray-400 hover:text-gray-500 transition-colors underline"
+          >
+            View all invoices from {businessName}
           </a>
         </div>
 

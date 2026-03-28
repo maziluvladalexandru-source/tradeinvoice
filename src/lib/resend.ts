@@ -1,4 +1,5 @@
 import { Resend } from "resend";
+import { portalUrl } from "@/lib/portal";
 
 function getResend() {
   return new Resend(process.env.RESEND_API_KEY);
@@ -100,9 +101,11 @@ export async function sendInvoiceEmail(
   total: string,
   viewUrl: string,
   businessName?: string,
-  dueDate?: string
+  dueDate?: string,
+  clientId?: string
 ) {
   const from = businessName || "TradeInvoice";
+  const portalLink = clientId ? portalUrl(clientId) : "";
   await getResend().emails.send({
     from: getFromEmail(),
     to,
@@ -178,6 +181,11 @@ export async function sendInvoiceEmail(
         Or copy this link:<br>
         <a href="${viewUrl}" style="color: #78716c; word-break: break-all; font-size: 11px;">${viewUrl}</a>
       </p>
+      ${portalLink ? `
+      <p style="margin: 20px 0 0; padding-top: 16px; border-top: 1px solid #292524; font-size: 12px; color: #57534e; text-align: center;">
+        <a href="${portalLink}" style="color: #78716c; text-decoration: underline;">View all your invoices from ${from}</a>
+      </p>
+      ` : ""}
     `),
   });
 }
