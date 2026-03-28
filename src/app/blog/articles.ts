@@ -13,7 +13,7 @@ export const articles: Article[] = [
   {
     slug: "how-to-create-professional-invoice-zzp-netherlands",
     title: "How to Create a Professional Invoice as a ZZP'er in the Netherlands",
-    excerpt: "Everything you need to know about invoicing as a Dutch freelancer — KVK number, BTW, payment terms, and legal requirements explained in plain language.",
+    excerpt: "Everything you need to know about invoicing as a Dutch freelancer - KVK number, BTW, payment terms, and legal requirements explained in plain language.",
     date: "2026-03-25",
     readTime: "6 min read",
     keyword: "invoice zzp netherlands",
@@ -21,7 +21,7 @@ export const articles: Article[] = [
     content: `
 ## Why Your Invoice Matters More Than You Think
 
-As a ZZP'er (zelfstandige zonder personeel) in the Netherlands, your invoice is not just a request for payment — it is a legal document. The Dutch tax authority (Belastingdienst) has specific rules about what must appear on every invoice you send. Get it wrong, and you could face fines or lose your right to deduct BTW.
+As a ZZP'er (zelfstandige zonder personeel) in the Netherlands, your invoice is not just a request for payment - it is a legal document. The Dutch tax authority (Belastingdienst) has specific rules about what must appear on every invoice you send. Get it wrong, and you could face fines or lose your right to deduct BTW.
 
 But here is the good news: once you understand the basics, creating a compliant invoice takes less than a minute. This guide walks you through everything step by step.
 
@@ -36,7 +36,7 @@ The Belastingdienst requires every invoice to include the following information:
 - **KVK number** (Kamer van Koophandel registration number)
 - **BTW-id** (your VAT identification number, format: NL + 9 digits + B + 2 digits)
 
-Your KVK number is the 8-digit number you received when you registered your business at the Chamber of Commerce. Your BTW-id is different — it is your tax identification number for VAT purposes.
+Your KVK number is the 8-digit number you received when you registered your business at the Chamber of Commerce. Your BTW-id is different - it is your tax identification number for VAT purposes.
 
 ### 2. Your Client's Details
 
@@ -76,7 +76,7 @@ The Belastingdienst requires invoice numbers to be sequential. If you send invoi
 
 ### Missing Payment Terms
 
-If you do not state a payment deadline, the legal default in the Netherlands is 30 days for B2B transactions. But it is always better to state it explicitly — "Payment due within 14 days of invoice date."
+If you do not state a payment deadline, the legal default in the Netherlands is 30 days for B2B transactions. But it is always better to state it explicitly - "Payment due within 14 days of invoice date."
 
 ## Choosing the Right Payment Terms
 
@@ -115,7 +115,7 @@ Herengracht 789, 1017 BS Amsterdam
 
 | Description | Qty | Rate | Amount |
 |---|---|---|---|
-| Emergency pipe repair — kitchen, replace burst copper pipe (1.5m) | 1 | €120.00 | €120.00 |
+| Emergency pipe repair - kitchen, replace burst copper pipe (1.5m) | 1 | €120.00 | €120.00 |
 | Materials: copper pipe 15mm, 2x compression fittings, PTFE tape | 1 | €34.50 | €34.50 |
 | Call-out fee (evening) | 1 | €45.00 | €45.00 |
 
@@ -131,13 +131,13 @@ This invoice has everything the Belastingdienst requires: your details, client d
 ## Tips for Getting Paid on Time
 
 1. **Send the invoice immediately** after completing the work. The longer you wait, the longer you wait to get paid.
-2. **Include your IBAN prominently** — make it easy for clients to pay.
+2. **Include your IBAN prominently** - make it easy for clients to pay.
 3. **Set up automatic payment reminders** so you do not have to chase clients manually.
 4. **Use professional invoice software** that handles numbering, BTW calculations, and reminders for you.
 
 ## The Bottom Line
 
-Creating a compliant invoice in the Netherlands is not complicated once you know the rules. Make sure every invoice includes your KVK number, BTW-id, sequential invoice number, clear descriptions, and payment terms. Use software that automates the boring parts so you can focus on what you do best — your trade.
+Creating a compliant invoice in the Netherlands is not complicated once you know the rules. Make sure every invoice includes your KVK number, BTW-id, sequential invoice number, clear descriptions, and payment terms. Use software that automates the boring parts so you can focus on what you do best - your trade.
 `,
   },
   {
@@ -151,7 +151,7 @@ Creating a compliant invoice in the Netherlands is not complicated once you know
     content: `
 ## Why Plumbers Need a Proper Invoice Template
 
-You have just spent two hours under someone's kitchen sink replacing a corroded waste pipe. Your hands are dirty, your knees hurt, and the last thing you want to think about is paperwork. But sending a professional invoice is what separates a business from a hobby — and it is what gets you paid on time.
+You have just spent two hours under someone's kitchen sink replacing a corroded waste pipe. Your hands are dirty, your knees hurt, and the last thing you want to think about is paperwork. But sending a professional invoice is what separates a business from a hobby - and it is what gets you paid on time.
 
 A good invoice template saves you time, looks professional, and makes sure you never forget to charge for something. This guide shows you exactly what to include and gives you best practices specifically for plumbing businesses.
 
@@ -171,7 +171,7 @@ At the top of every invoice, include:
 ### Client Information
 
 - Client's full name or company name
-- Service address (where the work was done — this might differ from their billing address)
+- Service address (where the work was done - this might differ from their billing address)
 - Phone number or email
 
 ### Job Details
@@ -241,7 +241,7 @@ This is one of the biggest decisions plumbers face when invoicing.
 ### Fixed Price
 
 **Pros:**
-- Clients know the cost upfront — no surprises
+- Clients know the cost upfront - no surprises
 - Rewards efficiency (the faster you work, the higher your effective hourly rate)
 - Easier to quote and compare
 
@@ -293,14 +293,14 @@ Use a consistent format like YEAR-NUMBER (e.g., 2026-001, 2026-002). This keeps 
 
 ### 6. Add a Personal Touch
 
-A simple "Thank you for your business" at the bottom of the invoice goes a long way. You are a tradesperson who deals with people face to face — your invoice should reflect that relationship.
+A simple "Thank you for your business" at the bottom of the invoice goes a long way. You are a tradesperson who deals with people face to face - your invoice should reflect that relationship.
 
 ## Common Plumbing Invoice Mistakes
 
 - **Not listing materials separately**: Clients want to see what they are paying for. A single line saying "materials €200" looks suspicious.
 - **Forgetting the call-out fee**: If you charge for showing up, put it on the invoice. Do not surprise the client.
 - **No job reference or address**: Always include where the work was done. This helps with both record-keeping and any warranty claims.
-- **Handwritten invoices**: We get it — you are busy. But handwritten invoices look unprofessional and are easy to lose. Switch to digital.
+- **Handwritten invoices**: We get it - you are busy. But handwritten invoices look unprofessional and are easy to lose. Switch to digital.
 
 ## Save Time with Invoice Software
 
@@ -318,7 +318,7 @@ As a plumber, your time is better spent fixing pipes than fiddling with spreadsh
   {
     slug: "btw-vat-rules-self-employed-netherlands-2026",
     title: "BTW/VAT Rules for Self-Employed in the Netherlands (2026 Guide)",
-    excerpt: "A straightforward guide to Dutch BTW rules for ZZP'ers — covering 21% and 9% rates, the KOR scheme, reverse charge mechanism, and quarterly filing deadlines.",
+    excerpt: "A straightforward guide to Dutch BTW rules for ZZP'ers - covering 21% and 9% rates, the KOR scheme, reverse charge mechanism, and quarterly filing deadlines.",
     date: "2026-03-15",
     readTime: "8 min read",
     keyword: "btw zzp netherlands",
@@ -326,13 +326,13 @@ As a plumber, your time is better spent fixing pipes than fiddling with spreadsh
     content: `
 ## BTW Basics: What Every ZZP'er Needs to Know
 
-BTW (Belasting over de Toegevoegde Waarde) is the Dutch version of VAT (Value Added Tax). If you are self-employed in the Netherlands, you almost certainly need to deal with BTW. This guide explains the rules in plain language — no accounting jargon, just what you actually need to know.
+BTW (Belasting over de Toegevoegde Waarde) is the Dutch version of VAT (Value Added Tax). If you are self-employed in the Netherlands, you almost certainly need to deal with BTW. This guide explains the rules in plain language - no accounting jargon, just what you actually need to know.
 
 ## The Two BTW Rates
 
 In the Netherlands, there are two main BTW rates:
 
-### 21% — The Standard Rate
+### 21% - The Standard Rate
 
 This applies to most goods and services. If you are a plumber, electrician, painter, or builder, the majority of your work is charged at 21% BTW.
 
@@ -342,7 +342,7 @@ This applies to most goods and services. If you are a plumber, electrician, pain
 - Commercial/business premises work
 - Consultancy and design services
 
-### 9% — The Reduced Rate
+### 9% - The Reduced Rate
 
 The 9% rate applies to specific categories. For tradespeople, the most relevant one is:
 
@@ -356,7 +356,7 @@ The 9% rate applies to specific categories. For tradespeople, the most relevant 
 - Building a brand new extension: 21%
 - Renovating a shop or office: 21%
 
-### 0% — Zero Rate
+### 0% - Zero Rate
 
 The 0% rate applies to:
 - Goods exported outside the EU
@@ -459,7 +459,7 @@ As a ZZP'er, you can deduct the BTW on legitimate business expenses:
 
 - **Tools and equipment**: Power tools, hand tools, safety equipment
 - **Vehicle costs**: Fuel, maintenance, insurance (proportional to business use)
-- **Materials**: Pipes, cables, fittings, paint — anything you buy for jobs
+- **Materials**: Pipes, cables, fittings, paint - anything you buy for jobs
 - **Professional services**: Accountant fees, software subscriptions, insurance
 - **Office costs**: Rent, utilities, internet (proportional to business use)
 - **Training and courses**: Professional development related to your trade
@@ -488,19 +488,19 @@ Entertainment expenses, fines, and personal purchases are not deductible. Neithe
 
 1. **Use accounting or invoicing software** that calculates BTW automatically and helps you prepare your quarterly return.
 2. **Set aside 21% of every payment** you receive in a separate savings account for BTW. This way, you are never caught short at filing time.
-3. **Keep digital copies** of all purchase receipts. A photo on your phone is fine — just make sure it is legible and stored securely.
+3. **Keep digital copies** of all purchase receipts. A photo on your phone is fine - just make sure it is legible and stored securely.
 4. **Review the KOR annually**: If your business is growing, you might need to deregister from the KOR. If it is shrinking, you might benefit from registering.
 5. **Consult a boekhouder** (bookkeeper) if you are unsure. A good bookkeeper costs less than the mistakes they help you avoid.
 
 ## The Bottom Line
 
-BTW is a fact of life for Dutch ZZP'ers, but it does not have to be complicated. Know your rates (21% standard, 9% for residential renovation), file on time, keep your receipts, and use software that handles the calculations. That way, you can spend your time doing what you are good at — not wrestling with tax forms.
+BTW is a fact of life for Dutch ZZP'ers, but it does not have to be complicated. Know your rates (21% standard, 9% for residential renovation), file on time, keep your receipts, and use software that handles the calculations. That way, you can spend your time doing what you are good at - not wrestling with tax forms.
 `,
   },
   {
     slug: "chase-late-payments-without-losing-clients",
     title: "How to Chase Late Payments Without Losing Clients",
-    excerpt: "Practical tips and ready-to-use reminder templates for getting paid on time in the Netherlands — without damaging your client relationships.",
+    excerpt: "Practical tips and ready-to-use reminder templates for getting paid on time in the Netherlands - without damaging your client relationships.",
     date: "2026-03-10",
     readTime: "7 min read",
     keyword: "late payment invoice netherlands",
@@ -510,7 +510,7 @@ BTW is a fact of life for Dutch ZZP'ers, but it does not have to be complicated.
 
 You did the work. You sent the invoice. And now it has been 30 days and still no payment. Sound familiar?
 
-Late payments are the single biggest cash flow problem for tradespeople and freelancers in the Netherlands. According to industry surveys, the average ZZP'er spends 15 hours per month chasing payments — time that should be spent earning money.
+Late payments are the single biggest cash flow problem for tradespeople and freelancers in the Netherlands. According to industry surveys, the average ZZP'er spends 15 hours per month chasing payments - time that should be spent earning money.
 
 The challenge is clear: you need to get paid, but you also need to keep the client relationship intact. Especially when you are a plumber, electrician, or builder who relies on repeat business and referrals. This guide shows you how to handle late payments professionally and effectively.
 
@@ -528,7 +528,7 @@ If a client pays late, you are legally entitled to charge interest:
 - **B2B transactions**: 10.5% annual statutory commercial interest rate (2026)
 - **Consumer transactions**: The standard statutory interest rate (currently around 6%)
 
-Interest starts from the day after the payment deadline expires. You do not need to send a reminder first — the right to interest is automatic.
+Interest starts from the day after the payment deadline expires. You do not need to send a reminder first - the right to interest is automatic.
 
 ### Collection Costs (Incassokosten)
 
@@ -542,11 +542,11 @@ Here is a tested timeline that balances firmness with professionalism:
 
 **Template:**
 
-> Subject: Friendly reminder — Invoice [number]
+> Subject: Friendly reminder - Invoice [number]
 >
 > Hi [Client Name],
 >
-> I hope everything is going well with the [work you did — e.g., "new bathroom"]. I noticed that invoice [number] for €[amount] was due on [date] and has not been paid yet.
+> I hope everything is going well with the [work you did - e.g., "new bathroom"]. I noticed that invoice [number] for €[amount] was due on [date] and has not been paid yet.
 >
 > This is probably just an oversight. Could you arrange the payment when you get a chance? For your convenience, here are the details:
 >
@@ -565,7 +565,7 @@ Here is a tested timeline that balances firmness with professionalism:
 
 **Template:**
 
-> Subject: Payment reminder — Invoice [number]
+> Subject: Payment reminder - Invoice [number]
 >
 > Hi [Client Name],
 >
@@ -591,7 +591,7 @@ This is an important step legally. A formal reminder triggers your right to char
 
 **Template:**
 
-> Subject: Formal payment reminder — Invoice [number]
+> Subject: Formal payment reminder - Invoice [number]
 >
 > Dear [Client Name],
 >
@@ -617,7 +617,7 @@ This is an important step legally. A formal reminder triggers your right to char
 
 **Template:**
 
-> Subject: Final notice — Invoice [number]
+> Subject: Final notice - Invoice [number]
 >
 > Dear [Client Name],
 >
@@ -696,18 +696,18 @@ Before starting any significant job, send a quote and get it accepted in writing
 
 Chasing payment feels uncomfortable, but remember:
 
-- **You are not asking for a favour** — you are asking for what you earned
-- **Most late payments are not malicious** — people forget, get busy, or have temporary cash flow issues
-- **Being professional about it earns respect** — clients actually respect tradespeople who have their business in order
-- **A client who does not pay is not a good client** — you are better off without them
+- **You are not asking for a favour** - you are asking for what you earned
+- **Most late payments are not malicious** - people forget, get busy, or have temporary cash flow issues
+- **Being professional about it earns respect** - clients actually respect tradespeople who have their business in order
+- **A client who does not pay is not a good client** - you are better off without them
 
-The key is to be consistent, professional, and firm. Start friendly, escalate gradually, and always leave the door open for dialogue. Most payment issues resolve themselves with one or two reminders — the templates above handle the rest.
+The key is to be consistent, professional, and firm. Start friendly, escalate gradually, and always leave the door open for dialogue. Most payment issues resolve themselves with one or two reminders - the templates above handle the rest.
 `,
   },
   {
     slug: "kvk-invoice-requirements-dutch-freelancers",
     title: "KVK Invoice Requirements: What Every Dutch Freelancer Must Include",
-    excerpt: "A clear overview of all mandatory fields on invoices for KVK-registered businesses in the Netherlands — avoid fines and stay compliant.",
+    excerpt: "A clear overview of all mandatory fields on invoices for KVK-registered businesses in the Netherlands - avoid fines and stay compliant.",
     date: "2026-03-05",
     readTime: "6 min read",
     keyword: "kvk invoice requirements",
@@ -715,7 +715,7 @@ The key is to be consistent, professional, and firm. Start friendly, escalate gr
     content: `
 ## KVK Registration and Your Invoicing Obligations
 
-When you register your business at the Kamer van Koophandel (KVK), you take on certain legal obligations — including how you create and manage your invoices. The Netherlands has specific rules about what information must appear on business invoices, and the Belastingdienst (Dutch Tax Authority) enforces them.
+When you register your business at the Kamer van Koophandel (KVK), you take on certain legal obligations - including how you create and manage your invoices. The Netherlands has specific rules about what information must appear on business invoices, and the Belastingdienst (Dutch Tax Authority) enforces them.
 
 This guide covers every mandatory field, common mistakes, penalties you could face, and practical advice for staying compliant without it becoming a headache.
 
@@ -730,7 +730,7 @@ The date you issue the invoice. This is important for BTW purposes because it de
 ### 2. Sequential Invoice Number
 
 Every invoice must have a unique, sequential number. This means:
-- No gaps in numbering (1, 2, 3 — not 1, 3, 7)
+- No gaps in numbering (1, 2, 3 - not 1, 3, 7)
 - No duplicate numbers
 - A clear system (e.g., 2026-001, 2026-002 or INV-0001, INV-0002)
 
@@ -764,8 +764,8 @@ If your client is a business and you are applying the reverse charge mechanism o
 
 A clear description of what you delivered or which services you performed. Vague descriptions like "services" or "work done" are not sufficient. Be specific:
 
-**Bad:** "Plumbing work — €500"
-**Good:** "Replacement of kitchen mixer tap and repair of leaking waste pipe at Vondelstraat 45, Amsterdam — 3 hours labour at €75/hr, materials as listed below"
+**Bad:** "Plumbing work - €500"
+**Good:** "Replacement of kitchen mixer tap and repair of leaking waste pipe at Vondelstraat 45, Amsterdam - 3 hours labour at €75/hr, materials as listed below"
 
 ### 9. Quantity and Unit Price
 
@@ -793,7 +793,7 @@ When payment is due (e.g., "Payment due within 14 days of invoice date"). While 
 
 ### 14. Your Bank Account (IBAN)
 
-Technically not legally required on the invoice itself, but practically essential — and expected by the Belastingdienst as part of good business practice.
+Technically not legally required on the invoice itself, but practically essential - and expected by the Belastingdienst as part of good business practice.
 
 ## Special Cases and Additional Requirements
 
@@ -839,7 +839,7 @@ Good news: **digital invoices have the same legal status as paper invoices** in 
 
 ### Storage Requirements
 
-You must store copies of all invoices (sent and received) for **7 years**. Digital storage is fine — you do not need paper copies. However:
+You must store copies of all invoices (sent and received) for **7 years**. Digital storage is fine - you do not need paper copies. However:
 - The files must be accessible and readable
 - You must be able to produce them if the Belastingdienst asks
 - Cloud storage is acceptable as long as you maintain access
@@ -865,7 +865,7 @@ Gaps or duplicates in your invoice numbering can trigger an audit. While not a f
 
 ### Failure to Retain Invoices
 
-Not keeping invoices for the required 7 years can result in estimated assessments — the Belastingdienst will estimate your income and tax liability, which is almost always higher than reality.
+Not keeping invoices for the required 7 years can result in estimated assessments - the Belastingdienst will estimate your income and tax liability, which is almost always higher than reality.
 
 ## Practical Tips for Staying Compliant
 

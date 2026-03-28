@@ -16,7 +16,7 @@ export function generateMetadata({ params }: Props): Metadata {
   if (!article) return {};
 
   return {
-    title: `${article.title} — TradeInvoice`,
+    title: `${article.title} - TradeInvoice`,
     description: article.metaDescription,
     keywords: [article.keyword, "invoicing", "zzp", "netherlands", "tradeinvoice"],
     openGraph: {
@@ -278,11 +278,11 @@ export default function ArticlePage({ params }: Props) {
         {/* CTA Banner */}
         <div className="mt-16 bg-gradient-to-r from-amber-500/10 to-amber-600/5 border border-amber-500/20 rounded-2xl p-8 text-center">
           <h3 className="text-2xl font-bold mb-3">
-            Create your first invoice in 60 seconds — free
+            Create your first invoice in 60 seconds - free
           </h3>
           <p className="text-gray-400 mb-6 max-w-lg mx-auto">
             No credit card required. Auto BTW calculations, payment reminders,
-            and professional PDF invoices — built for Dutch tradespeople.
+            and professional PDF invoices - built for Dutch tradespeople.
           </p>
           <Link
             href="/auth/login"
