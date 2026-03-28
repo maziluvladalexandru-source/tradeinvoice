@@ -58,7 +58,7 @@ export default function DashboardInvoiceList({
             </div>
             {totalInvoiceCount > 5 && (
               <Link
-                href="/invoices/new"
+                href="/invoices"
                 className="text-amber-500 font-medium text-sm"
               >
                 View all

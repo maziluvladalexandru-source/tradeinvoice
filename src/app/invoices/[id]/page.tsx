@@ -415,6 +415,12 @@ export default function InvoiceDetailPage() {
                     {invoice.user.vatNumber && <span>BTW: {invoice.user.vatNumber}</span>}
                   </div>
                 )}
+                {(invoice.user.kvkNumber === "00000000" || invoice.user.vatNumber === "NL123456789B01") && (
+                  <div className="mt-2 flex items-center gap-1.5 text-xs text-amber-400 bg-amber-500/10 border border-amber-500/30 rounded-lg px-2.5 py-1.5">
+                    <svg className="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" /></svg>
+                    Update your KVK and BTW numbers in Settings before sending invoices
+                  </div>
+                )}
               </div>
               <div>
                 <h3 className="text-xs uppercase tracking-wide text-gray-500 mb-2">

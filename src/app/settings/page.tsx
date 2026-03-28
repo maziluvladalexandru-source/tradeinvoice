@@ -621,6 +621,9 @@ function SettingsContent() {
                 placeholder="+31 20 123 4567"
                 className="w-full px-4 py-3 rounded-xl border border-gray-800/50 text-lg focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-gray-900/50 text-white placeholder-gray-500 transition-all"
               />
+              <p className="text-xs text-gray-500 mt-1">
+                Include country code, e.g. +31 6 12345678 (NL) or +40 712 345 678 (RO)
+              </p>
             </div>
           </div>
 

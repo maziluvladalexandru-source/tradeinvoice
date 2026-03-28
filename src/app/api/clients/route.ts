@@ -83,6 +83,17 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // Check for duplicate client email
+    const existingClient = await prisma.client.findFirst({
+      where: { userId: user.id, email: sanitizedEmail },
+    });
+    if (existingClient) {
+      return NextResponse.json(
+        { error: "A client with this email already exists" },
+        { status: 409 }
+      );
+    }
+
     const client = await prisma.client.create({
       data: {
         userId: user.id,

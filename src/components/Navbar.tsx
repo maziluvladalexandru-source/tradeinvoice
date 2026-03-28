@@ -12,6 +12,7 @@ export default function Navbar() {
 
   const links = [
     { href: "/dashboard", label: "Dashboard" },
+    { href: "/invoices", label: "Invoices" },
     { href: "/invoices/new", label: "New Invoice" },
     { href: "/clients", label: "Clients" },
     { href: "/expenses", label: "Expenses" },
@@ -75,6 +76,7 @@ export default function Navbar() {
                   className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
                     pathname === link.href ||
                     (link.href !== "/dashboard" &&
+                      link.href !== "/invoices" &&
                       pathname.startsWith(link.href))
                       ? "bg-amber-500/15 text-amber-400 shadow-sm shadow-amber-500/10"
                       : "text-gray-400 hover:bg-gray-800/60 hover:text-white"
