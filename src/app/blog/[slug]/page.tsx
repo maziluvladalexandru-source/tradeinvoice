@@ -25,9 +25,11 @@ export function generateMetadata({ params }: Props): Metadata {
     openGraph: {
       title: article.title,
       description: article.metaDescription,
+      url: `https://tradeinvoice.app/blog/${article.slug}`,
       type: "article",
       publishedTime: article.date,
       siteName: "TradeInvoice",
+      locale: "en_US",
     },
     twitter: {
       card: "summary_large_image",
@@ -51,10 +53,16 @@ function markdownToHtml(content: string): string {
   function processInline(text: string): string {
     // Bold
     text = text.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
-    // Links
+    // Links - external links get rel="noopener" and target="_blank"
     text = text.replace(
       /\[([^\]]+)\]\(([^)]+)\)/g,
-      '<a href="$2" class="text-amber-400 underline hover:text-amber-300">$1</a>'
+      (_match: string, linkText: string, url: string) => {
+        const isExternal = url.startsWith("http://") || url.startsWith("https://");
+        if (isExternal) {
+          return `<a href="${url}" class="text-amber-400 underline hover:text-amber-300" target="_blank" rel="noopener">${linkText}</a>`;
+        }
+        return `<a href="${url}" class="text-amber-400 underline hover:text-amber-300">${linkText}</a>`;
+      }
     );
     return text;
   }
@@ -241,6 +249,16 @@ export default function ArticlePage({ params }: Props) {
     },
   };
 
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://tradeinvoice.app" },
+      { "@type": "ListItem", position: 2, name: "Blog", item: "https://tradeinvoice.app/blog" },
+      { "@type": "ListItem", position: 3, name: article.title },
+    ],
+  };
+
   return (
     <div className="min-h-screen bg-[#0a0f1e] text-white">
       <header className="max-w-4xl mx-auto px-4 py-6 flex items-center justify-between">
@@ -259,13 +277,20 @@ export default function ArticlePage({ params }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
       <article className="max-w-3xl mx-auto px-4 py-16">
-        <Link
-          href="/blog"
-          className="text-sm text-gray-500 hover:text-amber-400 transition-colors mb-8 inline-block"
-        >
-          &larr; Back to blog
-        </Link>
+        <nav aria-label="Breadcrumb" className="text-sm text-gray-500 mb-8">
+          <ol className="flex items-center gap-2">
+            <li><Link href="/" className="hover:text-amber-400 transition-colors">Home</Link></li>
+            <li aria-hidden="true">&gt;</li>
+            <li><Link href="/blog" className="hover:text-amber-400 transition-colors">Blog</Link></li>
+            <li aria-hidden="true">&gt;</li>
+            <li className="text-gray-400 truncate max-w-[300px]">{article.title}</li>
+          </ol>
+        </nav>
 
         <header className="mb-10">
           <div className="flex items-center gap-3 text-sm text-gray-500 mb-4">

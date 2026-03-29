@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title:
-    "Free Invoice Template for Tradespeople - Download or Create Online | TradeInvoice",
+  title: "Free Invoice Template for Tradespeople | TradeInvoice",
   description:
     "Download a free professional invoice template for tradespeople in the Netherlands. Includes KVK, BTW, IBAN fields. Or create your own invoice online in 60 seconds.",
   alternates: {
@@ -24,8 +23,16 @@ export const metadata: Metadata = {
     title: "Free Invoice Template for Tradespeople | TradeInvoice",
     description:
       "Download a free professional invoice template or create your own online in 60 seconds. Built for plumbers, electricians, builders and contractors in the Netherlands.",
+    url: "https://tradeinvoice.app/templates",
     type: "website",
     siteName: "TradeInvoice",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Free Invoice Template for Tradespeople | TradeInvoice",
+    description:
+      "Download a free professional invoice template or create your own online in 60 seconds. Built for plumbers, electricians, builders and contractors in the Netherlands.",
   },
 };
 
@@ -161,6 +168,7 @@ function CheckIcon() {
       viewBox="0 0 24 24"
       stroke="currentColor"
       strokeWidth={2}
+      aria-hidden="true"
     >
       <path
         strokeLinecap="round"

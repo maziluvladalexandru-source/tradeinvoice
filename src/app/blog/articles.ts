@@ -21,7 +21,7 @@ export const articles: Article[] = [
     content: `
 ## Why Your Invoice Matters More Than You Think
 
-As a ZZP'er (zelfstandige zonder personeel) in the Netherlands, your invoice is not just a request for payment - it is a legal document. The Dutch tax authority (Belastingdienst) has specific rules about what must appear on every invoice you send. Get it wrong, and you could face fines or lose your right to deduct BTW.
+As a ZZP'er (zelfstandige zonder personeel) in the Netherlands, your invoice is not just a request for payment - it is a legal document. The [Dutch tax authority (Belastingdienst)](https://www.belastingdienst.nl) has specific rules about what must appear on every invoice you send. Get it wrong, and you could face fines or lose your right to deduct BTW.
 
 But here is the good news: once you understand the basics, creating a compliant invoice takes less than a minute. This guide walks you through everything step by step.
 
@@ -36,7 +36,7 @@ The Belastingdienst requires every invoice to include the following information:
 - **KVK number** (Kamer van Koophandel registration number)
 - **BTW-id** (your VAT identification number, format: NL + 9 digits + B + 2 digits)
 
-Your KVK number is the 8-digit number you received when you registered your business at the Chamber of Commerce. Your BTW-id is different - it is your tax identification number for VAT purposes.
+Your KVK number is the 8-digit number you received when you registered your business at the [Chamber of Commerce (KVK)](https://www.kvk.nl). Your BTW-id is different - it is your tax identification number for VAT purposes.
 
 ### 2. Your Client's Details
 
@@ -340,7 +340,7 @@ As a plumber, your time is better spent fixing pipes than fiddling with spreadsh
     content: `
 ## BTW Basics: What Every ZZP'er Needs to Know
 
-BTW (Belasting over de Toegevoegde Waarde) is the Dutch version of VAT (Value Added Tax). If you are self-employed in the Netherlands, you almost certainly need to deal with BTW. This guide explains the rules in plain language - no accounting jargon, just what you actually need to know.
+BTW (Belasting over de Toegevoegde Waarde) is the Dutch version of VAT (Value Added Tax). If you are self-employed in the Netherlands, you almost certainly need to deal with BTW. The [Belastingdienst](https://www.belastingdienst.nl) administers all BTW obligations. For an English-language overview of Dutch business taxes, see [Business.gov.nl](https://business.gov.nl/regulation/vat/). This guide explains the rules in plain language - no accounting jargon, just what you actually need to know.
 
 ## The Two BTW Rates
 
@@ -409,7 +409,7 @@ If you register for the KOR:
 
 ### How to Register
 
-You opt in to the KOR by notifying the Belastingdienst. The registration takes effect from the start of a calendar quarter. Once you opt in, you must stay in the scheme for at least 3 years (unless your turnover exceeds the threshold).
+You opt in to the KOR by notifying the [Belastingdienst](https://www.belastingdienst.nl/wps/wcm/connect/nl/btw/content/kleineondernemersregeling). The registration takes effect from the start of a calendar quarter. Once you opt in, you must stay in the scheme for at least 3 years (unless your turnover exceeds the threshold).
 
 ## Reverse Charge Mechanism (Verlegging)
 
@@ -541,7 +541,7 @@ Before you start chasing, know your rights:
 
 ### The 30-Day Rule
 
-Under Dutch law (and EU directive 2011/7/EU), business-to-business invoices must be paid within 30 days unless a different term is agreed in writing. For consumer invoices, the payment term stated on your invoice applies.
+Under [Dutch law](https://business.gov.nl/regulation/payment-term/) (and EU directive 2011/7/EU), business-to-business invoices must be paid within 30 days unless a different term is agreed in writing. For consumer invoices, the payment term stated on your invoice applies.
 
 ### Statutory Interest (Wettelijke Rente)
 
@@ -743,7 +743,7 @@ The key is to be consistent, professional, and firm. Start friendly, escalate gr
     content: `
 ## KVK Registration and Your Invoicing Obligations
 
-When you register your business at the Kamer van Koophandel (KVK), you take on certain legal obligations - including how you create and manage your invoices. The Netherlands has specific rules about what information must appear on business invoices, and the Belastingdienst (Dutch Tax Authority) enforces them.
+When you register your business at the [Kamer van Koophandel (KVK)](https://www.kvk.nl), you take on certain legal obligations - including how you create and manage your invoices. The Netherlands has specific rules about what information must appear on business invoices, and the [Belastingdienst (Dutch Tax Authority)](https://www.belastingdienst.nl) enforces them.
 
 This guide covers every mandatory field, common mistakes, penalties you could face, and practical advice for staying compliant without it becoming a headache.
 
@@ -772,7 +772,7 @@ Your full legal name or trade name as registered with the KVK, plus your busines
 
 Your 8-digit KVK registration number must appear on every invoice. This is a legal requirement under the Handelsregisterwet (Trade Register Act).
 
-**Where to find it:** On your KVK registration confirmation, or by searching the KVK register online at kvk.nl.
+**Where to find it:** On your KVK registration confirmation, or by searching the [KVK register online](https://www.kvk.nl/zoeken/).
 
 ### 5. Your BTW-id (VAT Identification Number)
 
@@ -968,7 +968,7 @@ This guide breaks down exactly what must be on a ZZP invoice, walks through a co
 
 ## What Must Be on a ZZP Invoice in the Netherlands
 
-The Dutch tax authority (Belastingdienst) has clear rules about what every invoice must contain. These are not suggestions - they are legal requirements. Missing any of them can result in fines, rejected BTW deductions for your client, or problems during an audit.
+The [Dutch tax authority (Belastingdienst)](https://www.belastingdienst.nl) has clear rules about what every invoice must contain. These are not suggestions - they are legal requirements. Missing any of them can result in fines, rejected BTW deductions for your client, or problems during an audit.
 
 ### Your Business Information
 
@@ -1950,7 +1950,7 @@ Yes. The reverse charge only affects how you invoice your clients. Your right to
 
 ### What if my client is in the UK (post-Brexit)?
 
-The UK is no longer in the EU, so the EU reverse charge does not apply. Services to UK businesses are generally zero-rated for Dutch BTW purposes (no BTW charged). You should include the text "Export of services - no Dutch VAT applicable" and still include the UK client's VAT number if they have one.
+The UK is no longer in the EU, so the EU reverse charge does not apply. Services to UK businesses are generally zero-rated for Dutch BTW purposes (no BTW charged). You should include the text "Export of services - no Dutch VAT applicable" and still include the UK client's VAT number if they have one. For UK VAT rules, see [HMRC's guidance on VAT](https://www.gov.uk/vat).
 
 ### Do I need to register for VAT in other EU countries if I use reverse charge?
 

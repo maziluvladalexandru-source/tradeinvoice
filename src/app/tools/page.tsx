@@ -6,7 +6,7 @@ import { useState, useMemo } from "react";
 /* ──────────────── Flag SVGs ──────────────── */
 function FlagNL() {
   return (
-    <svg width="24" height="16" viewBox="0 0 32 22" className="rounded-sm">
+    <svg width="24" height="16" viewBox="0 0 32 22" className="rounded-sm" role="img" aria-label="Netherlands flag">
       <rect width="32" height="7.33" fill="#AE1C28" />
       <rect y="7.33" width="32" height="7.34" fill="#FFF" />
       <rect y="14.67" width="32" height="7.33" fill="#21468B" />
@@ -15,7 +15,7 @@ function FlagNL() {
 }
 function FlagUK() {
   return (
-    <svg width="24" height="16" viewBox="0 0 60 30" className="rounded-sm">
+    <svg width="24" height="16" viewBox="0 0 60 30" className="rounded-sm" role="img" aria-label="United Kingdom flag">
       <clipPath id="uk-tools"><rect width="60" height="30" /></clipPath>
       <g clipPath="url(#uk-tools)">
         <rect width="60" height="30" fill="#012169" />
@@ -29,7 +29,7 @@ function FlagUK() {
 }
 function FlagDE() {
   return (
-    <svg width="24" height="16" viewBox="0 0 32 22" className="rounded-sm">
+    <svg width="24" height="16" viewBox="0 0 32 22" className="rounded-sm" role="img" aria-label="Germany flag">
       <rect width="32" height="7.33" fill="#000" />
       <rect y="7.33" width="32" height="7.34" fill="#DD0000" />
       <rect y="14.67" width="32" height="7.33" fill="#FFCC00" />
@@ -38,7 +38,7 @@ function FlagDE() {
 }
 function FlagBE() {
   return (
-    <svg width="24" height="16" viewBox="0 0 32 22" className="rounded-sm">
+    <svg width="24" height="16" viewBox="0 0 32 22" className="rounded-sm" role="img" aria-label="Belgium flag">
       <rect width="10.67" height="22" fill="#000" />
       <rect x="10.67" width="10.66" height="22" fill="#FAE042" />
       <rect x="21.33" width="10.67" height="22" fill="#ED2939" />
@@ -216,7 +216,7 @@ function InvoiceNumberGenerator() {
             className="p-2 rounded-lg bg-white/5 border border-white/10 text-gray-400 hover:text-white hover:border-white/20 transition-all"
             title="Generate new"
           >
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
             </svg>
           </button>
@@ -292,7 +292,7 @@ function PaymentDueDateCalculator() {
     <div className="bg-white/[0.03] border border-white/10 rounded-2xl p-6 sm:p-8 hover:border-amber-500/30 transition-colors">
       <div className="flex items-center gap-3 mb-6">
         <div className="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-400 text-xl">
-          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
           </svg>
         </div>

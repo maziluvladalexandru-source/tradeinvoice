@@ -46,6 +46,7 @@ export default function Navbar() {
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
                 className="shrink-0"
+                aria-hidden="true"
               >
                 <path
                   d="M12 2L2 12l10 10 10-10L12 2z"

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "TradeInvoice - Rechnungssoftware fur Handwerker | Kostenlos Starten",
+  title: "Rechnungssoftware fur Handwerker | TradeInvoice",
   description:
     "Professionelle Rechnungen in 60 Sekunden erstellen. Automatische Zahlungserinnerungen. Speziell fur Handwerker und Freiberufler. Kostenlos starten.",
   keywords: [
@@ -24,6 +24,12 @@ export const metadata: Metadata = {
     siteName: "TradeInvoice",
     type: "website",
     locale: "de_DE",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "TradeInvoice - Rechnungssoftware fur Handwerker",
+    description:
+      "Professionelle Rechnungen in 60 Sekunden erstellen. Automatische Zahlungserinnerungen. Speziell fur Handwerker und Freiberufler.",
   },
   alternates: {
     canonical: "https://tradeinvoice.app/de",

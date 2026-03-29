@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Free Invoice Tools - BTW Calculator, Invoice Number Generator | TradeInvoice",
+  title: "Free BTW Calculator & Invoice Tools | TradeInvoice",
   description:
     "Free online BTW/VAT calculator for Netherlands, UK, Germany & Belgium. Invoice number generator and payment due date calculator. No sign-up required.",
   alternates: {
@@ -19,12 +19,19 @@ export const metadata: Metadata = {
     "free invoice tools",
   ],
   openGraph: {
-    title: "Free Invoice Tools - BTW Calculator, Invoice Number Generator | TradeInvoice",
+    title: "Free BTW Calculator & Invoice Tools | TradeInvoice",
     description:
       "Free online BTW/VAT calculator, invoice number generator, and payment due date calculator. No sign-up required.",
     url: "https://tradeinvoice.app/tools",
     siteName: "TradeInvoice",
     type: "website",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Free BTW Calculator & Invoice Tools | TradeInvoice",
+    description:
+      "Free online BTW/VAT calculator, invoice number generator, and payment due date calculator. No sign-up required.",
   },
 };
 
