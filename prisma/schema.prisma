@@ -32,6 +32,18 @@ model User {
   notifyOnView    Boolean? @default(true)
   notifyOnPay     Boolean? @default(true)
   notifyReminders Boolean? @default(false)
+
+  // Email templates
+  emailInvoiceSubject  String?
+  emailInvoiceMessage  String?
+  emailReminderSubject String?
+  emailReminderMessage String?
+
+  // Reminder schedule
+  reminderFirstDays   Int?     @default(7)
+  reminderSecondDays  Int?     @default(3)
+  reminderOverdueDays Int?     @default(1)
+  remindersEnabled    Boolean? @default(true)
   stripeCustomerId String?
   stripeSubscriptionId String?
   invoiceCount  Int       @default(0) // monthly invoice count

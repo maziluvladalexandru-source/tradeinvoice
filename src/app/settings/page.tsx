@@ -37,6 +37,14 @@ interface User {
   notifyOnView: boolean | null;
   notifyOnPay: boolean | null;
   notifyReminders: boolean | null;
+  emailInvoiceSubject: string | null;
+  emailInvoiceMessage: string | null;
+  emailReminderSubject: string | null;
+  emailReminderMessage: string | null;
+  reminderFirstDays: number | null;
+  reminderSecondDays: number | null;
+  reminderOverdueDays: number | null;
+  remindersEnabled: boolean | null;
 }
 
 interface TeamMember {
@@ -121,6 +129,21 @@ function SettingsContent() {
   const [notifyOnPay, setNotifyOnPay] = useState(true);
   const [notifyReminders, setNotifyReminders] = useState(false);
 
+  // Email templates
+  const [emailInvoiceSubject, setEmailInvoiceSubject] = useState("");
+  const [emailInvoiceMessage, setEmailInvoiceMessage] = useState("");
+  const [emailReminderSubject, setEmailReminderSubject] = useState("");
+  const [emailReminderMessage, setEmailReminderMessage] = useState("");
+
+  // Reminder schedule
+  const [reminderFirstDays, setReminderFirstDays] = useState(7);
+  const [reminderSecondDays, setReminderSecondDays] = useState(3);
+  const [reminderOverdueDays, setReminderOverdueDays] = useState(1);
+  const [remindersEnabled, setRemindersEnabled] = useState(true);
+
+  // Security
+  const [signingOutAll, setSigningOutAll] = useState(false);
+
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteConfirmation, setDeleteConfirmation] = useState("");
   const [deleting, setDeleting] = useState(false);
@@ -173,6 +196,14 @@ function SettingsContent() {
         setNotifyOnView(u.notifyOnView ?? true);
         setNotifyOnPay(u.notifyOnPay ?? true);
         setNotifyReminders(u.notifyReminders ?? false);
+        setEmailInvoiceSubject(u.emailInvoiceSubject || "");
+        setEmailInvoiceMessage(u.emailInvoiceMessage || "");
+        setEmailReminderSubject(u.emailReminderSubject || "");
+        setEmailReminderMessage(u.emailReminderMessage || "");
+        setReminderFirstDays(u.reminderFirstDays ?? 7);
+        setReminderSecondDays(u.reminderSecondDays ?? 3);
+        setReminderOverdueDays(u.reminderOverdueDays ?? 1);
+        setRemindersEnabled(u.remindersEnabled ?? true);
       })
       .catch(() => router.push("/auth/login"))
       .finally(() => setLoading(false));
@@ -243,6 +274,8 @@ function SettingsContent() {
         name, businessName, businessAddress, businessPhone, kvkNumber, vatNumber, bankDetails,
         defaultPaymentTerms, defaultTaxRate, defaultCurrency, defaultCountry, defaultLanguage, invoiceNumberPrefix,
         notifyOnView, notifyOnPay, notifyReminders,
+        emailInvoiceSubject, emailInvoiceMessage, emailReminderSubject, emailReminderMessage,
+        reminderFirstDays, reminderSecondDays, reminderOverdueDays, remindersEnabled,
       }),
     });
     if (res.ok) {
@@ -1006,6 +1039,144 @@ function SettingsContent() {
             </div>
           </div>
 
+          {/* Email Templates */}
+          <div className="bg-[#111827] backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 space-y-5 hover:border-gray-600/60 transition-all duration-300">
+            <h2 className="text-lg font-semibold text-white mb-2 flex items-center gap-2">
+              <svg className="w-5 h-5 text-amber-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+              </svg>
+              Email Templates
+              <div className="flex-1 h-px bg-gradient-to-r from-amber-500/20 to-transparent ml-2" />
+            </h2>
+            <p className="text-sm text-gray-400">
+              Customize the emails sent with your invoices and payment reminders. Leave blank to use defaults.
+            </p>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-400 mb-1">
+                Invoice Email Subject
+              </label>
+              <input
+                value={emailInvoiceSubject}
+                onChange={(e) => setEmailInvoiceSubject(e.target.value)}
+                placeholder="Invoice {number} from {business}"
+                className="w-full px-4 py-3 rounded-xl border border-white/10 text-lg focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 outline-none bg-white/5 text-white placeholder-gray-500 transition-all"
+              />
+              <p className="text-xs text-gray-500 mt-1">Use {"{number}"} for invoice number and {"{business}"} for your business name</p>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-400 mb-1">
+                Invoice Email Message
+              </label>
+              <textarea
+                value={emailInvoiceMessage}
+                onChange={(e) => setEmailInvoiceMessage(e.target.value)}
+                placeholder="Please find attached invoice {number}. Payment is due by {dueDate}."
+                rows={3}
+                className="w-full px-4 py-3 rounded-xl border border-white/10 text-lg focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 outline-none bg-white/5 text-white placeholder-gray-500 transition-all resize-none"
+              />
+              <p className="text-xs text-gray-500 mt-1">Use {"{number}"}, {"{business}"}, {"{dueDate}"}, {"{total}"}, {"{clientName}"}</p>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-400 mb-1">
+                Reminder Email Subject
+              </label>
+              <input
+                value={emailReminderSubject}
+                onChange={(e) => setEmailReminderSubject(e.target.value)}
+                placeholder="Payment reminder: Invoice {number}"
+                className="w-full px-4 py-3 rounded-xl border border-white/10 text-lg focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 outline-none bg-white/5 text-white placeholder-gray-500 transition-all"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-400 mb-1">
+                Reminder Email Message
+              </label>
+              <textarea
+                value={emailReminderMessage}
+                onChange={(e) => setEmailReminderMessage(e.target.value)}
+                placeholder="This is a friendly reminder that invoice {number} for {total} is due on {dueDate}."
+                rows={3}
+                className="w-full px-4 py-3 rounded-xl border border-white/10 text-lg focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 outline-none bg-white/5 text-white placeholder-gray-500 transition-all resize-none"
+              />
+            </div>
+          </div>
+
+          {/* Payment Reminders */}
+          <div className="bg-[#111827] backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 space-y-5 hover:border-gray-600/60 transition-all duration-300">
+            <h2 className="text-lg font-semibold text-white mb-2 flex items-center gap-2">
+              <svg className="w-5 h-5 text-amber-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              Payment Reminders
+              <div className="flex-1 h-px bg-gradient-to-r from-amber-500/20 to-transparent ml-2" />
+            </h2>
+            <p className="text-sm text-gray-400">
+              Configure when automatic payment reminders are sent to clients with overdue invoices.
+            </p>
+
+            <label className="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/10 cursor-pointer hover:border-gray-600/60 transition-all">
+              <div>
+                <p className="text-white font-medium text-sm">Enable automatic reminders</p>
+                <p className="text-xs text-gray-500">Automatically send payment reminders based on the schedule below</p>
+              </div>
+              <div className="relative">
+                <input
+                  type="checkbox"
+                  checked={remindersEnabled}
+                  onChange={(e) => setRemindersEnabled(e.target.checked)}
+                  className="sr-only peer"
+                />
+                <div className="w-11 h-6 bg-gray-700 rounded-full peer-checked:bg-amber-500 transition-colors" />
+                <div className="absolute left-0.5 top-0.5 w-5 h-5 bg-white rounded-full shadow peer-checked:translate-x-5 transition-transform" />
+              </div>
+            </label>
+
+            <div className={`space-y-4 ${!remindersEnabled ? "opacity-50 pointer-events-none" : ""}`}>
+              <div className="flex items-center gap-3">
+                <label className="text-sm text-gray-400 w-36 shrink-0">First Reminder</label>
+                <input
+                  type="number"
+                  min={1}
+                  max={30}
+                  value={reminderFirstDays}
+                  onChange={(e) => setReminderFirstDays(parseInt(e.target.value) || 7)}
+                  className="w-20 px-3 py-2.5 rounded-xl border border-white/10 text-lg focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 outline-none bg-white/5 text-white transition-all text-center"
+                />
+                <span className="text-sm text-gray-400">days before due date</span>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <label className="text-sm text-gray-400 w-36 shrink-0">Second Reminder</label>
+                <input
+                  type="number"
+                  min={1}
+                  max={30}
+                  value={reminderSecondDays}
+                  onChange={(e) => setReminderSecondDays(parseInt(e.target.value) || 3)}
+                  className="w-20 px-3 py-2.5 rounded-xl border border-white/10 text-lg focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 outline-none bg-white/5 text-white transition-all text-center"
+                />
+                <span className="text-sm text-gray-400">days before due date</span>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <label className="text-sm text-gray-400 w-36 shrink-0">Overdue Reminder</label>
+                <input
+                  type="number"
+                  min={1}
+                  max={30}
+                  value={reminderOverdueDays}
+                  onChange={(e) => setReminderOverdueDays(parseInt(e.target.value) || 1)}
+                  className="w-20 px-3 py-2.5 rounded-xl border border-white/10 text-lg focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 outline-none bg-white/5 text-white transition-all text-center"
+                />
+                <span className="text-sm text-gray-400">days after due date</span>
+              </div>
+            </div>
+          </div>
+
           <button
             type="submit"
             disabled={saving}
@@ -1034,6 +1205,61 @@ function SettingsContent() {
           >
             Export My Data
           </a>
+        </div>
+
+        {/* Security */}
+        <div className="bg-[#111827] backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 mt-8 hover:border-gray-600/60 transition-all duration-300">
+          <h2 className="text-lg font-semibold text-white mb-2 flex items-center gap-2">
+            <svg className="w-5 h-5 text-amber-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+            </svg>
+            Security
+            <div className="flex-1 h-px bg-gradient-to-r from-amber-500/20 to-transparent ml-2" />
+          </h2>
+
+          <div className="space-y-4 mt-4">
+            <div className="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/10">
+              <div>
+                <p className="text-white font-medium text-sm">Signed in via</p>
+                <p className="text-xs text-gray-500">Magic Link (email)</p>
+              </div>
+              <span className="text-xs text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">Active</span>
+            </div>
+
+            <div className="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/10">
+              <div>
+                <p className="text-white font-medium text-sm">Active sessions</p>
+                <p className="text-xs text-gray-500">1 device</p>
+              </div>
+              <button
+                onClick={async () => {
+                  if (!confirm("Sign out from all devices? You will need to log in again.")) return;
+                  setSigningOutAll(true);
+                  try {
+                    const res = await fetch("/api/auth/logout-all", { method: "POST" });
+                    if (res.ok) {
+                      toast("Signed out from all devices");
+                      window.location.href = "/auth/login";
+                    } else {
+                      toast("Failed to sign out", "error");
+                    }
+                  } catch {
+                    toast("Failed to sign out", "error");
+                  } finally {
+                    setSigningOutAll(false);
+                  }
+                }}
+                disabled={signingOutAll}
+                className="text-sm text-red-400 hover:text-red-300 font-medium transition-colors disabled:opacity-50"
+              >
+                {signingOutAll ? "Signing out..." : "Sign out all devices"}
+              </button>
+            </div>
+
+            <div className="p-3 rounded-xl bg-white/5 border border-white/10">
+              <p className="text-gray-500 text-sm">Two-factor authentication coming soon</p>
+            </div>
+          </div>
         </div>
 
         {/* Delete Account */}

@@ -29,6 +29,8 @@ export async function PATCH(req: NextRequest) {
       name, businessName, businessAddress, businessPhone, kvkNumber, vatNumber, bankDetails, logoUrl,
       defaultPaymentTerms, defaultTaxRate, defaultCurrency, defaultCountry, defaultLanguage, invoiceNumberPrefix,
       notifyOnView, notifyOnPay, notifyReminders,
+      emailInvoiceSubject, emailInvoiceMessage, emailReminderSubject, emailReminderMessage,
+      reminderFirstDays, reminderSecondDays, reminderOverdueDays, remindersEnabled,
     } = await req.json();
 
     // Validate logoUrl: must be base64 image or empty, max 500KB
@@ -66,6 +68,14 @@ export async function PATCH(req: NextRequest) {
         ...(notifyOnView !== undefined ? { notifyOnView: !!notifyOnView } : {}),
         ...(notifyOnPay !== undefined ? { notifyOnPay: !!notifyOnPay } : {}),
         ...(notifyReminders !== undefined ? { notifyReminders: !!notifyReminders } : {}),
+        ...(emailInvoiceSubject !== undefined ? { emailInvoiceSubject: emailInvoiceSubject ? sanitizeString(emailInvoiceSubject, 200) : null } : {}),
+        ...(emailInvoiceMessage !== undefined ? { emailInvoiceMessage: emailInvoiceMessage ? sanitizeString(emailInvoiceMessage, 2000) : null } : {}),
+        ...(emailReminderSubject !== undefined ? { emailReminderSubject: emailReminderSubject ? sanitizeString(emailReminderSubject, 200) : null } : {}),
+        ...(emailReminderMessage !== undefined ? { emailReminderMessage: emailReminderMessage ? sanitizeString(emailReminderMessage, 2000) : null } : {}),
+        ...(reminderFirstDays !== undefined ? { reminderFirstDays: typeof reminderFirstDays === "number" ? Math.max(1, Math.min(30, reminderFirstDays)) : null } : {}),
+        ...(reminderSecondDays !== undefined ? { reminderSecondDays: typeof reminderSecondDays === "number" ? Math.max(1, Math.min(30, reminderSecondDays)) : null } : {}),
+        ...(reminderOverdueDays !== undefined ? { reminderOverdueDays: typeof reminderOverdueDays === "number" ? Math.max(1, Math.min(30, reminderOverdueDays)) : null } : {}),
+        ...(remindersEnabled !== undefined ? { remindersEnabled: !!remindersEnabled } : {}),
       },
     });
 
