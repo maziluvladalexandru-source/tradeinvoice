@@ -35,6 +35,11 @@ export function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
+  // Allow trade-specific invoice template pages (public SEO content)
+  if (pathname.startsWith("/invoice-template")) {
+    return NextResponse.next();
+  }
+
   // Allow tools page (public SEO content)
   if (pathname.startsWith("/tools")) {
     return NextResponse.next();

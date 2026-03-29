@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { trades } from "../invoice-template/trades";
 
 export const metadata: Metadata = {
   title: "Free Invoice Template for Tradespeople | TradeInvoice",
@@ -365,6 +366,30 @@ export default function TemplatesPage() {
               </li>
             </ul>
           </div>
+        </div>
+      </section>
+
+      {/* Browse Templates by Trade */}
+      <section className="max-w-4xl mx-auto px-4 pb-20">
+        <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 text-center">
+          Browse Templates by Trade
+        </h2>
+        <p className="text-gray-400 text-center mb-10 max-w-2xl mx-auto">
+          Find an invoice template tailored to your specific trade, with
+          realistic line items, pricing guides, and industry-specific advice.
+        </p>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+          {trades.map((trade) => (
+            <Link
+              key={trade.slug}
+              href={`/invoice-template/${trade.slug}`}
+              className="bg-[#111827] border border-gray-700/50 rounded-xl p-4 hover:border-amber-500/50 transition-colors text-center group"
+            >
+              <div className="text-white font-medium text-sm group-hover:text-amber-400 transition-colors">
+                {trade.namePlural}
+              </div>
+            </Link>
+          ))}
         </div>
       </section>
 
