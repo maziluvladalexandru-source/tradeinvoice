@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { trades, getTradeBySlug, TradeData } from "../trades";
+import { trades, getTradeBySlug, countries, TradeData } from "../trades";
 import { articles } from "../../blog/articles";
 
 export function generateStaticParams() {
@@ -342,6 +342,26 @@ export default function TradeTemplatePage({
       <section className="max-w-6xl mx-auto px-4 pb-20">
         <InvoiceMockup trade={trade} />
       </section>
+
+      {/* Country Variants */}
+      {!isZzp && (
+        <section className="max-w-4xl mx-auto px-4 pb-12 text-center">
+          <p className="text-gray-400 text-sm">
+            Available for:{" "}
+            {countries.map((c, i) => (
+              <span key={c.slug}>
+                {i > 0 && " | "}
+                <Link
+                  href={`/invoice-template/${trade.slug}/${c.slug}`}
+                  className="text-amber-400 hover:text-amber-300 transition-colors"
+                >
+                  {c.flag} {c.name}
+                </Link>
+              </span>
+            ))}
+          </p>
+        </section>
+      )}
 
       {/* What to Include */}
       <section className="max-w-4xl mx-auto px-4 pb-20">

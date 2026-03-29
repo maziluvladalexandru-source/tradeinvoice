@@ -733,3 +733,107 @@ export const trades: TradeData[] = [
 export function getTradeBySlug(slug: string): TradeData | undefined {
   return trades.find((t) => t.slug === slug);
 }
+
+export interface CountryData {
+  slug: string;
+  name: string;
+  nameLocal: string;
+  flag: string;
+  currency: string;
+  currencySymbol: string;
+  vatRate: number;
+  vatName: string;
+  registrationName: string;
+  registrationBody: string;
+  taxAuthority: string;
+  taxAuthorityUrl: string;
+  legalRequirements: string[];
+  paymentTerms: string;
+  locale: string;
+}
+
+export const countries: CountryData[] = [
+  {
+    slug: "netherlands",
+    name: "Netherlands",
+    nameLocal: "Nederland",
+    flag: "\ud83c\uddf3\ud83c\uddf1",
+    currency: "EUR",
+    currencySymbol: "\u20ac",
+    vatRate: 21,
+    vatName: "BTW",
+    registrationName: "KVK",
+    registrationBody: "Kamer van Koophandel",
+    taxAuthority: "Belastingdienst",
+    taxAuthorityUrl: "https://www.belastingdienst.nl",
+    legalRequirements: [
+      "KVK number",
+      "BTW-id",
+      "IBAN",
+      "Business address",
+      "Invoice date",
+      "Sequential invoice number",
+      "Description of services",
+    ],
+    paymentTerms:
+      "Net 30 is standard in the Netherlands. For B2B, you can charge statutory interest (wettelijke handelsrente) after the due date.",
+    locale: "nl",
+  },
+  {
+    slug: "uk",
+    name: "United Kingdom",
+    nameLocal: "UK",
+    flag: "\ud83c\uddec\ud83c\udde7",
+    currency: "GBP",
+    currencySymbol: "\u00a3",
+    vatRate: 20,
+    vatName: "VAT",
+    registrationName: "Companies House",
+    registrationBody: "Companies House",
+    taxAuthority: "HMRC",
+    taxAuthorityUrl:
+      "https://www.gov.uk/government/organisations/hm-revenue-customs",
+    legalRequirements: [
+      "Company name",
+      "Company number",
+      "VAT number (if registered)",
+      "Registered address",
+      "Invoice date",
+      "Unique invoice number",
+      "Description of goods/services",
+    ],
+    paymentTerms:
+      "Net 30 is standard in the UK. Under the Late Payment of Commercial Debts Act, you can charge interest at 8% + Bank of England base rate.",
+    locale: "en",
+  },
+  {
+    slug: "germany",
+    name: "Germany",
+    nameLocal: "Deutschland",
+    flag: "\ud83c\udde9\ud83c\uddea",
+    currency: "EUR",
+    currencySymbol: "\u20ac",
+    vatRate: 19,
+    vatName: "MwSt/USt",
+    registrationName: "Handelsregister",
+    registrationBody: "Handelsregister",
+    taxAuthority: "Finanzamt",
+    taxAuthorityUrl: "https://www.bzst.de",
+    legalRequirements: [
+      "Company name and address",
+      "Tax number (Steuernummer)",
+      "USt-IdNr (if applicable)",
+      "Invoice date",
+      "Sequential invoice number",
+      "Description with quantity and price",
+      "Net amount, tax rate, tax amount, gross amount separately",
+    ],
+    paymentTerms:
+      "Net 30 is common. Under German law (BGB \u00a7286), interest can be charged at 9% above ECB base rate for B2B transactions after the due date.",
+    locale: "de",
+  },
+];
+
+export function getCountryBySlug(slug: string): CountryData | undefined {
+  return countries.find((c) => c.slug === slug);
+}

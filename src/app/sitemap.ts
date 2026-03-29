@@ -1,5 +1,5 @@
 import { MetadataRoute } from "next";
-import { trades } from "./invoice-template/trades";
+import { trades, countries } from "./invoice-template/trades";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://tradeinvoice.app";
@@ -10,6 +10,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     changeFrequency: "monthly",
     priority: 0.8,
   }));
+
+  const countryTradePages: MetadataRoute.Sitemap = trades.flatMap((trade) =>
+    countries.map((country) => ({
+      url: `${baseUrl}/invoice-template/${trade.slug}/${country.slug}`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    }))
+  );
 
   return [
     { url: baseUrl, lastModified: new Date(), changeFrequency: "weekly", priority: 1 },
@@ -34,5 +43,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${baseUrl}/contact`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.3 },
     { url: `${baseUrl}/dpa`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.2 },
     ...tradePages,
+    ...countryTradePages,
   ];
 }
