@@ -360,7 +360,7 @@ export default function Home() {
       </section>
 
       {/* ═══════════════ 3. HOW IT WORKS ═══════════════ */}
-      <section className="bg-[#faf9f6] py-20 sm:py-28">
+      <section className="bg-[#faf9f6] py-20 sm:py-28" style={{ backgroundImage: "radial-gradient(circle, #f59e0b10 1px, transparent 1px)", backgroundSize: "32px 32px" }}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <Reveal>
             <div className="text-center mb-16">
@@ -496,7 +496,7 @@ export default function Home() {
       </section>
 
       {/* ═══════════════ 5. SOCIAL PROOF ═══════════════ */}
-      <section className="bg-[#f8fafc] py-20 sm:py-28">
+      <section className="bg-[#f8fafc] py-20 sm:py-28" style={{ backgroundImage: "radial-gradient(circle, #f59e0b10 1px, transparent 1px)", backgroundSize: "32px 32px" }}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <Reveal>
             <div className="text-center mb-16">
@@ -628,7 +628,7 @@ export default function Home() {
       </section>
 
       {/* ═══════════════ 7. COMPARISON TABLE ═══════════════ */}
-      <section className="bg-[#f8fafc] py-20 sm:py-28">
+      <section className="bg-[#f8fafc] py-20 sm:py-28" style={{ backgroundImage: "radial-gradient(circle, #f59e0b10 1px, transparent 1px)", backgroundSize: "32px 32px" }}>
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <Reveal>
             <div className="text-center mb-12">

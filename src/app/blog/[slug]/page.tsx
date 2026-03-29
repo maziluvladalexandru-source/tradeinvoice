@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import Navbar from "@/components/Navbar";
 import { articles, getArticleBySlug } from "../articles";
 
 interface Props {
@@ -261,17 +262,7 @@ export default function ArticlePage({ params }: Props) {
 
   return (
     <div className="min-h-screen bg-[#0a0f1e] text-white">
-      <header className="max-w-4xl mx-auto px-4 py-6 flex items-center justify-between">
-        <Link href="/" className="text-2xl font-bold text-amber-400">
-          TradeInvoice
-        </Link>
-        <Link
-          href="/auth/login"
-          className="bg-amber-500 text-gray-900 px-6 py-3 rounded-xl font-semibold hover:bg-amber-400 transition-colors"
-        >
-          Sign In
-        </Link>
-      </header>
+      <Navbar />
 
       <script
         type="application/ld+json"

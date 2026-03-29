@@ -586,7 +586,7 @@ function SettingsContent() {
                 <input
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="John Murphy"
+                  placeholder="Your full name"
                   className="w-full px-4 py-3 rounded-xl border border-white/10 text-lg focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 outline-none bg-white/5 text-white placeholder-gray-500 transition-all"
                 />
               </div>
@@ -598,7 +598,7 @@ function SettingsContent() {
                 <input
                   value={businessName}
                   onChange={(e) => setBusinessName(e.target.value)}
-                  placeholder="Murphy Plumbing Ltd"
+                  placeholder="Your business name"
                   className="w-full px-4 py-3 rounded-xl border border-white/10 text-lg focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 outline-none bg-white/5 text-white placeholder-gray-500 transition-all"
                 />
               </div>
@@ -611,7 +611,7 @@ function SettingsContent() {
               <input
                 value={businessAddress}
                 onChange={(e) => setBusinessAddress(e.target.value)}
-                placeholder="123 Main St, Amsterdam"
+                placeholder="Your business address"
                 className="w-full px-4 py-3 rounded-xl border border-white/10 text-lg focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 outline-none bg-white/5 text-white placeholder-gray-500 transition-all"
               />
             </div>
@@ -623,7 +623,7 @@ function SettingsContent() {
               <input
                 value={businessPhone}
                 onChange={(e) => setBusinessPhone(e.target.value)}
-                placeholder="+31 20 123 4567"
+                placeholder="+31 6 12345678"
                 className="w-full px-4 py-3 rounded-xl border border-white/10 text-lg focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 outline-none bg-white/5 text-white placeholder-gray-500 transition-all"
               />
               <p className="text-xs text-gray-500 mt-1">
@@ -662,7 +662,7 @@ function SettingsContent() {
                 <input
                   value={kvkNumber}
                   onChange={(e) => setKvkNumber(e.target.value)}
-                  placeholder="12345678"
+                  placeholder="Your KVK number"
                   className={`w-full px-4 py-3 rounded-xl border text-lg focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 outline-none bg-white/5 text-white placeholder-gray-500 transition-all ${!kvkNumber ? "border-red-500/50" : "border-white/10"}`}
                 />
                 <p className="text-xs text-gray-500 mt-1">
@@ -707,7 +707,7 @@ function SettingsContent() {
               <input
                 value={formatIBAN(iban)}
                 onChange={(e) => setIban(e.target.value.replace(/\s/g, "").toUpperCase())}
-                placeholder="NL91 ABNA 0417 1643 00"
+                placeholder="Your IBAN"
                 maxLength={42}
                 className="w-full px-4 py-3 rounded-xl border border-white/10 text-lg focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 outline-none bg-white/5 text-white placeholder-gray-500 transition-all font-mono tracking-wider"
               />
@@ -721,7 +721,7 @@ function SettingsContent() {
                 <input
                   value={bankName}
                   onChange={(e) => setBankName(e.target.value)}
-                  placeholder="ABN AMRO"
+                  placeholder="Your bank name"
                   className="w-full px-4 py-3 rounded-xl border border-white/10 text-lg focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 outline-none bg-white/5 text-white placeholder-gray-500 transition-all"
                 />
               </div>
@@ -732,7 +732,7 @@ function SettingsContent() {
                 <input
                   value={bic}
                   onChange={(e) => setBic(e.target.value.toUpperCase())}
-                  placeholder="ABNANL2A"
+                  placeholder="BIC/SWIFT code"
                   maxLength={11}
                   className="w-full px-4 py-3 rounded-xl border border-white/10 text-lg focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 outline-none bg-white/5 text-white placeholder-gray-500 transition-all font-mono"
                 />
