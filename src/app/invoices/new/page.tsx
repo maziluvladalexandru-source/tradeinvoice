@@ -59,16 +59,7 @@ function parseBankDetails(raw: string | null): BankDetailsStructured | null {
   return null;
 }
 
-const COMMON_ITEMS = [
-  { label: "Labour", desc: "Labour - general work" },
-  { label: "Callout", desc: "Emergency callout fee" },
-  { label: "Materials", desc: "Materials and supplies" },
-  { label: "Bathroom", desc: "Bathroom renovation - labour" },
-  { label: "Boiler", desc: "Boiler service and repair" },
-  { label: "Electrical", desc: "Electrical installation work" },
-  { label: "Plastering", desc: "Plastering and finishing" },
-  { label: "Painting", desc: "Painting and decorating" },
-];
+// Generic common items removed - users add their own via Services Library
 
 const PAYMENT_TERMS = [
   { label: "Due on receipt", days: 0 },
@@ -1983,8 +1974,8 @@ function NewInvoiceForm() {
                           className="w-full px-3 py-2.5 rounded-xl border border-white/10 text-sm focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 transition-all outline-none bg-white/5 text-white placeholder-gray-500"
                         />
                         {/* Saved + Common items suggestions */}
-                        {showSuggestions === index && !item.description && (
-                          <div className="absolute z-20 top-full left-0 right-0 mt-1 bg-white/10 border border-white/10 rounded-xl shadow-xl overflow-hidden max-h-64 overflow-y-auto">
+                        {showSuggestions === index && !item.description && savedItems.length > 0 && (
+                          <div className="absolute z-20 top-full left-0 right-0 mt-1 bg-[#111827] border border-gray-700/50 rounded-xl shadow-xl overflow-hidden max-h-48 overflow-y-auto">
                             {savedItems.length > 0 && (
                               <>
                                 <p className="px-3 py-1.5 text-[10px] font-semibold text-amber-500/80 uppercase tracking-wider">Your saved items</p>
@@ -2005,20 +1996,9 @@ function NewInvoiceForm() {
                                 ))}
                               </>
                             )}
-                            <p className="px-3 py-1.5 text-[10px] font-semibold text-gray-500 uppercase tracking-wider">Common items</p>
-                            {COMMON_ITEMS.map((ci) => (
-                              <button
-                                key={ci.label}
-                                type="button"
-                                onClick={() => {
-                                  updateLineItem(index, "description", ci.desc);
-                                  setShowSuggestions(null);
-                                }}
-                                className="w-full text-left px-3 py-2 text-sm text-gray-300 hover:bg-white/10 hover:text-white transition-colors"
-                              >
-                                {ci.desc}
-                              </button>
-                            ))}
+                            {savedItems.length === 0 && (
+                              <p className="px-3 py-2 text-xs text-gray-500">Save common items in Services to quick-add them here</p>
+                            )}
                           </div>
                         )}
                       </div>
