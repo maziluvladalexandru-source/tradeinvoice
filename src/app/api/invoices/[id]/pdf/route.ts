@@ -71,6 +71,7 @@ const translations: Record<string, Record<string, string>> = {
     balanceDue: "Balance Due",
     referenceInvoice: "Reference Invoice",
     reverseChargeNote: "VAT reverse-charged (BTW verlegd) — Article 44 EU VAT Directive",
+    serviceDateEqualsInvoiceDate: "Service date equals invoice date",
   },
   nl: {
     invoice: "Factuur",
@@ -105,6 +106,7 @@ const translations: Record<string, Record<string, string>> = {
     balanceDue: "Openstaand bedrag",
     referenceInvoice: "Referentiefactuur",
     reverseChargeNote: "BTW verlegd — Artikel 44 EU BTW-richtlijn",
+    serviceDateEqualsInvoiceDate: "Leveringsdatum is gelijk aan factuurdatum",
   },
   de: {
     invoice: "Rechnung",
@@ -139,6 +141,7 @@ const translations: Record<string, Record<string, string>> = {
     balanceDue: "Offener Betrag",
     referenceInvoice: "Referenzrechnung",
     reverseChargeNote: "Steuerschuldnerschaft des Leistungsempfängers — Artikel 44 EU-MwSt-Richtlinie",
+    serviceDateEqualsInvoiceDate: "Leistungsdatum entspricht Rechnungsdatum",
   },
 };
 

@@ -785,7 +785,7 @@ function NewInvoiceForm() {
   const [description, setDescription] = useState("");
   const [paymentTerms, setPaymentTerms] = useState(30); // days, -1 = custom
   const [dueDate, setDueDate] = useState(() => calculateDueDate(30));
-  const [serviceDate, setServiceDate] = useState("");
+  const [serviceDate, setServiceDate] = useState(() => new Date().toISOString().split("T")[0]);
   const [paymentNotes, setPaymentNotes] = useState("");
   const [notesToClient, setNotesToClient] = useState("");
   const [taxRate, setTaxRate] = useState(getCountryConfig("NL").vatRates[0].rate);
@@ -1021,7 +1021,7 @@ function NewInvoiceForm() {
         description,
         dueDate,
         taxRate,
-        serviceDate: serviceDate || null,
+        serviceDate: serviceDate || new Date().toISOString().split("T")[0],
         paymentNotes: paymentNotes || null,
         notesToClient: notesToClient || null,
         invoiceNumber: invoiceNumber || null,
@@ -1098,7 +1098,7 @@ function NewInvoiceForm() {
         description,
         dueDate,
         taxRate,
-        serviceDate: serviceDate || null,
+        serviceDate: serviceDate || new Date().toISOString().split("T")[0],
         paymentNotes: paymentNotes || null,
         notesToClient: notesToClient || null,
         invoiceNumber: invoiceNumber || null,
@@ -1159,7 +1159,7 @@ function NewInvoiceForm() {
   if (!clientId) missingFields.push("Client");
   if (!lineItems.some((i) => i.description && i.unitPrice > 0)) missingFields.push("Line items");
   if (!dueDate) missingFields.push("Due date");
-  if (invoiceCountry === "DE" && !serviceDate) missingFields.push("Service date (required for DE)");
+  // serviceDate is auto-filled with today if empty, so no validation needed
 
   return (
     <div className="min-h-screen bg-[#0a0f1e] pb-24 md:pb-0 premium-glow">
@@ -1251,6 +1251,8 @@ function NewInvoiceForm() {
                           setInvoiceCountry(c.countryCode);
                           setCurrency(c.defaultCurrency);
                           setTaxRate(c.vatRates[0].rate);
+                          const langMap: Record<string, string> = { NL: "nl", UK: "en", DE: "de", BE: "nl" };
+                          setLanguage(langMap[c.countryCode] || "en");
                         }}
                         className={`flex flex-col items-center gap-1 px-3 py-2.5 rounded-xl border text-center transition-all ${
                           invoiceCountry === c.countryCode
@@ -1865,20 +1867,20 @@ function NewInvoiceForm() {
                   <div>
                     <label className="block text-xs font-medium text-gray-400 mb-1">
                       {getCountryConfig(invoiceCountry).serviceDateLabel}
-                      {invoiceCountry === "DE" && <span className="text-red-500"> *</span>}
+                      <span className="text-red-500"> *</span>
                     </label>
                     <input
                       type="date"
                       value={serviceDate}
                       onChange={(e) => setServiceDate(e.target.value)}
                       className={`w-full px-3 py-2.5 rounded-xl border text-sm focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 transition-all outline-none bg-white/5 text-white appearance-none [color-scheme:dark] [&::-webkit-calendar-picker-indicator]:opacity-70 [&::-webkit-calendar-picker-indicator]:invert ${
-                        invoiceCountry === "DE" && !serviceDate ? "border-amber-500/50" : "border-white/10"
+                        !serviceDate ? "border-amber-500/50" : "border-white/10"
                       }`}
                       style={{ minHeight: "44px" }}
                     />
-                    {invoiceCountry === "DE" && !serviceDate && (
+                    {!serviceDate && (
                       <p className="text-xs text-amber-400 mt-1">
-                        Required for German invoices (Leistungsdatum)
+                        Required - will default to invoice date if empty
                       </p>
                     )}
                   </div>

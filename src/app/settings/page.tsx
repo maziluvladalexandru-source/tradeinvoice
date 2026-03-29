@@ -657,13 +657,13 @@ function SettingsContent() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-400 mb-1">
-                  Business Registration Number (KVK)
+                  Business Registration Number (KVK){!kvkNumber && <span className="text-red-500"> *</span>}
                 </label>
                 <input
                   value={kvkNumber}
                   onChange={(e) => setKvkNumber(e.target.value)}
                   placeholder="12345678"
-                  className="w-full px-4 py-3 rounded-xl border border-white/10 text-lg focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 outline-none bg-white/5 text-white placeholder-gray-500 transition-all"
+                  className={`w-full px-4 py-3 rounded-xl border text-lg focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 outline-none bg-white/5 text-white placeholder-gray-500 transition-all ${!kvkNumber ? "border-red-500/50" : "border-white/10"}`}
                 />
                 <p className="text-xs text-gray-500 mt-1">
                   KVK (NL), Companies House (UK), Handelsregister (DE)
@@ -672,13 +672,13 @@ function SettingsContent() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-400 mb-1">
-                  Tax ID / VAT Number (BTW)
+                  Tax ID / VAT Number (BTW){!vatNumber && <span className="text-red-500"> *</span>}
                 </label>
                 <input
                   value={vatNumber}
                   onChange={(e) => setVatNumber(e.target.value)}
                   placeholder="NL123456789B01"
-                  className="w-full px-4 py-3 rounded-xl border border-white/10 text-lg focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 outline-none bg-white/5 text-white placeholder-gray-500 transition-all"
+                  className={`w-full px-4 py-3 rounded-xl border text-lg focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 outline-none bg-white/5 text-white placeholder-gray-500 transition-all ${!vatNumber ? "border-red-500/50" : "border-white/10"}`}
                 />
                 <p className="text-xs text-gray-500 mt-1">
                   BTW-id (NL), VAT number (UK), USt-IdNr (DE)

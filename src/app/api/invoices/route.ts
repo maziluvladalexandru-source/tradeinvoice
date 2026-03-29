@@ -151,7 +151,7 @@ export async function POST(req: NextRequest) {
         description: description ? sanitizeString(description, 2000) : null,
         paymentNotes: paymentNotes ? sanitizeString(paymentNotes, 2000) : null,
         notesToClient: notesToClient ? sanitizeString(notesToClient, 2000) : null,
-        serviceDate: serviceDate ? new Date(serviceDate) : null,
+        serviceDate: serviceDate ? new Date(serviceDate) : new Date(),
         type: invoiceType,
         currency: validatedCurrency,
         dueDate: new Date(dueDate),
