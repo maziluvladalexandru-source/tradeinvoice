@@ -310,60 +310,63 @@ export default function TimeTrackingPage() {
         {/* Timer */}
         <div className={`relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl border p-6 mb-8 transition-all duration-300 ${timerRunning ? "border-amber-500/30 shadow-xl shadow-amber-500/20" : "border-gray-700/50"}`}>
           {timerRunning && <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 to-transparent pointer-events-none" />}
-          <div className="relative flex flex-col md:flex-row items-center gap-4">
-            <div className="flex-1 w-full">
-              <input
-                type="text"
-                placeholder="What are you working on?"
-                value={timerDescription}
-                onChange={(e) => setTimerDescription(e.target.value)}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20 transition-all"
-              />
-            </div>
-            <div className="flex items-center gap-3">
+          <div className="relative flex flex-col gap-3">
+            {/* Row 1: Description input */}
+            <input
+              type="text"
+              placeholder="What are you working on?"
+              value={timerDescription}
+              onChange={(e) => setTimerDescription(e.target.value)}
+              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20 transition-all"
+            />
+            {/* Row 2: Client dropdown (full width on mobile, inline on md+) */}
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
               <select
                 value={timerClientId}
                 onChange={(e) => {
                   const client = clients.find(c => c.id === e.target.value);
                   setTimerClientId(e.target.value, client?.name || "");
                 }}
-                className="bg-white/5 border border-white/10 rounded-xl px-3 py-3 text-gray-300 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20 transition-all"
+                className="w-full sm:w-auto bg-white/5 border border-white/10 rounded-xl px-3 py-3 text-gray-300 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20 transition-all"
               >
                 <option value="">No client</option>
                 {clients.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
               </select>
-              <div className="flex items-center gap-1">
-                <span className="text-gray-500 text-sm">&euro;</span>
-                <input
-                  type="number"
-                  value={timerRate}
-                  onChange={(e) => setTimerRate(e.target.value)}
-                  className="w-20 bg-white/5 border border-white/10 rounded-xl px-3 py-3 text-white focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20 transition-all"
-                  min="0"
-                  step="0.01"
-                />
-                <span className="text-gray-500 text-sm">/hr</span>
+              {/* Row 3 on mobile: Rate, Timer, Start/Stop */}
+              <div className="flex items-center gap-3">
+                <div className="flex items-center gap-1">
+                  <span className="text-gray-500 text-sm">&euro;</span>
+                  <input
+                    type="number"
+                    value={timerRate}
+                    onChange={(e) => setTimerRate(e.target.value)}
+                    className="w-20 bg-white/5 border border-white/10 rounded-xl px-3 py-3 text-white focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20 transition-all"
+                    min="0"
+                    step="0.01"
+                  />
+                  <span className="text-gray-500 text-sm">/hr</span>
+                </div>
+                <div className={`text-2xl font-mono text-white min-w-[100px] text-center ${timerRunning ? "animate-pulse" : ""}`}>
+                  {formatTimer(timerElapsed)}
+                </div>
+                {!timerRunning ? (
+                  <button
+                    onClick={handleStartTimer}
+                    className="bg-emerald-500 hover:bg-emerald-400 text-white px-4 sm:px-6 py-3 rounded-xl font-semibold transition-all flex items-center gap-2 shrink-0"
+                  >
+                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
+                    Start
+                  </button>
+                ) : (
+                  <button
+                    onClick={handleStopTimer}
+                    className="bg-red-500 hover:bg-red-400 text-white px-4 sm:px-6 py-3 rounded-xl font-semibold transition-all flex items-center gap-2 shrink-0"
+                  >
+                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="1" /></svg>
+                    Stop
+                  </button>
+                )}
               </div>
-              <div className={`text-2xl font-mono text-white min-w-[100px] text-center ${timerRunning ? "animate-pulse" : ""}`}>
-                {formatTimer(timerElapsed)}
-              </div>
-              {!timerRunning ? (
-                <button
-                  onClick={handleStartTimer}
-                  className="bg-emerald-500 hover:bg-emerald-400 text-white px-6 py-3 rounded-xl font-semibold transition-all flex items-center gap-2"
-                >
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
-                  Start
-                </button>
-              ) : (
-                <button
-                  onClick={handleStopTimer}
-                  className="bg-red-500 hover:bg-red-400 text-white px-6 py-3 rounded-xl font-semibold transition-all flex items-center gap-2"
-                >
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="1" /></svg>
-                  Stop
-                </button>
-              )}
             </div>
           </div>
         </div>

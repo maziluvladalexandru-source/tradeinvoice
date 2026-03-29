@@ -136,7 +136,7 @@ export default function ReportsPage() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <div className="min-h-screen bg-[#0a0f1e] pb-20 md:pb-0 premium-glow">
+    <div className="min-h-screen bg-[#0a0f1e] pb-24 md:pb-0 premium-glow">
       <Navbar />
       <div className="max-w-6xl mx-auto px-4 py-8">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">

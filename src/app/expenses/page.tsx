@@ -372,7 +372,7 @@ export default function ExpensesPage() {
     CATEGORIES.find((c) => c.value === value)?.label || value;
 
   return (
-    <div className="min-h-screen bg-[#0a0f1e] pb-20 md:pb-0 premium-glow">
+    <div className="min-h-screen bg-[#0a0f1e] pb-24 md:pb-0 premium-glow">
       <Navbar />
       <div className="max-w-6xl mx-auto px-4 py-8">
         {/* Header */}

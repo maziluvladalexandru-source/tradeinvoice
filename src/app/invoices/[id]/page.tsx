@@ -229,7 +229,7 @@ export default function InvoiceDetailPage() {
   ].filter((e) => e.always || e.date);
 
   return (
-    <div className="min-h-screen bg-[#0a0f1e] pb-20 md:pb-0 premium-glow">
+    <div className="min-h-screen bg-[#0a0f1e] pb-24 md:pb-0 premium-glow">
       <Navbar />
       <div className="max-w-4xl mx-auto px-4 py-10">
         <Link
