@@ -195,8 +195,59 @@ export default function Home() {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   }, []);
 
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: "Do I need accounting software to use TradeInvoice?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Nope. TradeInvoice works on its own. You don't need Xero, QuickBooks, or anything else. Just create an invoice, send it, and get paid.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Is my data safe?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Yes. All data is encrypted and payments go through Stripe. We never see or store any card details.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Can I cancel anytime?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Yes. No contracts, no cancellation fees. Downgrade to free or cancel from your settings whenever you want.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Do my clients need to sign up to pay?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "No. They get an email with a link. They click it, see the invoice, and pay. No account needed.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "What happens after my 20 free invoices?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "You can upgrade to Pro for \u20ac15/month for unlimited invoices. Or just wait. Your free plan resets every month, 20 fresh invoices, no cost, no expiry.",
+        },
+      },
+    ],
+  };
+
   return (
     <div className="min-h-screen overflow-x-hidden">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
       {/* ═══════════════ HEADER ═══════════════ */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-[#0f172a]/80 backdrop-blur-md border-b border-white/5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
@@ -768,6 +819,9 @@ export default function Home() {
               <p className="text-gray-600 text-sm">Simple invoicing for tradespeople</p>
             </div>
             <div className="flex items-center gap-4 sm:gap-6 flex-wrap justify-center text-sm">
+              <Link href="/about" className="text-gray-500 hover:text-gray-300 transition-colors">
+                About
+              </Link>
               <Link href="/blog" className="text-gray-500 hover:text-gray-300 transition-colors">
                 Blog
               </Link>

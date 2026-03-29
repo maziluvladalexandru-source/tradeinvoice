@@ -9,6 +9,7 @@ import GlobalTimerBar from "@/components/GlobalTimerBar";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://tradeinvoice.app"),
   title: "TradeInvoice - Simple Invoicing for Tradespeople",
   description:
     "Create professional invoices in 60 seconds. Auto payment reminders. No per-user fees. Built for plumbers, electricians, builders and contractors.",
@@ -26,6 +27,15 @@ export const metadata: Metadata = {
     "ZZP invoicing",
   ],
   authors: [{ name: "TradeInvoice" }],
+  alternates: {
+    canonical: "/",
+    languages: {
+      en: "/",
+      nl: "/nl",
+      de: "/de",
+      "x-default": "/",
+    },
+  },
   openGraph: {
     title: "TradeInvoice - Simple Invoicing for Tradespeople",
     description:

@@ -6,6 +6,9 @@ export const metadata: Metadata = {
   title: "Blog - TradeInvoice | Invoicing Tips for Dutch Tradespeople",
   description:
     "Practical guides on invoicing, BTW/VAT, payment collection, and business tips for ZZP'ers and tradespeople in the Netherlands.",
+  alternates: {
+    canonical: "/blog",
+  },
   openGraph: {
     title: "Blog - TradeInvoice",
     description:

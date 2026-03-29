@@ -4,6 +4,9 @@ export const metadata: Metadata = {
   title: "Free Invoice Tools - BTW Calculator, Invoice Number Generator | TradeInvoice",
   description:
     "Free online BTW/VAT calculator for Netherlands, UK, Germany & Belgium. Invoice number generator and payment due date calculator. No sign-up required.",
+  alternates: {
+    canonical: "/tools",
+  },
   keywords: [
     "btw calculator",
     "vat calculator",

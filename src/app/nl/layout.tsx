@@ -31,6 +31,7 @@ export const metadata: Metadata = {
       en: "https://tradeinvoice.app",
       nl: "https://tradeinvoice.app/nl",
       de: "https://tradeinvoice.app/de",
+      "x-default": "https://tradeinvoice.app",
     },
   },
 };

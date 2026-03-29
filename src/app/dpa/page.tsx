@@ -1,4 +1,14 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Data Processing Agreement (DPA) - TradeInvoice",
+  description:
+    "Data Processing Agreement for TradeInvoice. Details on how we process personal data on your behalf, GDPR compliance, and data security measures.",
+  alternates: {
+    canonical: "/dpa",
+  },
+};
 
 export default function DataProcessingAgreement() {
   return (

@@ -1,4 +1,14 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Privacy Policy - TradeInvoice",
+  description:
+    "Privacy Policy for TradeInvoice. Learn how we collect, use, and protect your data. GDPR compliant. Data processed in the EU.",
+  alternates: {
+    canonical: "/privacy",
+  },
+};
 
 export default function PrivacyPolicy() {
   return (

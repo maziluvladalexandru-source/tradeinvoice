@@ -19,6 +19,9 @@ export function generateMetadata({ params }: Props): Metadata {
     title: `${article.title} - TradeInvoice`,
     description: article.metaDescription,
     keywords: [article.keyword, "invoicing", "zzp", "netherlands", "tradeinvoice"],
+    alternates: {
+      canonical: `/blog/${article.slug}`,
+    },
     openGraph: {
       title: article.title,
       description: article.metaDescription,
@@ -224,18 +227,17 @@ export default function ArticlePage({ params }: Props) {
     datePublished: article.date,
     dateModified: article.date,
     author: {
-      "@type": "Organization",
-      name: "TradeInvoice",
-      url: "https://tradeinvoice.nl",
+      "@type": "Person",
+      name: "Vlad Mazilu",
     },
     publisher: {
       "@type": "Organization",
       name: "TradeInvoice",
-      url: "https://tradeinvoice.nl",
+      url: "https://tradeinvoice.app",
     },
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": `https://tradeinvoice.nl/blog/${article.slug}`,
+      "@id": `https://tradeinvoice.app/blog/${article.slug}`,
     },
   };
 
@@ -280,6 +282,15 @@ export default function ArticlePage({ params }: Props) {
           <h1 className="text-3xl md:text-4xl font-extrabold leading-tight text-white">
             {article.title}
           </h1>
+          <div className="flex items-center gap-3 mt-6">
+            <div className="w-10 h-10 rounded-full bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400 text-sm font-bold shrink-0">
+              VM
+            </div>
+            <div>
+              <p className="text-white text-sm font-medium">Vlad Mazilu</p>
+              <p className="text-gray-500 text-xs">Founder of TradeInvoice. Helping tradespeople get paid faster.</p>
+            </div>
+          </div>
         </header>
 
         <div

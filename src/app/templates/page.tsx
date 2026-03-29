@@ -6,6 +6,9 @@ export const metadata: Metadata = {
     "Free Invoice Template for Tradespeople - Download or Create Online | TradeInvoice",
   description:
     "Download a free professional invoice template for tradespeople in the Netherlands. Includes KVK, BTW, IBAN fields. Or create your own invoice online in 60 seconds.",
+  alternates: {
+    canonical: "/templates",
+  },
   keywords: [
     "free invoice template",
     "free invoice template Netherlands",

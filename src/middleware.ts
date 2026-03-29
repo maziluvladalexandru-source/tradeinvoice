@@ -46,7 +46,7 @@ export function middleware(req: NextRequest) {
   }
 
   // Allow legal/public pages
-  if (["/terms", "/privacy", "/dpa", "/contact"].includes(pathname)) {
+  if (["/terms", "/privacy", "/dpa", "/contact", "/about"].includes(pathname)) {
     return NextResponse.next();
   }
 

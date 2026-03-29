@@ -1,4 +1,14 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Terms of Service - TradeInvoice",
+  description:
+    "Terms of Service for TradeInvoice. Read our terms covering subscriptions, usage, invoicing features, and your rights as a user.",
+  alternates: {
+    canonical: "/terms",
+  },
+};
 
 export default function TermsOfService() {
   return (
