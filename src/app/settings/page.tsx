@@ -517,8 +517,8 @@ function SettingsContent() {
                           onChange={(e) => setInviteRole(e.target.value)}
                           className="bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-amber-500/50 focus:ring-2 focus:ring-amber-500/20 transition-all"
                         >
-                          <option value="member">Member - can create invoices, view clients, log time/expenses</option>
-                          <option value="admin">Admin - same as member plus team management</option>
+                          <option className="bg-[#111827] text-white" value="member">Member - can create invoices, view clients, log time/expenses</option>
+                          <option className="bg-[#111827] text-white" value="admin">Admin - same as member plus team management</option>
                         </select>
                       </div>
                       <div className="flex gap-2">
@@ -879,11 +879,11 @@ function SettingsContent() {
                   onChange={(e) => setDefaultPaymentTerms(e.target.value)}
                   className="w-full px-4 py-3 rounded-xl border border-white/10 text-lg focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 outline-none bg-white/5 text-white transition-all"
                 >
-                  <option value="receipt">Due on Receipt</option>
-                  <option value="net14">Net 14</option>
-                  <option value="net30">Net 30</option>
-                  <option value="net45">Net 45</option>
-                  <option value="net60">Net 60</option>
+                  <option className="bg-[#111827] text-white" value="receipt">Due on Receipt</option>
+                  <option className="bg-[#111827] text-white" value="net14">Net 14</option>
+                  <option className="bg-[#111827] text-white" value="net30">Net 30</option>
+                  <option className="bg-[#111827] text-white" value="net45">Net 45</option>
+                  <option className="bg-[#111827] text-white" value="net60">Net 60</option>
                 </select>
                 <p className="text-xs text-gray-500 mt-1">Applied to new invoices by default</p>
               </div>
@@ -918,8 +918,8 @@ function SettingsContent() {
                   onChange={(e) => setDefaultCurrency(e.target.value)}
                   className="w-full px-4 py-3 rounded-xl border border-white/10 text-lg focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 outline-none bg-white/5 text-white transition-all"
                 >
-                  <option value="EUR">EUR</option>
-                  <option value="GBP">GBP</option>
+                  <option className="bg-[#111827] text-white" value="EUR">EUR</option>
+                  <option className="bg-[#111827] text-white" value="GBP">GBP</option>
                 </select>
               </div>
 
@@ -932,10 +932,10 @@ function SettingsContent() {
                   onChange={(e) => setDefaultCountry(e.target.value)}
                   className="w-full px-4 py-3 rounded-xl border border-white/10 text-lg focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 outline-none bg-white/5 text-white transition-all"
                 >
-                  <option value="NL">Netherlands</option>
-                  <option value="UK">United Kingdom</option>
-                  <option value="DE">Germany</option>
-                  <option value="BE">Belgium</option>
+                  <option className="bg-[#111827] text-white" value="NL">Netherlands</option>
+                  <option className="bg-[#111827] text-white" value="UK">United Kingdom</option>
+                  <option className="bg-[#111827] text-white" value="DE">Germany</option>
+                  <option className="bg-[#111827] text-white" value="BE">Belgium</option>
                 </select>
               </div>
             </div>
@@ -950,9 +950,9 @@ function SettingsContent() {
                   onChange={(e) => setDefaultLanguage(e.target.value)}
                   className="w-full px-4 py-3 rounded-xl border border-white/10 text-lg focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 outline-none bg-white/5 text-white transition-all"
                 >
-                  <option value="en">English</option>
-                  <option value="nl">Dutch</option>
-                  <option value="de">German</option>
+                  <option className="bg-[#111827] text-white" value="en">English</option>
+                  <option className="bg-[#111827] text-white" value="nl">Dutch</option>
+                  <option className="bg-[#111827] text-white" value="de">German</option>
                 </select>
               </div>
 
