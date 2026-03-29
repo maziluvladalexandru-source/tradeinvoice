@@ -310,64 +310,62 @@ export default function TimeTrackingPage() {
         {/* Timer */}
         <div className={`relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl border p-6 mb-8 transition-all duration-300 ${timerRunning ? "border-amber-500/30 shadow-xl shadow-amber-500/20" : "border-gray-700/50"}`}>
           {timerRunning && <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 to-transparent pointer-events-none" />}
-          <div className="relative flex flex-col gap-3">
-            {/* Row 1: Description input */}
+          <div className="relative flex flex-col md:flex-row md:items-center gap-3">
+            {/* Row 1: Description input (full width on mobile, flex-1 on desktop) */}
             <input
               type="text"
               placeholder="What are you working on?"
               value={timerDescription}
               onChange={(e) => setTimerDescription(e.target.value)}
-              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20 transition-all"
+              className="w-full md:flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20 transition-all"
             />
-            {/* Row 2: Client dropdown (full width on mobile, inline on md+) */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-              <select
-                value={timerClientId}
-                onChange={(e) => {
-                  const client = clients.find(c => c.id === e.target.value);
-                  setTimerClientId(e.target.value, client?.name || "");
-                }}
-                className="w-full sm:w-auto bg-white/5 border border-white/10 rounded-xl px-3 py-3 text-gray-300 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20 transition-all"
-              >
-                <option value="">No client</option>
-                {clients.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
-              </select>
-              {/* Row 3 on mobile: Rate, Timer, Start/Stop */}
-              <div className="flex items-center gap-3">
-                <div className="flex items-center gap-1">
-                  <span className="text-gray-500 text-sm">&euro;</span>
-                  <input
-                    type="number"
-                    value={timerRate}
-                    onChange={(e) => setTimerRate(e.target.value)}
-                    className="w-20 bg-white/5 border border-white/10 rounded-xl px-3 py-3 text-white focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20 transition-all"
-                    min="0"
-                    step="0.01"
-                  />
-                  <span className="text-gray-500 text-sm">/hr</span>
-                </div>
-                <div className={`text-2xl font-mono text-white min-w-[100px] text-center ${timerRunning ? "animate-pulse" : ""}`}>
-                  {formatTimer(timerElapsed)}
-                </div>
-                {!timerRunning ? (
-                  <button
-                    onClick={handleStartTimer}
-                    className="bg-emerald-500 hover:bg-emerald-400 text-white px-4 sm:px-6 py-3 rounded-xl font-semibold transition-all flex items-center gap-2 shrink-0"
-                  >
-                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
-                    Start
-                  </button>
-                ) : (
-                  <button
-                    onClick={handleStopTimer}
-                    className="bg-red-500 hover:bg-red-400 text-white px-4 sm:px-6 py-3 rounded-xl font-semibold transition-all flex items-center gap-2 shrink-0"
-                  >
-                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="1" /></svg>
-                    Stop
-                  </button>
-                )}
-              </div>
+            {/* Row 2: Client dropdown (full width on mobile) */}
+            <select
+              value={timerClientId}
+              onChange={(e) => {
+                const client = clients.find(c => c.id === e.target.value);
+                setTimerClientId(e.target.value, client?.name || "");
+              }}
+              className="w-full md:w-auto bg-white/5 border border-white/10 rounded-xl px-3 py-3 text-gray-300 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20 transition-all"
+            >
+              <option value="">No client</option>
+              {clients.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
+            </select>
+            {/* Row 3: Rate input (full width on mobile) */}
+            <div className="flex items-center gap-1 w-full md:w-auto">
+              <span className="text-gray-500 text-sm">&euro;</span>
+              <input
+                type="number"
+                value={timerRate}
+                onChange={(e) => setTimerRate(e.target.value)}
+                className="w-full md:w-20 bg-white/5 border border-white/10 rounded-xl px-3 py-3 text-white focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20 transition-all"
+                min="0"
+                step="0.01"
+              />
+              <span className="text-gray-500 text-sm">/hr</span>
             </div>
+            {/* Row 4: Timer display (centered large on mobile, inline on desktop) */}
+            <div className={`text-2xl font-mono text-white text-center md:min-w-[100px] ${timerRunning ? "animate-pulse" : ""}`}>
+              {formatTimer(timerElapsed)}
+            </div>
+            {/* Row 5: Start/Stop button (full width on mobile) */}
+            {!timerRunning ? (
+              <button
+                onClick={handleStartTimer}
+                className="w-full md:w-auto bg-emerald-500 hover:bg-emerald-400 text-white px-6 py-3 rounded-xl font-semibold transition-all flex items-center justify-center gap-2 shrink-0"
+              >
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
+                Start
+              </button>
+            ) : (
+              <button
+                onClick={handleStopTimer}
+                className="w-full md:w-auto bg-red-500 hover:bg-red-400 text-white px-6 py-3 rounded-xl font-semibold transition-all flex items-center justify-center gap-2 shrink-0"
+              >
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="1" /></svg>
+                Stop
+              </button>
+            )}
           </div>
         </div>
 
@@ -391,32 +389,32 @@ export default function TimeTrackingPage() {
         </div>
 
         {/* Filters */}
-        <div className="flex flex-wrap items-center gap-3 mb-8">
+        <div className="flex flex-col md:flex-row md:flex-wrap md:items-center gap-3 mb-8">
           <select
             value={filterClient}
             onChange={(e) => setFilterClient(e.target.value)}
-            className="bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-gray-300 text-sm focus:outline-none focus:border-amber-500/50"
+            className="w-full md:w-auto bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-gray-300 text-sm focus:outline-none focus:border-amber-500/50"
           >
             <option value="">All Clients</option>
             {clients.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
           </select>
-          <div className="flex rounded-xl border border-white/10 overflow-hidden">
+          <div className="w-full md:w-auto flex bg-[#111827] rounded-xl p-1">
             {(["all", "week", "month"] as FilterRange[]).map((r) => (
               <button
                 key={r}
                 onClick={() => setFilterRange(r)}
-                className={`px-4 py-2 text-sm font-medium transition-colors ${filterRange === r ? "bg-amber-500/15 text-amber-400" : "text-gray-400 hover:bg-white/10/60 hover:text-white"}`}
+                className={`flex-1 md:flex-none px-4 py-2 text-sm font-medium rounded-lg transition-colors ${filterRange === r ? "bg-amber-500/20 text-amber-400" : "text-gray-400 hover:text-white"}`}
               >
                 {r === "all" ? "All Time" : r === "week" ? "This Week" : "This Month"}
               </button>
             ))}
           </div>
-          <div className="flex rounded-xl border border-white/10 overflow-hidden">
+          <div className="w-full md:w-auto flex bg-[#111827] rounded-xl p-1">
             {(["all", "billable", "non-billable"] as FilterBillable[]).map((b) => (
               <button
                 key={b}
                 onClick={() => setFilterBillable(b)}
-                className={`px-4 py-2 text-sm font-medium transition-colors ${filterBillable === b ? "bg-amber-500/15 text-amber-400" : "text-gray-400 hover:bg-white/10/60 hover:text-white"}`}
+                className={`flex-1 md:flex-none px-4 py-2 text-sm font-medium rounded-lg transition-colors ${filterBillable === b ? "bg-amber-500/20 text-amber-400" : "text-gray-400 hover:text-white"}`}
               >
                 {b === "all" ? "All" : b === "billable" ? "Billable" : "Non-billable"}
               </button>

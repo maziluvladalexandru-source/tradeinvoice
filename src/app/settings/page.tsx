@@ -324,31 +324,31 @@ function SettingsContent() {
             Subscription
             <div className="flex-1 h-px bg-gradient-to-r from-amber-500/20 to-transparent ml-2" />
           </h2>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-lg font-medium text-white">
+          <div>
+            <div className="flex items-center justify-between mb-1">
+              <p className="text-lg font-bold text-white">
                 {user?.plan === "pro" ? "Pro Plan" : "Free Plan"}
               </p>
-              <p className="text-gray-400">
-                {user?.plan === "pro"
-                  ? "Unlimited invoices per month"
-                  : `${user?.invoiceCount || 0}/20 invoices used this month`}
-              </p>
+              {user?.plan === "pro" && (
+                <span className="bg-emerald-500/20 text-emerald-400 text-xs px-3 py-1 rounded-full">
+                  Active
+                </span>
+              )}
+              {user?.plan !== "pro" && (
+                <button
+                  onClick={handleUpgrade}
+                  disabled={upgrading}
+                  className="bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-gray-950 px-6 py-3 rounded-xl font-semibold text-lg shadow-lg shadow-amber-500/20 transition-all disabled:opacity-50"
+                >
+                  {upgrading ? "Loading..." : "Upgrade to Pro - \u20AC15/mo"}
+                </button>
+              )}
             </div>
-            {user?.plan !== "pro" && (
-              <button
-                onClick={handleUpgrade}
-                disabled={upgrading}
-                className="bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-gray-950 px-6 py-3 rounded-xl font-semibold text-lg shadow-lg shadow-amber-500/20 transition-all disabled:opacity-50"
-              >
-                {upgrading ? "Loading..." : "Upgrade to Pro - \u20AC15/mo"}
-              </button>
-            )}
-            {user?.plan === "pro" && (
-              <span className="bg-emerald-500/10 text-emerald-400 px-4 py-2 rounded-full font-medium border border-emerald-500/20">
-                Active
-              </span>
-            )}
+            <p className="text-sm text-gray-400">
+              {user?.plan === "pro"
+                ? "Unlimited invoices per month"
+                : `${user?.invoiceCount || 0}/20 invoices used this month`}
+            </p>
           </div>
         </div>
 

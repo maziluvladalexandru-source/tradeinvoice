@@ -2,11 +2,12 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
 
-const tabs = [
+const mainTabs = [
   {
     href: "/dashboard",
-    label: "Dashboard",
+    label: "Home",
     icon: (
       <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1h-2z" />
@@ -40,49 +41,103 @@ const tabs = [
       </svg>
     ),
   },
-  {
-    href: "/settings",
-    label: "Settings",
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-      </svg>
-    ),
-  },
+];
+
+const moreItems = [
+  { href: "/expenses", label: "Expenses", icon: "💰" },
+  { href: "/reports", label: "Reports", icon: "📊" },
+  { href: "/services", label: "Services", icon: "🔧" },
+  { href: "/settings", label: "Settings", icon: "⚙️" },
 ];
 
 export default function BottomNav() {
   const pathname = usePathname();
+  const [showMore, setShowMore] = useState(false);
+
+  const isMoreActive = moreItems.some(
+    (item) => pathname === item.href || pathname.startsWith(item.href + "/")
+  );
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-[#0a0f1e] backdrop-blur-xl border-t border-white/10 pb-[env(safe-area-inset-bottom)]">
-      {/* Subtle amber gradient line at the top */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-amber-500/30 to-transparent" />
-      <div className="flex items-center justify-around h-16">
-        {tabs.map((tab) => {
-          const isActive =
-            pathname === tab.href ||
-            (tab.href !== "/dashboard" && pathname.startsWith(tab.href));
-          return (
-            <Link
-              key={tab.href}
-              href={tab.href}
-              className={`relative flex flex-col items-center justify-center gap-0.5 w-full h-full transition-all duration-200 ${
-                isActive
-                  ? "text-amber-400"
-                  : "text-gray-500 active:text-gray-300"
-              }`}
-            >
-              {isActive && (
-                <span className="absolute top-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-amber-400 shadow-[0_0_6px_rgba(251,191,36,0.5)]" />
-              )}
-              {tab.icon}
-              <span className="text-[10px] font-medium">{tab.label}</span>
-            </Link>
-          );
-        })}
-      </div>
-    </nav>
+    <>
+      {/* More menu overlay */}
+      {showMore && (
+        <div
+          className="fixed inset-0 z-40 bg-black/50 md:hidden"
+          onClick={() => setShowMore(false)}
+        />
+      )}
+
+      {/* More menu slide-up */}
+      {showMore && (
+        <div className="fixed bottom-16 left-0 right-0 z-50 md:hidden pb-[env(safe-area-inset-bottom)]">
+          <div className="mx-3 mb-2 bg-[#111827] border border-gray-700/50 rounded-2xl overflow-hidden shadow-2xl shadow-black/50">
+            {moreItems.map((item) => {
+              const isActive =
+                pathname === item.href || pathname.startsWith(item.href + "/");
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setShowMore(false)}
+                  className={`flex items-center gap-3 px-5 py-3.5 border-b border-gray-700/30 last:border-0 transition-colors ${
+                    isActive
+                      ? "text-amber-400 bg-amber-500/10"
+                      : "text-gray-300 active:bg-white/5"
+                  }`}
+                >
+                  <span className="text-lg">{item.icon}</span>
+                  <span className="font-medium">{item.label}</span>
+                  {isActive && (
+                    <span className="ml-auto w-2 h-2 rounded-full bg-amber-400" />
+                  )}
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* Bottom nav bar */}
+      <nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-[#0a0f1e] border-t border-gray-700/50 pb-[env(safe-area-inset-bottom)]">
+        <div className="flex items-center justify-around h-16">
+          {mainTabs.map((tab) => {
+            const isActive =
+              pathname === tab.href ||
+              (tab.href !== "/dashboard" && pathname.startsWith(tab.href));
+            return (
+              <Link
+                key={tab.href}
+                href={tab.href}
+                onClick={() => setShowMore(false)}
+                className={`flex flex-col items-center justify-center gap-0.5 w-full h-full transition-colors ${
+                  isActive
+                    ? "text-amber-500"
+                    : "text-gray-500 active:text-gray-300"
+                }`}
+              >
+                {tab.icon}
+                <span className="text-[10px] font-medium">{tab.label}</span>
+              </Link>
+            );
+          })}
+
+          {/* More button */}
+          <button
+            onClick={() => setShowMore(!showMore)}
+            className={`flex flex-col items-center justify-center gap-0.5 w-full h-full transition-colors ${
+              isMoreActive || showMore
+                ? "text-amber-500"
+                : "text-gray-500 active:text-gray-300"
+            }`}
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
+            </svg>
+            <span className="text-[10px] font-medium">More</span>
+          </button>
+        </div>
+      </nav>
+    </>
   );
 }
