@@ -28,6 +28,12 @@ interface UserProfile {
   bankDetails: string | null;
   logoUrl: string | null;
   plan: string;
+  defaultPaymentTerms: string | null;
+  defaultTaxRate: number | null;
+  defaultCurrency: string | null;
+  defaultCountry: string | null;
+  defaultLanguage: string | null;
+  invoiceNumberPrefix: string | null;
 }
 
 interface LineItem {
@@ -871,7 +877,25 @@ function NewInvoiceForm() {
 
     fetch("/api/user")
       .then((r) => { if (!r.ok) throw new Error(); return r.json(); })
-      .then((data) => setUser(data))
+      .then((data: UserProfile) => {
+        setUser(data);
+        // Apply user defaults for new invoices (not edit mode)
+        if (!editInvoiceId) {
+          if (data.defaultCurrency) setCurrency(data.defaultCurrency);
+          if (data.defaultCountry) {
+            setInvoiceCountry(data.defaultCountry);
+            setTaxRate(getCountryConfig(data.defaultCountry).vatRates[0].rate);
+          }
+          if (data.defaultTaxRate != null) setTaxRate(data.defaultTaxRate);
+          if (data.defaultLanguage) setLanguage(data.defaultLanguage);
+          if (data.defaultPaymentTerms) {
+            const termsMap: Record<string, number> = { receipt: 0, net14: 14, net30: 30, net45: 45, net60: 60 };
+            const days = termsMap[data.defaultPaymentTerms] ?? 30;
+            setPaymentTerms(days);
+            setDueDate(calculateDueDate(days));
+          }
+        }
+      })
       .catch(() => {});
 
     fetch("/api/invoices/next-number")
@@ -929,12 +953,17 @@ function NewInvoiceForm() {
       .catch(() => { router.push("/invoices"); });
   }, [editInvoiceId, router]);
 
-  // Set language based on initial country on mount
+  // Language is set from user defaults in the user fetch above
+  // When country changes manually, update language to match
+  const userLoaded = useRef(false);
   useEffect(() => {
+    if (!userLoaded.current) {
+      userLoaded.current = true;
+      return; // skip initial render, user fetch handles defaults
+    }
     const langMap: Record<string, string> = { NL: "nl", UK: "en", DE: "de", BE: "nl" };
     setLanguage(langMap[invoiceCountry] || "en");
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [invoiceCountry]);
 
   // Close suggestions on outside click
   useEffect(() => {

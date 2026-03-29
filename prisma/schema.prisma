@@ -19,6 +19,19 @@ model User {
   bankDetails   String?   // IBAN + bank name for invoices
   logoUrl       String?   // base64 encoded logo image
   plan          String    @default("free") // free | pro
+
+  // Invoice defaults
+  defaultPaymentTerms String?  @default("net30")
+  defaultTaxRate       Float?  @default(21)
+  defaultCurrency      String? @default("EUR")
+  defaultCountry       String? @default("NL")
+  defaultLanguage      String? @default("en")
+  invoiceNumberPrefix  String? @default("INV")
+
+  // Notification preferences
+  notifyOnView    Boolean? @default(true)
+  notifyOnPay     Boolean? @default(true)
+  notifyReminders Boolean? @default(false)
   stripeCustomerId String?
   stripeSubscriptionId String?
   invoiceCount  Int       @default(0) // monthly invoice count

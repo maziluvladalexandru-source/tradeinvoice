@@ -28,6 +28,15 @@ interface User {
   logoUrl: string | null;
   plan: string;
   invoiceCount: number;
+  defaultPaymentTerms: string | null;
+  defaultTaxRate: number | null;
+  defaultCurrency: string | null;
+  defaultCountry: string | null;
+  defaultLanguage: string | null;
+  invoiceNumberPrefix: string | null;
+  notifyOnView: boolean | null;
+  notifyOnPay: boolean | null;
+  notifyReminders: boolean | null;
 }
 
 interface TeamMember {
@@ -99,6 +108,19 @@ function SettingsContent() {
   const [bic, setBic] = useState("");
   const [accountHolder, setAccountHolder] = useState("");
 
+  // Invoice defaults
+  const [defaultPaymentTerms, setDefaultPaymentTerms] = useState("net30");
+  const [defaultTaxRate, setDefaultTaxRate] = useState(21);
+  const [defaultCurrency, setDefaultCurrency] = useState("EUR");
+  const [defaultCountry, setDefaultCountry] = useState("NL");
+  const [defaultLanguage, setDefaultLanguage] = useState("en");
+  const [invoiceNumberPrefix, setInvoiceNumberPrefix] = useState("INV");
+
+  // Notification preferences
+  const [notifyOnView, setNotifyOnView] = useState(true);
+  const [notifyOnPay, setNotifyOnPay] = useState(true);
+  const [notifyReminders, setNotifyReminders] = useState(false);
+
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteConfirmation, setDeleteConfirmation] = useState("");
   const [deleting, setDeleting] = useState(false);
@@ -142,6 +164,15 @@ function SettingsContent() {
         setBankName(bd.bankName);
         setBic(bd.bic);
         setAccountHolder(bd.accountHolder);
+        setDefaultPaymentTerms(u.defaultPaymentTerms || "net30");
+        setDefaultTaxRate(u.defaultTaxRate ?? 21);
+        setDefaultCurrency(u.defaultCurrency || "EUR");
+        setDefaultCountry(u.defaultCountry || "NL");
+        setDefaultLanguage(u.defaultLanguage || "en");
+        setInvoiceNumberPrefix(u.invoiceNumberPrefix || "INV");
+        setNotifyOnView(u.notifyOnView ?? true);
+        setNotifyOnPay(u.notifyOnPay ?? true);
+        setNotifyReminders(u.notifyReminders ?? false);
       })
       .catch(() => router.push("/auth/login"))
       .finally(() => setLoading(false));
@@ -208,7 +239,11 @@ function SettingsContent() {
     const res = await fetch("/api/user", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, businessName, businessAddress, businessPhone, kvkNumber, vatNumber, bankDetails }),
+      body: JSON.stringify({
+        name, businessName, businessAddress, businessPhone, kvkNumber, vatNumber, bankDetails,
+        defaultPaymentTerms, defaultTaxRate, defaultCurrency, defaultCountry, defaultLanguage, invoiceNumberPrefix,
+        notifyOnView, notifyOnPay, notifyReminders,
+      }),
     });
     if (res.ok) {
       const updated = await res.json();
@@ -786,6 +821,189 @@ function SettingsContent() {
                 </div>
               </div>
             )}
+          </div>
+
+          {/* Invoice Defaults */}
+          <div className="bg-[#111827] backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 space-y-5 hover:border-gray-600/60 transition-all duration-300">
+            <h2 className="text-lg font-semibold text-white mb-2 flex items-center gap-2">
+              <svg className="w-5 h-5 text-amber-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75" />
+              </svg>
+              Invoice Defaults
+              <div className="flex-1 h-px bg-gradient-to-r from-amber-500/20 to-transparent ml-2" />
+            </h2>
+            <p className="text-sm text-gray-400">
+              Set defaults that auto-fill when creating new invoices. You can still override per invoice.
+            </p>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-400 mb-1">
+                  Default Payment Terms
+                </label>
+                <select
+                  value={defaultPaymentTerms}
+                  onChange={(e) => setDefaultPaymentTerms(e.target.value)}
+                  className="w-full px-4 py-3 rounded-xl border border-white/10 text-lg focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 outline-none bg-white/5 text-white transition-all"
+                >
+                  <option value="receipt">Due on Receipt</option>
+                  <option value="net14">Net 14</option>
+                  <option value="net30">Net 30</option>
+                  <option value="net45">Net 45</option>
+                  <option value="net60">Net 60</option>
+                </select>
+                <p className="text-xs text-gray-500 mt-1">Applied to new invoices by default</p>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-400 mb-1">
+                  Default Tax Rate
+                </label>
+                <div className="relative">
+                  <input
+                    type="number"
+                    min={0}
+                    max={100}
+                    step={0.5}
+                    value={defaultTaxRate}
+                    onChange={(e) => setDefaultTaxRate(parseFloat(e.target.value) || 0)}
+                    className="w-full px-4 py-3 pr-10 rounded-xl border border-white/10 text-lg focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 outline-none bg-white/5 text-white transition-all"
+                  />
+                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 text-lg">%</span>
+                </div>
+                <p className="text-xs text-gray-500 mt-1">Standard rate: 21% (NL), 19% (DE), 20% (UK)</p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-400 mb-1">
+                  Default Currency
+                </label>
+                <select
+                  value={defaultCurrency}
+                  onChange={(e) => setDefaultCurrency(e.target.value)}
+                  className="w-full px-4 py-3 rounded-xl border border-white/10 text-lg focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 outline-none bg-white/5 text-white transition-all"
+                >
+                  <option value="EUR">EUR</option>
+                  <option value="GBP">GBP</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-400 mb-1">
+                  Default Country
+                </label>
+                <select
+                  value={defaultCountry}
+                  onChange={(e) => setDefaultCountry(e.target.value)}
+                  className="w-full px-4 py-3 rounded-xl border border-white/10 text-lg focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 outline-none bg-white/5 text-white transition-all"
+                >
+                  <option value="NL">Netherlands</option>
+                  <option value="UK">United Kingdom</option>
+                  <option value="DE">Germany</option>
+                  <option value="BE">Belgium</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-400 mb-1">
+                  Default Invoice Language
+                </label>
+                <select
+                  value={defaultLanguage}
+                  onChange={(e) => setDefaultLanguage(e.target.value)}
+                  className="w-full px-4 py-3 rounded-xl border border-white/10 text-lg focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 outline-none bg-white/5 text-white transition-all"
+                >
+                  <option value="en">English</option>
+                  <option value="nl">Dutch</option>
+                  <option value="de">German</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-400 mb-1">
+                  Invoice Number Prefix <span className="text-gray-600">(optional)</span>
+                </label>
+                <input
+                  value={invoiceNumberPrefix}
+                  onChange={(e) => setInvoiceNumberPrefix(e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, ""))}
+                  placeholder="INV"
+                  maxLength={10}
+                  className="w-full px-4 py-3 rounded-xl border border-white/10 text-lg focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 outline-none bg-white/5 text-white placeholder-gray-500 transition-all font-mono"
+                />
+                <p className="text-xs text-gray-500 mt-1">Invoices will be numbered {invoiceNumberPrefix || "INV"}-0001, {invoiceNumberPrefix || "INV"}-0002, etc.</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Notification Preferences */}
+          <div className="bg-[#111827] backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 space-y-5 hover:border-gray-600/60 transition-all duration-300">
+            <h2 className="text-lg font-semibold text-white mb-2 flex items-center gap-2">
+              <svg className="w-5 h-5 text-amber-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
+              </svg>
+              Notification Preferences
+              <div className="flex-1 h-px bg-gradient-to-r from-amber-500/20 to-transparent ml-2" />
+            </h2>
+            <p className="text-sm text-gray-400">
+              Choose which email notifications you want to receive about your invoices.
+            </p>
+
+            <div className="space-y-4">
+              <label className="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/10 cursor-pointer hover:border-gray-600/60 transition-all">
+                <div>
+                  <p className="text-white font-medium text-sm">Client views invoice</p>
+                  <p className="text-xs text-gray-500">Get notified when a client opens your invoice</p>
+                </div>
+                <div className="relative">
+                  <input
+                    type="checkbox"
+                    checked={notifyOnView}
+                    onChange={(e) => setNotifyOnView(e.target.checked)}
+                    className="sr-only peer"
+                  />
+                  <div className="w-11 h-6 bg-gray-700 rounded-full peer-checked:bg-amber-500 transition-colors" />
+                  <div className="absolute left-0.5 top-0.5 w-5 h-5 bg-white rounded-full shadow peer-checked:translate-x-5 transition-transform" />
+                </div>
+              </label>
+
+              <label className="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/10 cursor-pointer hover:border-gray-600/60 transition-all">
+                <div>
+                  <p className="text-white font-medium text-sm">Client pays invoice</p>
+                  <p className="text-xs text-gray-500">Get notified when a payment is received</p>
+                </div>
+                <div className="relative">
+                  <input
+                    type="checkbox"
+                    checked={notifyOnPay}
+                    onChange={(e) => setNotifyOnPay(e.target.checked)}
+                    className="sr-only peer"
+                  />
+                  <div className="w-11 h-6 bg-gray-700 rounded-full peer-checked:bg-amber-500 transition-colors" />
+                  <div className="absolute left-0.5 top-0.5 w-5 h-5 bg-white rounded-full shadow peer-checked:translate-x-5 transition-transform" />
+                </div>
+              </label>
+
+              <label className="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/10 cursor-pointer hover:border-gray-600/60 transition-all">
+                <div>
+                  <p className="text-white font-medium text-sm">Payment reminders summary</p>
+                  <p className="text-xs text-gray-500">Weekly summary of overdue invoices and pending reminders</p>
+                </div>
+                <div className="relative">
+                  <input
+                    type="checkbox"
+                    checked={notifyReminders}
+                    onChange={(e) => setNotifyReminders(e.target.checked)}
+                    className="sr-only peer"
+                  />
+                  <div className="w-11 h-6 bg-gray-700 rounded-full peer-checked:bg-amber-500 transition-colors" />
+                  <div className="absolute left-0.5 top-0.5 w-5 h-5 bg-white rounded-full shadow peer-checked:translate-x-5 transition-transform" />
+                </div>
+              </label>
+            </div>
           </div>
 
           <button

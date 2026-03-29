@@ -25,8 +25,11 @@ export async function PATCH(req: NextRequest) {
       return NextResponse.json({ error: "Rate limit exceeded. Try again later." }, { status: 429 });
     }
 
-    const { name, businessName, businessAddress, businessPhone, kvkNumber, vatNumber, bankDetails, logoUrl } =
-      await req.json();
+    const {
+      name, businessName, businessAddress, businessPhone, kvkNumber, vatNumber, bankDetails, logoUrl,
+      defaultPaymentTerms, defaultTaxRate, defaultCurrency, defaultCountry, defaultLanguage, invoiceNumberPrefix,
+      notifyOnView, notifyOnPay, notifyReminders,
+    } = await req.json();
 
     // Validate logoUrl: must be base64 image or empty, max 500KB
     let validatedLogoUrl: string | null | undefined = undefined;
@@ -54,6 +57,15 @@ export async function PATCH(req: NextRequest) {
         vatNumber: vatNumber ? sanitizeString(vatNumber, 50) : null,
         bankDetails: bankDetails ? sanitizeString(bankDetails, 1000) : null,
         ...(validatedLogoUrl !== undefined ? { logoUrl: validatedLogoUrl } : {}),
+        ...(defaultPaymentTerms !== undefined ? { defaultPaymentTerms: sanitizeString(defaultPaymentTerms, 20) } : {}),
+        ...(defaultTaxRate !== undefined ? { defaultTaxRate: typeof defaultTaxRate === "number" ? defaultTaxRate : null } : {}),
+        ...(defaultCurrency !== undefined ? { defaultCurrency: sanitizeString(defaultCurrency, 10) } : {}),
+        ...(defaultCountry !== undefined ? { defaultCountry: sanitizeString(defaultCountry, 10) } : {}),
+        ...(defaultLanguage !== undefined ? { defaultLanguage: sanitizeString(defaultLanguage, 10) } : {}),
+        ...(invoiceNumberPrefix !== undefined ? { invoiceNumberPrefix: invoiceNumberPrefix ? sanitizeString(invoiceNumberPrefix, 20) : null } : {}),
+        ...(notifyOnView !== undefined ? { notifyOnView: !!notifyOnView } : {}),
+        ...(notifyOnPay !== undefined ? { notifyOnPay: !!notifyOnPay } : {}),
+        ...(notifyReminders !== undefined ? { notifyReminders: !!notifyReminders } : {}),
       },
     });
 

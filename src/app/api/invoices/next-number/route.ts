@@ -5,12 +5,13 @@ import { prisma } from "@/lib/prisma";
 export async function GET() {
   try {
     const user = await requireUser();
+    const prefix = user.invoiceNumberPrefix || "INV";
 
     // Find the highest existing invoice number to ensure strict sequencing
     const lastInvoice = await prisma.invoice.findFirst({
       where: {
         userId: user.id,
-        invoiceNumber: { startsWith: "INV-" },
+        invoiceNumber: { startsWith: `${prefix}-` },
       },
       orderBy: { invoiceNumber: "desc" },
       select: { invoiceNumber: true },
@@ -18,13 +19,28 @@ export async function GET() {
 
     let nextNum = 1;
     if (lastInvoice) {
-      const match = lastInvoice.invoiceNumber.match(/INV-(\d+)/);
+      const match = lastInvoice.invoiceNumber.match(new RegExp(`${prefix.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}-(\\d+)`));
       if (match) {
         nextNum = parseInt(match[1], 10) + 1;
       }
     }
 
-    const nextNumber = `INV-${String(nextNum).padStart(4, "0")}`;
+    // If prefix changed and no matching invoices found, also check INV- for continuity
+    if (!lastInvoice && prefix !== "INV") {
+      const fallbackInvoice = await prisma.invoice.findFirst({
+        where: { userId: user.id, invoiceNumber: { startsWith: "INV-" } },
+        orderBy: { invoiceNumber: "desc" },
+        select: { invoiceNumber: true },
+      });
+      if (fallbackInvoice) {
+        const match = fallbackInvoice.invoiceNumber.match(/INV-(\d+)/);
+        if (match) {
+          nextNum = parseInt(match[1], 10) + 1;
+        }
+      }
+    }
+
+    const nextNumber = `${prefix}-${String(nextNum).padStart(4, "0")}`;
     return NextResponse.json({ nextNumber, expectedNumber: nextNum });
   } catch (error) {
     if (error instanceof Error && error.message === "Unauthorized") {
