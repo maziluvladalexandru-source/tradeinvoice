@@ -484,7 +484,7 @@ function SettingsContent() {
               <nav className="bg-[#111827] rounded-2xl p-4 border border-gray-700/50 space-y-6">
                 {NAV_SECTIONS.map((section) => (
                   <div key={section.category}>
-                    <p className="text-[10px] text-amber-500/60 uppercase tracking-[0.15em] font-bold mb-2 px-3 mt-1 select-none pointer-events-none">
+                    <p className="text-sm text-amber-400 uppercase tracking-wider font-bold mb-3 px-3 mt-2 select-none pointer-events-none border-b border-amber-500/20 pb-2">
                       {section.category}
                     </p>
                     <div className="space-y-0.5">
