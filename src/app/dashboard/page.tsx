@@ -68,11 +68,11 @@ interface DashboardData {
 }
 
 const statusColors: Record<string, string> = {
-  draft: "bg-gray-500/20 text-gray-400 px-3 py-1 rounded-full text-xs font-semibold",
-  sent: "bg-blue-500/20 text-blue-400 px-3 py-1 rounded-full text-xs font-semibold",
-  viewed: "bg-yellow-500/20 text-yellow-400 px-3 py-1 rounded-full text-xs font-semibold",
-  paid: "bg-emerald-500/20 text-emerald-400 px-3 py-1 rounded-full text-xs font-semibold",
-  overdue: "bg-red-500/20 text-red-400 px-3 py-1 rounded-full text-xs font-semibold",
+  draft: "bg-gray-500/20 text-gray-400 px-2.5 py-0.5 rounded-full text-xs font-semibold",
+  sent: "bg-blue-500/20 text-blue-400 px-2.5 py-0.5 rounded-full text-xs font-semibold",
+  viewed: "bg-yellow-500/20 text-yellow-400 px-2.5 py-0.5 rounded-full text-xs font-semibold",
+  paid: "bg-emerald-500/20 text-emerald-400 px-2.5 py-0.5 rounded-full text-xs font-semibold",
+  overdue: "bg-red-500/20 text-red-400 px-2.5 py-0.5 rounded-full text-xs font-semibold",
 };
 
 const statusDot: Record<string, string> = {
@@ -82,21 +82,6 @@ const statusDot: Record<string, string> = {
   paid: "bg-green-400",
   overdue: "bg-red-400 animate-pulse",
 };
-
-const statusBorder: Record<string, string> = {
-  draft: "border-l-gray-500",
-  sent: "border-l-blue-500",
-  viewed: "border-l-yellow-500",
-  paid: "border-l-green-500",
-  overdue: "border-l-red-500",
-};
-
-function fmtDate(d: string) {
-  return new Date(d).toLocaleDateString("en-IE", {
-    day: "numeric",
-    month: "short",
-  });
-}
 
 function LoadingSkeleton() {
   return (
@@ -110,32 +95,43 @@ function LoadingSkeleton() {
           </div>
           <div className="h-10 w-40 bg-white/10 rounded-lg animate-pulse" />
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-8">
-          {[1, 2, 3].map((i) => (
-            <div
-              key={i}
-              className="bg-[#111827] rounded-2xl p-5 md:p-6 border border-white/10"
-            >
+        {/* Hero skeleton */}
+        <div className="bg-[#111827] rounded-2xl p-8 border border-white/10 mb-6">
+          <div className="flex justify-between">
+            <div>
+              <div className="h-4 w-32 bg-white/10 rounded animate-pulse mb-3" />
+              <div className="h-12 w-56 bg-white/10 rounded animate-pulse" />
+            </div>
+            <div>
               <div className="h-4 w-28 bg-white/10 rounded animate-pulse mb-3" />
-              <div className="h-8 w-36 bg-white/10 rounded animate-pulse" />
+              <div className="h-10 w-44 bg-white/10 rounded animate-pulse" />
+            </div>
+          </div>
+          <div className="h-2 w-full bg-white/10 rounded-full animate-pulse mt-6" />
+        </div>
+        {/* Secondary stats skeleton */}
+        <div className="grid grid-cols-3 gap-4 mb-6">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="bg-[#111827] rounded-xl p-4 border border-white/10">
+              <div className="h-3 w-20 bg-white/10 rounded animate-pulse mb-2" />
+              <div className="h-7 w-16 bg-white/10 rounded animate-pulse" />
             </div>
           ))}
         </div>
-        <div className="bg-[#111827] rounded-2xl border border-white/10">
-          <div className="p-6 border-b border-white/10">
-            <div className="h-6 w-40 bg-white/10 rounded animate-pulse" />
+        {/* Content skeleton */}
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+          <div className="lg:col-span-3 bg-[#111827] rounded-2xl border border-white/10 p-6">
+            {[1, 2, 3, 4, 5].map((i) => (
+              <div key={i} className="flex items-center gap-3 py-3">
+                <div className="h-4 w-24 bg-white/10 rounded animate-pulse" />
+                <div className="flex-1" />
+                <div className="h-4 w-16 bg-white/10 rounded animate-pulse" />
+              </div>
+            ))}
           </div>
-          {[1, 2, 3, 4, 5].map((i) => (
-            <div
-              key={i}
-              className="p-4 border-b border-white/10 flex items-center gap-3"
-            >
-              <div className="h-5 w-24 bg-white/10 rounded animate-pulse" />
-              <div className="flex-1" />
-              <div className="h-5 w-16 bg-white/10 rounded animate-pulse" />
-              <div className="h-5 w-20 bg-white/10 rounded animate-pulse" />
-            </div>
-          ))}
+          <div className="lg:col-span-2 bg-[#111827] rounded-2xl border border-white/10 p-6">
+            <div className="h-32 w-32 mx-auto bg-white/10 rounded-full animate-pulse" />
+          </div>
         </div>
       </div>
     </div>
@@ -185,11 +181,15 @@ export default function DashboardPage() {
 
   const { user, greeting, stats, recentInvoices, recentQuotes, primaryCurrency } = data;
   const fc = (amount: number) => formatCurrency(amount, primaryCurrency);
+  const collectionRate = data.charts.collectionRate;
+  const totalForProgress = stats.totalOutstanding + stats.paidThisMonth;
+  const paidPercent = totalForProgress > 0 ? (stats.paidThisMonth / totalForProgress) * 100 : 0;
 
   return (
     <div className="min-h-screen bg-[#0a0f1e] pb-24 md:pb-0 premium-glow">
       <Navbar />
       <div className="max-w-6xl mx-auto px-4 py-8">
+        {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
           <div>
             <h1 className="text-4xl font-bold text-white tracking-tight">
@@ -204,145 +204,73 @@ export default function DashboardPage() {
           <NewInvoiceButton isNewUser={data.isNewUser} />
         </div>
 
-        {/* Onboarding checklist */}
-        <OnboardingChecklist
-          hasBusinessName={data.hasBusinessName}
-          invoiceCount={data.totalInvoiceCount}
-          hasSentInvoice={data.hasSentInvoice}
-        />
-
-        {/* Stats */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-8">
-          <div className="relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl p-5 md:p-6 border border-white/10 border-l-4 border-l-amber-500 hover:border-white/20 shadow-lg shadow-amber-500/10 hover:shadow-amber-500/5 transition-all duration-300">
-            <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 to-transparent pointer-events-none" />
-            <p className="text-sm font-medium text-gray-400 mb-1">
-              Total Outstanding
-            </p>
-            <p className="text-lg md:text-3xl font-bold text-amber-400 truncate">
-              {fc(stats.totalOutstanding)}
-            </p>
-          </div>
-          <div className="relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl p-5 md:p-6 border border-white/10 border-l-4 border-l-emerald-500 hover:border-white/20 shadow-lg shadow-emerald-500/10 hover:shadow-emerald-500/5 transition-all duration-300">
-            <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-transparent pointer-events-none" />
-            <p className="text-sm font-medium text-gray-400 mb-1">
-              Paid This Month
-            </p>
-            <p className="text-lg md:text-3xl font-bold text-green-400 truncate">
-              {fc(stats.paidThisMonth)}
-            </p>
-            {stats.revenueLastMonth > 0 && (
-              <p
-                className={`text-sm mt-1 ${stats.revenueChange >= 0 ? "text-green-500" : "text-red-400"}`}
-              >
-                {stats.revenueChange >= 0 ? "\u2191" : "\u2193"}{" "}
-                {Math.abs(Math.round(stats.revenueChange))}% vs last month
+        {/* ROW 1 -- Hero Metric */}
+        <div className="relative overflow-hidden bg-gradient-to-br from-[#111827] to-[#0d1321] rounded-2xl p-6 md:p-8 border border-white/10 mb-6 shadow-xl">
+          {/* Ambient amber glow */}
+          <div className="absolute -top-20 -left-20 w-60 h-60 bg-amber-500/8 rounded-full blur-3xl pointer-events-none" />
+          <div className="relative flex flex-col sm:flex-row sm:items-start sm:justify-between gap-6">
+            <div>
+              <p className="text-sm font-medium text-gray-400 uppercase tracking-wider mb-1">Total Outstanding</p>
+              <p className="text-4xl md:text-5xl font-extrabold text-amber-400 tracking-tight">
+                {fc(stats.totalOutstanding)}
               </p>
-            )}
-          </div>
-          <div className="relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl p-5 md:p-6 border border-white/10 border-l-4 border-l-red-500 hover:border-white/20 shadow-lg shadow-red-500/10 hover:shadow-red-500/5 transition-all duration-300">
-            <div className="absolute inset-0 bg-gradient-to-br from-red-500/10 to-transparent pointer-events-none" />
-            <p className="text-sm font-medium text-gray-400 mb-1">
-              Overdue Invoices
-            </p>
-            <div className="flex items-center gap-2">
-              <p className="text-lg md:text-3xl font-bold text-red-400">
-                {stats.overdueCount}
+            </div>
+            <div className="sm:text-right">
+              <p className="text-sm font-medium text-gray-400 uppercase tracking-wider mb-1">Paid This Month</p>
+              <p className="text-3xl font-bold text-emerald-400">
+                {fc(stats.paidThisMonth)}
               </p>
-              {stats.overdueCount > 0 && (
-                <svg
-                  className="w-5 h-5 text-red-400 animate-pulse"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"
-                  />
-                </svg>
+              {stats.revenueLastMonth > 0 && (
+                <p className={`text-sm mt-1 ${stats.revenueChange >= 0 ? "text-emerald-500" : "text-red-400"}`}>
+                  {stats.revenueChange >= 0 ? "\u2191" : "\u2193"}{" "}
+                  {Math.abs(Math.round(stats.revenueChange))}% vs last month
+                </p>
               )}
             </div>
           </div>
-          {stats.avgDaysToPayment !== null && (
-            <div className="relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl p-5 md:p-6 border border-white/10 border-l-4 border-l-blue-500 hover:border-white/20 shadow-lg shadow-blue-500/10 hover:shadow-blue-500/5 transition-all duration-300">
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent pointer-events-none" />
-              <p className="text-sm font-medium text-gray-400 mb-1">
-                Avg. Days to Payment
-              </p>
-              <p className="text-lg md:text-3xl font-bold text-blue-400">
-                {stats.avgDaysToPayment}
-              </p>
-              <p className="text-sm text-gray-500 mt-1">days</p>
+          {/* Collection progress bar */}
+          <div className="relative mt-6">
+            <div className="flex justify-between text-xs text-gray-500 mb-1.5">
+              <span>Collection progress</span>
+              <span>{Math.round(paidPercent)}% collected</span>
             </div>
-          )}
-          <div className="relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl p-5 md:p-6 border border-white/10 border-l-4 border-l-purple-500 hover:border-white/20 shadow-lg shadow-purple-500/10 hover:shadow-purple-500/5 transition-all duration-300">
-            <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-transparent pointer-events-none" />
-            <p className="text-sm font-medium text-gray-400 mb-1">
-              Active Clients
-            </p>
-            <p className="text-lg md:text-3xl font-bold text-purple-400">
-              {stats.activeClientsCount}
-            </p>
-            <p className="text-sm text-gray-500 mt-1">last 90 days</p>
+            <div className="w-full h-2 bg-white/5 rounded-full overflow-hidden">
+              <div
+                className="h-full bg-gradient-to-r from-emerald-500 to-emerald-400 rounded-full transition-all duration-700"
+                style={{ width: `${paidPercent}%` }}
+              />
+            </div>
           </div>
         </div>
 
-        {/* Donut Charts */}
-        {data.totalInvoiceCount > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-8">
-            {/* Invoice Status */}
-            <div className="bg-[#111827] backdrop-blur-sm rounded-2xl border border-gray-700/50 border-t-[3px] border-t-amber-500/60 p-5 md:p-6">
-              <h3 className="text-sm font-semibold text-amber-400 uppercase tracking-wider mb-4">Invoice Status</h3>
-              <DonutChart
-                segments={[
-                  { label: "Draft", value: data.charts.statusCounts.draft || 0, color: "#6b7280", displayValue: String(data.charts.statusCounts.draft || 0) },
-                  { label: "Sent", value: data.charts.statusCounts.sent || 0, color: "#3b82f6", displayValue: String(data.charts.statusCounts.sent || 0) },
-                  { label: "Viewed", value: data.charts.statusCounts.viewed || 0, color: "#eab308", displayValue: String(data.charts.statusCounts.viewed || 0) },
-                  { label: "Paid", value: data.charts.statusCounts.paid || 0, color: "#22c55e", displayValue: String(data.charts.statusCounts.paid || 0) },
-                  { label: "Overdue", value: data.charts.statusCounts.overdue || 0, color: "#ef4444", displayValue: String(data.charts.statusCounts.overdue || 0) },
-                ]}
-                centerText={String(data.totalInvoiceCount)}
-                centerSubtext="invoices"
-                size={180}
-              />
-            </div>
-
-            {/* Revenue This Month */}
-            <div className="bg-[#111827] backdrop-blur-sm rounded-2xl border border-gray-700/50 border-t-[3px] border-t-amber-500/60 p-5 md:p-6">
-              <h3 className="text-sm font-semibold text-amber-400 uppercase tracking-wider mb-4">Revenue This Month</h3>
-              <DonutChart
-                segments={[
-                  { label: "Paid", value: data.charts.revenueBreakdown.paid, color: "#22c55e", displayValue: fc(data.charts.revenueBreakdown.paid) },
-                  { label: "Outstanding", value: data.charts.revenueBreakdown.outstanding, color: "#f59e0b", displayValue: fc(data.charts.revenueBreakdown.outstanding) },
-                  { label: "Overdue", value: data.charts.revenueBreakdown.overdue, color: "#ef4444", displayValue: fc(data.charts.revenueBreakdown.overdue) },
-                ]}
-                centerText={fc(data.charts.revenueBreakdown.paid + data.charts.revenueBreakdown.outstanding + data.charts.revenueBreakdown.overdue)}
-                centerSubtext="total"
-                size={180}
-              />
-            </div>
-
-            {/* Collection Rate */}
-            <div className="bg-[#111827] backdrop-blur-sm rounded-2xl border border-gray-700/50 border-t-[3px] border-t-amber-500/60 p-5 md:p-6">
-              <h3 className="text-sm font-semibold text-amber-400 uppercase tracking-wider mb-4">Collection Rate</h3>
-              <DonutChart
-                segments={[
-                  { label: "Collected", value: data.charts.totalCollected, color: "#22c55e", displayValue: fc(data.charts.totalCollected) },
-                  { label: "Uncollected", value: data.charts.totalInvoiced - data.charts.totalCollected, color: "#374151", displayValue: fc(data.charts.totalInvoiced - data.charts.totalCollected) },
-                ]}
-                centerText={`${data.charts.collectionRate}%`}
-                centerSubtext="collected"
-                size={180}
-              />
-            </div>
+        {/* ROW 2 -- Secondary Stats */}
+        <div className="grid grid-cols-3 gap-3 md:gap-4 mb-6">
+          <div className={`bg-[#111827] rounded-xl p-4 border border-white/10 ${stats.overdueCount > 0 ? "border-t-2 border-t-red-500" : "border-t-2 border-t-white/5"}`}>
+            <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">Overdue</p>
+            <p className={`text-xl font-bold mt-1 ${stats.overdueCount > 0 ? "text-red-400" : "text-gray-600"}`}>
+              {stats.overdueCount}
+              {stats.overdueCount > 0 && (
+                <svg className="w-4 h-4 text-red-400 animate-pulse inline ml-1.5 -mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                </svg>
+              )}
+            </p>
           </div>
-        )}
+          <div className="bg-[#111827] rounded-xl p-4 border border-white/10 border-t-2 border-t-blue-500/40">
+            <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">Avg. Days to Pay</p>
+            <p className="text-xl font-bold text-blue-400 mt-1">
+              {stats.avgDaysToPayment !== null ? stats.avgDaysToPayment : "--"}
+            </p>
+          </div>
+          <div className="bg-[#111827] rounded-xl p-4 border border-white/10 border-t-2 border-t-purple-500/40">
+            <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">Active Clients</p>
+            <p className="text-xl font-bold text-purple-400 mt-1">{stats.activeClientsCount}</p>
+          </div>
+        </div>
 
         {/* Plan info */}
         {user.plan === "free" && (
-          <div className="bg-gradient-to-r from-amber-500/10 via-amber-500/5 to-orange-500/10 border border-amber-500/20 rounded-2xl p-5 mb-8 flex items-center justify-between">
+          <div className="bg-gradient-to-r from-amber-500/10 via-amber-500/5 to-orange-500/10 border border-amber-500/20 rounded-2xl p-5 mb-6 flex items-center justify-between">
             <div>
               <p className="font-medium text-amber-400">
                 Free Plan: {user.invoiceCount}/20 invoices used this month
@@ -360,282 +288,165 @@ export default function DashboardPage() {
           </div>
         )}
 
-        {/* Recently viewed banner */}
-        {stats.recentlyViewedCount > 0 && (
-          <div className="bg-[#111827] border border-amber-500/20 rounded-xl p-4 mb-8 flex items-center gap-3">
-            <svg
-              className="w-5 h-5 text-amber-400 shrink-0"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-              />
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-              />
-            </svg>
-            <p className="text-sm font-medium text-gray-300">
-              <span className="text-amber-400 font-bold">{stats.recentlyViewedCount}</span> invoice
-              {stats.recentlyViewedCount !== 1 ? "s were" : " was"} viewed today
-            </p>
-          </div>
-        )}
-
-        {/* Recent invoices */}
-        <div className="bg-[#111827] backdrop-blur-sm rounded-2xl border border-gray-700/50">
-          <div className="p-6 border-b border-gray-700/50 flex items-center justify-between">
-            <h2 className="text-xl font-semibold text-white">
-              Recent Invoices
-            </h2>
-            {/* View all link - needs dedicated invoices list page */}
-          </div>
-
-          {recentInvoices.length === 0 ? (
-            <div className="p-16 text-center">
-              <div className="w-40 h-40 mx-auto mb-8">
-                <svg
-                  viewBox="0 0 200 200"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-full h-full"
-                >
-                  <rect
-                    x="50"
-                    y="30"
-                    width="100"
-                    height="130"
-                    rx="8"
-                    fill="#1f2937"
-                    stroke="#374151"
-                    strokeWidth="2"
-                  />
-                  <rect
-                    x="50"
-                    y="30"
-                    width="100"
-                    height="130"
-                    rx="8"
-                    fill="url(#emptyGrad)"
-                    opacity="0.5"
-                  />
-                  <path
-                    d="M120 30 L150 30 L150 60 Z"
-                    fill="#111827"
-                    stroke="#374151"
-                    strokeWidth="1"
-                  />
-                  <path
-                    d="M120 30 L120 55 C120 57.7614 122.239 60 125 60 L150 60"
-                    fill="#1f2937"
-                    stroke="#374151"
-                    strokeWidth="2"
-                  />
-                  <rect
-                    x="68"
-                    y="75"
-                    width="64"
-                    height="6"
-                    rx="3"
-                    fill="#374151"
-                  />
-                  <rect
-                    x="68"
-                    y="90"
-                    width="48"
-                    height="6"
-                    rx="3"
-                    fill="#374151"
-                  />
-                  <rect
-                    x="68"
-                    y="105"
-                    width="56"
-                    height="6"
-                    rx="3"
-                    fill="#374151"
-                  />
-                  <rect
-                    x="68"
-                    y="120"
-                    width="36"
-                    height="6"
-                    rx="3"
-                    fill="#374151"
-                  />
-                  <circle
-                    cx="140"
-                    cy="145"
-                    r="24"
-                    fill="#f59e0b"
-                    opacity="0.15"
-                  />
-                  <circle
-                    cx="140"
-                    cy="145"
-                    r="18"
-                    fill="#f59e0b"
-                    opacity="0.25"
-                  />
-                  <path
-                    d="M140 137 L140 153 M132 145 L148 145"
-                    stroke="#f59e0b"
-                    strokeWidth="2.5"
-                    strokeLinecap="round"
-                  />
-                  <defs>
-                    <linearGradient
-                      id="emptyGrad"
-                      x1="100"
-                      y1="30"
-                      x2="100"
-                      y2="160"
-                    >
-                      <stop stopColor="#f59e0b" stopOpacity="0.05" />
-                      <stop offset="1" stopColor="#f59e0b" stopOpacity="0" />
-                    </linearGradient>
-                  </defs>
-                </svg>
-              </div>
-              <h3 className="text-2xl font-semibold text-white mb-3">
-                No invoices yet
-              </h3>
-              <p className="text-gray-400 mb-8 max-w-sm mx-auto">
-                Create your first invoice to start tracking payments and getting
-                paid faster.
-              </p>
-              <Link
-                href="/invoices/new"
-                className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-gray-950 px-8 py-3.5 rounded-xl font-semibold text-lg shadow-lg shadow-amber-500/20 transition-all"
-              >
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2.5}
-                    d="M12 4v16m8-8H4"
-                  />
-                </svg>
-                Create Your First Invoice
-              </Link>
+        {/* ROW 3 -- Two Columns: Recent Invoices + Quick Insights */}
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 mb-6">
+          {/* Left: Recent Invoices (3/5 = 60%) */}
+          <div className="lg:col-span-3 bg-[#111827] rounded-2xl border border-gray-700/50">
+            <div className="px-5 py-4 border-b border-gray-700/50 flex items-center justify-between">
+              <h2 className="text-lg font-semibold text-white">Recent Invoices</h2>
+              {recentInvoices.length > 0 && (
+                <Link href="/invoices" className="text-xs text-amber-500 hover:text-amber-400 font-medium transition-colors">
+                  View All
+                </Link>
+              )}
             </div>
-          ) : (
-            <div className="p-2">
-              {recentInvoices.map((invoice) => (
-                <div
-                  key={invoice.id}
-                  className={`p-3 sm:p-4 bg-[#111827] rounded-xl mb-1 border border-gray-700/30 hover:border-amber-500/30 hover:bg-[#1a2235] transition-colors border-l-4 ${statusBorder[invoice.status] || "border-l-gray-600"}`}
-                >
-                  {/* Desktop layout */}
-                  <div className="hidden sm:flex items-center gap-3">
-                    <Link
-                      href={`/invoices/${invoice.id}`}
-                      className="flex items-center gap-2 flex-1 min-w-0 overflow-hidden"
-                    >
-                      <div className="flex-1 min-w-0">
-                        <p className="font-medium text-white">
-                          {invoice.invoiceNumber}
-                        </p>
-                        <p className="text-sm text-gray-400">
-                          {invoice.clientName}
-                        </p>
-                      </div>
-                      {invoice.isRecurring && (
-                        <span className="bg-cyan-500/20 text-cyan-300 ring-1 ring-cyan-400/40 px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase inline-flex items-center gap-1">
-                          <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                          </svg>
-                          Recurring
-                        </span>
-                      )}
-                      <p className="text-xs text-gray-500">
-                        Due {fmtDate(invoice.dueDate)}
-                      </p>
-                    </Link>
-                    <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold capitalize ${statusColors[invoice.status] || ""}`}>
-                      <span className={`w-1.5 h-1.5 rounded-full ${statusDot[invoice.status] || ""}`} />
-                      {invoice.status}
-                      {invoice.status === "viewed" && (
-                        <svg className="w-3.5 h-3.5 ml-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                        </svg>
-                      )}
-                    </span>
-                    <div className="text-right whitespace-nowrap">
-                      <p className="text-base font-bold text-white">
-                        {formatCurrency(invoice.total, invoice.currency)}
-                      </p>
-                      {invoice.paidAmount > 0 && invoice.paidAmount < invoice.total && (
-                        <p className="text-xs text-amber-400">
-                          Due: {formatCurrency(invoice.total - invoice.paidAmount, invoice.currency)}
-                        </p>
-                      )}
-                    </div>
-                    <InvoiceCardActions invoiceId={invoice.id} status={invoice.status} type={invoice.type} />
-                    <a href={`/api/invoices/${invoice.id}/pdf`} target="_blank" className="p-2 rounded-lg text-gray-400 hover:text-amber-500 hover:bg-gray-700 transition-colors" title="Download PDF" aria-label="Download PDF">
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                      </svg>
-                    </a>
-                  </div>
 
-                  {/* Mobile layout */}
-                  <div className="sm:hidden">
-                    <Link href={`/invoices/${invoice.id}`} className="block min-w-0">
-                      <div className="flex items-start justify-between gap-2">
-                        <div className="min-w-0 flex-1">
-                          <p className="font-medium text-white text-sm">{invoice.invoiceNumber}</p>
-                          <p className="text-sm text-gray-400 truncate">{invoice.clientName}</p>
+            {recentInvoices.length === 0 ? (
+              <div className="p-12 text-center">
+                <div className="w-28 h-28 mx-auto mb-6">
+                  <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+                    <rect x="50" y="30" width="100" height="130" rx="8" fill="#1f2937" stroke="#374151" strokeWidth="2" />
+                    <rect x="68" y="75" width="64" height="6" rx="3" fill="#374151" />
+                    <rect x="68" y="90" width="48" height="6" rx="3" fill="#374151" />
+                    <rect x="68" y="105" width="56" height="6" rx="3" fill="#374151" />
+                    <circle cx="140" cy="145" r="18" fill="#f59e0b" opacity="0.2" />
+                    <path d="M140 137 L140 153 M132 145 L148 145" stroke="#f59e0b" strokeWidth="2.5" strokeLinecap="round" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-semibold text-white mb-2">No invoices yet</h3>
+                <p className="text-gray-400 text-sm mb-6">Create your first invoice to start tracking payments.</p>
+                <Link
+                  href="/invoices/new"
+                  className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-gray-950 px-6 py-3 rounded-xl font-semibold shadow-lg shadow-amber-500/20 transition-all"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 4v16m8-8H4" />
+                  </svg>
+                  Create Your First Invoice
+                </Link>
+              </div>
+            ) : (
+              <div className="divide-y divide-gray-700/30">
+                {recentInvoices.slice(0, 5).map((invoice) => (
+                  <div
+                    key={invoice.id}
+                    className="group px-5 py-3 hover:bg-white/[0.02] transition-colors"
+                  >
+                    {/* Desktop row */}
+                    <div className="hidden sm:flex items-center gap-3">
+                      <Link href={`/invoices/${invoice.id}`} className="flex items-center gap-3 flex-1 min-w-0">
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2">
+                            <span className="font-medium text-white text-sm">{invoice.invoiceNumber}</span>
+                            <span className="text-gray-500 text-sm truncate">{invoice.clientName}</span>
+                          </div>
                         </div>
-                        <p className="text-sm font-bold text-white whitespace-nowrap">
-                          {formatCurrency(invoice.total, invoice.currency)}
-                        </p>
-                      </div>
-                    </Link>
-                    <div className="flex items-center justify-between mt-2">
-                      <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold capitalize ${statusColors[invoice.status] || ""}`}>
+                      </Link>
+                      <span className={`inline-flex items-center gap-1 capitalize whitespace-nowrap ${statusColors[invoice.status] || ""}`}>
                         <span className={`w-1.5 h-1.5 rounded-full ${statusDot[invoice.status] || ""}`} />
                         {invoice.status}
                       </span>
-                      <div className="flex items-center gap-0.5">
+                      <span className="text-sm font-semibold text-white w-28 text-right tabular-nums">
+                        {formatCurrency(invoice.total, invoice.currency)}
+                      </span>
+                      {/* Hover-only actions */}
+                      <div className="opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-0.5">
                         <InvoiceCardActions invoiceId={invoice.id} status={invoice.status} type={invoice.type} />
-                        <a href={`/api/invoices/${invoice.id}/pdf`} target="_blank" className="p-1 rounded-lg text-gray-400 hover:text-amber-500 hover:bg-gray-700 transition-colors" title="Download PDF" aria-label="Download PDF">
+                        <a href={`/api/invoices/${invoice.id}/pdf`} target="_blank" className="p-1.5 rounded-lg text-gray-400 hover:text-amber-500 hover:bg-gray-700/50 transition-colors" title="Download PDF" aria-label="Download PDF">
                           <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                           </svg>
                         </a>
                       </div>
                     </div>
-                    {invoice.paidAmount > 0 && invoice.paidAmount < invoice.total && (
-                      <p className="text-xs text-amber-400 mt-1">
-                        Due: {formatCurrency(invoice.total - invoice.paidAmount, invoice.currency)}
-                      </p>
-                    )}
+                    {/* Mobile row */}
+                    <div className="sm:hidden">
+                      <Link href={`/invoices/${invoice.id}`} className="block">
+                        <div className="flex items-center justify-between gap-2">
+                          <div className="min-w-0 flex-1">
+                            <span className="font-medium text-white text-sm">{invoice.invoiceNumber}</span>
+                            <span className="text-gray-500 text-sm ml-2 truncate">{invoice.clientName}</span>
+                          </div>
+                          <span className="text-sm font-semibold text-white whitespace-nowrap">
+                            {formatCurrency(invoice.total, invoice.currency)}
+                          </span>
+                        </div>
+                      </Link>
+                      <div className="flex items-center justify-between mt-1.5">
+                        <span className={`inline-flex items-center gap-1 capitalize ${statusColors[invoice.status] || ""}`}>
+                          <span className={`w-1.5 h-1.5 rounded-full ${statusDot[invoice.status] || ""}`} />
+                          {invoice.status}
+                        </span>
+                        <div className="flex items-center gap-0.5">
+                          <InvoiceCardActions invoiceId={invoice.id} status={invoice.status} type={invoice.type} />
+                        </div>
+                      </div>
+                    </div>
                   </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Right: Quick Insights (2/5 = 40%) */}
+          <div className="lg:col-span-2 space-y-4">
+            {/* Mini Donut: Invoice Status */}
+            {data.totalInvoiceCount > 0 && (
+              <div className="bg-[#111827] rounded-2xl border border-gray-700/50 p-5">
+                <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Invoice Status</h3>
+                <div className="flex justify-center">
+                  <DonutChart
+                    segments={[
+                      { label: "Draft", value: data.charts.statusCounts.draft || 0, color: "#6b7280", displayValue: String(data.charts.statusCounts.draft || 0) },
+                      { label: "Sent", value: data.charts.statusCounts.sent || 0, color: "#3b82f6", displayValue: String(data.charts.statusCounts.sent || 0) },
+                      { label: "Viewed", value: data.charts.statusCounts.viewed || 0, color: "#eab308", displayValue: String(data.charts.statusCounts.viewed || 0) },
+                      { label: "Paid", value: data.charts.statusCounts.paid || 0, color: "#22c55e", displayValue: String(data.charts.statusCounts.paid || 0) },
+                      { label: "Overdue", value: data.charts.statusCounts.overdue || 0, color: "#ef4444", displayValue: String(data.charts.statusCounts.overdue || 0) },
+                    ]}
+                    centerText={String(data.totalInvoiceCount)}
+                    centerSubtext="invoices"
+                    size={140}
+                  />
                 </div>
-              ))}
+              </div>
+            )}
+
+            {/* Revenue This Month */}
+            <div className="bg-[#111827] rounded-2xl border border-gray-700/50 p-5">
+              <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Revenue This Month</h3>
+              <div className="flex items-baseline gap-2">
+                <p className="text-2xl font-bold text-white">{fc(stats.paidThisMonth)}</p>
+                {stats.revenueLastMonth > 0 && (
+                  <span className={`text-sm font-medium ${stats.revenueChange >= 0 ? "text-emerald-400" : "text-red-400"}`}>
+                    {stats.revenueChange >= 0 ? "\u2191" : "\u2193"} {Math.abs(Math.round(stats.revenueChange))}%
+                  </span>
+                )}
+              </div>
             </div>
-          )}
+
+            {/* Collection Rate */}
+            <div className="bg-[#111827] rounded-2xl border border-gray-700/50 p-5">
+              <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Collection Rate</h3>
+              <p className="text-2xl font-bold text-white mb-2">{collectionRate}%</p>
+              <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-gradient-to-r from-emerald-500 to-emerald-400 rounded-full transition-all duration-700"
+                  style={{ width: `${collectionRate}%` }}
+                />
+              </div>
+              <div className="flex justify-between text-xs text-gray-500 mt-1">
+                <span>{fc(data.charts.totalCollected)} collected</span>
+                <span>{fc(data.charts.totalInvoiced)} invoiced</span>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Recent Quotes */}
         {recentQuotes.length > 0 && (
-          <div className="bg-[#111827] backdrop-blur-sm rounded-2xl border border-gray-700/50 mt-8">
-            <div className="p-6 border-b border-white/10 flex items-center justify-between">
-              <h2 className="text-xl font-semibold text-white flex items-center gap-2">
+          <div className="bg-[#111827] rounded-2xl border border-gray-700/50 mb-6">
+            <div className="px-5 py-4 border-b border-white/10 flex items-center justify-between">
+              <h2 className="text-lg font-semibold text-white flex items-center gap-2">
                 Recent Quotes
                 <span className="bg-purple-500/20 text-purple-300 ring-1 ring-purple-400/40 px-2 py-0.5 rounded-full text-xs font-semibold">
                   {recentQuotes.length}
@@ -646,47 +457,40 @@ export default function DashboardPage() {
               {recentQuotes.map((quote) => (
                 <div
                   key={quote.id}
-                  className={`p-4 hover:bg-white/5 transition-colors border-l-4 ${statusBorder[quote.status] || "border-l-gray-600"}`}
+                  className="group px-5 py-3 hover:bg-white/[0.02] transition-colors"
                 >
-                  <Link
-                    href={`/invoices/${quote.id}`}
-                    className="flex items-center gap-2 flex-1 min-w-0 overflow-hidden"
-                  >
-                    <div className="flex-1 min-w-0">
-                      <p className="font-medium text-white">
-                        {quote.invoiceNumber}
-                      </p>
-                      <p className="text-sm text-gray-400">
-                        {quote.clientName}
-                      </p>
-                    </div>
-                    <p className="text-xs text-gray-500 hidden sm:block">
-                      {fmtDate(quote.createdAt)}
-                    </p>
-                  </Link>
                   <div className="flex items-center gap-3">
-                    <span
-                      className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold capitalize ${statusColors[quote.status] || ""}`}
-                    >
-                      <span
-                        className={`w-1.5 h-1.5 rounded-full ${statusDot[quote.status] || ""}`}
-                      />
+                    <Link href={`/invoices/${quote.id}`} className="flex items-center gap-2 flex-1 min-w-0">
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2">
+                          <span className="font-medium text-white text-sm">{quote.invoiceNumber}</span>
+                          <span className="text-gray-500 text-sm truncate">{quote.clientName}</span>
+                        </div>
+                      </div>
+                    </Link>
+                    <span className={`inline-flex items-center gap-1 capitalize whitespace-nowrap ${statusColors[quote.status] || ""}`}>
+                      <span className={`w-1.5 h-1.5 rounded-full ${statusDot[quote.status] || ""}`} />
                       {quote.status}
                     </span>
-                    <p className="text-base font-bold text-white text-right whitespace-nowrap">
+                    <span className="text-sm font-semibold text-white tabular-nums">
                       {formatCurrency(quote.total, quote.currency)}
-                    </p>
-                    <InvoiceCardActions
-                      invoiceId={quote.id}
-                      status={quote.status}
-                      type="quote"
-                    />
+                    </span>
+                    <div className="opacity-0 group-hover:opacity-100 transition-opacity">
+                      <InvoiceCardActions invoiceId={quote.id} status={quote.status} type="quote" />
+                    </div>
                   </div>
                 </div>
               ))}
             </div>
           </div>
         )}
+
+        {/* ROW 4 -- Onboarding (bottom, auto-hides when complete) */}
+        <OnboardingChecklist
+          hasBusinessName={data.hasBusinessName}
+          invoiceCount={data.totalInvoiceCount}
+          hasSentInvoice={data.hasSentInvoice}
+        />
       </div>
 
       <FloatingCreateButton />
