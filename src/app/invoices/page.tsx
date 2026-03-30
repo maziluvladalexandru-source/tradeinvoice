@@ -62,6 +62,7 @@ export default function InvoicesListPage() {
   const [duplicating, setDuplicating] = useState<string | null>(null);
   const [markingPaid, setMarkingPaid] = useState<string | null>(null);
   const [exporting, setExporting] = useState(false);
+  const [typeFilter, setTypeFilter] = useState<"all" | "invoice" | "quote">("all");
 
   useEffect(() => {
     fetch("/api/invoices")
@@ -75,6 +76,10 @@ export default function InvoicesListPage() {
 
   const filtered = useMemo(() => {
     let list = invoices;
+
+    if (typeFilter !== "all") {
+      list = list.filter((i) => (i.type || "invoice") === typeFilter);
+    }
 
     if (statusFilter !== "all") {
       list = list.filter((i) => i.status === statusFilter);
@@ -102,7 +107,7 @@ export default function InvoicesListPage() {
     });
 
     return list;
-  }, [invoices, statusFilter, search, sortField, sortDir]);
+  }, [invoices, typeFilter, statusFilter, search, sortField, sortDir]);
 
   function toggleSort(field: SortField) {
     if (sortField === field) {
@@ -223,6 +228,25 @@ export default function InvoicesListPage() {
         </div>
         </FadeIn>
 
+        {/* Type Tabs */}
+        <FadeIn delay={0.05}>
+        <div className="flex gap-1 mb-6 bg-[#111827] rounded-xl p-1 border border-gray-700/50 w-fit">
+          {([["all", "All"], ["invoice", "Invoices"], ["quote", "Quotes"]] as const).map(([value, label]) => (
+            <button
+              key={value}
+              onClick={() => setTypeFilter(value)}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                typeFilter === value
+                  ? "bg-amber-500/15 text-amber-400 ring-1 ring-amber-500/30"
+                  : "text-gray-400 hover:text-white hover:bg-white/5"
+              }`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+        </FadeIn>
+
         {/* Search & Filters */}
         <FadeIn delay={0.1}>
         <div className="flex flex-col sm:flex-row gap-3 mb-6">
@@ -266,7 +290,7 @@ export default function InvoicesListPage() {
             Status <SortIcon field="status" />
           </button>
           <span className="ml-auto text-xs text-gray-500 self-center">
-            {filtered.length} invoice{filtered.length !== 1 ? "s" : ""}
+            {filtered.length} {typeFilter === "quote" ? "quote" : "invoice"}{filtered.length !== 1 ? "s" : ""}
           </span>
         </div>
         </FadeIn>

@@ -59,6 +59,7 @@ export default function InvoiceDetailPage() {
   const [paymentAmount, setPaymentAmount] = useState(0);
   const [duplicating, setDuplicating] = useState(false);
   const [converting, setConverting] = useState(false);
+  const [showConvertModal, setShowConvertModal] = useState(false);
 
   useEffect(() => {
     fetch(`/api/invoices/${params.id}`)
@@ -352,7 +353,7 @@ export default function InvoiceDetailPage() {
           )}
           {invoice.type === "quote" && (
             <button
-              onClick={convertToInvoice}
+              onClick={() => setShowConvertModal(true)}
               disabled={converting}
               className="bg-gradient-to-r from-amber-500 to-amber-400 text-gray-950 px-6 py-3 rounded-xl font-semibold text-lg hover:from-amber-400 hover:to-amber-300 disabled:opacity-50 transition-all duration-200 shadow-lg shadow-amber-500/20 hover:shadow-xl hover:shadow-amber-500/30 hover:scale-[1.02] flex items-center gap-2 btn-press"
             >
@@ -745,6 +746,54 @@ export default function InvoiceDetailPage() {
           </div>
         </div>
       </div>
+
+        {/* Convert to Invoice Modal */}
+        {showConvertModal && (
+          <div className="fixed inset-0 bg-black/70 backdrop-blur-md z-50 flex items-center justify-center p-4 animate-fade-in">
+            <div className="bg-[#111827] backdrop-blur-sm rounded-2xl border border-gray-700/50 p-8 w-full max-w-sm shadow-2xl shadow-black/40 animate-slide-up">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-xl bg-amber-500/20 ring-1 ring-amber-500/40 flex items-center justify-center">
+                  <svg className="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                </div>
+                <h3 className="text-lg font-semibold text-white tracking-tight">Convert to Invoice</h3>
+              </div>
+              <p className="text-sm text-gray-400 mb-2">
+                This will create a new invoice from quote <span className="text-white font-medium">{invoice.invoiceNumber}</span> for <span className="text-white font-medium">{invoice.client.name}</span>.
+              </p>
+              <ul className="text-sm text-gray-400 mb-6 space-y-1.5">
+                <li className="flex items-center gap-2">
+                  <svg className="w-3.5 h-3.5 text-amber-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                  All line items and amounts will be copied
+                </li>
+                <li className="flex items-center gap-2">
+                  <svg className="w-3.5 h-3.5 text-amber-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                  New invoice number will be generated
+                </li>
+                <li className="flex items-center gap-2">
+                  <svg className="w-3.5 h-3.5 text-amber-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                  Invoice will be created as draft
+                </li>
+              </ul>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => { setShowConvertModal(false); convertToInvoice(); }}
+                  disabled={converting}
+                  className="flex-1 bg-gradient-to-r from-amber-500 to-amber-400 text-gray-950 py-3 rounded-xl font-semibold hover:from-amber-400 hover:to-amber-300 disabled:opacity-50 transition-all duration-200 shadow-lg shadow-amber-500/20 hover:shadow-xl hover:shadow-amber-500/30 btn-press"
+                >
+                  {converting ? "Converting..." : "Convert"}
+                </button>
+                <button
+                  onClick={() => setShowConvertModal(false)}
+                  className="px-4 py-3 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 transition-all duration-200"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Mark as Paid Modal */}
         {showPaidModal && (
