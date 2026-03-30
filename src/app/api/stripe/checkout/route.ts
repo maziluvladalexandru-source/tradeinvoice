@@ -4,9 +4,11 @@ import { getStripeClient, PLANS } from "@/lib/stripe";
 import { prisma } from "@/lib/prisma";
 import { appUrl } from "@/lib/utils";
 
-export async function POST() {
+export async function POST(request: Request) {
   try {
     const user = await requireUser();
+    const body = await request.json().catch(() => ({}));
+    const billing = body.billing === "annual" ? "annual" : "monthly";
 
     // Create or get Stripe customer
     const stripe = getStripeClient();
@@ -23,7 +25,7 @@ export async function POST() {
       });
     }
 
-    const priceId = PLANS.pro.priceId;
+    const priceId = billing === "annual" ? PLANS.pro.annualPriceId : PLANS.pro.priceId;
     if (!priceId) {
       return NextResponse.json(
         { error: "Stripe price not configured" },
@@ -38,7 +40,7 @@ export async function POST() {
       line_items: [{ price: priceId, quantity: 1 }],
       success_url: appUrl("/settings?upgraded=true"),
       cancel_url: appUrl("/settings"),
-      metadata: { userId: user.id },
+      metadata: { userId: user.id, billing },
     });
 
     return NextResponse.json({ url: session.url });

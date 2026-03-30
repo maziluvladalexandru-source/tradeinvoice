@@ -144,6 +144,7 @@ function SettingsContent() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [upgrading, setUpgrading] = useState(false);
+  const [billingCycle, setBillingCycle] = useState<"monthly" | "annual">("annual");
 
   const [name, setName] = useState("");
   const [businessName, setBusinessName] = useState("");
@@ -389,9 +390,13 @@ function SettingsContent() {
     setSaving(false);
   }
 
-  async function handleUpgrade() {
+  async function handleUpgrade(billing: "monthly" | "annual" = billingCycle) {
     setUpgrading(true);
-    const res = await fetch("/api/stripe/checkout", { method: "POST" });
+    const res = await fetch("/api/stripe/checkout", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ billing }),
+    });
     if (res.ok) {
       const { url } = await res.json();
       window.location.href = url;
@@ -560,21 +565,59 @@ function SettingsContent() {
                       Active
                     </span>
                   )}
-                  {user?.plan !== "pro" && (
-                    <button
-                      onClick={handleUpgrade}
-                      disabled={upgrading}
-                      className="bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-gray-950 px-6 py-3 rounded-xl font-semibold text-lg shadow-lg shadow-amber-500/20 transition-all disabled:opacity-50"
-                    >
-                      {upgrading ? "Loading..." : "Upgrade to Pro - \u20AC15/mo"}
-                    </button>
-                  )}
                 </div>
-                <p className="text-sm text-gray-400">
+                <p className="text-sm text-gray-400 mb-4">
                   {user?.plan === "pro"
                     ? "Unlimited invoices per month"
                     : `${user?.invoiceCount || 0}/20 invoices used this month`}
                 </p>
+                {user?.plan !== "pro" && (
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-3 bg-[#0a0f1e] rounded-xl p-1 w-fit">
+                      <button
+                        onClick={() => setBillingCycle("monthly")}
+                        className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
+                          billingCycle === "monthly"
+                            ? "bg-gray-700/60 text-white"
+                            : "text-gray-400 hover:text-gray-300"
+                        }`}
+                      >
+                        Monthly
+                      </button>
+                      <button
+                        onClick={() => setBillingCycle("annual")}
+                        className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
+                          billingCycle === "annual"
+                            ? "bg-gray-700/60 text-white"
+                            : "text-gray-400 hover:text-gray-300"
+                        }`}
+                      >
+                        Annual
+                        <span className="ml-1.5 text-xs text-emerald-400">Save 20%</span>
+                      </button>
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <div>
+                        <div className="flex items-baseline gap-1">
+                          <span className="text-2xl font-bold text-white">
+                            {billingCycle === "annual" ? "\u20AC12" : "\u20AC15"}
+                          </span>
+                          <span className="text-gray-500 text-sm">/month</span>
+                        </div>
+                        {billingCycle === "annual" && (
+                          <p className="text-xs text-gray-500 mt-0.5">Billed \u20AC144/year</p>
+                        )}
+                      </div>
+                      <button
+                        onClick={() => handleUpgrade(billingCycle)}
+                        disabled={upgrading}
+                        className="bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-gray-950 px-6 py-3 rounded-xl font-semibold shadow-lg shadow-amber-500/20 transition-all disabled:opacity-50"
+                      >
+                        {upgrading ? "Loading..." : "Upgrade to Pro"}
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
             </FadeIn>

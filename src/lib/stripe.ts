@@ -24,8 +24,11 @@ export const PLANS = {
   pro: {
     name: "Pro",
     price: 15,
+    annualPrice: 144,
+    annualMonthly: 12,
     invoicesPerMonth: Infinity,
     priceId: process.env.STRIPE_PRO_PRICE_ID,
+    annualPriceId: process.env.STRIPE_PRO_ANNUAL_PRICE_ID,
   },
 } as const;
 

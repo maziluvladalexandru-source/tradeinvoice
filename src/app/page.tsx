@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import {
   FadeIn,
   StaggerChildren,
@@ -236,46 +236,53 @@ const featureItems: BentoItem[] = [
 /* ------------------------------------------------------------------ */
 /*  Pricing tiers                                                      */
 /* ------------------------------------------------------------------ */
-const pricingPlans = [
-  {
-    name: "Free",
-    price: "€0",
-    period: "forever",
-    description: "Get started with no commitment",
-    features: [
-      "20 invoices per month",
-      "Payment reminders",
-      "Professional PDF invoices",
-      "Client management",
-      "Expense tracking",
-      "Time tracking",
-    ],
-    cta: "Start Free",
-    popular: false,
-  },
-  {
-    name: "Pro",
-    price: "€15",
-    period: "/month",
-    description: "For full-time tradespeople",
-    features: [
-      "Unlimited invoices",
-      "Everything in Free",
-      "Multi-language support",
-      "Partial payment tracking",
-      "Priority email support",
-      "Financial reports",
-      "Invoice themes",
-    ],
-    cta: "Upgrade to Pro",
-    popular: true,
-  },
-];
+function getPricingPlans(annual: boolean) {
+  return [
+    {
+      name: "Free",
+      price: "\u20AC0",
+      period: "forever",
+      description: "Get started with no commitment",
+      subtext: "",
+      features: [
+        "20 invoices per month",
+        "Payment reminders",
+        "Professional PDF invoices",
+        "Client management",
+        "Expense tracking",
+        "Time tracking",
+      ],
+      cta: "Start Free",
+      popular: false,
+    },
+    {
+      name: "Pro",
+      price: annual ? "\u20AC12" : "\u20AC15",
+      period: "/month",
+      description: "For full-time tradespeople",
+      subtext: annual ? "Billed \u20AC144/year" : "",
+      features: [
+        "Unlimited invoices",
+        "Everything in Free",
+        "Multi-language support",
+        "Partial payment tracking",
+        "Priority email support",
+        "Financial reports",
+        "Invoice themes",
+      ],
+      cta: "Upgrade to Pro",
+      popular: true,
+    },
+  ];
+}
 
 /* ================================================================== */
 /*  PAGE                                                               */
 /* ================================================================== */
 export default function Home() {
+  const [annualBilling, setAnnualBilling] = useState(true);
+  const pricingPlans = getPricingPlans(annualBilling);
+
   const handleSmoothScroll = useCallback((e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
@@ -322,7 +329,7 @@ export default function Home() {
         name: "What happens after my 20 free invoices?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "You can upgrade to Pro for €15/month for unlimited invoices. Or just wait. Your free plan resets every month, 20 fresh invoices, no cost, no expiry.",
+          text: "You can upgrade to Pro for \u20AC15/month (or \u20AC12/month billed annually) for unlimited invoices. Or just wait. Your free plan resets every month, 20 fresh invoices, no cost, no expiry.",
         },
       },
     ],
@@ -679,6 +686,32 @@ export default function Home() {
             </div>
           </ScrollReveal>
 
+          <div className="flex justify-center mb-10">
+            <div className="flex items-center gap-3 bg-[#111827] border border-gray-700/50 rounded-xl p-1">
+              <button
+                onClick={() => setAnnualBilling(false)}
+                className={`px-5 py-2.5 rounded-lg text-sm font-semibold transition-all ${
+                  !annualBilling
+                    ? "bg-gray-700/60 text-white"
+                    : "text-gray-400 hover:text-gray-300"
+                }`}
+              >
+                Monthly
+              </button>
+              <button
+                onClick={() => setAnnualBilling(true)}
+                className={`px-5 py-2.5 rounded-lg text-sm font-semibold transition-all ${
+                  annualBilling
+                    ? "bg-gray-700/60 text-white"
+                    : "text-gray-400 hover:text-gray-300"
+                }`}
+              >
+                Annual
+                <span className="ml-1.5 text-xs text-emerald-400">Save 20%</span>
+              </button>
+            </div>
+          </div>
+
           <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
             {pricingPlans.map((plan, i) => (
               <FadeIn key={plan.name} delay={i * 0.15}>
@@ -694,9 +727,14 @@ export default function Home() {
                   )}
                   <h3 className="text-xl font-bold text-white mb-1">{plan.name}</h3>
                   <p className="text-gray-400 text-sm mb-6">{plan.description}</p>
-                  <div className="flex items-baseline gap-1 mb-8">
-                    <span className="text-4xl font-extrabold text-white">{plan.price}</span>
-                    <span className="text-gray-500 text-sm">{plan.period}</span>
+                  <div className="mb-8">
+                    <div className="flex items-baseline gap-1">
+                      <span className="text-4xl font-extrabold text-white">{plan.price}</span>
+                      <span className="text-gray-500 text-sm">{plan.period}</span>
+                    </div>
+                    {plan.subtext && (
+                      <p className="text-xs text-gray-500 mt-1">{plan.subtext}</p>
+                    )}
                   </div>
                   <ul className="space-y-3 mb-8">
                     {plan.features.map((feature) => (
@@ -758,7 +796,7 @@ export default function Home() {
                 </thead>
                 <tbody className="text-gray-300">
                   {[
-                    { label: "Price", us: "€15/mo", usColor: "text-amber-400 font-bold", c1: "From €40/mo", c2: "From €5.99/mo" },
+                    { label: "Price", us: "From \u20AC12/mo", usColor: "text-amber-400 font-bold", c1: "From \u20AC40/mo", c2: "From \u20AC5.99/mo" },
                     { label: "Per-user fees", us: "check", c1: "cross", c2: "cross" },
                     { label: "Unlimited invoices", us: "check", c1: "cross", c2: "cross" },
                     { label: "Auto reminders", us: "check", c1: "check", c2: "cross" },
@@ -828,7 +866,7 @@ export default function Home() {
               { q: "Is my data safe?", a: "Yes. All data is encrypted and payments go through Stripe. We never see or store any card details." },
               { q: "Can I cancel anytime?", a: "Yes. No contracts, no cancellation fees. Downgrade to free or cancel from your settings whenever you want." },
               { q: "Do my clients need to sign up to pay?", a: "No. They get an email with a link. They click it, see the invoice, and pay. No account needed." },
-              { q: "What happens after my 20 free invoices?", a: "You can upgrade to Pro for €15/month for unlimited invoices. Or just wait. Your free plan resets every month, 20 fresh invoices, no cost, no expiry." },
+              { q: "What happens after my 20 free invoices?", a: "You can upgrade to Pro for \u20AC15/month (or \u20AC12/month billed annually) for unlimited invoices. Or just wait. Your free plan resets every month, 20 fresh invoices, no cost, no expiry." },
             ].map((faq, i) => (
               <FadeIn key={faq.q} delay={i * 0.08}>
                 <details className="group bg-[#111827] border border-gray-700/50 rounded-xl hover:border-amber-500/30 transition-all duration-200">
