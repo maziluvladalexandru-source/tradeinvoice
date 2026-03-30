@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { verifyMagicLinkToken, createSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { logSecurityEvent } from "@/lib/security-log";
+import { sendWelcomeEmail } from "@/lib/resend";
 
 // Track recently used tokens to prevent replay attacks
 const usedTokens = new Map<string, number>();
@@ -42,6 +43,9 @@ export async function GET(req: NextRequest) {
     user = await prisma.user.create({
       data: { email },
     });
+    sendWelcomeEmail(email).catch((err) =>
+      console.error("Failed to send welcome email:", err)
+    );
   }
 
   const sessionToken = await createSession(user.id);

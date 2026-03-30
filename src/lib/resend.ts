@@ -378,6 +378,96 @@ export async function sendInvoicePaidNotification(
   });
 }
 
+export async function sendWelcomeEmail(email: string) {
+  await getResend().emails.send({
+    from: getFromEmail(),
+    to: email,
+    subject: "Welcome to TradeInvoice!",
+    html: emailLayout("TradeInvoice", `
+      <p style="margin: 0 0 8px; font-size: 20px; font-weight: 700; color: #ffffff;">Welcome aboard!</p>
+      <p style="margin: 0 0 24px; font-size: 16px; color: #a8a29e; line-height: 1.6;">
+        Thanks for joining TradeInvoice. You're all set to start sending professional invoices in minutes. Here's how to get started:
+      </p>
+
+      <!-- Steps -->
+      <table role="presentation" cellpadding="0" cellspacing="0" style="width: 100%; margin: 0 0 28px;">
+        <tr>
+          <td style="padding: 16px 20px; background-color: #292524; border-radius: 10px; margin-bottom: 8px;">
+            <table role="presentation" cellpadding="0" cellspacing="0" style="width: 100%;">
+              <tr>
+                <td style="width: 32px; vertical-align: top;">
+                  <span style="display: inline-block; width: 28px; height: 28px; background-color: #f59e0b; border-radius: 50%; text-align: center; line-height: 28px; font-size: 14px; font-weight: 800; color: #0c0a09;">1</span>
+                </td>
+                <td style="padding-left: 12px; vertical-align: middle;">
+                  <p style="margin: 0; font-size: 15px; color: #d6d3d1; font-weight: 600;">Add your business details in <a href="https://www.tradeinvoice.app/settings" style="color: #f59e0b; text-decoration: none; font-weight: 700;">Settings</a></p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr><td style="height: 8px;"></td></tr>
+        <tr>
+          <td style="padding: 16px 20px; background-color: #292524; border-radius: 10px;">
+            <table role="presentation" cellpadding="0" cellspacing="0" style="width: 100%;">
+              <tr>
+                <td style="width: 32px; vertical-align: top;">
+                  <span style="display: inline-block; width: 28px; height: 28px; background-color: #f59e0b; border-radius: 50%; text-align: center; line-height: 28px; font-size: 14px; font-weight: 800; color: #0c0a09;">2</span>
+                </td>
+                <td style="padding-left: 12px; vertical-align: middle;">
+                  <p style="margin: 0; font-size: 15px; color: #d6d3d1; font-weight: 600;">Create your first invoice</p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr><td style="height: 8px;"></td></tr>
+        <tr>
+          <td style="padding: 16px 20px; background-color: #292524; border-radius: 10px;">
+            <table role="presentation" cellpadding="0" cellspacing="0" style="width: 100%;">
+              <tr>
+                <td style="width: 32px; vertical-align: top;">
+                  <span style="display: inline-block; width: 28px; height: 28px; background-color: #f59e0b; border-radius: 50%; text-align: center; line-height: 28px; font-size: 14px; font-weight: 800; color: #0c0a09;">3</span>
+                </td>
+                <td style="padding-left: 12px; vertical-align: middle;">
+                  <p style="margin: 0; font-size: 15px; color: #d6d3d1; font-weight: 600;">Send it to a client</p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+
+      <!-- Free plan note -->
+      <table role="presentation" cellpadding="0" cellspacing="0" style="width: 100%; margin: 0 0 28px;">
+        <tr>
+          <td style="padding: 16px 20px; background-color: #1a1412; border-radius: 10px; border: 1px solid #292524;">
+            <p style="margin: 0; font-size: 14px; color: #a8a29e; line-height: 1.5;">
+              Your free plan includes <strong style="color: #f59e0b;">20 invoices per month</strong>. That's plenty to get rolling.
+            </p>
+          </td>
+        </tr>
+      </table>
+
+      <!-- CTA Button -->
+      <table role="presentation" cellpadding="0" cellspacing="0" style="width: 100%; margin: 0 0 12px;">
+        <tr>
+          <td style="text-align: center;">
+            <table role="presentation" cellpadding="0" cellspacing="0" style="margin: 0 auto;">
+              <tr>
+                <td style="background-color: #f59e0b; border-radius: 12px; text-align: center;">
+                  <a href="https://www.tradeinvoice.app/dashboard" style="display: inline-block; padding: 14px 36px; color: #0c0a09; font-size: 16px; font-weight: 700; text-decoration: none;">
+                    Go to Dashboard
+                  </a>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    `),
+  });
+}
+
 export async function sendPaymentReminder(
   to: string,
   clientName: string,
