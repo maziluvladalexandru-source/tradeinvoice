@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { requireUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { sendInvoicePaidNotification } from "@/lib/resend";
+import { sendPaymentReceivedEmail } from "@/lib/resend";
+import { formatCurrency } from "@/lib/utils";
 import { logSecurityEvent } from "@/lib/security-log";
 import { sanitizeString, VALID_INVOICE_STATUSES } from "@/lib/utils";
 
@@ -152,10 +153,11 @@ export async function PATCH(
 
     // Notify contractor when invoice is marked as paid
     if (data.status === "paid" && updated.user) {
-      sendInvoicePaidNotification(
+      sendPaymentReceivedEmail(
         updated.user.email,
         updated.invoiceNumber,
-        updated.client.name
+        updated.client.name,
+        formatCurrency(updated.total, updated.currency)
       ).catch(() => {});
     }
 

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { sendInvoiceViewedNotification } from "@/lib/resend";
+import { sendInvoiceViewedEmail } from "@/lib/resend";
 import { verifyPortalToken } from "@/lib/portal";
 
 export async function POST(
@@ -34,7 +34,7 @@ export async function POST(
     });
 
     // Notify contractor
-    sendInvoiceViewedNotification(
+    sendInvoiceViewedEmail(
       invoice.user.email,
       invoice.invoiceNumber,
       invoice.client.name

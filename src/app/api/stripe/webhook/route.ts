@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getStripeClient } from "@/lib/stripe";
 import { prisma } from "@/lib/prisma";
-import { sendInvoicePaidNotification } from "@/lib/resend";
+import { sendPaymentReceivedEmail } from "@/lib/resend";
+import { formatCurrency } from "@/lib/utils";
 import { logSecurityEvent } from "@/lib/security-log";
 import Stripe from "stripe";
 
@@ -61,10 +62,11 @@ export async function POST(req: NextRequest) {
             },
             include: { client: true, user: true },
           });
-          await sendInvoicePaidNotification(
+          await sendPaymentReceivedEmail(
             invoice.user.email,
             invoice.invoiceNumber,
-            invoice.client.name
+            invoice.client.name,
+            formatCurrency(invoice.total, invoice.currency)
           );
         } else {
           const invoice = await prisma.invoice.update({
@@ -72,10 +74,11 @@ export async function POST(req: NextRequest) {
             data: { status: "paid", paidAt: new Date() },
             include: { client: true, user: true },
           });
-          await sendInvoicePaidNotification(
+          await sendPaymentReceivedEmail(
             invoice.user.email,
             invoice.invoiceNumber,
-            invoice.client.name
+            invoice.client.name,
+            formatCurrency(invoice.total, invoice.currency)
           );
         }
       }
@@ -106,10 +109,11 @@ export async function POST(req: NextRequest) {
           data: { status: "paid", paidAt: new Date() },
           include: { client: true, user: true },
         });
-        await sendInvoicePaidNotification(
+        await sendPaymentReceivedEmail(
           invoice.user.email,
           invoice.invoiceNumber,
-          invoice.client.name
+          invoice.client.name,
+          formatCurrency(invoice.total, invoice.currency)
         );
       }
       break;

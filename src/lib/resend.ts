@@ -292,7 +292,7 @@ export async function sendOverdueInvoiceEmail(
   });
 }
 
-export async function sendInvoiceViewedNotification(
+export async function sendInvoiceViewedEmail(
   contractorEmail: string,
   invoiceNumber: string,
   clientName: string,
@@ -302,7 +302,7 @@ export async function sendInvoiceViewedNotification(
   await getResend().emails.send({
     from: getFromEmail(),
     to: contractorEmail,
-    subject: `Invoice ${invoiceNumber} was viewed by ${clientName}`,
+    subject: `Your invoice ${invoiceNumber} was viewed by ${clientName}`,
     html: emailLayout("TradeInvoice", `
       <table role="presentation" cellpadding="0" cellspacing="0" style="width: 100%;">
         <tr>
@@ -343,15 +343,16 @@ export async function sendInvoiceViewedNotification(
   });
 }
 
-export async function sendInvoicePaidNotification(
+export async function sendPaymentReceivedEmail(
   contractorEmail: string,
   invoiceNumber: string,
-  clientName: string
+  clientName: string,
+  amount: string
 ) {
   await getResend().emails.send({
     from: getFromEmail(),
     to: contractorEmail,
-    subject: `Invoice ${invoiceNumber} has been paid!`,
+    subject: `Payment received! ${clientName} paid ${amount} for invoice ${invoiceNumber}`,
     html: emailLayout("TradeInvoice", `
       <table role="presentation" cellpadding="0" cellspacing="0" style="width: 100%;">
         <tr>
@@ -368,8 +369,8 @@ export async function sendInvoicePaidNotification(
         <tr>
           <td style="text-align: center;">
             <h2 style="margin: 0 0 8px; font-size: 18px; font-weight: 700; color: #4ade80;">Payment Received!</h2>
-            <p style="margin: 0; font-size: 15px; color: #d6d3d1; line-height: 1.5;">
-              <strong style="color: #ffffff;">${escapeHtml(clientName)}</strong> has paid invoice <strong style="font-family: monospace; color: #f59e0b;">${escapeHtml(invoiceNumber)}</strong>.
+            <p style="margin: 0 0 4px; font-size: 15px; color: #d6d3d1; line-height: 1.5;">
+              <strong style="color: #ffffff;">${escapeHtml(clientName)}</strong> paid <strong style="color: #4ade80;">${escapeHtml(amount)}</strong> for invoice <strong style="font-family: monospace; color: #f59e0b;">${escapeHtml(invoiceNumber)}</strong>.
             </p>
           </td>
         </tr>
