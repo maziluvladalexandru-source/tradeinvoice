@@ -744,12 +744,16 @@ export default function InvoiceDetailPage() {
                 className="w-full px-4 py-3 rounded-xl border border-gray-700/50 text-lg focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-[#0a0f1e] text-white mb-6 transition-all duration-200 focus-glow [color-scheme:dark]"
               />
               {paymentAmount > 0 && paymentAmount < (invoice.total - (invoice.paidAmount || 0)) && (
-                <p className="text-sm text-amber-400 mb-4">This is a partial payment. Status will remain until fully paid.</p>
+                isPro ? (
+                  <p className="text-sm text-amber-400 mb-4">This is a partial payment. Status will remain until fully paid.</p>
+                ) : (
+                  <p className="text-sm text-red-400 mb-4">Partial payments require Pro plan. <button className="underline text-amber-400" onClick={() => { setShowPaidModal(false); setUpgradeFeature("Partial payment tracking"); setShowUpgradeModal(true); }}>Upgrade</button></p>
+                )
               )}
               <div className="flex gap-3">
                 <button
                   onClick={markPaid}
-                  disabled={markingPaid || !paidDate || paymentAmount <= 0}
+                  disabled={markingPaid || !paidDate || paymentAmount <= 0 || (!isPro && paymentAmount > 0 && paymentAmount < (invoice.total - (invoice.paidAmount || 0)))}
                   className="flex-1 bg-gradient-to-r from-amber-500 to-amber-400 text-gray-950 py-3 rounded-xl font-semibold hover:from-amber-400 hover:to-amber-300 disabled:opacity-50 transition-all duration-200 shadow-lg shadow-amber-500/20 hover:shadow-xl hover:shadow-amber-500/30 btn-press"
                 >
                   {markingPaid ? "Saving..." : "Confirm Payment"}

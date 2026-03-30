@@ -64,6 +64,10 @@ export async function PATCH(
       if (isNaN(paidAmount) || paidAmount < 0) {
         return NextResponse.json({ error: "Invalid paidAmount" }, { status: 400 });
       }
+      // Partial payments are Pro only — free users can only mark as fully paid
+      if (user.plan !== "pro" && paidAmount > 0 && paidAmount < invoice.total) {
+        return NextResponse.json({ error: "Partial payments require a Pro plan" }, { status: 403 });
+      }
       data.paidAmount = paidAmount;
     }
     if (body.description !== undefined) {

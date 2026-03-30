@@ -1342,12 +1342,18 @@ function NewInvoiceForm() {
                 <div className="mt-3 grid grid-cols-2 gap-3">
                   <div>
                     <label className="block text-xs font-medium text-gray-400 mb-1">
-                      PDF Language
+                      PDF Language {!isPro && <span className="text-amber-400 text-[10px] ml-1 cursor-pointer" onClick={() => showProPrompt("Multi-language invoices")}>PRO</span>}
                     </label>
                     <select
-                      value={language}
-                      onChange={(e) => setLanguage(e.target.value)}
-                      className="w-full px-3 py-2.5 rounded-xl border border-gray-700/50 text-sm focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 transition-all duration-200 outline-none bg-[#0a0f1e]/50 text-white focus-glow"
+                      value={isPro ? language : "en"}
+                      onChange={(e) => {
+                        if (!isPro && e.target.value !== "en") {
+                          showProPrompt("Multi-language invoices");
+                          return;
+                        }
+                        setLanguage(e.target.value);
+                      }}
+                      className={`w-full px-3 py-2.5 rounded-xl border border-gray-700/50 text-sm focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 transition-all duration-200 outline-none bg-[#0a0f1e]/50 text-white focus-glow ${!isPro ? "opacity-60" : ""}`}
                     >
                       <option value="en">English</option>
                       <option value="nl">Dutch (Nederlands)</option>
