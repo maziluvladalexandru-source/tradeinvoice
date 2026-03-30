@@ -87,15 +87,15 @@ export default function BulkInvoiceActions({
         }`}
       >
         <div className="max-w-4xl mx-auto px-4 pb-4 md:pb-6">
-          <div className="bg-white/5 border border-white/10 rounded-2xl shadow-2xl shadow-black/50 px-4 py-3 flex items-center gap-3 flex-wrap">
+          <div className="bg-[#111827]/95 backdrop-blur-xl border border-gray-700/50 rounded-2xl shadow-2xl shadow-black/50 px-4 py-3 flex items-center gap-3 flex-wrap animate-slide-up">
             {/* Count + deselect */}
             <div className="flex items-center gap-2 mr-auto">
-              <span className="text-sm font-semibold text-white">
+              <span className="text-sm font-semibold text-white tabular-nums">
                 {count} invoice{count !== 1 ? "s" : ""} selected
               </span>
               <button
                 onClick={clearSelection}
-                className="p-1 rounded-md text-gray-400 hover:text-white hover:bg-white/10 transition-colors"
+                className="p-1 rounded-lg text-gray-400 hover:text-white hover:bg-white/10 transition-all duration-200"
                 title="Deselect all"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -108,7 +108,7 @@ export default function BulkInvoiceActions({
             <button
               onClick={() => bulkAction("mark-paid")}
               disabled={loading === "mark-paid"}
-              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 border border-emerald-500/30 text-sm font-semibold transition-colors disabled:opacity-50"
+              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-emerald-500/15 text-emerald-400 hover:bg-emerald-500/25 ring-1 ring-emerald-500/30 text-sm font-semibold transition-all duration-200 disabled:opacity-50 btn-press"
             >
               {loading === "mark-paid" ? (
                 <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
@@ -127,7 +127,7 @@ export default function BulkInvoiceActions({
             <button
               onClick={() => bulkAction("send-reminders")}
               disabled={loading === "send-reminders"}
-              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-amber-500/20 text-amber-400 hover:bg-amber-500/30 border border-amber-500/30 text-sm font-semibold transition-colors disabled:opacity-50"
+              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-amber-500/15 text-amber-400 hover:bg-amber-500/25 ring-1 ring-amber-500/30 text-sm font-semibold transition-all duration-200 disabled:opacity-50 btn-press"
             >
               {loading === "send-reminders" ? (
                 <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
@@ -145,7 +145,7 @@ export default function BulkInvoiceActions({
             {/* Download PDFs */}
             <button
               onClick={handleDownloadPdfs}
-              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 border border-blue-500/30 text-sm font-semibold transition-colors"
+              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-blue-500/15 text-blue-400 hover:bg-blue-500/25 ring-1 ring-blue-500/30 text-sm font-semibold transition-all duration-200 btn-press"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -157,7 +157,7 @@ export default function BulkInvoiceActions({
             <button
               onClick={() => setShowDeleteConfirm(true)}
               disabled={loading === "delete"}
-              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-red-500/20 text-red-400 hover:bg-red-500/30 border border-red-500/30 text-sm font-semibold transition-colors disabled:opacity-50"
+              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-red-500/15 text-red-400 hover:bg-red-500/25 ring-1 ring-red-500/30 text-sm font-semibold transition-all duration-200 disabled:opacity-50 btn-press"
             >
               {loading === "delete" ? (
                 <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
@@ -177,10 +177,10 @@ export default function BulkInvoiceActions({
 
       {/* Delete confirmation modal */}
       {showDeleteConfirm && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-sm">
-          <div className="bg-white/5 border border-white/10 rounded-2xl p-6 max-w-sm mx-4 shadow-2xl">
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/70 backdrop-blur-md animate-fade-in">
+          <div className="bg-[#111827] border border-gray-700/50 rounded-2xl p-6 max-w-sm mx-4 shadow-2xl shadow-black/40 animate-slide-up">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-full bg-red-500/15 ring-1 ring-red-500/30 flex items-center justify-center">
                 <svg className="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
                 </svg>
@@ -193,14 +193,14 @@ export default function BulkInvoiceActions({
             <div className="flex gap-3 justify-end">
               <button
                 onClick={() => setShowDeleteConfirm(false)}
-                className="px-4 py-2 rounded-xl text-sm font-semibold text-gray-300 hover:bg-white/5 transition-colors"
+                className="px-4 py-2 rounded-xl text-sm font-semibold text-gray-300 hover:bg-white/5 transition-all duration-200"
               >
                 Cancel
               </button>
               <button
                 onClick={() => bulkAction("delete")}
                 disabled={loading === "delete"}
-                className="px-4 py-2 rounded-xl text-sm font-semibold bg-red-500 text-white hover:bg-red-600 transition-colors disabled:opacity-50"
+                className="px-4 py-2 rounded-xl text-sm font-semibold bg-red-500 text-white hover:bg-red-400 transition-all duration-200 disabled:opacity-50 shadow-lg shadow-red-500/20 btn-press"
               >
                 {loading === "delete" ? "Deleting..." : "Delete"}
               </button>

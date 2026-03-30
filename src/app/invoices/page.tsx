@@ -165,16 +165,16 @@ export default function InvoicesListPage() {
   return (
     <div className="min-h-screen bg-[#0a0f1e] pb-24 md:pb-0 premium-glow">
       <Navbar />
-      <main className="max-w-6xl mx-auto px-4 py-8">
+      <main className="max-w-6xl mx-auto px-4 py-8 animate-fade-in">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
           <div>
-            <h1 className="text-2xl font-bold text-white">Invoices</h1>
+            <h1 className="text-3xl font-bold text-white tracking-tight">Invoices</h1>
             <div className="w-16 h-1 bg-gradient-to-r from-amber-500 to-amber-300 rounded-full mt-2" />
           </div>
           <Link
             href="/invoices/new"
-            className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-gray-950 px-5 py-2.5 rounded-xl font-semibold text-sm shadow-lg shadow-amber-500/20 transition-all"
+            className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-gray-950 px-5 py-2.5 rounded-xl font-semibold text-sm shadow-lg shadow-amber-500/20 transition-all duration-200 hover:shadow-xl hover:shadow-amber-500/30 hover:-translate-y-0.5 btn-press"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 4v16m8-8H4" />
@@ -194,13 +194,13 @@ export default function InvoicesListPage() {
               placeholder="Search by invoice number or client name..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-700/50 text-sm focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-[#111827] text-white placeholder-gray-500 transition-all"
+              className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-700/50 text-sm focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-[#111827] text-white placeholder-gray-500 transition-all duration-200 focus-glow"
             />
           </div>
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="px-4 py-2.5 rounded-xl border border-gray-700/50 text-sm focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-[#111827] text-white transition-all"
+            className="px-4 py-2.5 rounded-xl border border-gray-700/50 text-sm focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-[#111827] text-white transition-all duration-200"
           >
             <option value="all">All statuses</option>
             <option value="draft">Draft</option>
@@ -228,14 +228,19 @@ export default function InvoicesListPage() {
         </div>
 
         {/* Invoice list */}
-        <div className="bg-[#111827] backdrop-blur-sm rounded-2xl border border-gray-700/50 overflow-hidden">
+        <div className="bg-[#111827] backdrop-blur-sm rounded-2xl border border-gray-700/50 overflow-hidden shadow-xl shadow-black/20">
           {loading ? (
-            <div className="p-12 text-center">
-              <div className="w-8 h-8 border-2 border-amber-500 border-t-transparent rounded-full animate-spin mx-auto" />
+            <div className="p-16 text-center">
+              <div className="w-10 h-10 border-2 border-amber-500/30 border-t-amber-500 rounded-full animate-spin mx-auto" />
               <p className="text-gray-400 mt-4 text-sm">Loading invoices...</p>
             </div>
           ) : filtered.length === 0 ? (
-            <div className="p-12 text-center">
+            <div className="p-16 text-center">
+              <div className="w-16 h-16 rounded-2xl bg-gray-800/50 flex items-center justify-center mx-auto mb-4">
+                <svg className="w-8 h-8 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                </svg>
+              </div>
               <p className="text-gray-400 text-sm">
                 {invoices.length === 0
                   ? "No invoices yet. Create your first invoice to get started."
@@ -243,11 +248,12 @@ export default function InvoicesListPage() {
               </p>
             </div>
           ) : (
-            <div className="space-y-1 p-1">
-              {filtered.map((invoice) => (
+            <div className="space-y-1 p-1.5">
+              {filtered.map((invoice, idx) => (
                 <div
                   key={invoice.id}
-                  className={`p-3 sm:p-4 bg-[#111827] hover:bg-[#1a2235] transition-all rounded-xl border border-gray-700/30 hover:border-amber-500/30 border-l-4 ${statusBorder[invoice.status] || "border-l-gray-600"}`}
+                  className={`group p-3 sm:p-4 bg-[#111827] hover:bg-[#1a2235] transition-all duration-200 rounded-xl border border-gray-700/30 hover:border-amber-500/30 border-l-4 ${statusBorder[invoice.status] || "border-l-gray-600"} stagger-item hover:shadow-lg hover:shadow-black/10`}
+                  style={{ animationDelay: `${idx * 30}ms` }}
                 >
                   {/* Desktop layout - fixed column widths for alignment */}
                   <div className="hidden sm:grid items-center gap-3" style={{ gridTemplateColumns: "1fr 110px 90px 110px 120px" }}>
@@ -286,26 +292,26 @@ export default function InvoicesListPage() {
                       )}
                     </div>
 
-                    <div className="flex items-center justify-end gap-1">
-                      <Link href={`/invoices/${invoice.id}`} className="p-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-colors" title="View">
+                    <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                      <Link href={`/invoices/${invoice.id}`} className="p-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-all duration-200" title="View">
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                         </svg>
                       </Link>
-                      <a href={`/api/invoices/${invoice.id}/pdf`} target="_blank" className="p-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-colors" title="Download PDF">
+                      <a href={`/api/invoices/${invoice.id}/pdf`} target="_blank" className="p-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-all duration-200" title="Download PDF">
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
                         </svg>
                       </a>
                       {invoice.status !== "paid" && (
-                        <button onClick={() => handleMarkPaid(invoice.id)} disabled={markingPaid === invoice.id} className="p-1.5 rounded-lg text-gray-400 hover:text-emerald-400 hover:bg-white/5 transition-colors disabled:opacity-50" title="Mark as paid">
+                        <button onClick={() => handleMarkPaid(invoice.id)} disabled={markingPaid === invoice.id} className="p-1.5 rounded-lg text-gray-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-all duration-200 disabled:opacity-50" title="Mark as paid">
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                           </svg>
                         </button>
                       )}
-                      <button onClick={() => handleDuplicate(invoice.id)} disabled={duplicating === invoice.id} className="p-1.5 rounded-lg text-gray-400 hover:text-amber-400 hover:bg-white/5 transition-colors disabled:opacity-50" title="Duplicate">
+                      <button onClick={() => handleDuplicate(invoice.id)} disabled={duplicating === invoice.id} className="p-1.5 rounded-lg text-gray-400 hover:text-amber-400 hover:bg-amber-500/10 transition-all duration-200 disabled:opacity-50" title="Duplicate">
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.5a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5a3.375 3.375 0 00-3.375-3.375H9.75" />
                         </svg>

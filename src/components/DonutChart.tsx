@@ -33,7 +33,7 @@ export default function DonutChart({
   const total = segments.reduce((sum, s) => sum + s.value, 0);
   if (total === 0) {
     return (
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center animate-fade-in">
         <svg width={size} height={size} viewBox="0 0 200 200">
           <circle
             cx="100"
@@ -89,13 +89,14 @@ export default function DonutChart({
   });
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center animate-fade-in">
       <svg
         width={size}
         height={size}
         viewBox="0 0 200 200"
-        className="transform -rotate-90"
+        className="transform -rotate-90 drop-shadow-lg"
       >
+        {/* Background ring with subtle glow */}
         <circle
           cx="100"
           cy="100"
@@ -103,6 +104,7 @@ export default function DonutChart({
           fill="none"
           stroke="#1f2937"
           strokeWidth="24"
+          className="opacity-60"
         />
         {arcs.map((arc) => (
           <circle
@@ -112,14 +114,15 @@ export default function DonutChart({
             r={radius}
             fill="none"
             stroke={arc.color}
-            strokeWidth="24"
+            strokeWidth={hoveredIndex === arc.index ? "28" : "24"}
             strokeDasharray={mounted ? arc.dashArray : `0 ${circumference}`}
             strokeDashoffset={arc.dashOffset}
             strokeLinecap="butt"
             className="transition-all duration-700 ease-out"
             style={{
-              opacity: hoveredIndex === null || hoveredIndex === arc.index ? 1 : 0.4,
+              opacity: hoveredIndex === null || hoveredIndex === arc.index ? 1 : 0.3,
               cursor: "pointer",
+              filter: hoveredIndex === arc.index ? `drop-shadow(0 0 6px ${arc.color}40)` : "none",
             }}
             onMouseEnter={() => setHoveredIndex(arc.index)}
             onMouseLeave={() => setHoveredIndex(null)}
@@ -154,15 +157,15 @@ export default function DonutChart({
         {arcs.map((arc) => (
           <div
             key={arc.label}
-            className="flex items-center gap-2 text-sm cursor-pointer transition-opacity"
+            className="flex items-center gap-2 text-sm cursor-pointer rounded-lg px-2 py-1 -mx-2 hover:bg-white/[0.03] transition-all duration-200"
             style={{
-              opacity: hoveredIndex === null || hoveredIndex === arc.index ? 1 : 0.4,
+              opacity: hoveredIndex === null || hoveredIndex === arc.index ? 1 : 0.35,
             }}
             onMouseEnter={() => setHoveredIndex(arc.index)}
             onMouseLeave={() => setHoveredIndex(null)}
           >
             <span
-              className="w-2.5 h-2.5 rounded-full shrink-0"
+              className="w-2.5 h-2.5 rounded-full shrink-0 ring-2 ring-offset-1 ring-offset-[#111827]"
               style={{ backgroundColor: arc.color }}
             />
             <span className="text-gray-400 flex-1 truncate">{arc.label}</span>

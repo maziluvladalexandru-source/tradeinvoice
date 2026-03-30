@@ -81,11 +81,11 @@ function FlagBE() {
 function InvoiceMockup() {
   return (
     <div className="relative animate-float">
-      <div className="w-[280px] md:w-[320px] bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-6 shadow-2xl shadow-amber-500/10">
+      <div className="w-[280px] md:w-[320px] bg-[#111827]/80 backdrop-blur-md border border-gray-700/50 rounded-2xl p-6 shadow-2xl shadow-amber-500/10 hover:border-amber-500/30 transition-all duration-300">
         {/* Header */}
         <div className="flex items-center justify-between mb-5">
           <div>
-            <div className="text-xs text-gray-400 uppercase tracking-wider">Invoice</div>
+            <div className="text-xs text-gray-500 uppercase tracking-wider">Invoice</div>
             <div className="text-white font-bold text-lg">#INV-0042</div>
           </div>
           <div className="bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 text-xs font-bold px-3 py-1 rounded-full">
@@ -95,24 +95,24 @@ function InvoiceMockup() {
         {/* Line items */}
         <div className="space-y-3 mb-5">
           <div className="flex justify-between text-sm">
-            <span className="text-gray-300">Kitchen renovation</span>
+            <span className="text-gray-400">Kitchen renovation</span>
             <span className="text-white font-medium">€2,400</span>
           </div>
           <div className="flex justify-between text-sm">
-            <span className="text-gray-300">Materials</span>
+            <span className="text-gray-400">Materials</span>
             <span className="text-white font-medium">€850</span>
           </div>
           <div className="flex justify-between text-sm">
-            <span className="text-gray-300">Plumbing work</span>
+            <span className="text-gray-400">Plumbing work</span>
             <span className="text-white font-medium">€600</span>
           </div>
         </div>
-        <div className="border-t border-white/10 pt-3">
-          <div className="flex justify-between text-sm text-gray-400 mb-1">
+        <div className="border-t border-gray-700/50 pt-3">
+          <div className="flex justify-between text-sm text-gray-500 mb-1">
             <span>Subtotal</span>
             <span>€3,850</span>
           </div>
-          <div className="flex justify-between text-sm text-gray-400 mb-2">
+          <div className="flex justify-between text-sm text-gray-500 mb-2">
             <span>VAT 21%</span>
             <span>€808.50</span>
           </div>
@@ -243,34 +243,34 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen overflow-x-hidden">
+    <div className="min-h-screen overflow-x-hidden bg-[#0a0f1e]">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
       {/* ═══════════════ HEADER ═══════════════ */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-[#0f172a]/80 backdrop-blur-md border-b border-white/5">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-[#0a0f1e]/80 backdrop-blur-xl border-b border-gray-700/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
-          <Link href="/" className="text-2xl font-bold text-amber-400 tracking-tight">
+          <Link href="/" className="text-2xl font-bold text-amber-400 tracking-tight hover:text-amber-300 transition-colors">
             TradeInvoice
           </Link>
           <div className="flex items-center gap-4 sm:gap-6">
             <Link
               href="/blog"
-              className="text-gray-400 hover:text-white transition-colors font-medium text-sm sm:text-base"
+              className="text-gray-400 hover:text-amber-400 transition-colors font-medium text-sm sm:text-base"
             >
               Blog
             </Link>
             <a
               href="#pricing"
               onClick={(e) => handleSmoothScroll(e, "pricing")}
-              className="hidden sm:block text-gray-400 hover:text-white transition-colors font-medium text-sm sm:text-base"
+              className="hidden sm:block text-gray-400 hover:text-amber-400 transition-colors font-medium text-sm sm:text-base"
             >
               Pricing
             </a>
             <Link
               href="/auth/login"
-              className="bg-amber-500 text-gray-900 px-5 py-2.5 rounded-xl font-semibold text-sm sm:text-base hover:bg-amber-400 transition-all hover:shadow-lg hover:shadow-amber-500/25"
+              className="bg-gradient-to-r from-amber-500 to-amber-400 text-gray-950 px-5 py-2.5 rounded-xl font-semibold text-sm sm:text-base hover:from-amber-400 hover:to-amber-300 transition-all duration-200 shadow-lg shadow-amber-500/20 hover:shadow-amber-500/30 hover:scale-[1.02]"
             >
               Sign In
             </Link>
@@ -281,8 +281,8 @@ export default function Home() {
       {/* ═══════════════ 1. HERO ═══════════════ */}
       <section
         ref={heroRef}
-        className="relative min-h-screen flex items-center pt-20 overflow-hidden"
-        style={{ background: "linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%)" }}
+        className="relative min-h-screen flex items-center pt-20 overflow-hidden premium-glow"
+        style={{ background: "linear-gradient(135deg, #0a0f1e 0%, #1e1b4b 50%, #0a0f1e 100%)" }}
       >
         {/* Background grid pattern */}
         <div
@@ -300,7 +300,7 @@ export default function Home() {
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             {/* Left: copy */}
             <div className="text-center lg:text-left">
-              <div className="inline-block bg-amber-500/10 border border-amber-500/30 text-amber-400 text-sm font-semibold px-4 py-1.5 rounded-full mb-6">
+              <div className="inline-block bg-amber-500/10 border border-amber-500/30 text-amber-400 text-sm font-semibold px-4 py-1.5 rounded-full mb-6 animate-fade-in">
                 Built for tradespeople, not accountants
               </div>
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-[1.1] mb-6">
@@ -317,7 +317,7 @@ export default function Home() {
               <div className="flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start">
                 <Link
                   href="/auth/login"
-                  className="inline-block bg-amber-500 text-gray-900 px-8 py-4 rounded-xl font-bold text-lg hover:bg-amber-400 transition-all shadow-lg shadow-amber-500/25 hover:shadow-amber-500/40 hover:scale-[1.02] animate-pulse-glow"
+                  className="inline-block bg-gradient-to-r from-amber-500 to-amber-400 text-gray-950 px-8 py-4 rounded-xl font-bold text-lg hover:from-amber-400 hover:to-amber-300 transition-all duration-200 shadow-lg shadow-amber-500/25 hover:shadow-amber-500/40 hover:scale-[1.02] animate-pulse-glow btn-press"
                 >
                   Start Free - 20 Invoices/Month
                 </Link>
@@ -333,7 +333,7 @@ export default function Home() {
       </section>
 
       {/* ═══════════════ 2. TRUST BAR ═══════════════ */}
-      <section className="bg-[#0f172a] border-y border-white/5">
+      <section className="bg-[#0a0f1e] border-y border-gray-700/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
           <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-10">
             <span className="text-gray-500 text-sm font-medium">Available across Europe</span>
@@ -360,17 +360,24 @@ export default function Home() {
       </section>
 
       {/* ═══════════════ 3. HOW IT WORKS ═══════════════ */}
-      <section className="bg-[#faf9f6] py-20 sm:py-28" style={{ backgroundImage: "radial-gradient(circle, #f59e0b10 1px, transparent 1px)", backgroundSize: "32px 32px" }}>
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+      <section className="bg-[#0a0f1e] py-20 sm:py-28 relative">
+        <div
+          className="absolute inset-0 opacity-[0.02]"
+          style={{
+            backgroundImage: "radial-gradient(circle, #f59e0b 1px, transparent 1px)",
+            backgroundSize: "32px 32px",
+          }}
+        />
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
           <Reveal>
             <div className="text-center mb-16">
-              <span className="inline-block bg-amber-100 text-amber-700 text-sm font-semibold px-4 py-1.5 rounded-full mb-4">
+              <span className="inline-block bg-amber-500/10 border border-amber-500/30 text-amber-400 text-sm font-semibold px-4 py-1.5 rounded-full mb-4">
                 HOW IT WORKS
               </span>
-              <h2 className="text-3xl sm:text-4xl font-bold text-[#1e293b] mb-3">
+              <h2 className="text-3xl sm:text-4xl font-bold text-white mb-3">
                 Three steps. That&apos;s it.
               </h2>
-              <p className="text-gray-500 max-w-xl mx-auto">
+              <p className="text-gray-400 max-w-xl mx-auto">
                 From creating your invoice to getting paid, the whole process takes minutes.
               </p>
             </div>
@@ -378,7 +385,7 @@ export default function Home() {
 
           <div className="grid md:grid-cols-3 gap-8 relative">
             {/* Connecting line (desktop only) */}
-            <div className="hidden md:block absolute top-16 left-[20%] right-[20%] h-0.5 bg-gradient-to-r from-amber-300 via-amber-400 to-emerald-400" />
+            <div className="hidden md:block absolute top-16 left-[20%] right-[20%] h-0.5 bg-gradient-to-r from-amber-500/40 via-amber-400/40 to-emerald-400/40" />
 
             {[
               {
@@ -386,7 +393,7 @@ export default function Home() {
                 title: "Create Invoice in 60 Seconds",
                 desc: "Add your client, line items, and due date. A professional PDF gets generated automatically. No templates needed.",
                 icon: (
-                  <svg className="w-7 h-7 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} aria-hidden="true">
+                  <svg className="w-7 h-7 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
                   </svg>
                 ),
@@ -396,7 +403,7 @@ export default function Home() {
                 title: "Send to Client Instantly",
                 desc: "One click sends a clean invoice straight to your client's inbox. Reminders follow up automatically at 7 days, 3 days, and when overdue.",
                 icon: (
-                  <svg className="w-7 h-7 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} aria-hidden="true">
+                  <svg className="w-7 h-7 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
                   </svg>
                 ),
@@ -406,20 +413,20 @@ export default function Home() {
                 title: "Get Paid & Get Notified",
                 desc: "Your client pays online. You get an email the moment the money lands. No more guessing who paid and who didn't.",
                 icon: (
-                  <svg className="w-7 h-7 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} aria-hidden="true">
+                  <svg className="w-7 h-7 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z" />
                   </svg>
                 ),
               },
             ].map((item, i) => (
               <Reveal key={item.step} className={`delay-${i * 100}`}>
-                <div className="relative bg-white rounded-2xl p-8 text-center shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
-                  <div className="mx-auto w-14 h-14 bg-amber-50 border-2 border-amber-300 rounded-full flex items-center justify-center text-lg font-bold text-amber-600 mb-5 relative z-10">
+                <div className="relative bg-[#111827] border border-gray-700/50 rounded-2xl p-8 text-center hover:border-amber-500/30 transition-all duration-200 hover:shadow-lg hover:shadow-amber-500/5">
+                  <div className="mx-auto w-14 h-14 bg-amber-500/10 border-2 border-amber-500/30 rounded-full flex items-center justify-center text-lg font-bold text-amber-400 mb-5 relative z-10">
                     {item.step}
                   </div>
                   <div className="flex justify-center mb-4">{item.icon}</div>
-                  <h3 className="text-lg font-semibold text-[#1e293b] mb-2">{item.title}</h3>
-                  <p className="text-gray-500 text-sm leading-relaxed">{item.desc}</p>
+                  <h3 className="text-lg font-semibold text-white mb-2">{item.title}</h3>
+                  <p className="text-gray-400 text-sm leading-relaxed">{item.desc}</p>
                 </div>
               </Reveal>
             ))}
@@ -428,7 +435,7 @@ export default function Home() {
       </section>
 
       {/* ═══════════════ 4. FEATURES GRID ═══════════════ */}
-      <section className="bg-[#0f172a] py-20 sm:py-28">
+      <section className="bg-[#0a0f1e] py-20 sm:py-28 border-t border-gray-700/20">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <Reveal>
             <div className="text-center mb-16">
@@ -484,8 +491,8 @@ export default function Home() {
               },
             ].map((feature, i) => (
               <Reveal key={feature.title} className={`delay-${(i % 3) * 100}`}>
-                <div className="group bg-white/[0.03] backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:border-amber-500/30 transition-all duration-300 hover:bg-white/[0.06] h-full">
-                  <div className={`${feature.color} mb-4`}>{feature.icon}</div>
+                <div className="group bg-[#111827] border border-gray-700/50 rounded-2xl p-6 hover:border-amber-500/30 transition-all duration-200 hover:shadow-lg hover:shadow-amber-500/5 h-full">
+                  <div className={`${feature.color} mb-4 w-12 h-12 rounded-xl bg-white/[0.03] border border-gray-700/50 flex items-center justify-center group-hover:border-amber-500/30 transition-colors`}>{feature.icon}</div>
                   <h3 className="text-lg font-semibold text-white mb-2">{feature.title}</h3>
                   <p className="text-gray-400 text-sm leading-relaxed">{feature.desc}</p>
                 </div>
@@ -496,14 +503,21 @@ export default function Home() {
       </section>
 
       {/* ═══════════════ 5. SOCIAL PROOF ═══════════════ */}
-      <section className="bg-[#f8fafc] py-20 sm:py-28" style={{ backgroundImage: "radial-gradient(circle, #f59e0b10 1px, transparent 1px)", backgroundSize: "32px 32px" }}>
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+      <section className="bg-[#0a0f1e] py-20 sm:py-28 border-t border-gray-700/20 relative">
+        <div
+          className="absolute inset-0 opacity-[0.02]"
+          style={{
+            backgroundImage: "radial-gradient(circle, #f59e0b 1px, transparent 1px)",
+            backgroundSize: "32px 32px",
+          }}
+        />
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
           <Reveal>
             <div className="text-center mb-16">
-              <h2 className="text-3xl sm:text-4xl font-bold text-[#1e293b] mb-3">
+              <h2 className="text-3xl sm:text-4xl font-bold text-white mb-3">
                 Built for Tradespeople Across Europe
               </h2>
-              <p className="text-gray-500 max-w-xl mx-auto">
+              <p className="text-gray-400 max-w-xl mx-auto">
                 TradeInvoice is designed for tradespeople across Europe.
               </p>
             </div>
@@ -512,21 +526,21 @@ export default function Home() {
           <Reveal>
             <div className="grid sm:grid-cols-3 gap-8 mb-16">
               {[
-                { number: "4", label: "Countries Supported", color: "text-amber-500" },
-                { number: "60s", label: "Average Invoice Creation Time", color: "text-emerald-500" },
-                { number: "€15", label: "Flat Monthly Price", color: "text-blue-500" },
+                { number: "4", label: "Countries Supported", color: "text-amber-400" },
+                { number: "60s", label: "Average Invoice Creation Time", color: "text-emerald-400" },
+                { number: "€15", label: "Flat Monthly Price", color: "text-blue-400" },
               ].map((stat) => (
-                <div key={stat.label} className="text-center">
+                <div key={stat.label} className="text-center bg-[#111827] border border-gray-700/50 rounded-2xl p-8 hover:border-amber-500/30 transition-all duration-200">
                   <div className={`text-4xl sm:text-5xl font-extrabold ${stat.color} mb-2`}>{stat.number}</div>
-                  <div className="text-gray-500 font-medium">{stat.label}</div>
+                  <div className="text-gray-400 font-medium">{stat.label}</div>
                 </div>
               ))}
             </div>
           </Reveal>
 
           <Reveal>
-            <div className="max-w-2xl mx-auto bg-white rounded-2xl p-8 sm:p-10 shadow-sm border border-gray-100 text-center">
-              <p className="text-lg sm:text-xl text-[#1e293b] font-medium leading-relaxed">
+            <div className="max-w-2xl mx-auto bg-gradient-to-r from-amber-500/10 to-amber-600/5 border border-amber-500/20 rounded-2xl p-8 sm:p-10 text-center">
+              <p className="text-lg sm:text-xl text-white font-medium leading-relaxed">
                 Built for tradespeople. Simple, honest, no nonsense.
               </p>
             </div>
@@ -537,8 +551,8 @@ export default function Home() {
       {/* ═══════════════ 6. PRICING ═══════════════ */}
       <section
         id="pricing"
-        className="py-20 sm:py-28"
-        style={{ background: "linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%)" }}
+        className="py-20 sm:py-28 border-t border-gray-700/20"
+        style={{ background: "linear-gradient(135deg, #0a0f1e 0%, #1e1b4b 50%, #0a0f1e 100%)" }}
       >
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <Reveal>
@@ -558,7 +572,7 @@ export default function Home() {
           <div className="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
             {/* Free */}
             <Reveal>
-              <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8 h-full flex flex-col">
+              <div className="bg-[#111827] border border-gray-700/50 rounded-2xl p-8 h-full flex flex-col hover:border-gray-600/50 transition-all duration-200">
                 <div className="text-center mb-8">
                   <h3 className="text-xl font-bold text-white mb-2">Free</h3>
                   <div className="flex items-baseline justify-center gap-1">
@@ -581,7 +595,7 @@ export default function Home() {
                 </ul>
                 <Link
                   href="/auth/login"
-                  className="block w-full bg-white/10 text-white py-3.5 rounded-xl font-semibold text-center hover:bg-white/20 transition-all border border-white/10"
+                  className="block w-full bg-white/5 text-white py-3.5 rounded-xl font-semibold text-center hover:bg-white/10 transition-all duration-200 border border-gray-700/50 hover:border-gray-600/50"
                 >
                   Get Started
                 </Link>
@@ -590,8 +604,8 @@ export default function Home() {
 
             {/* Pro */}
             <Reveal>
-              <div className="relative bg-amber-500/[0.07] backdrop-blur-sm border-2 border-amber-500/50 rounded-2xl p-8 h-full flex flex-col shadow-lg shadow-amber-500/10">
-                <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-amber-500 to-amber-400 text-gray-900 text-xs font-bold px-4 py-1.5 rounded-full shadow-lg">
+              <div className="relative bg-amber-500/[0.07] border-2 border-amber-500/50 rounded-2xl p-8 h-full flex flex-col shadow-lg shadow-amber-500/10 hover:shadow-amber-500/20 transition-all duration-200">
+                <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-amber-500 to-amber-400 text-gray-950 text-xs font-bold px-4 py-1.5 rounded-full shadow-lg shadow-amber-500/20">
                   MOST POPULAR
                 </span>
                 <div className="text-center mb-8">
@@ -617,7 +631,7 @@ export default function Home() {
                 </ul>
                 <Link
                   href="/auth/login"
-                  className="block w-full bg-gradient-to-r from-amber-500 to-amber-400 text-gray-900 py-3.5 rounded-xl font-bold text-center hover:from-amber-400 hover:to-amber-300 transition-all shadow-lg shadow-amber-500/25"
+                  className="block w-full bg-gradient-to-r from-amber-500 to-amber-400 text-gray-950 py-3.5 rounded-xl font-bold text-center hover:from-amber-400 hover:to-amber-300 transition-all duration-200 shadow-lg shadow-amber-500/25 hover:shadow-amber-500/40 hover:scale-[1.01] btn-press"
                 >
                   Upgrade to Pro
                 </Link>
@@ -628,41 +642,48 @@ export default function Home() {
       </section>
 
       {/* ═══════════════ 7. COMPARISON TABLE ═══════════════ */}
-      <section className="bg-[#f8fafc] py-20 sm:py-28" style={{ backgroundImage: "radial-gradient(circle, #f59e0b10 1px, transparent 1px)", backgroundSize: "32px 32px" }}>
-        <div className="max-w-5xl mx-auto px-4 sm:px-6">
+      <section className="bg-[#0a0f1e] py-20 sm:py-28 border-t border-gray-700/20 relative">
+        <div
+          className="absolute inset-0 opacity-[0.02]"
+          style={{
+            backgroundImage: "radial-gradient(circle, #f59e0b 1px, transparent 1px)",
+            backgroundSize: "32px 32px",
+          }}
+        />
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 relative z-10">
           <Reveal>
             <div className="text-center mb-12">
-              <span className="inline-block bg-amber-100 text-amber-700 text-sm font-semibold px-4 py-1.5 rounded-full mb-4">
+              <span className="inline-block bg-amber-500/10 border border-amber-500/30 text-amber-400 text-sm font-semibold px-4 py-1.5 rounded-full mb-4">
                 COMPARE
               </span>
-              <h2 className="text-3xl sm:text-4xl font-bold text-[#1e293b] mb-3">
+              <h2 className="text-3xl sm:text-4xl font-bold text-white mb-3">
                 Why Tradespeople Choose Us
               </h2>
-              <p className="text-gray-500 max-w-xl mx-auto">
+              <p className="text-gray-400 max-w-xl mx-auto">
                 No bloated features you will never use. No per-user fees eating into your margins.
               </p>
             </div>
           </Reveal>
 
           <Reveal>
-            <div className="overflow-x-auto bg-white rounded-2xl shadow-sm border border-gray-100">
+            <div className="overflow-x-auto bg-[#111827] rounded-2xl border border-gray-700/50">
               <table className="w-full text-sm sm:text-base">
                 <thead>
-                  <tr className="border-b border-gray-100">
-                    <th className="py-4 px-4 sm:px-6 text-left text-gray-400 font-medium">&nbsp;</th>
+                  <tr className="border-b border-gray-700/50">
+                    <th className="py-4 px-4 sm:px-6 text-left text-gray-500 font-medium">&nbsp;</th>
                     <th className="py-4 px-4 sm:px-6 text-center">
-                      <span className="text-amber-500 font-bold">TradeInvoice</span>
+                      <span className="text-amber-400 font-bold">TradeInvoice</span>
                     </th>
                     <th className="py-4 px-4 sm:px-6 text-center text-gray-500 font-medium">Jobber</th>
                     <th className="py-4 px-4 sm:px-6 text-center text-gray-500 font-medium">Invoice2go</th>
                   </tr>
                 </thead>
-                <tbody className="text-[#1e293b]">
+                <tbody className="text-gray-300">
                   {[
                     {
                       label: "Price",
                       us: "€15/mo",
-                      usColor: "text-amber-500 font-bold",
+                      usColor: "text-amber-400 font-bold",
                       c1: "From €40/mo",
                       c2: "From €5.99/mo",
                     },
@@ -685,8 +706,8 @@ export default function Home() {
                       c2: "cross",
                     },
                   ].map((row, i) => (
-                    <tr key={row.label} className={`border-b border-gray-50 ${i % 2 === 0 ? "bg-gray-50/50" : ""}`}>
-                      <td className="py-3.5 px-4 sm:px-6 font-medium">{row.label}</td>
+                    <tr key={row.label} className={`border-b border-gray-700/30 ${i % 2 === 0 ? "bg-white/[0.01]" : ""} hover:bg-white/[0.03] transition-colors`}>
+                      <td className="py-3.5 px-4 sm:px-6 font-medium text-gray-300">{row.label}</td>
                       <td className="py-3.5 px-4 sm:px-6 text-center">
                         {row.us === "check" ? (
                           <span className="inline-flex justify-center"><Check /></span>
@@ -724,7 +745,7 @@ export default function Home() {
       </section>
 
       {/* ═══════════════ 8. FAQ ═══════════════ */}
-      <section className="bg-[#0f172a] py-20 sm:py-28">
+      <section className="bg-[#0a0f1e] py-20 sm:py-28 border-t border-gray-700/20">
         <div className="max-w-3xl mx-auto px-4 sm:px-6">
           <Reveal>
             <div className="text-center mb-12">
@@ -761,11 +782,11 @@ export default function Home() {
               },
             ].map((faq) => (
               <Reveal key={faq.q}>
-                <details className="group bg-white/[0.03] border border-white/10 rounded-xl hover:border-amber-500/20 transition-colors">
+                <details className="group bg-[#111827] border border-gray-700/50 rounded-xl hover:border-amber-500/30 transition-all duration-200">
                   <summary className="flex items-center justify-between cursor-pointer p-5 sm:p-6 text-white font-semibold list-none text-sm sm:text-base">
                     {faq.q}
                     <svg
-                      className="w-5 h-5 text-amber-400 shrink-0 ml-4 transition-transform group-open:rotate-180"
+                      className="w-5 h-5 text-amber-400 shrink-0 ml-4 transition-transform duration-200 group-open:rotate-180"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -787,8 +808,8 @@ export default function Home() {
 
       {/* ═══════════════ 9. FINAL CTA ═══════════════ */}
       <section
-        className="py-20 sm:py-28"
-        style={{ background: "linear-gradient(135deg, #1e1b4b 0%, #0f172a 50%, #1e1b4b 100%)" }}
+        className="py-20 sm:py-28 border-t border-gray-700/20"
+        style={{ background: "linear-gradient(135deg, #1e1b4b 0%, #0a0f1e 50%, #1e1b4b 100%)" }}
       >
         <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
           <Reveal>
@@ -800,7 +821,7 @@ export default function Home() {
             </p>
             <Link
               href="/auth/login"
-              className="inline-block bg-amber-500 text-gray-900 px-10 py-4 rounded-xl font-bold text-lg hover:bg-amber-400 transition-all shadow-lg shadow-amber-500/25 hover:shadow-amber-500/40 hover:scale-[1.02]"
+              className="inline-block bg-gradient-to-r from-amber-500 to-amber-400 text-gray-950 px-10 py-4 rounded-xl font-bold text-lg hover:from-amber-400 hover:to-amber-300 transition-all duration-200 shadow-lg shadow-amber-500/25 hover:shadow-amber-500/40 hover:scale-[1.02] btn-press"
             >
               Start Free - 20 Invoices/Month
             </Link>
@@ -812,30 +833,30 @@ export default function Home() {
       </section>
 
       {/* ═══════════════ 10. FOOTER ═══════════════ */}
-      <footer className="bg-[#0a0f1a] border-t border-white/5 py-12">
+      <footer className="bg-[#0a0f1e] border-t border-gray-700/30 py-12">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="text-center md:text-left">
               <div className="text-xl font-bold text-amber-400 mb-1">TradeInvoice</div>
-              <p className="text-gray-600 text-sm">Simple invoicing for tradespeople</p>
+              <p className="text-gray-500 text-sm">Simple invoicing for tradespeople</p>
             </div>
             <div className="flex items-center gap-4 sm:gap-6 flex-wrap justify-center text-sm">
-              <Link href="/about" className="text-gray-500 hover:text-gray-300 transition-colors">
+              <Link href="/about" className="text-gray-500 hover:text-amber-400 transition-colors">
                 About
               </Link>
-              <Link href="/blog" className="text-gray-500 hover:text-gray-300 transition-colors">
+              <Link href="/blog" className="text-gray-500 hover:text-amber-400 transition-colors">
                 Blog
               </Link>
-              <Link href="/terms" className="text-gray-500 hover:text-gray-300 transition-colors">
+              <Link href="/terms" className="text-gray-500 hover:text-amber-400 transition-colors">
                 Terms of Service
               </Link>
-              <Link href="/privacy" className="text-gray-500 hover:text-gray-300 transition-colors">
+              <Link href="/privacy" className="text-gray-500 hover:text-amber-400 transition-colors">
                 Privacy Policy
               </Link>
-              <Link href="/dpa" className="text-gray-500 hover:text-gray-300 transition-colors">
+              <Link href="/dpa" className="text-gray-500 hover:text-amber-400 transition-colors">
                 DPA
               </Link>
-              <Link href="/contact" className="text-gray-500 hover:text-gray-300 transition-colors">
+              <Link href="/contact" className="text-gray-500 hover:text-amber-400 transition-colors">
                 Contact
               </Link>
             </div>
@@ -846,7 +867,7 @@ export default function Home() {
             <span className="text-gray-700">|</span>
             <Link href="/de" className="text-amber-400 hover:text-amber-300 transition-colors">Deutsch</Link>
           </div>
-          <div className="mt-6 pt-6 border-t border-white/5 text-center text-gray-600 text-sm">
+          <div className="mt-6 pt-6 border-t border-gray-700/30 text-center text-gray-600 text-sm">
             © {new Date().getFullYear()} TradeInvoice. Operated by Vlad Mazilu Alexandru, Netherlands.
           </div>
         </div>

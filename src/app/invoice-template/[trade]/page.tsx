@@ -73,7 +73,7 @@ function InvoiceMockup({ trade }: { trade: TradeData }) {
       : `\u20ac${n.toFixed(2)}`;
 
   return (
-    <div className="w-full max-w-lg mx-auto bg-white rounded-2xl shadow-2xl shadow-amber-500/10 overflow-hidden">
+    <div className="w-full max-w-lg mx-auto bg-white rounded-2xl shadow-2xl shadow-amber-500/10 overflow-hidden border border-gray-700/30">
       <div className="bg-gray-50 px-8 py-6 border-b border-gray-200">
         <div className="flex items-start justify-between">
           <div>
@@ -275,25 +275,25 @@ export default function TradeTemplatePage({
 
       {/* Header */}
       <header className="max-w-6xl mx-auto px-4 py-6 flex items-center justify-between">
-        <Link href="/" className="text-2xl font-bold text-amber-400">
+        <Link href="/" className="text-2xl font-bold text-amber-400 tracking-tight">
           TradeInvoice
         </Link>
         <div className="flex items-center gap-4">
           <Link
             href="/blog"
-            className="text-gray-400 hover:text-white transition-colors"
+            className="text-gray-400 hover:text-white transition-all duration-200"
           >
             Blog
           </Link>
           <Link
             href="/templates"
-            className="text-gray-400 hover:text-white transition-colors"
+            className="text-gray-400 hover:text-white transition-all duration-200"
           >
             Templates
           </Link>
           <Link
             href="/auth/login"
-            className="bg-amber-500 text-gray-900 px-6 py-3 rounded-xl font-semibold hover:bg-amber-400 transition-colors"
+            className="bg-gradient-to-r from-amber-500 to-amber-400 text-gray-950 px-6 py-3 rounded-xl font-semibold hover:from-amber-400 hover:to-amber-300 transition-all duration-200 shadow-lg shadow-amber-500/20"
           >
             Sign In
           </Link>
@@ -304,7 +304,7 @@ export default function TradeTemplatePage({
       <nav className="max-w-6xl mx-auto px-4 py-2" aria-label="Breadcrumb">
         <ol className="flex items-center gap-2 text-sm text-gray-500">
           <li>
-            <Link href="/" className="hover:text-gray-300 transition-colors">
+            <Link href="/" className="hover:text-amber-400 transition-colors">
               Home
             </Link>
           </li>
@@ -312,7 +312,7 @@ export default function TradeTemplatePage({
           <li>
             <Link
               href="/templates"
-              className="hover:text-gray-300 transition-colors"
+              className="hover:text-amber-400 transition-colors"
             >
               Templates
             </Link>
@@ -326,7 +326,7 @@ export default function TradeTemplatePage({
 
       {/* Hero */}
       <section className="max-w-6xl mx-auto px-4 pt-12 pb-12 text-center">
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 text-amber-400">
+        <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 gradient-text bg-gradient-to-r from-amber-400 to-amber-500 bg-clip-text text-transparent">
           {isZzp
             ? "Gratis Factuur Template voor ZZP'ers"
             : `Free Invoice Template for ${trade.namePlural}`}
@@ -530,7 +530,7 @@ export default function TradeTemplatePage({
           </p>
           <Link
             href="/auth/login"
-            className="inline-block bg-amber-500 text-gray-900 px-10 py-4 rounded-xl font-bold text-lg hover:bg-amber-400 transition-colors"
+            className="inline-block bg-gradient-to-r from-amber-500 to-amber-400 text-gray-950 px-10 py-4 rounded-xl font-bold text-lg hover:from-amber-400 hover:to-amber-300 transition-all duration-200 shadow-lg shadow-amber-500/20 hover:shadow-amber-500/30 hover:scale-[1.02]"
           >
             {isZzp
               ? "Maak je gratis factuur"
@@ -592,35 +592,35 @@ export default function TradeTemplatePage({
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-gray-800 py-8 text-center text-gray-500 text-sm">
+      <footer className="border-t border-gray-700/50 py-8 text-center text-gray-500 text-sm">
         <div className="flex items-center gap-4 sm:gap-6 flex-wrap justify-center mb-4">
           <Link
             href="/blog"
-            className="text-gray-500 hover:text-gray-300 transition-colors"
+            className="text-gray-500 hover:text-gray-300 transition-all duration-200"
           >
             Blog
           </Link>
           <Link
             href="/templates"
-            className="text-gray-500 hover:text-gray-300 transition-colors"
+            className="text-gray-500 hover:text-gray-300 transition-all duration-200"
           >
             Templates
           </Link>
           <Link
             href="/terms"
-            className="text-gray-500 hover:text-gray-300 transition-colors"
+            className="text-gray-500 hover:text-gray-300 transition-all duration-200"
           >
             Terms of Service
           </Link>
           <Link
             href="/privacy"
-            className="text-gray-500 hover:text-gray-300 transition-colors"
+            className="text-gray-500 hover:text-gray-300 transition-all duration-200"
           >
             Privacy Policy
           </Link>
           <Link
             href="/contact"
-            className="text-gray-500 hover:text-gray-300 transition-colors"
+            className="text-gray-500 hover:text-gray-300 transition-all duration-200"
           >
             Contact
           </Link>

@@ -21,20 +21,22 @@ export default function CookieBanner() {
   if (!visible) return null;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 bg-white/5 border-t border-white/10 px-4 py-3">
-      <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
-        <p className="text-sm text-gray-300 text-center sm:text-left">
-          We use a session cookie to keep you logged in. No tracking. No analytics.{" "}
-          <Link href="/privacy" className="text-amber-400 hover:text-amber-300 underline">
-            Privacy Policy
-          </Link>
-        </p>
-        <button
-          onClick={handleAccept}
-          className="bg-amber-500 text-gray-900 px-5 py-1.5 rounded-lg font-semibold text-sm hover:bg-amber-400 transition-colors shrink-0"
-        >
-          OK
-        </button>
+    <div className="fixed bottom-0 left-0 right-0 z-50 animate-slide-up">
+      <div className="bg-[#111827]/95 backdrop-blur-xl border-t border-gray-700/50 px-6 py-4">
+        <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p className="text-sm text-gray-400 text-center sm:text-left">
+            We use a session cookie to keep you logged in. No tracking. No analytics.{" "}
+            <Link href="/privacy" className="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition-colors duration-200">
+              Privacy Policy
+            </Link>
+          </p>
+          <button
+            onClick={handleAccept}
+            className="bg-gradient-to-r from-amber-500 to-amber-400 text-gray-950 px-6 py-2 rounded-xl font-semibold text-sm hover:from-amber-400 hover:to-amber-300 transition-all duration-200 shadow-lg shadow-amber-500/20 btn-press shrink-0"
+          >
+            OK
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -81,7 +81,7 @@ function FlagBE() {
 function InvoiceMockup() {
   return (
     <div className="relative animate-float">
-      <div className="w-[280px] md:w-[320px] bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-6 shadow-2xl shadow-amber-500/10">
+      <div className="w-[280px] md:w-[320px] bg-white/10 backdrop-blur-md border border-gray-600/50 rounded-2xl p-6 shadow-2xl shadow-amber-500/10">
         <div className="flex items-center justify-between mb-5">
           <div>
             <div className="text-xs text-gray-400 uppercase tracking-wider">Rechnung</div>
@@ -188,7 +188,7 @@ export default function DEPage() {
   return (
     <div className="min-h-screen overflow-x-hidden">
       {/* ═══════════════ HEADER ═══════════════ */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-[#0f172a]/80 backdrop-blur-md border-b border-white/5">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-[#0f172a]/80 backdrop-blur-md border-b border-gray-700/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
           <Link href="/de" className="text-2xl font-bold text-amber-400 tracking-tight">
             TradeInvoice
@@ -261,7 +261,7 @@ export default function DEPage() {
       </section>
 
       {/* ═══════════════ 2. TRUST BAR ═══════════════ */}
-      <section className="bg-[#0f172a] border-y border-white/5">
+      <section className="bg-[#0f172a] border-y border-gray-700/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
           <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-10">
             <span className="text-gray-500 text-sm font-medium">Europaweit verfugbar</span>
@@ -368,7 +368,7 @@ export default function DEPage() {
               { icon: <IconChart />, title: "Finanzberichte", desc: "Sehen Sie Ihren Umsatz, ausstehende Zahlungen und uberfallige Rechnungen auf einen Blick. Wissen Sie genau, wo Ihr Unternehmen steht.", color: "text-emerald-400" },
             ].map((feature, i) => (
               <Reveal key={feature.title} className={`delay-${(i % 3) * 100}`}>
-                <div className="group bg-white/[0.03] backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:border-amber-500/30 transition-all duration-300 hover:bg-white/[0.06] h-full">
+                <div className="group bg-[#111827] backdrop-blur-sm border border-gray-700/50 rounded-2xl p-6 hover:border-amber-500/30 transition-all duration-300 hover:bg-white/[0.06] h-full">
                   <div className={`${feature.color} mb-4`}>{feature.icon}</div>
                   <h3 className="text-lg font-semibold text-white mb-2">{feature.title}</h3>
                   <p className="text-gray-400 text-sm leading-relaxed">{feature.desc}</p>
@@ -441,7 +441,7 @@ export default function DEPage() {
 
           <div className="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
             <Reveal>
-              <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8 h-full flex flex-col">
+              <div className="bg-[#0a0f1e] backdrop-blur-sm border border-gray-700/50 rounded-2xl p-8 h-full flex flex-col">
                 <div className="text-center mb-8">
                   <h3 className="text-xl font-bold text-white mb-2">Kostenlos</h3>
                   <div className="flex items-baseline justify-center gap-1">
@@ -454,7 +454,7 @@ export default function DEPage() {
                     <li key={f} className="flex items-center gap-3 text-gray-300 text-sm"><Check />{f}</li>
                   ))}
                 </ul>
-                <Link href="/auth/login" className="block w-full bg-white/10 text-white py-3.5 rounded-xl font-semibold text-center hover:bg-white/20 transition-all border border-white/10">
+                <Link href="/auth/login" className="block w-full bg-white/10 text-white py-3.5 rounded-xl font-semibold text-center hover:bg-white/20 transition-all border border-gray-700/50">
                   Loslegen
                 </Link>
               </div>
@@ -507,7 +507,7 @@ export default function DEPage() {
               { q: "Was passiert nach meinen 20 kostenlosen Rechnungen?", a: "Sie konnen auf Pro fur \u20AC15/Monat upgraden fur unbegrenzte Rechnungen. Oder warten Sie einfach. Ihr kostenloses Abo wird jeden Monat zuruckgesetzt: 20 neue Rechnungen, keine Kosten, kein Ablaufdatum." },
             ].map((faq) => (
               <Reveal key={faq.q}>
-                <details className="group bg-white/[0.03] border border-white/10 rounded-xl hover:border-amber-500/20 transition-colors">
+                <details className="group bg-[#111827] border border-gray-700/50 rounded-xl hover:border-amber-500/20 transition-colors">
                   <summary className="flex items-center justify-between cursor-pointer p-5 sm:p-6 text-white font-semibold list-none text-sm sm:text-base">
                     {faq.q}
                     <svg className="w-5 h-5 text-amber-400 shrink-0 ml-4 transition-transform group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
@@ -544,7 +544,7 @@ export default function DEPage() {
       </section>
 
       {/* ═══════════════ 9. FOOTER ═══════════════ */}
-      <footer className="bg-[#0a0f1a] border-t border-white/5 py-12">
+      <footer className="bg-[#0a0f1a] border-t border-gray-700/50 py-12">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="text-center md:text-left">
@@ -565,7 +565,7 @@ export default function DEPage() {
             <span className="text-gray-700">|</span>
             <Link href="/nl" className="text-amber-400 hover:text-amber-300 transition-colors">Nederlands</Link>
           </div>
-          <div className="mt-6 pt-6 border-t border-white/5 text-center text-gray-600 text-sm">
+          <div className="mt-6 pt-6 border-t border-gray-700/50 text-center text-gray-600 text-sm">
             &copy; {new Date().getFullYear()} TradeInvoice. Betrieben von Vlad Mazilu Alexandru, Niederlande.
           </div>
         </div>

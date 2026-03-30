@@ -231,10 +231,10 @@ export default function InvoiceDetailPage() {
   return (
     <div className="min-h-screen bg-[#0a0f1e] pb-24 md:pb-0 premium-glow">
       <Navbar />
-      <div className="max-w-4xl mx-auto px-4 py-10">
+      <div className="max-w-4xl mx-auto px-4 py-10 animate-fade-in">
         <Link
           href="/dashboard"
-          className="text-amber-500 font-medium text-sm mb-6 inline-flex items-center gap-1.5 hover:text-amber-400 transition-colors group"
+          className="text-amber-500 font-medium text-sm mb-6 inline-flex items-center gap-1.5 hover:text-amber-400 transition-all duration-200 group"
         >
           <svg className="w-4 h-4 transition-transform group-hover:-translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -244,8 +244,8 @@ export default function InvoiceDetailPage() {
 
         <div className="flex items-start justify-between mb-10">
           <div>
-            <div className="flex items-center gap-3">
-              <h1 className="text-4xl font-bold tracking-tight text-white">
+            <div className="flex items-center gap-3 flex-wrap">
+              <h1 className="text-4xl font-bold tracking-tight text-white gradient-text bg-gradient-to-r from-white to-gray-300 bg-clip-text">
                 {invoice.invoiceNumber}
               </h1>
               <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold capitalize ${statusColors[invoice.status] || ""}`}>
@@ -319,7 +319,7 @@ export default function InvoiceDetailPage() {
             <button
               onClick={sendInvoice}
               disabled={sending}
-              className="bg-gradient-to-r from-amber-500 to-orange-500 text-gray-950 px-6 py-3 rounded-xl font-semibold text-lg hover:from-amber-400 hover:to-orange-400 disabled:opacity-50 transition-all duration-200 shadow-lg shadow-amber-500/20 hover:shadow-amber-500/30 hover:scale-[1.02]"
+              className="bg-gradient-to-r from-amber-500 to-amber-400 text-gray-950 px-6 py-3 rounded-xl font-semibold text-lg hover:from-amber-400 hover:to-amber-300 disabled:opacity-50 transition-all duration-200 shadow-lg shadow-amber-500/20 hover:shadow-xl hover:shadow-amber-500/30 hover:scale-[1.02] btn-press"
             >
               {sending ? "Sending..." : "Send to Client"}
             </button>
@@ -342,7 +342,7 @@ export default function InvoiceDetailPage() {
                 setPaymentAmount(invoice.total - (invoice.paidAmount || 0));
                 setShowPaidModal(true);
               }}
-              className="bg-emerald-500 text-white px-6 py-3 rounded-xl font-semibold text-lg hover:bg-emerald-400 transition-all duration-200 flex items-center gap-2 shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/30 hover:scale-[1.02]"
+              className="bg-gradient-to-r from-emerald-500 to-emerald-400 text-white px-6 py-3 rounded-xl font-semibold text-lg hover:from-emerald-400 hover:to-emerald-300 transition-all duration-200 flex items-center gap-2 shadow-lg shadow-emerald-500/20 hover:shadow-xl hover:shadow-emerald-500/30 hover:scale-[1.02] btn-press"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -354,7 +354,7 @@ export default function InvoiceDetailPage() {
             <button
               onClick={convertToInvoice}
               disabled={converting}
-              className="bg-gradient-to-r from-amber-500 to-orange-500 text-gray-950 px-6 py-3 rounded-xl font-semibold text-lg hover:from-amber-400 hover:to-orange-400 disabled:opacity-50 transition-all duration-200 shadow-lg shadow-amber-500/25 hover:shadow-amber-500/35 hover:scale-[1.02] flex items-center gap-2"
+              className="bg-gradient-to-r from-amber-500 to-amber-400 text-gray-950 px-6 py-3 rounded-xl font-semibold text-lg hover:from-amber-400 hover:to-amber-300 disabled:opacity-50 transition-all duration-200 shadow-lg shadow-amber-500/20 hover:shadow-xl hover:shadow-amber-500/30 hover:scale-[1.02] flex items-center gap-2 btn-press"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -386,7 +386,7 @@ export default function InvoiceDetailPage() {
           <a
             href={`/api/invoices/${invoice.id}/pdf`}
             target="_blank"
-            className="bg-white/5 text-gray-300 px-6 py-3 rounded-xl font-semibold text-lg hover:bg-white/10/50 border border-white/10 transition-all duration-200 hover:scale-[1.02] backdrop-blur-sm"
+            className="bg-[#111827] text-gray-300 px-6 py-3 rounded-xl font-semibold text-lg hover:bg-[#1a2235] border border-gray-700/50 hover:border-amber-500/30 transition-all duration-200 hover:scale-[1.02] backdrop-blur-sm btn-press"
           >
             View PDF
           </a>
@@ -395,7 +395,7 @@ export default function InvoiceDetailPage() {
               const w = window.open(`/api/invoices/${invoice.id}/pdf`, '_blank');
               if (w) setTimeout(() => w.print(), 500);
             }}
-            className="bg-purple-500/20 text-purple-300 px-6 py-3 rounded-xl font-semibold text-lg hover:bg-purple-500/30 ring-1 ring-purple-500/40 transition-all duration-200 hover:scale-[1.02] flex items-center gap-2"
+            className="bg-purple-500/15 text-purple-300 px-6 py-3 rounded-xl font-semibold text-lg hover:bg-purple-500/25 ring-1 ring-purple-500/30 transition-all duration-200 hover:scale-[1.02] flex items-center gap-2 btn-press"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -413,8 +413,8 @@ export default function InvoiceDetailPage() {
         </div>
 
         {/* Invoice details */}
-        <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 overflow-hidden mb-10 shadow-xl shadow-black/20">
-          <div className="p-8 border-b border-white/10">
+        <div className="bg-[#111827] backdrop-blur-sm rounded-2xl border border-gray-700/50 overflow-hidden mb-10 shadow-xl shadow-black/20 card-hover">
+          <div className="p-8 border-b border-gray-700/50">
             <div className="grid md:grid-cols-2 gap-8">
               <div>
                 <h3 className="text-xs uppercase tracking-wide text-gray-500 mb-2">
@@ -485,26 +485,26 @@ export default function InvoiceDetailPage() {
           {/* Line items table */}
           <table className="w-full">
             <thead>
-              <tr className="bg-white/10/30 text-xs uppercase tracking-wider text-gray-500">
+              <tr className="bg-[#0a0f1e]/50 text-xs uppercase tracking-wider text-gray-500">
                 <th className="px-6 py-4 text-left font-semibold">Description</th>
                 <th className="px-6 py-4 text-center font-semibold">Qty</th>
                 <th className="px-6 py-4 text-right font-semibold">Unit Price</th>
                 <th className="px-6 py-4 text-right font-semibold">Amount</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/10/50">
+            <tbody className="divide-y divide-gray-700/30">
               {invoice.lineItems.map((item, idx) => (
-                <tr key={item.id} className={`transition-colors hover:bg-white/10/30 ${idx % 2 === 1 ? "bg-white/10/10" : ""}`}>
+                <tr key={item.id} className={`transition-all duration-200 hover:bg-white/[0.03] ${idx % 2 === 1 ? "bg-white/[0.02]" : ""}`}>
                   <td className="px-6 py-4 text-white">
                     {item.description}
                   </td>
-                  <td className="px-6 py-4 text-center text-gray-400">
+                  <td className="px-6 py-4 text-center text-gray-400 tabular-nums">
                     {item.quantity}
                   </td>
-                  <td className="px-6 py-4 text-right text-gray-400">
+                  <td className="px-6 py-4 text-right text-gray-400 tabular-nums">
                     {fmt(item.unitPrice)}
                   </td>
-                  <td className="px-6 py-4 text-right font-medium text-white">
+                  <td className="px-6 py-4 text-right font-medium text-white tabular-nums">
                     {fmt(item.total)}
                   </td>
                 </tr>
@@ -513,19 +513,19 @@ export default function InvoiceDetailPage() {
           </table>
 
           {/* Totals */}
-          <div className="p-8 border-t border-white/10 bg-white/10/20">
+          <div className="p-8 border-t border-gray-700/50 bg-gradient-to-br from-[#0a0f1e]/40 to-transparent">
             <div className="max-w-xs ml-auto space-y-2">
-              <div className="flex justify-between text-gray-400">
+              <div className="flex justify-between text-gray-400 text-sm">
                 <span>Subtotal</span>
-                <span>{fmt(invoice.subtotal)}</span>
+                <span className="tabular-nums">{fmt(invoice.subtotal)}</span>
               </div>
-              <div className="flex justify-between text-gray-400">
+              <div className="flex justify-between text-gray-400 text-sm">
                 <span>Tax ({invoice.taxRate}%)</span>
-                <span>{fmt(invoice.taxAmount)}</span>
+                <span className="tabular-nums">{fmt(invoice.taxAmount)}</span>
               </div>
-              <div className="flex justify-between text-xl font-bold text-white pt-3 border-t border-white/10">
+              <div className="flex justify-between text-xl font-bold text-white pt-3 border-t border-amber-500/20">
                 <span>Total</span>
-                <span>{fmt(invoice.total)}</span>
+                <span className="tabular-nums text-amber-400">{fmt(invoice.total)}</span>
               </div>
               {invoice.depositPercent && invoice.depositAmount && (
                 <div className={`flex justify-between pt-1 ${invoice.depositPaid ? "text-green-400" : "text-amber-400"}`}>
@@ -567,7 +567,7 @@ export default function InvoiceDetailPage() {
 
           {/* Bank Details */}
           {invoice.user.bankDetails && (
-            <div className="p-8 border-t border-white/10">
+            <div className="p-8 border-t border-gray-700/50">
               <h3 className="text-xs uppercase tracking-wider text-gray-500 mb-3 font-semibold">
                 Payment Information
               </h3>
@@ -593,7 +593,7 @@ export default function InvoiceDetailPage() {
 
           {/* Payment Notes */}
           {invoice.paymentNotes && (
-            <div className="p-8 border-t border-white/10">
+            <div className="p-8 border-t border-gray-700/50">
               <h3 className="text-xs uppercase tracking-wider text-gray-500 mb-3 font-semibold">
                 Payment Notes
               </h3>
@@ -603,7 +603,7 @@ export default function InvoiceDetailPage() {
 
           {/* Notes to Client */}
           {invoice.notesToClient && (
-            <div className="p-8 border-t border-white/10">
+            <div className="p-8 border-t border-gray-700/50">
               <h3 className="text-xs uppercase tracking-wider text-gray-500 mb-3 font-semibold">
                 Notes to Client
               </h3>
@@ -613,7 +613,7 @@ export default function InvoiceDetailPage() {
 
           {/* Reminder Toggle (Pro) */}
           {invoice.status !== "paid" && invoice.status !== "draft" && (
-            <div className="p-8 border-t border-white/10">
+            <div className="p-8 border-t border-gray-700/50">
               <div className="flex items-center justify-between">
                 <div>
                   <h3 className="text-sm font-medium text-white flex items-center gap-2">
@@ -643,8 +643,8 @@ export default function InvoiceDetailPage() {
         </div>
 
         {/* Timeline / Activity */}
-        <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 overflow-hidden shadow-xl shadow-black/20">
-          <div className="p-8 border-b border-white/10">
+        <div className="bg-[#111827] backdrop-blur-sm rounded-2xl border border-gray-700/50 overflow-hidden shadow-xl shadow-black/20 card-hover">
+          <div className="p-8 border-b border-gray-700/50">
             <h2 className="text-lg font-semibold text-white tracking-tight">Activity Timeline</h2>
           </div>
           <div className="p-8">
@@ -719,8 +719,8 @@ export default function InvoiceDetailPage() {
 
         {/* Mark as Paid Modal */}
         {showPaidModal && (
-          <div className="fixed inset-0 bg-black/70 backdrop-blur-md z-50 flex items-center justify-center p-4">
-            <div className="bg-white/5/90 backdrop-blur-sm rounded-2xl border border-white/10 p-8 w-full max-w-sm shadow-2xl shadow-black/40">
+          <div className="fixed inset-0 bg-black/70 backdrop-blur-md z-50 flex items-center justify-center p-4 animate-fade-in">
+            <div className="bg-[#111827] backdrop-blur-sm rounded-2xl border border-gray-700/50 p-8 w-full max-w-sm shadow-2xl shadow-black/40 animate-slide-up">
               <h3 className="text-lg font-semibold text-white mb-1 tracking-tight">Record Payment</h3>
               <p className="text-sm text-gray-400 mb-6">
                 {invoice.paidAmount > 0
@@ -734,14 +734,14 @@ export default function InvoiceDetailPage() {
                 step="0.01"
                 value={paymentAmount}
                 onChange={(e) => setPaymentAmount(Number(e.target.value))}
-                className="w-full px-4 py-3 rounded-xl border border-white/10 text-lg focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-white/5 text-white mb-4 transition-colors"
+                className="w-full px-4 py-3 rounded-xl border border-gray-700/50 text-lg focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-[#0a0f1e] text-white mb-4 transition-all duration-200 tabular-nums focus-glow"
               />
               <label className="block text-sm font-medium text-gray-400 mb-1">Payment Date</label>
               <input
                 type="date"
                 value={paidDate}
                 onChange={(e) => setPaidDate(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl border border-white/10 text-lg focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-white/5 text-white mb-6 transition-colors"
+                className="w-full px-4 py-3 rounded-xl border border-gray-700/50 text-lg focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-[#0a0f1e] text-white mb-6 transition-all duration-200 focus-glow [color-scheme:dark]"
               />
               {paymentAmount > 0 && paymentAmount < (invoice.total - (invoice.paidAmount || 0)) && (
                 <p className="text-sm text-amber-400 mb-4">This is a partial payment. Status will remain until fully paid.</p>
@@ -750,7 +750,7 @@ export default function InvoiceDetailPage() {
                 <button
                   onClick={markPaid}
                   disabled={markingPaid || !paidDate || paymentAmount <= 0}
-                  className="flex-1 bg-gradient-to-r from-amber-500 to-orange-500 text-gray-950 py-3 rounded-xl font-semibold hover:from-amber-400 hover:to-orange-400 disabled:opacity-50 transition-all duration-200 shadow-lg shadow-amber-500/20"
+                  className="flex-1 bg-gradient-to-r from-amber-500 to-amber-400 text-gray-950 py-3 rounded-xl font-semibold hover:from-amber-400 hover:to-amber-300 disabled:opacity-50 transition-all duration-200 shadow-lg shadow-amber-500/20 hover:shadow-xl hover:shadow-amber-500/30 btn-press"
                 >
                   {markingPaid ? "Saving..." : "Confirm Payment"}
                 </button>

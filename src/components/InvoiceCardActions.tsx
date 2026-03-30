@@ -74,12 +74,12 @@ export default function InvoiceCardActions({ invoiceId, status, type }: Props) {
   }
 
   return (
-    <div className="flex items-center gap-1" onClick={(e) => e.preventDefault()}>
+    <div className="flex items-center gap-0.5" onClick={(e) => e.preventDefault()}>
       {type === "quote" && (
         <button
           onClick={handleConvert}
           disabled={loading === "convert"}
-          className="p-1.5 rounded-md text-amber-400 hover:bg-amber-500/20 hover:text-amber-300 transition-colors disabled:opacity-50"
+          className="p-1.5 rounded-lg text-amber-400 hover:bg-amber-500/15 hover:text-amber-300 transition-all duration-200 disabled:opacity-50 hover:scale-110"
           title="Convert to Invoice"
           aria-label="Convert to invoice"
         >
@@ -99,7 +99,7 @@ export default function InvoiceCardActions({ invoiceId, status, type }: Props) {
         <button
           onClick={handleSend}
           disabled={loading === "send"}
-          className="p-1.5 rounded-md text-blue-400 hover:bg-blue-500/20 hover:text-blue-300 transition-colors disabled:opacity-50"
+          className="p-1.5 rounded-lg text-blue-400 hover:bg-blue-500/15 hover:text-blue-300 transition-all duration-200 disabled:opacity-50 hover:scale-110"
           title="Send"
           aria-label="Send invoice"
         >
@@ -112,7 +112,7 @@ export default function InvoiceCardActions({ invoiceId, status, type }: Props) {
         <button
           onClick={handleMarkPaid}
           disabled={loading === "paid"}
-          className="p-1.5 rounded-md text-green-400 hover:bg-green-500/20 hover:text-green-300 transition-colors disabled:opacity-50"
+          className="p-1.5 rounded-lg text-emerald-400 hover:bg-emerald-500/15 hover:text-emerald-300 transition-all duration-200 disabled:opacity-50 hover:scale-110"
           title="Mark Paid"
           aria-label="Mark as paid"
         >
@@ -124,7 +124,7 @@ export default function InvoiceCardActions({ invoiceId, status, type }: Props) {
       <button
         onClick={handleDuplicate}
         disabled={loading === "dup"}
-        className="p-1.5 rounded-md text-gray-400 hover:bg-gray-600/40 hover:text-gray-300 transition-colors disabled:opacity-50"
+        className="p-1.5 rounded-lg text-gray-400 hover:bg-white/5 hover:text-gray-300 transition-all duration-200 disabled:opacity-50 hover:scale-110"
         title="Duplicate"
         aria-label="Duplicate invoice"
       >

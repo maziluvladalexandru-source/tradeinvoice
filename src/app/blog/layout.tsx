@@ -6,12 +6,12 @@ export default function BlogLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen bg-gray-950 text-white">
-      <header className="border-b border-gray-800/50 bg-gray-900/80 backdrop-blur-xl">
+    <div className="min-h-screen bg-[#0a0f1e] text-white">
+      <header className="border-b border-gray-700/30 bg-[#0a0f1e]/80 backdrop-blur-xl sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
           <Link
             href="/"
-            className="flex items-center gap-2 text-2xl font-bold text-amber-500"
+            className="flex items-center gap-2 text-2xl font-bold text-amber-400 hover:text-amber-300 transition-colors"
           >
             <svg
               width="24"
@@ -45,13 +45,13 @@ export default function BlogLayout({
           <nav className="flex items-center gap-6">
             <Link
               href="/blog"
-              className="text-gray-400 hover:text-white transition-colors text-sm font-medium"
+              className="text-gray-400 hover:text-amber-400 transition-colors text-sm font-medium"
             >
               Blog
             </Link>
             <Link
               href="/auth/login"
-              className="bg-amber-500 text-gray-900 px-5 py-2 rounded-xl font-semibold text-sm hover:bg-amber-400 transition-colors"
+              className="bg-gradient-to-r from-amber-500 to-amber-400 text-gray-950 px-5 py-2 rounded-xl font-semibold text-sm hover:from-amber-400 hover:to-amber-300 transition-all duration-200 shadow-lg shadow-amber-500/20 hover:shadow-amber-500/30 hover:scale-[1.02]"
             >
               Sign In
             </Link>

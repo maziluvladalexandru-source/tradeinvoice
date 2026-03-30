@@ -70,19 +70,19 @@ function getCountryFlag(address: string | null): string | null {
 
 function SkeletonCard() {
   return (
-    <div className="bg-white/5 rounded-2xl border border-white/10 p-5">
+    <div className="bg-[#111827] rounded-2xl border border-gray-700/50 p-5">
       <div className="flex items-start gap-4">
         <div className="w-11 h-11 rounded-full bg-white/10 animate-pulse" />
         <div className="flex-1 space-y-2">
           <div className="h-5 w-40 bg-white/10 rounded animate-pulse" />
-          <div className="h-4 w-56 bg-white/10/50 rounded animate-pulse" />
+          <div className="h-4 w-56 bg-white/5 rounded animate-pulse" />
         </div>
         <div className="h-9 w-28 bg-white/10 rounded-xl animate-pulse" />
       </div>
-      <div className="grid grid-cols-4 gap-3 mt-4 pt-4 border-t border-white/10">
+      <div className="grid grid-cols-4 gap-3 mt-4 pt-4 border-t border-gray-700/50">
         {[1, 2, 3, 4].map((i) => (
           <div key={i} className="space-y-1">
-            <div className="h-3 w-16 bg-white/10/50 rounded animate-pulse" />
+            <div className="h-3 w-16 bg-white/5 rounded animate-pulse" />
             <div className="h-6 w-20 bg-white/10 rounded animate-pulse" />
           </div>
         ))}
@@ -178,7 +178,7 @@ export default function ClientsPage() {
 
   async function handleDelete(client: Client) {
     if (client.invoiceCount > 0) {
-      toast(`Cannot delete ${client.name} — has ${client.invoiceCount} invoice(s)`, "error");
+      toast(`Cannot delete ${client.name} - has ${client.invoiceCount} invoice(s)`, "error");
       return;
     }
     if (!confirm(`Delete client "${client.name}"? This cannot be undone.`)) return;

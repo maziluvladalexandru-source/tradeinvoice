@@ -14,19 +14,19 @@ export default function DataProcessingAgreement() {
   return (
     <div className="min-h-screen bg-[#0a0f1e] text-white">
       <header className="max-w-4xl mx-auto px-4 py-6 flex items-center justify-between">
-        <Link href="/" className="text-2xl font-bold text-amber-400">
+        <Link href="/" className="text-2xl font-bold text-amber-400 tracking-tight">
           TradeInvoice
         </Link>
         <Link
           href="/auth/login"
-          className="bg-amber-500 text-gray-900 px-6 py-3 rounded-xl font-semibold hover:bg-amber-400 transition-colors"
+          className="bg-gradient-to-r from-amber-500 to-amber-400 text-gray-950 px-6 py-3 rounded-xl font-semibold hover:from-amber-400 hover:to-amber-300 transition-all duration-200 shadow-lg shadow-amber-500/20"
         >
           Sign In
         </Link>
       </header>
 
-      <main className="max-w-3xl mx-auto px-4 py-12">
-        <h1 className="text-3xl font-bold mb-2 text-amber-400">Data Processing Agreement</h1>
+      <main className="max-w-3xl mx-auto px-4 py-12 animate-fade-in">
+        <h1 className="text-3xl font-bold mb-2 gradient-text bg-gradient-to-r from-amber-400 to-amber-500 bg-clip-text text-transparent">Data Processing Agreement</h1>
         <p className="text-gray-400 mb-10">Last updated: 26 March 2026</p>
 
         <div className="space-y-8 text-gray-300 leading-relaxed">
@@ -192,18 +192,18 @@ export default function DataProcessingAgreement() {
         </div>
       </main>
 
-      <footer className="border-t border-gray-800 py-8 text-center text-gray-500 text-sm">
+      <footer className="border-t border-gray-700/50 py-8 text-center text-gray-500 text-sm">
         <div className="flex items-center gap-4 sm:gap-6 flex-wrap justify-center mb-4">
-          <Link href="/terms" className="text-gray-500 hover:text-gray-300 transition-colors">
+          <Link href="/terms" className="text-gray-500 hover:text-gray-300 transition-all duration-200">
             Terms of Service
           </Link>
-          <Link href="/privacy" className="text-gray-500 hover:text-gray-300 transition-colors">
+          <Link href="/privacy" className="text-gray-500 hover:text-gray-300 transition-all duration-200">
             Privacy Policy
           </Link>
-          <Link href="/dpa" className="text-gray-500 hover:text-gray-300 transition-colors">
+          <Link href="/dpa" className="text-gray-500 hover:text-gray-300 transition-all duration-200">
             DPA
           </Link>
-          <Link href="/contact" className="text-gray-500 hover:text-gray-300 transition-colors">
+          <Link href="/contact" className="text-gray-500 hover:text-gray-300 transition-all duration-200">
             Contact
           </Link>
         </div>

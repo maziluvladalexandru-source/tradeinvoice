@@ -39,8 +39,8 @@ export default function DashboardInvoiceList({
   return (
     <BulkInvoiceActions invoices={recentInvoices.map((i) => ({ id: i.id, invoiceNumber: i.invoiceNumber, status: i.status }))}>
       {({ selectedIds, toggleSelect, toggleAll, allSelected }) => (
-        <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10">
-          <div className="p-6 border-b border-white/10 flex items-center justify-between">
+        <div className="bg-[#111827] rounded-2xl border border-gray-700/50 hover:border-amber-500/20 transition-all duration-300 shadow-lg shadow-black/10">
+          <div className="p-6 border-b border-gray-700/50 flex items-center justify-between">
             <div className="flex items-center gap-3">
               {recentInvoices.length > 0 && (
                 <label className="flex items-center cursor-pointer" onClick={(e) => e.stopPropagation()}>
@@ -48,7 +48,7 @@ export default function DashboardInvoiceList({
                     type="checkbox"
                     checked={allSelected}
                     onChange={toggleAll}
-                    className="w-4 h-4 rounded border-white/10 bg-white/10 text-amber-500 focus:ring-amber-500 focus:ring-offset-0 cursor-pointer"
+                    className="w-4 h-4 rounded border-gray-700/50 bg-[#111827] text-amber-500 focus:ring-amber-500/50 focus:ring-offset-0 cursor-pointer transition-colors duration-200"
                   />
                 </label>
               )}
@@ -59,7 +59,7 @@ export default function DashboardInvoiceList({
             {totalInvoiceCount > 5 && (
               <Link
                 href="/invoices"
-                className="text-amber-500 font-medium text-sm"
+                className="text-amber-500 hover:text-amber-400 font-medium text-sm transition-colors duration-200"
               >
                 View all
               </Link>
@@ -67,7 +67,7 @@ export default function DashboardInvoiceList({
           </div>
 
           {recentInvoices.length === 0 ? (
-            <div className="p-16 text-center">
+            <div className="p-16 text-center animate-fade-in">
               <div className="w-40 h-40 mx-auto mb-8">
                 <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
                   <rect x="50" y="30" width="100" height="130" rx="8" fill="#1f2937" stroke="#374151" strokeWidth="2" />
@@ -95,7 +95,7 @@ export default function DashboardInvoiceList({
               </p>
               <Link
                 href="/invoices/new"
-                className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-gray-950 px-8 py-3.5 rounded-xl font-semibold text-lg shadow-lg shadow-amber-500/20 transition-all"
+                className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-gray-950 px-8 py-3.5 rounded-xl font-semibold text-lg shadow-lg shadow-amber-500/20 transition-all duration-200 hover:scale-[1.02] btn-press"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 4v16m8-8H4" />
@@ -104,11 +104,11 @@ export default function DashboardInvoiceList({
               </Link>
             </div>
           ) : (
-            <div className="divide-y divide-white/10">
+            <div className="divide-y divide-gray-700/30">
               {recentInvoices.map((invoice) => (
                 <div
                   key={invoice.id}
-                  className={`p-4 hover:bg-white/5 transition-colors border-l-4 ${statusBorder[invoice.status] || "border-l-gray-600"} ${selectedIds.has(invoice.id) ? "bg-amber-500/5" : ""}`}
+                  className={`group p-4 hover:bg-white/[0.03] transition-all duration-200 border-l-4 ${statusBorder[invoice.status] || "border-l-gray-600"} ${selectedIds.has(invoice.id) ? "bg-amber-500/5" : ""}`}
                 >
                   <div className="flex items-center gap-3">
                     <label className="flex items-center cursor-pointer shrink-0" onClick={(e) => e.stopPropagation()}>
@@ -116,7 +116,7 @@ export default function DashboardInvoiceList({
                         type="checkbox"
                         checked={selectedIds.has(invoice.id)}
                         onChange={() => toggleSelect(invoice.id)}
-                        className="w-4 h-4 rounded border-white/10 bg-white/10 text-amber-500 focus:ring-amber-500 focus:ring-offset-0 cursor-pointer"
+                        className="w-4 h-4 rounded border-gray-700/50 bg-[#111827] text-amber-500 focus:ring-amber-500/50 focus:ring-offset-0 cursor-pointer transition-colors duration-200"
                       />
                     </label>
                     <Link
@@ -124,7 +124,7 @@ export default function DashboardInvoiceList({
                       className="flex items-center gap-2 flex-1 min-w-0 overflow-hidden"
                     >
                       <div className="flex-1 min-w-0">
-                        <p className="font-medium text-white">
+                        <p className="font-medium text-white group-hover:text-amber-400 transition-colors duration-200">
                           {invoice.invoiceNumber}
                         </p>
                         <p className="text-sm text-gray-400">
@@ -132,7 +132,7 @@ export default function DashboardInvoiceList({
                         </p>
                       </div>
                       {invoice.isRecurring && (
-                        <span className="bg-cyan-500/20 text-cyan-300 ring-1 ring-cyan-400/40 px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase hidden sm:inline-flex items-center gap-1">
+                        <span className="bg-cyan-500/15 text-cyan-300 ring-1 ring-cyan-400/30 px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase hidden sm:inline-flex items-center gap-1">
                           <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                           </svg>
@@ -140,14 +140,14 @@ export default function DashboardInvoiceList({
                         </span>
                       )}
                       {invoice.scheduledSendAt && invoice.status === "draft" && (
-                        <span className="bg-blue-500/20 text-blue-300 ring-1 ring-blue-400/40 px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase hidden sm:inline-flex items-center gap-1">
+                        <span className="bg-blue-500/15 text-blue-300 ring-1 ring-blue-400/30 px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase hidden sm:inline-flex items-center gap-1">
                           <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                           </svg>
                           Scheduled
                         </span>
                       )}
-                      <p className="text-xs text-gray-500 hidden sm:block">
+                      <p className="text-xs text-gray-500 hidden sm:block font-medium">
                         Due {fmtDate(invoice.dueDate)}
                       </p>
                     </Link>
@@ -164,11 +164,11 @@ export default function DashboardInvoiceList({
                       )}
                     </span>
                     <div className="text-right whitespace-nowrap">
-                      <p className="text-base font-bold text-white">
+                      <p className="text-base font-bold text-white tabular-nums">
                         {formatCurrency(invoice.total, invoice.currency)}
                       </p>
                       {invoice.paidAmount > 0 && invoice.paidAmount < invoice.total && (
-                        <p className="text-xs text-amber-400">
+                        <p className="text-xs text-amber-400 tabular-nums font-medium">
                           Due: {formatCurrency(invoice.total - invoice.paidAmount, invoice.currency)}
                         </p>
                       )}
@@ -177,7 +177,7 @@ export default function DashboardInvoiceList({
                     <a
                       href={`/api/invoices/${invoice.id}/pdf`}
                       target="_blank"
-                      className="p-2 rounded-lg text-gray-400 hover:text-amber-500 hover:bg-white/10 transition-colors"
+                      className="p-2 rounded-lg text-gray-400 hover:text-amber-500 hover:bg-gray-700/50 transition-all duration-200"
                       title="Download PDF"
                       aria-label="Download PDF"
                     >

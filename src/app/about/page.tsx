@@ -27,27 +27,39 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-[#0a0f1e] text-white">
-      <header className="max-w-4xl mx-auto px-4 py-6 flex items-center justify-between">
-        <Link href="/" className="text-2xl font-bold text-amber-400">
-          TradeInvoice
-        </Link>
-        <Link
-          href="/auth/login"
-          className="bg-amber-500 text-gray-900 px-6 py-3 rounded-xl font-semibold hover:bg-amber-400 transition-colors"
-        >
-          Sign In
-        </Link>
+    <div className="min-h-screen bg-[#0a0f1e] text-white premium-glow">
+      <header className="border-b border-gray-700/30 bg-[#0a0f1e]/80 backdrop-blur-xl sticky top-0 z-50">
+        <div className="max-w-4xl mx-auto px-4 py-5 flex items-center justify-between">
+          <Link href="/" className="text-2xl font-bold text-amber-400 hover:text-amber-300 transition-colors">
+            TradeInvoice
+          </Link>
+          <Link
+            href="/auth/login"
+            className="bg-gradient-to-r from-amber-500 to-amber-400 text-gray-950 px-6 py-2.5 rounded-xl font-semibold hover:from-amber-400 hover:to-amber-300 transition-all duration-200 shadow-lg shadow-amber-500/20 hover:shadow-amber-500/30 hover:scale-[1.02] text-sm"
+          >
+            Sign In
+          </Link>
+        </div>
       </header>
 
-      <main className="max-w-3xl mx-auto px-4 py-16">
-        <h1 className="text-3xl md:text-4xl font-extrabold text-white mb-8">
-          About TradeInvoice
-        </h1>
+      <main className="max-w-3xl mx-auto px-4 py-16 animate-fade-in">
+        {/* Hero section */}
+        <div className="mb-12">
+          <div className="inline-block bg-amber-500/10 border border-amber-500/30 text-amber-400 text-sm font-semibold px-4 py-1.5 rounded-full mb-6">
+            Our Story
+          </div>
+          <h1 className="text-3xl md:text-4xl font-extrabold text-white mb-4">
+            About TradeInvoice
+          </h1>
+          <p className="text-gray-400 text-lg max-w-2xl">
+            Built by a tradesperson who got tired of overpriced, overcomplicated invoicing software.
+          </p>
+        </div>
 
-        <section className="space-y-6 text-gray-300 leading-relaxed">
-          <div className="flex items-center gap-4 mb-8">
-            <div className="w-16 h-16 rounded-full bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400 text-xl font-bold shrink-0">
+        <section className="space-y-8">
+          {/* Founder card */}
+          <div className="bg-[#111827] border border-gray-700/50 rounded-2xl p-6 flex items-center gap-5 hover:border-amber-500/30 transition-all duration-200">
+            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-500/20 to-amber-600/10 border border-amber-500/40 flex items-center justify-center text-amber-400 text-xl font-bold shrink-0">
               VM
             </div>
             <div>
@@ -56,91 +68,146 @@ export default function AboutPage() {
             </div>
           </div>
 
-          <h2 className="text-2xl font-bold text-white mt-10 mb-4">Why TradeInvoice exists</h2>
-          <p>
-            I moved to the Netherlands as a tradesperson. I registered my KVK, got my BTW number,
-            and started working. Then came the invoicing. Every tool I found was either too
-            expensive, too complicated, or built for accountants and agencies instead of people
-            who actually work with their hands.
-          </p>
-          <p>
-            I just needed to send a clean invoice with the right fields, get a reminder sent
-            when a client was late, and move on. So I built TradeInvoice to solve exactly that
-            problem.
-          </p>
+          {/* Content sections */}
+          <div className="bg-[#111827] border border-gray-700/50 rounded-2xl p-8 space-y-8 hover:border-amber-500/30 transition-all duration-200">
+            <div>
+              <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-3">
+                <span className="w-8 h-8 rounded-lg bg-amber-500/10 flex items-center justify-center">
+                  <svg className="w-4 h-4 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5.002 5.002 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                  </svg>
+                </span>
+                Why TradeInvoice exists
+              </h2>
+              <div className="space-y-4 text-gray-300 leading-relaxed pl-11">
+                <p>
+                  I moved to the Netherlands as a tradesperson. I registered my KVK, got my BTW number,
+                  and started working. Then came the invoicing. Every tool I found was either too
+                  expensive, too complicated, or built for accountants and agencies instead of people
+                  who actually work with their hands.
+                </p>
+                <p>
+                  I just needed to send a clean invoice with the right fields, get a reminder sent
+                  when a client was late, and move on. So I built TradeInvoice to solve exactly that
+                  problem.
+                </p>
+              </div>
+            </div>
 
-          <h2 className="text-2xl font-bold text-white mt-10 mb-4">Who it is for</h2>
-          <p>
-            TradeInvoice is built for plumbers, electricians, builders, painters, cleaners, and
-            any other tradesperson or ZZP&apos;er who needs to send invoices without the overhead
-            of enterprise software. It works for freelancers in the Netherlands, Germany, the UK,
-            and Belgium.
-          </p>
+            <div className="border-t border-gray-700/30 pt-8">
+              <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-3">
+                <span className="w-8 h-8 rounded-lg bg-amber-500/10 flex items-center justify-center">
+                  <svg className="w-4 h-4 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                  </svg>
+                </span>
+                Who it is for
+              </h2>
+              <p className="text-gray-300 leading-relaxed pl-11">
+                TradeInvoice is built for plumbers, electricians, builders, painters, cleaners, and
+                any other tradesperson or ZZP&apos;er who needs to send invoices without the overhead
+                of enterprise software. It works for freelancers in the Netherlands, Germany, the UK,
+                and Belgium.
+              </p>
+            </div>
 
-          <h2 className="text-2xl font-bold text-white mt-10 mb-4">The mission</h2>
-          <p>
-            Affordable, no-nonsense invoicing for tradespeople. No per-user fees. No bloat. No
-            features you will never use. Just create an invoice, send it, and get paid. That is it.
-          </p>
+            <div className="border-t border-gray-700/30 pt-8">
+              <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-3">
+                <span className="w-8 h-8 rounded-lg bg-amber-500/10 flex items-center justify-center">
+                  <svg className="w-4 h-4 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                </span>
+                The mission
+              </h2>
+              <p className="text-gray-300 leading-relaxed pl-11">
+                Affordable, no-nonsense invoicing for tradespeople. No per-user fees. No bloat. No
+                features you will never use. Just create an invoice, send it, and get paid. That is it.
+              </p>
+            </div>
+          </div>
 
-          <h2 className="text-2xl font-bold text-white mt-10 mb-4">What you get</h2>
-          <ul className="space-y-3 list-disc list-inside text-gray-300">
-            <li>Professional PDF invoices with your branding</li>
-            <li>Automatic payment reminders so you do not have to chase clients</li>
-            <li>BTW/VAT calculations for NL, UK, DE, and BE</li>
-            <li>Time tracking and expense management</li>
-            <li>Client portal where customers can view and pay invoices</li>
-            <li>20 free invoices per month, no credit card required</li>
-          </ul>
+          {/* What you get */}
+          <div className="bg-[#111827] border border-gray-700/50 rounded-2xl p-8 hover:border-amber-500/30 transition-all duration-200">
+            <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-3">
+              <span className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center">
+                <svg className="w-4 h-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </span>
+              What you get
+            </h2>
+            <ul className="space-y-4 pl-11">
+              {[
+                "Professional PDF invoices with your branding",
+                "Automatic payment reminders so you do not have to chase clients",
+                "BTW/VAT calculations for NL, UK, DE, and BE",
+                "Time tracking and expense management",
+                "Client portal where customers can view and pay invoices",
+                "20 free invoices per month, no credit card required",
+              ].map((item) => (
+                <li key={item} className="flex items-start gap-3 text-gray-300">
+                  <svg className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                  </svg>
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
 
-          <h2 className="text-2xl font-bold text-white mt-10 mb-4">Get in touch</h2>
-          <p>
-            Have a question or suggestion? Reach out at{" "}
-            <a
-              href="mailto:support@tradeinvoice.app"
-              className="text-amber-400 hover:text-amber-300 transition-colors"
-            >
-              support@tradeinvoice.app
-            </a>{" "}
-            or visit the{" "}
-            <Link
-              href="/contact"
-              className="text-amber-400 hover:text-amber-300 transition-colors"
-            >
-              contact page
-            </Link>
-            .
-          </p>
+          {/* Get in touch */}
+          <div className="bg-[#111827] border border-gray-700/50 rounded-2xl p-8 hover:border-amber-500/30 transition-all duration-200">
+            <h2 className="text-xl font-bold text-white mb-4">Get in touch</h2>
+            <p className="text-gray-300 leading-relaxed">
+              Have a question or suggestion? Reach out at{" "}
+              <a
+                href="mailto:support@tradeinvoice.app"
+                className="text-amber-400 hover:text-amber-300 transition-colors underline"
+              >
+                support@tradeinvoice.app
+              </a>{" "}
+              or visit the{" "}
+              <Link
+                href="/contact"
+                className="text-amber-400 hover:text-amber-300 transition-colors underline"
+              >
+                contact page
+              </Link>
+              .
+            </p>
+          </div>
         </section>
 
-        <div className="mt-16 bg-gradient-to-r from-amber-500/10 to-amber-600/5 border border-amber-500/20 rounded-2xl p-8 text-center">
+        {/* CTA */}
+        <div className="mt-16 bg-gradient-to-r from-amber-500/10 to-amber-600/5 border border-amber-500/20 rounded-2xl p-10 text-center hover:border-amber-500/40 transition-all duration-300">
           <h3 className="text-2xl font-bold mb-3 text-white">
             Try it free. 20 invoices per month, no card needed.
           </h3>
           <Link
             href="/auth/login"
-            className="inline-block bg-amber-500 text-gray-900 px-8 py-3 rounded-xl font-bold text-lg hover:bg-amber-400 transition-colors shadow-lg shadow-amber-500/20 mt-4"
+            className="inline-block bg-gradient-to-r from-amber-500 to-amber-400 text-gray-950 px-8 py-3.5 rounded-xl font-bold text-lg hover:from-amber-400 hover:to-amber-300 transition-all duration-200 shadow-lg shadow-amber-500/20 hover:shadow-amber-500/30 hover:scale-[1.02] mt-4"
           >
             Start Free
           </Link>
         </div>
       </main>
 
-      <footer className="border-t border-gray-800 py-8 text-center text-gray-500 text-sm">
+      <footer className="border-t border-gray-700/30 py-8 text-center text-gray-500 text-sm">
         <div className="flex items-center gap-4 sm:gap-6 flex-wrap justify-center mb-4">
-          <Link href="/blog" className="text-gray-500 hover:text-gray-300 transition-colors">
+          <Link href="/blog" className="text-gray-500 hover:text-amber-400 transition-colors">
             Blog
           </Link>
-          <Link href="/terms" className="text-gray-500 hover:text-gray-300 transition-colors">
+          <Link href="/terms" className="text-gray-500 hover:text-amber-400 transition-colors">
             Terms of Service
           </Link>
-          <Link href="/privacy" className="text-gray-500 hover:text-gray-300 transition-colors">
+          <Link href="/privacy" className="text-gray-500 hover:text-amber-400 transition-colors">
             Privacy Policy
           </Link>
-          <Link href="/dpa" className="text-gray-500 hover:text-gray-300 transition-colors">
+          <Link href="/dpa" className="text-gray-500 hover:text-amber-400 transition-colors">
             DPA
           </Link>
-          <Link href="/contact" className="text-gray-500 hover:text-gray-300 transition-colors">
+          <Link href="/contact" className="text-gray-500 hover:text-amber-400 transition-colors">
             Contact
           </Link>
         </div>

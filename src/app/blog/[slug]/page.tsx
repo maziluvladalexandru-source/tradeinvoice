@@ -60,9 +60,9 @@ function markdownToHtml(content: string): string {
       (_match: string, linkText: string, url: string) => {
         const isExternal = url.startsWith("http://") || url.startsWith("https://");
         if (isExternal) {
-          return `<a href="${url}" class="text-amber-400 underline hover:text-amber-300" target="_blank" rel="noopener">${linkText}</a>`;
+          return `<a href="${url}" class="text-amber-400 underline hover:text-amber-300 transition-colors" target="_blank" rel="noopener">${linkText}</a>`;
         }
-        return `<a href="${url}" class="text-amber-400 underline hover:text-amber-300">${linkText}</a>`;
+        return `<a href="${url}" class="text-amber-400 underline hover:text-amber-300 transition-colors">${linkText}</a>`;
       }
     );
     return text;
@@ -114,7 +114,7 @@ function markdownToHtml(content: string): string {
         tableHeaderDone = false;
         inTableBody = false;
         htmlLines.push(
-          '<div class="overflow-x-auto my-6"><table class="w-full text-sm border-collapse">'
+          '<div class="overflow-x-auto my-6 rounded-xl border border-gray-700/50"><table class="w-full text-sm border-collapse">'
         );
       }
       // Separator row
@@ -131,7 +131,7 @@ function markdownToHtml(content: string): string {
         cells.forEach(
           (c) =>
             htmlLines.push(
-              `<th class="text-left py-2 px-3 border-b border-gray-700 text-gray-300 font-semibold">${c}</th>`
+              `<th class="text-left py-3 px-4 border-b border-gray-700/50 text-gray-300 font-semibold bg-[#111827]/50">${c}</th>`
             )
         );
         htmlLines.push("</tr></thead>");
@@ -140,11 +140,11 @@ function markdownToHtml(content: string): string {
           htmlLines.push("<tbody>");
           inTableBody = true;
         }
-        htmlLines.push("<tr>");
+        htmlLines.push('<tr class="hover:bg-white/[0.02] transition-colors">');
         cells.forEach(
           (c) =>
             htmlLines.push(
-              `<td class="py-2 px-3 border-b border-gray-800/50 text-gray-400">${c}</td>`
+              `<td class="py-3 px-4 border-b border-gray-700/30 text-gray-400">${c}</td>`
             )
         );
         htmlLines.push("</tr>");
@@ -261,7 +261,7 @@ export default function ArticlePage({ params }: Props) {
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0f1e] text-white">
+    <div className="min-h-screen bg-[#0a0f1e] text-white premium-glow">
       <Navbar />
 
       <script
@@ -272,13 +272,13 @@ export default function ArticlePage({ params }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
-      <article className="max-w-3xl mx-auto px-4 py-16">
+      <article className="max-w-3xl mx-auto px-4 py-16 animate-fade-in">
         <nav aria-label="Breadcrumb" className="text-sm text-gray-500 mb-8">
           <ol className="flex items-center gap-2">
             <li><Link href="/" className="hover:text-amber-400 transition-colors">Home</Link></li>
-            <li aria-hidden="true">&gt;</li>
+            <li aria-hidden="true" className="text-gray-600">&gt;</li>
             <li><Link href="/blog" className="hover:text-amber-400 transition-colors">Blog</Link></li>
-            <li aria-hidden="true">&gt;</li>
+            <li aria-hidden="true" className="text-gray-600">&gt;</li>
             <li className="text-gray-400 truncate max-w-[300px]">{article.title}</li>
           </ol>
         </nav>
@@ -292,14 +292,14 @@ export default function ArticlePage({ params }: Props) {
                 year: "numeric",
               })}
             </time>
-            <span>·</span>
+            <span className="text-gray-600">·</span>
             <span>{article.readTime}</span>
           </div>
-          <h1 className="text-3xl md:text-4xl font-extrabold leading-tight text-white">
+          <h1 className="text-3xl md:text-4xl font-extrabold leading-tight text-white mb-6">
             {article.title}
           </h1>
-          <div className="flex items-center gap-3 mt-6">
-            <div className="w-10 h-10 rounded-full bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400 text-sm font-bold shrink-0">
+          <div className="flex items-center gap-3 bg-[#111827] border border-gray-700/50 rounded-xl p-4">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500/20 to-amber-600/10 border border-amber-500/40 flex items-center justify-center text-amber-400 text-sm font-bold shrink-0">
               VM
             </div>
             <div>
@@ -315,35 +315,35 @@ export default function ArticlePage({ params }: Props) {
         />
 
         {/* CTA Banner */}
-        <div className="mt-16 bg-gradient-to-r from-amber-500/10 to-amber-600/5 border border-amber-500/20 rounded-2xl p-8 text-center">
+        <div className="mt-16 bg-gradient-to-r from-amber-500/10 to-amber-600/5 border border-amber-500/20 rounded-2xl p-8 sm:p-10 text-center hover:border-amber-500/40 transition-all duration-300">
           <h3 className="text-2xl font-bold mb-3 text-white">
-            Create your first invoice in 60 seconds - free
+            Create your first invoice in 60 seconds, free
           </h3>
           <p className="text-gray-400 mb-6 max-w-lg mx-auto">
             No credit card required. Auto BTW calculations, payment reminders,
-            and professional PDF invoices - built for Dutch tradespeople.
+            and professional PDF invoices, built for Dutch tradespeople.
           </p>
           <Link
             href="/auth/login"
-            className="inline-block bg-amber-500 text-gray-900 px-8 py-3 rounded-xl font-bold text-lg hover:bg-amber-400 transition-colors shadow-lg shadow-amber-500/20"
+            className="inline-block bg-gradient-to-r from-amber-500 to-amber-400 text-gray-950 px-8 py-3.5 rounded-xl font-bold text-lg hover:from-amber-400 hover:to-amber-300 transition-all duration-200 shadow-lg shadow-amber-500/20 hover:shadow-amber-500/30 hover:scale-[1.02]"
           >
             Start Free
           </Link>
         </div>
       </article>
 
-      <footer className="border-t border-gray-800 py-8 text-center text-gray-500 text-sm">
+      <footer className="border-t border-gray-700/30 py-8 text-center text-gray-500 text-sm">
         <div className="flex items-center gap-4 sm:gap-6 flex-wrap justify-center mb-4">
-          <Link href="/terms" className="text-gray-500 hover:text-gray-300 transition-colors">
+          <Link href="/terms" className="text-gray-500 hover:text-amber-400 transition-colors">
             Terms of Service
           </Link>
-          <Link href="/privacy" className="text-gray-500 hover:text-gray-300 transition-colors">
+          <Link href="/privacy" className="text-gray-500 hover:text-amber-400 transition-colors">
             Privacy Policy
           </Link>
-          <Link href="/dpa" className="text-gray-500 hover:text-gray-300 transition-colors">
+          <Link href="/dpa" className="text-gray-500 hover:text-amber-400 transition-colors">
             DPA
           </Link>
-          <Link href="/contact" className="text-gray-500 hover:text-gray-300 transition-colors">
+          <Link href="/contact" className="text-gray-500 hover:text-amber-400 transition-colors">
             Contact
           </Link>
         </div>

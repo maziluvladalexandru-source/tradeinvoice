@@ -75,9 +75,9 @@ function LoginContent() {
   if (sent) {
     return (
       <div className="min-h-screen bg-[#0a0f1e] flex items-center justify-center px-4 premium-glow">
-        <div className="max-w-md w-full text-center">
-          <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-10">
-            <div className="w-16 h-16 bg-amber-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+        <div className="max-w-md w-full text-center animate-fade-in">
+          <div className="bg-[#111827] backdrop-blur-xl border border-gray-700/50 rounded-2xl p-10 shadow-2xl">
+            <div className="w-16 h-16 bg-gradient-to-br from-amber-500/20 to-amber-600/10 border border-amber-500/30 rounded-2xl flex items-center justify-center mx-auto mb-6">
               <svg className="w-8 h-8 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
               </svg>
@@ -95,18 +95,27 @@ function LoginContent() {
 
   return (
     <div className="min-h-screen bg-[#0a0f1e] flex items-center justify-center px-4 premium-glow">
-      <div className="max-w-md w-full">
+      {/* Ambient gradient orbs */}
+      <div className="fixed top-1/4 left-1/4 w-96 h-96 bg-amber-500/5 rounded-full blur-[128px] pointer-events-none" />
+      <div className="fixed bottom-1/4 right-1/4 w-96 h-96 bg-blue-500/5 rounded-full blur-[128px] pointer-events-none" />
+
+      <div className="max-w-md w-full relative z-10 animate-slide-up">
         <div className="text-center mb-8">
-          <Link href="/" className="text-2xl font-bold text-amber-400">TradeInvoice</Link>
+          <Link href="/" className="text-2xl font-bold text-amber-400 hover:text-amber-300 transition-colors">TradeInvoice</Link>
           <p className="text-gray-400 mt-2">Sign in to your account</p>
         </div>
 
-        <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-8">
+        <div className="bg-[#111827] backdrop-blur-xl border border-gray-700/50 rounded-2xl p-8 shadow-2xl">
           {(errorParam || error) && (
-            <div className="bg-red-500/10 border border-red-500/30 text-red-400 p-4 rounded-xl mb-6 text-sm">
-              {errorParam === "invalid_token" ? "This link has expired. Please request a new one."
-                : errorParam === "missing_token" ? "Invalid sign-in link."
-                : error}
+            <div className="bg-red-500/10 border border-red-500/30 text-red-400 p-4 rounded-xl mb-6 text-sm flex items-start gap-3">
+              <svg className="w-5 h-5 text-red-400 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+              </svg>
+              <span>
+                {errorParam === "invalid_token" ? "This link has expired. Please request a new one."
+                  : errorParam === "missing_token" ? "Invalid sign-in link."
+                  : error}
+              </span>
             </div>
           )}
 
@@ -122,18 +131,18 @@ function LoginContent() {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
                 required
-                className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 text-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none"
+                className="w-full px-4 py-3 rounded-xl bg-[#0a0f1e] border border-gray-700/50 text-white placeholder-gray-500 text-lg focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none transition-all duration-200 focus-glow"
               />
             </div>
 
-            <label className="flex items-start gap-3 cursor-pointer">
+            <label className="flex items-start gap-3 cursor-pointer group">
               <input
                 type="checkbox"
                 checked={agreedToTerms}
                 onChange={(e) => setAgreedToTerms(e.target.checked)}
-                className="mt-1 w-4 h-4 rounded border-white/10 bg-white/5 text-amber-500 focus:ring-amber-500 focus:ring-offset-0 accent-amber-500"
+                className="mt-1 w-4 h-4 rounded border-gray-700/50 bg-[#0a0f1e] text-amber-500 focus:ring-amber-500 focus:ring-offset-0 accent-amber-500"
               />
-              <span className="text-sm text-gray-400">
+              <span className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
                 I agree to the{" "}
                 <Link href="/terms" className="text-amber-400 hover:text-amber-300 underline" target="_blank">
                   Terms of Service
@@ -150,9 +159,17 @@ function LoginContent() {
             <button
               type="submit"
               disabled={loading || !agreedToTerms}
-              className="w-full bg-amber-500 text-gray-900 py-4 rounded-xl font-bold text-lg hover:bg-amber-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-gradient-to-r from-amber-500 to-amber-400 text-gray-950 py-4 rounded-xl font-bold text-lg hover:from-amber-400 hover:to-amber-300 transition-all duration-200 shadow-lg shadow-amber-500/20 hover:shadow-amber-500/30 hover:scale-[1.01] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 btn-press"
             >
-              {loading ? "Sending..." : "Send Magic Link"}
+              {loading ? (
+                <span className="flex items-center justify-center gap-2">
+                  <svg className="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Sending...
+                </span>
+              ) : "Send Magic Link"}
             </button>
           </form>
 
@@ -163,7 +180,7 @@ function LoginContent() {
 
         <p className="text-center text-gray-600 text-sm mt-6">
           Don&apos;t have an account?{" "}
-          <Link href="/auth/login" className="text-amber-400 hover:text-amber-300">
+          <Link href="/auth/login" className="text-amber-400 hover:text-amber-300 transition-colors">
             Sign up free
           </Link>
         </p>

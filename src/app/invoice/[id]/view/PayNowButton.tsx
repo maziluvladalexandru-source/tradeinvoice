@@ -38,7 +38,7 @@ export default function PayNowButton({ invoiceId, paymentUrl, label, isDeposit }
       <button
         onClick={handlePay}
         disabled={loading}
-        className="inline-flex items-center justify-center gap-2.5 bg-white hover:bg-gray-100 active:bg-gray-200 text-slate-900 font-semibold text-base px-10 py-4 rounded-xl transition-all shadow-sm hover:shadow-md w-full sm:w-auto disabled:opacity-60 disabled:cursor-not-allowed"
+        className="inline-flex items-center justify-center gap-2.5 bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 active:from-amber-600 active:to-amber-500 text-gray-950 font-semibold text-base px-10 py-4 rounded-xl transition-all duration-200 shadow-lg shadow-amber-500/20 hover:shadow-amber-500/30 hover:scale-[1.02] w-full sm:w-auto disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100 btn-press"
       >
         {loading ? (
           <>
