@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import BottomNav from "@/components/BottomNav";
 import { formatCurrency } from "@/lib/utils";
+import { PageTransition, FadeIn, StaggerChildren, StaggerItem, motion } from "@/components/animations";
 
 interface Invoice {
   id: string;
@@ -165,8 +166,10 @@ export default function InvoicesListPage() {
   return (
     <div className="min-h-screen bg-[#0a0f1e] pb-24 md:pb-0 premium-glow">
       <Navbar />
+      <PageTransition>
       <main className="max-w-6xl mx-auto px-4 py-8 animate-fade-in">
         {/* Header */}
+        <FadeIn>
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
           <div>
             <h1 className="text-3xl font-bold text-white tracking-tight">Invoices</h1>
@@ -182,8 +185,10 @@ export default function InvoicesListPage() {
             New Invoice
           </Link>
         </div>
+        </FadeIn>
 
         {/* Search & Filters */}
+        <FadeIn delay={0.1}>
         <div className="flex flex-col sm:flex-row gap-3 mb-6">
           <div className="relative flex-1">
             <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -210,8 +215,10 @@ export default function InvoicesListPage() {
             <option value="overdue">Overdue</option>
           </select>
         </div>
+        </FadeIn>
 
         {/* Sort buttons */}
+        <FadeIn delay={0.15}>
         <div className="flex gap-2 mb-4">
           <button onClick={() => toggleSort("date")} className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${sortField === "date" ? "bg-amber-500/15 text-amber-400" : "text-gray-400 hover:text-white hover:bg-white/5"}`}>
             Date <SortIcon field="date" />
@@ -226,8 +233,10 @@ export default function InvoicesListPage() {
             {filtered.length} invoice{filtered.length !== 1 ? "s" : ""}
           </span>
         </div>
+        </FadeIn>
 
         {/* Invoice list */}
+        <FadeIn delay={0.2}>
         <div className="bg-[#111827] backdrop-blur-sm rounded-2xl border border-gray-700/50 overflow-hidden shadow-xl shadow-black/20">
           {loading ? (
             <div className="p-16 text-center">
@@ -248,10 +257,11 @@ export default function InvoicesListPage() {
               </p>
             </div>
           ) : (
-            <div className="space-y-1 p-1.5">
+            <StaggerChildren className="space-y-1 p-1.5">
               {filtered.map((invoice, idx) => (
-                <div
-                  key={invoice.id}
+                <StaggerItem key={invoice.id}>
+                <motion.div
+                  whileHover={{ y: -2 }}
                   className={`group p-3 sm:p-4 bg-[#111827] hover:bg-[#1a2235] transition-all duration-200 rounded-xl border border-gray-700/30 hover:border-amber-500/30 border-l-4 ${statusBorder[invoice.status] || "border-l-gray-600"} stagger-item hover:shadow-lg hover:shadow-black/10`}
                   style={{ animationDelay: `${idx * 30}ms` }}
                 >
@@ -369,12 +379,15 @@ export default function InvoicesListPage() {
                       </p>
                     )}
                   </div>
-                </div>
+                </motion.div>
+                </StaggerItem>
               ))}
-            </div>
+            </StaggerChildren>
           )}
         </div>
+        </FadeIn>
       </main>
+      </PageTransition>
       <BottomNav />
     </div>
   );

@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import BottomNav from "@/components/BottomNav";
+import { PageTransition, FadeIn, StaggerChildren, StaggerItem, motion } from "@/components/animations";
 
 interface ServiceItem {
   id: string;
@@ -145,8 +146,9 @@ export default function ServicesPage() {
   return (
     <div className="min-h-screen bg-[#0a0f1e] pb-24 md:pb-0 premium-glow">
       <Navbar />
-      <div className="max-w-3xl mx-auto px-4 py-8">
+      <PageTransition className="max-w-3xl mx-auto px-4 py-8">
         {/* Header */}
+        <FadeIn>
         <div className="flex items-center justify-between mb-8">
           <div>
             <h1 className="text-4xl font-bold text-white tracking-tight">Service Library</h1>
@@ -168,6 +170,7 @@ export default function ServicesPage() {
             Add Item
           </button>
         </div>
+        </FadeIn>
 
         {/* Add/Edit Form */}
         {showForm && (
@@ -281,10 +284,11 @@ export default function ServicesPage() {
             </button>
           </div>
         ) : (
-          <div className="space-y-3">
+          <StaggerChildren className="space-y-3">
             {items.map((item) => (
-              <div
-                key={item.id}
+              <StaggerItem key={item.id}>
+              <motion.div
+                whileHover={{ y: -2 }}
                 className="bg-[#111827] backdrop-blur-sm rounded-2xl p-4 border border-gray-700/50 border-l-4 border-l-amber-500/50 flex items-center gap-4 group hover:border-amber-500/30 hover:shadow-lg hover:shadow-amber-500/10 transition-all duration-300"
               >
                 <div className="flex-1 min-w-0">
@@ -340,11 +344,12 @@ export default function ServicesPage() {
                     </button>
                   )}
                 </div>
-              </div>
+              </motion.div>
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerChildren>
         )}
-      </div>
+      </PageTransition>
       <BottomNav />
     </div>
   );

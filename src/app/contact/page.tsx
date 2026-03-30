@@ -1,17 +1,11 @@
-import type { Metadata } from "next";
-import Link from "next/link";
+"use client";
 
-export const metadata: Metadata = {
-  title: "Contact - TradeInvoice",
-  description:
-    "Get in touch with TradeInvoice. Questions about invoicing, your account, or features? We respond within 24 hours on business days.",
-  alternates: {
-    canonical: "/contact",
-  },
-};
+import Link from "next/link";
+import { PageTransition, FadeIn, StaggerChildren, StaggerItem } from "@/components/animations";
 
 export default function ContactPage() {
   return (
+    <PageTransition>
     <div className="min-h-screen bg-[#0a0f1e] text-white premium-glow">
       <header className="border-b border-gray-700/30 bg-[#0a0f1e]/80 backdrop-blur-xl sticky top-0 z-50">
         <div className="max-w-4xl mx-auto px-4 py-5 flex items-center justify-between">
@@ -27,7 +21,8 @@ export default function ContactPage() {
         </div>
       </header>
 
-      <main className="max-w-3xl mx-auto px-4 py-16 animate-fade-in">
+      <main className="max-w-3xl mx-auto px-4 py-16">
+        <FadeIn>
         <div className="mb-12">
           <div className="inline-block bg-amber-500/10 border border-amber-500/30 text-amber-400 text-sm font-semibold px-4 py-1.5 rounded-full mb-6">
             Get in Touch
@@ -35,8 +30,10 @@ export default function ContactPage() {
           <h1 className="text-3xl md:text-4xl font-extrabold text-white mb-3">Contact Us</h1>
           <p className="text-gray-400 text-lg">We are here to help.</p>
         </div>
+        </FadeIn>
 
-        <div className="space-y-6">
+        <StaggerChildren className="space-y-6">
+          <StaggerItem>
           <section className="bg-[#111827] border border-gray-700/50 rounded-2xl p-6 hover:border-amber-500/30 transition-all duration-200 group">
             <div className="flex items-start gap-4">
               <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center shrink-0 group-hover:bg-amber-500/20 transition-colors">
@@ -58,7 +55,9 @@ export default function ContactPage() {
               </div>
             </div>
           </section>
+          </StaggerItem>
 
+          <StaggerItem>
           <section className="bg-[#111827] border border-gray-700/50 rounded-2xl p-6 hover:border-amber-500/30 transition-all duration-200 group">
             <div className="flex items-start gap-4">
               <div className="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center shrink-0 group-hover:bg-blue-500/20 transition-colors">
@@ -74,7 +73,9 @@ export default function ContactPage() {
               </div>
             </div>
           </section>
+          </StaggerItem>
 
+          <StaggerItem>
           <section className="bg-[#111827] border border-gray-700/50 rounded-2xl p-6 hover:border-amber-500/30 transition-all duration-200 group">
             <div className="flex items-start gap-4">
               <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center shrink-0 group-hover:bg-emerald-500/20 transition-colors">
@@ -102,7 +103,9 @@ export default function ContactPage() {
               </div>
             </div>
           </section>
+          </StaggerItem>
 
+          <StaggerItem>
           <section className="bg-[#111827] border border-gray-700/50 rounded-2xl p-6 hover:border-amber-500/30 transition-all duration-200 group">
             <div className="flex items-start gap-4">
               <div className="w-10 h-10 rounded-xl bg-red-500/10 border border-red-500/30 flex items-center justify-center shrink-0 group-hover:bg-red-500/20 transition-colors">
@@ -125,7 +128,8 @@ export default function ContactPage() {
               </div>
             </div>
           </section>
-        </div>
+          </StaggerItem>
+        </StaggerChildren>
       </main>
 
       <footer className="border-t border-gray-700/30 py-8 text-center text-gray-500 text-sm">
@@ -146,5 +150,6 @@ export default function ContactPage() {
         &copy; {new Date().getFullYear()} TradeInvoice. Operated by Vlad Mazilu Alexandru, Netherlands.
       </footer>
     </div>
+    </PageTransition>
   );
 }

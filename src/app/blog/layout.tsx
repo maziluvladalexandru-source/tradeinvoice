@@ -1,4 +1,29 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Invoicing Tips for Dutch Tradespeople | TradeInvoice",
+  description:
+    "Practical guides on invoicing, BTW/VAT, payment collection, and business tips for ZZP'ers and tradespeople in the Netherlands.",
+  alternates: {
+    canonical: "/blog",
+  },
+  openGraph: {
+    title: "Blog - TradeInvoice",
+    description:
+      "Practical guides on invoicing, BTW/VAT, payment collection, and business tips for ZZP'ers and tradespeople in the Netherlands.",
+    url: "https://tradeinvoice.app/blog",
+    type: "website",
+    siteName: "TradeInvoice",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Blog - TradeInvoice",
+    description:
+      "Practical guides on invoicing, BTW/VAT, payment collection, and business tips for ZZP'ers and tradespeople in the Netherlands.",
+  },
+};
 
 export default function BlogLayout({
   children,

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import OfflineBanner from "./OfflineBanner";
+import { motion } from "@/components/animations";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -30,7 +31,12 @@ export default function Navbar() {
   return (
     <>
     <OfflineBanner />
-    <nav className="bg-[#0a0f1e]/80 backdrop-blur-xl border-b border-white/5 shadow-[0_1px_0_0_rgba(245,158,11,0.1)]">
+    <motion.nav
+      initial={{ y: -60 }}
+      animate={{ y: 0 }}
+      transition={{ type: "spring", stiffness: 300, damping: 30 }}
+      className="bg-[#0a0f1e]/80 backdrop-blur-xl border-b border-white/5 shadow-[0_1px_0_0_rgba(245,158,11,0.1)]"
+    >
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center gap-8">
@@ -73,7 +79,7 @@ export default function Navbar() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`px-3 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-all duration-200 ${
+                  className={`relative px-3 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-all duration-200 ${
                     pathname === link.href ||
                     (link.href !== "/dashboard" &&
                       link.href !== "/invoices" &&
@@ -83,6 +89,16 @@ export default function Navbar() {
                   }`}
                 >
                   {link.label}
+                  {(pathname === link.href ||
+                    (link.href !== "/dashboard" &&
+                      link.href !== "/invoices" &&
+                      pathname.startsWith(link.href))) && (
+                    <motion.div
+                      layoutId="navbar-active-indicator"
+                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-amber-400 rounded-full"
+                      transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                    />
+                  )}
                 </Link>
               ))}
               <Link
@@ -110,7 +126,7 @@ export default function Navbar() {
         </div>
         {/* Mobile nav moved to BottomNav component */}
       </div>
-    </nav>
+    </motion.nav>
     </>
   );
 }

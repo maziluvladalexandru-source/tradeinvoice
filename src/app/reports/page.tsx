@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import BottomNav from "@/components/BottomNav";
 import UpgradeModal from "@/components/UpgradeModal";
 import DonutChart from "@/components/DonutChart";
+import { PageTransition, FadeIn, StaggerChildren, StaggerItem, motion } from "@/components/animations";
 
 interface ReportData {
   period: { type: string; year: number; month: number; quarter: number; from: string; to: string };
@@ -138,7 +139,8 @@ export default function ReportsPage() {
   return (
     <div className="min-h-screen bg-[#0a0f1e] pb-24 md:pb-0 premium-glow">
       <Navbar />
-      <div className="max-w-6xl mx-auto px-4 py-8">
+      <PageTransition className="max-w-6xl mx-auto px-4 py-8">
+        <FadeIn>
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
           <div>
             <h1 className="text-4xl font-bold text-white tracking-tight">Reports</h1>
@@ -157,6 +159,7 @@ export default function ReportsPage() {
             </button>
           )}
         </div>
+        </FadeIn>
 
         {userPlan !== "pro" ? (
           <div className="bg-[#111827] backdrop-blur-sm rounded-2xl border border-gray-700/50 p-16 text-center">
@@ -235,37 +238,46 @@ export default function ReportsPage() {
             ) : data ? (
               <>
                 {/* Summary Cards */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-                  <div className="relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl p-5 border border-gray-700/50 border-l-4 border-l-emerald-500 hover:border-white/20 transition-all duration-300">
+                <StaggerChildren className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                  <StaggerItem>
+                  <motion.div whileHover={{ y: -2 }} className="relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl p-5 border border-gray-700/50 border-l-4 border-l-emerald-500 hover:border-white/20 transition-all duration-300">
                     <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-transparent pointer-events-none" />
                     <p className="text-sm font-medium text-gray-400 mb-1">Revenue</p>
                     <p className="text-lg md:text-2xl font-bold text-emerald-400 truncate tabular-nums">{fmtCurrency(data.revenue)}</p>
                     <p className="text-sm text-gray-500 mt-1">{data.invoicesPaid} invoice{data.invoicesPaid !== 1 ? "s" : ""} paid</p>
-                  </div>
-                  <div className="relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl p-5 border border-gray-700/50 border-l-4 border-l-red-500 hover:border-white/20 transition-all duration-300">
+                  </motion.div>
+                  </StaggerItem>
+                  <StaggerItem>
+                  <motion.div whileHover={{ y: -2 }} className="relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl p-5 border border-gray-700/50 border-l-4 border-l-red-500 hover:border-white/20 transition-all duration-300">
                     <div className="absolute inset-0 bg-gradient-to-br from-red-500/10 to-transparent pointer-events-none" />
                     <p className="text-sm font-medium text-gray-400 mb-1">Expenses</p>
                     <p className="text-lg md:text-2xl font-bold text-red-400 truncate tabular-nums">{fmtCurrency(data.totalExpenses)}</p>
                     <p className="text-sm text-gray-500 mt-1">{fmtCurrency(data.deductibleExpenses)} deductible</p>
-                  </div>
-                  <div className="relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl p-5 border border-gray-700/50 border-l-4 border-l-blue-500 hover:border-white/20 transition-all duration-300">
+                  </motion.div>
+                  </StaggerItem>
+                  <StaggerItem>
+                  <motion.div whileHover={{ y: -2 }} className="relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl p-5 border border-gray-700/50 border-l-4 border-l-blue-500 hover:border-white/20 transition-all duration-300">
                     <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent pointer-events-none" />
                     <p className="text-sm font-medium text-gray-400 mb-1">Mileage Deduction</p>
                     <p className="text-lg md:text-2xl font-bold text-blue-400 truncate tabular-nums">{fmtCurrency(data.mileageDeduction)}</p>
                     <p className="text-sm text-gray-500 mt-1">{data.totalKm.toFixed(1)} km</p>
-                  </div>
-                  <div className="relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl p-5 border border-gray-700/50 border-l-4 border-l-amber-500 hover:border-white/20 transition-all duration-300">
+                  </motion.div>
+                  </StaggerItem>
+                  <StaggerItem>
+                  <motion.div whileHover={{ y: -2 }} className="relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl p-5 border border-gray-700/50 border-l-4 border-l-amber-500 hover:border-white/20 transition-all duration-300">
                     <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 to-transparent pointer-events-none" />
                     <p className="text-sm font-medium text-gray-400 mb-1">Net Profit</p>
                     <p className={`text-lg md:text-2xl font-bold truncate tabular-nums ${data.netProfit >= 0 ? "text-amber-400" : "text-red-400"}`}>
                       {fmtCurrency(data.netProfit)}
                     </p>
                     <p className="text-sm text-gray-500 mt-1">{fmtCurrency(data.totalOutstanding)} outstanding</p>
-                  </div>
-                </div>
+                  </motion.div>
+                  </StaggerItem>
+                </StaggerChildren>
 
                 {/* Revenue vs Expenses Donut */}
                 {(data.revenue > 0 || data.totalExpenses > 0) && (
+                  <FadeIn delay={0.2}>
                   <div className="bg-[#111827] backdrop-blur-sm rounded-2xl border border-gray-700/50 border-t-[3px] border-t-amber-500/60 p-6 mb-8">
                     <h2 className="text-lg font-semibold text-white mb-4">Profit Overview</h2>
                     <div className="flex justify-center">
@@ -280,9 +292,11 @@ export default function ReportsPage() {
                       />
                     </div>
                   </div>
+                  </FadeIn>
                 )}
 
                 {/* P&L Statement */}
+                <FadeIn delay={0.3}>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
                   <div className="bg-[#111827] backdrop-blur-sm rounded-2xl border border-gray-700/50 p-6">
                     <h2 className="text-lg font-semibold text-white mb-4">Profit &amp; Loss Statement</h2>
@@ -380,20 +394,24 @@ export default function ReportsPage() {
                       <div className="mt-6">
                         <h3 className="text-sm font-semibold text-gray-400 mb-3">Revenue vs Expenses</h3>
                         <div className="flex items-end gap-1 h-32">
-                          {data.monthlyData.map((m) => {
+                          {data.monthlyData.map((m, idx) => {
                             const maxVal = Math.max(...data.monthlyData.map((d) => Math.max(d.revenue, d.expenses)), 1);
                             const revH = (m.revenue / maxVal) * 100;
                             const expH = (m.expenses / maxVal) * 100;
                             return (
                               <div key={m.month} className="flex-1 flex items-end gap-0.5">
-                                <div
-                                  className="flex-1 bg-emerald-500/30 rounded-t transition-all"
-                                  style={{ height: `${revH}%`, minHeight: m.revenue > 0 ? "4px" : "0" }}
+                                <motion.div
+                                  className="flex-1 bg-emerald-500/30 rounded-t"
+                                  initial={{ height: 0 }}
+                                  animate={{ height: `${revH}%`, minHeight: m.revenue > 0 ? "4px" : "0" }}
+                                  transition={{ duration: 0.6, delay: idx * 0.05, ease: "easeOut" }}
                                   title={`Revenue: ${fmtCurrency(m.revenue)}`}
                                 />
-                                <div
-                                  className="flex-1 bg-red-500/30 rounded-t transition-all"
-                                  style={{ height: `${expH}%`, minHeight: m.expenses > 0 ? "4px" : "0" }}
+                                <motion.div
+                                  className="flex-1 bg-red-500/30 rounded-t"
+                                  initial={{ height: 0 }}
+                                  animate={{ height: `${expH}%`, minHeight: m.expenses > 0 ? "4px" : "0" }}
+                                  transition={{ duration: 0.6, delay: idx * 0.05 + 0.1, ease: "easeOut" }}
                                   title={`Expenses: ${fmtCurrency(m.expenses)}`}
                                 />
                               </div>
@@ -412,11 +430,12 @@ export default function ReportsPage() {
                     </div>
                   )}
                 </div>
+                </FadeIn>
               </>
             ) : null}
           </>
         )}
-      </div>
+      </PageTransition>
 
       {showUpgrade && <UpgradeModal feature="Profit & Loss Reports" onClose={() => setShowUpgrade(false)} />}
       <BottomNav />

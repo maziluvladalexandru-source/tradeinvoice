@@ -5,6 +5,7 @@ import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import BottomNav from "@/components/BottomNav";
 import { toast } from "@/components/Toast";
+import { PageTransition, FadeIn, StaggerChildren, StaggerItem, motion } from "@/components/animations";
 
 interface StatusBreakdown {
   draft: number;
@@ -220,7 +221,9 @@ export default function ClientsPage() {
   return (
     <div className="min-h-screen bg-[#0a0f1e] pb-24 md:pb-0 premium-glow">
       <Navbar />
+      <PageTransition>
       <div className="max-w-6xl mx-auto px-4 py-8">
+        <FadeIn>
         <div className="flex items-center justify-between mb-8">
           <div>
             <h1 className="text-4xl font-bold text-white tracking-tight">Clients</h1>
@@ -234,9 +237,11 @@ export default function ClientsPage() {
             {showForm ? "Cancel" : "+ Add Client"}
           </button>
         </div>
+        </FadeIn>
 
         {/* Summary Cards */}
         {clients.length > 0 && (
+          <FadeIn delay={0.1}>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
             <div className="bg-[#111827] backdrop-blur-sm rounded-2xl p-5 border border-gray-700/50 border-l-4 border-l-blue-500 hover:border-gray-600/50 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300 relative overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent pointer-events-none" />
@@ -281,6 +286,7 @@ export default function ClientsPage() {
               </div>
             </div>
           </div>
+          </FadeIn>
         )}
 
         {showForm && (
@@ -388,12 +394,13 @@ export default function ClientsPage() {
             <p className="text-gray-400 text-lg">No clients match your search.</p>
           </div>
         ) : (
-          <div className="space-y-3">
+          <StaggerChildren className="space-y-3">
             {filtered.map((client) => {
               const flag = getCountryFlag(client.address);
               return (
-                <div
-                  key={client.id}
+                <StaggerItem key={client.id}>
+                <motion.div
+                  whileHover={{ y: -2 }}
                   className="bg-[#111827] backdrop-blur-sm rounded-2xl border border-gray-700/50 p-5 hover:border-amber-500/30 hover:shadow-lg hover:shadow-amber-500/10 transition-all duration-300"
                 >
                   {editingId === client.id ? (
@@ -527,12 +534,14 @@ export default function ClientsPage() {
                       </div>
                     </div>
                   </div>
-                </div>
+                </motion.div>
+                </StaggerItem>
               );
             })}
-          </div>
+          </StaggerChildren>
         )}
       </div>
+      </PageTransition>
       <BottomNav />
     </div>
   );

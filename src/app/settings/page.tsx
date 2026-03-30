@@ -6,6 +6,7 @@ import Navbar from "@/components/Navbar";
 import BottomNav from "@/components/BottomNav";
 import UpgradeModal, { ProBadge } from "@/components/UpgradeModal";
 import { toast } from "@/components/Toast";
+import { PageTransition, FadeIn } from "@/components/animations";
 
 export default function SettingsPage() {
   return (
@@ -467,9 +468,11 @@ function SettingsContent() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 py-10">
-        <h1 className="text-4xl font-bold text-white mb-2 tracking-tight">Settings</h1>
-        <div className="w-20 h-1 bg-gradient-to-r from-amber-500 to-amber-300 rounded-full mb-10" />
+      <PageTransition className="max-w-7xl mx-auto px-4 py-10">
+        <FadeIn>
+          <h1 className="text-4xl font-bold text-white mb-2 tracking-tight">Settings</h1>
+          <div className="w-20 h-1 bg-gradient-to-r from-amber-500 to-amber-300 rounded-full mb-10" />
+        </FadeIn>
 
         {upgraded && (
           <div className="bg-green-900/50 text-green-400 p-4 rounded-xl mb-6 font-medium">
@@ -513,6 +516,7 @@ function SettingsContent() {
             {/* ==================== ACCOUNT ==================== */}
 
             {/* Subscription */}
+            <FadeIn delay={0.1}>
             <div id="section-subscription" className="scroll-mt-24 bg-[#111827] backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 hover:border-gray-600/60 transition-all duration-300">
               <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
                 <svg className="w-5 h-5 text-amber-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -548,9 +552,11 @@ function SettingsContent() {
                 </p>
               </div>
             </div>
+            </FadeIn>
 
             {/* Business Information */}
             <form onSubmit={handleSave} className="space-y-8">
+              <FadeIn delay={0.15}>
               <div id="section-business-info" className="scroll-mt-24 bg-[#111827] backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 space-y-5 hover:border-gray-600/60 transition-all duration-300">
                 <h2 className="text-lg font-semibold text-white mb-2 flex items-center gap-2">
                   <svg className="w-5 h-5 text-amber-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -616,9 +622,11 @@ function SettingsContent() {
                   </p>
                 </div>
               </div>
+              </FadeIn>
 
               {/* Invoice Logo - outside form submit but visually in flow */}
               {/* Note: Logo section uses its own API calls, not the form submit */}
+              <FadeIn delay={0.2}>
               <div id="section-invoice-logo" className={`scroll-mt-24 bg-[#111827] backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 relative hover:border-gray-600/60 transition-all duration-300 ${!isPro ? "overflow-hidden" : ""}`}>
                 <h2 className="text-lg font-semibold text-white mb-2 flex items-center gap-2">
                   <svg className="w-5 h-5 text-amber-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -689,10 +697,12 @@ function SettingsContent() {
                   )}
                 </div>
               </div>
+              </FadeIn>
 
               {/* ==================== INVOICING ==================== */}
 
               {/* Invoice Defaults */}
+              <FadeIn delay={0.1}>
               <div id="section-invoice-defaults" className="scroll-mt-24 bg-[#111827] backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 space-y-5 hover:border-gray-600/60 transition-all duration-300">
                 <h2 className="text-lg font-semibold text-white mb-2 flex items-center gap-2">
                   <svg className="w-5 h-5 text-amber-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -807,8 +817,10 @@ function SettingsContent() {
                   </div>
                 </div>
               </div>
+              </FadeIn>
 
               {/* Tax & Registration */}
+              <FadeIn delay={0.15}>
               <div id="section-tax-registration" className="scroll-mt-24 bg-[#111827] backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 space-y-5 hover:border-gray-600/60 transition-all duration-300">
                 <h2 className="text-lg font-semibold text-white mb-2 flex items-center gap-2">
                   <svg className="w-5 h-5 text-amber-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -862,8 +874,10 @@ function SettingsContent() {
                   </div>
                 </div>
               </div>
+              </FadeIn>
 
               {/* Payment Details */}
+              <FadeIn delay={0.2}>
               <div id="section-payment-details" className="scroll-mt-24 bg-[#111827] backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 space-y-5 hover:border-gray-600/60 transition-all duration-300">
                 <h2 className="text-lg font-semibold text-white mb-2 flex items-center gap-2">
                   <svg className="w-5 h-5 text-amber-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -964,9 +978,12 @@ function SettingsContent() {
                 )}
               </div>
 
+              </FadeIn>
+
               {/* ==================== COMMUNICATION ==================== */}
 
               {/* Email Templates */}
+              <FadeIn delay={0.1}>
               <div id="section-email-templates" className="scroll-mt-24 bg-[#111827] backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 space-y-5 hover:border-gray-600/60 transition-all duration-300">
                 <h2 className="text-lg font-semibold text-white mb-2 flex items-center gap-2">
                   <svg className="w-5 h-5 text-amber-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1031,8 +1048,10 @@ function SettingsContent() {
                   />
                 </div>
               </div>
+              </FadeIn>
 
               {/* Payment Reminders */}
+              <FadeIn delay={0.15}>
               <div id="section-payment-reminders" className="scroll-mt-24 bg-[#111827] backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 space-y-5 hover:border-gray-600/60 transition-all duration-300">
                 <h2 className="text-lg font-semibold text-white mb-2 flex items-center gap-2">
                   <svg className="w-5 h-5 text-amber-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1103,8 +1122,10 @@ function SettingsContent() {
                   </div>
                 </div>
               </div>
+              </FadeIn>
 
               {/* Notification Preferences */}
+              <FadeIn delay={0.2}>
               <div id="section-notifications" className="scroll-mt-24 bg-[#111827] backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 space-y-5 hover:border-gray-600/60 transition-all duration-300">
                 <h2 className="text-lg font-semibold text-white mb-2 flex items-center gap-2">
                   <svg className="w-5 h-5 text-amber-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1170,8 +1191,10 @@ function SettingsContent() {
                   </label>
                 </div>
               </div>
+              </FadeIn>
 
               {/* Save button */}
+              <FadeIn delay={0.25}>
               <button
                 type="submit"
                 disabled={saving}
@@ -1179,11 +1202,13 @@ function SettingsContent() {
               >
                 {saving ? "Saving..." : "Save Changes"}
               </button>
+              </FadeIn>
             </form>
 
             {/* ==================== SECURITY & DATA ==================== */}
 
             {/* Security */}
+            <FadeIn delay={0.1}>
             <div id="section-security" className="scroll-mt-24 bg-[#111827] backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 hover:border-gray-600/60 transition-all duration-300">
               <h2 className="text-lg font-semibold text-white mb-2 flex items-center gap-2">
                 <svg className="w-5 h-5 text-amber-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1237,8 +1262,10 @@ function SettingsContent() {
                 </div>
               </div>
             </div>
+            </FadeIn>
 
             {/* Team Members */}
+            <FadeIn delay={0.15}>
             <div id="section-team-members" className="scroll-mt-24 bg-[#111827] backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 hover:border-gray-600/60 transition-all duration-300">
               <h2 className="text-lg font-semibold text-white mb-2 flex items-center gap-2">
                 <svg className="w-5 h-5 text-amber-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1373,8 +1400,10 @@ function SettingsContent() {
                 </>
               )}
             </div>
+            </FadeIn>
 
             {/* Data Export */}
+            <FadeIn delay={0.2}>
             <div id="section-data-export" className="scroll-mt-24 bg-[#111827] backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 hover:border-gray-600/60 transition-all duration-300">
               <h2 className="text-lg font-semibold text-white mb-2 flex items-center gap-2">
                 <svg className="w-5 h-5 text-amber-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1394,8 +1423,10 @@ function SettingsContent() {
                 Export My Data
               </a>
             </div>
+            </FadeIn>
 
             {/* Danger Zone */}
+            <FadeIn delay={0.25}>
             <div id="section-danger-zone" className="scroll-mt-24 bg-[#111827] backdrop-blur-sm rounded-2xl p-6 border border-red-500/30 hover:border-red-500/40 transition-all duration-300">
               <h2 className="text-lg font-semibold text-red-400 mb-2 flex items-center gap-2">
                 <svg className="w-5 h-5 text-red-400/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1414,9 +1445,10 @@ function SettingsContent() {
                 Delete My Account
               </button>
             </div>
+            </FadeIn>
           </div>
         </div>
-      </div>
+      </PageTransition>
 
       {/* Delete Confirmation Modal */}
       {showDeleteModal && (

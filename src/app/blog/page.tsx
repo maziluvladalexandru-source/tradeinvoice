@@ -1,38 +1,17 @@
-import type { Metadata } from "next";
+"use client";
+
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import { articles } from "./articles";
-
-export const metadata: Metadata = {
-  title: "Invoicing Tips for Dutch Tradespeople | TradeInvoice",
-  description:
-    "Practical guides on invoicing, BTW/VAT, payment collection, and business tips for ZZP'ers and tradespeople in the Netherlands.",
-  alternates: {
-    canonical: "/blog",
-  },
-  openGraph: {
-    title: "Blog - TradeInvoice",
-    description:
-      "Practical guides on invoicing, BTW/VAT, payment collection, and business tips for ZZP'ers and tradespeople in the Netherlands.",
-    url: "https://tradeinvoice.app/blog",
-    type: "website",
-    siteName: "TradeInvoice",
-    locale: "en_US",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Blog - TradeInvoice",
-    description:
-      "Practical guides on invoicing, BTW/VAT, payment collection, and business tips for ZZP'ers and tradespeople in the Netherlands.",
-  },
-};
+import { FadeIn, StaggerChildren, StaggerItem } from "@/components/animations";
 
 export default function BlogIndex() {
   return (
     <div className="min-h-screen bg-[#0a0f1e] text-white premium-glow">
       <Navbar />
 
-      <main className="max-w-4xl mx-auto px-4 py-16 animate-fade-in">
+      <main className="max-w-4xl mx-auto px-4 py-16">
+        <FadeIn>
         <div className="mb-12">
           <div className="inline-block bg-amber-500/10 border border-amber-500/30 text-amber-400 text-sm font-semibold px-4 py-1.5 rounded-full mb-6">
             Insights & Guides
@@ -43,8 +22,10 @@ export default function BlogIndex() {
             business in the Netherlands.
           </p>
         </div>
+        </FadeIn>
 
         {/* Free template banner */}
+        <FadeIn delay={0.15}>
         <Link
           href="/templates"
           className="block mb-12 bg-gradient-to-r from-amber-500/10 to-amber-600/5 border border-amber-500/20 rounded-2xl p-6 hover:border-amber-500/40 transition-all duration-200 group hover:shadow-lg hover:shadow-amber-500/5"
@@ -62,14 +43,14 @@ export default function BlogIndex() {
             <div className="text-amber-400 text-2xl flex-shrink-0 ml-4 group-hover:translate-x-1 transition-transform duration-200">&rarr;</div>
           </div>
         </Link>
+        </FadeIn>
 
-        <div className="space-y-6">
-          {articles.map((article, i) => (
+        <StaggerChildren className="space-y-6" delay={0.2}>
+          {articles.map((article) => (
+            <StaggerItem key={article.slug}>
             <Link
-              key={article.slug}
               href={`/blog/${article.slug}`}
-              className={`block group bg-[#111827] border border-gray-700/50 rounded-2xl p-6 md:p-8 hover:border-amber-500/30 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-200 stagger-item`}
-              style={{ animationDelay: `${i * 50}ms` }}
+              className="block group bg-[#111827] border border-gray-700/50 rounded-2xl p-6 md:p-8 hover:border-amber-500/30 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-200"
             >
               <div className="flex items-center gap-3 text-sm text-gray-500 mb-3">
                 <time dateTime={article.date}>
@@ -93,8 +74,9 @@ export default function BlogIndex() {
                 </svg>
               </div>
             </Link>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerChildren>
       </main>
 
       <footer className="border-t border-gray-700/30 py-8 text-center text-gray-500 text-sm">

@@ -1,32 +1,11 @@
-import type { Metadata } from "next";
-import Link from "next/link";
+"use client";
 
-export const metadata: Metadata = {
-  title: "About Us - Invoicing Built by a Tradesperson | TradeInvoice",
-  description:
-    "TradeInvoice was built by Vlad Mazilu Alexandru, an expat tradesperson in the Netherlands who needed simple, affordable invoicing. Learn our story and mission.",
-  alternates: {
-    canonical: "/about",
-  },
-  openGraph: {
-    title: "About TradeInvoice",
-    description:
-      "Built by a tradesperson, for tradespeople. Learn why TradeInvoice exists and who is behind it.",
-    url: "https://tradeinvoice.app/about",
-    type: "website",
-    siteName: "TradeInvoice",
-    locale: "en_US",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "About TradeInvoice",
-    description:
-      "Built by a tradesperson, for tradespeople. Learn why TradeInvoice exists and who is behind it.",
-  },
-};
+import Link from "next/link";
+import { ScrollReveal, FadeIn, StaggerChildren, StaggerItem, PageTransition } from "@/components/animations";
 
 export default function AboutPage() {
   return (
+    <PageTransition>
     <div className="min-h-screen bg-[#0a0f1e] text-white premium-glow">
       <header className="border-b border-gray-700/30 bg-[#0a0f1e]/80 backdrop-blur-xl sticky top-0 z-50">
         <div className="max-w-4xl mx-auto px-4 py-5 flex items-center justify-between">
@@ -42,8 +21,9 @@ export default function AboutPage() {
         </div>
       </header>
 
-      <main className="max-w-3xl mx-auto px-4 py-16 animate-fade-in">
+      <main className="max-w-3xl mx-auto px-4 py-16">
         {/* Hero section */}
+        <FadeIn>
         <div className="mb-12">
           <div className="inline-block bg-amber-500/10 border border-amber-500/30 text-amber-400 text-sm font-semibold px-4 py-1.5 rounded-full mb-6">
             Our Story
@@ -55,9 +35,11 @@ export default function AboutPage() {
             Built by a tradesperson who got tired of overpriced, overcomplicated invoicing software.
           </p>
         </div>
+        </FadeIn>
 
         <section className="space-y-8">
           {/* Founder card */}
+          <ScrollReveal>
           <div className="bg-[#111827] border border-gray-700/50 rounded-2xl p-6 flex items-center gap-5 hover:border-amber-500/30 transition-all duration-200">
             <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-500/20 to-amber-600/10 border border-amber-500/40 flex items-center justify-center text-amber-400 text-xl font-bold shrink-0">
               VM
@@ -67,8 +49,10 @@ export default function AboutPage() {
               <p className="text-gray-400 text-sm">Founder, based in the Netherlands</p>
             </div>
           </div>
+          </ScrollReveal>
 
           {/* Content sections */}
+          <ScrollReveal delay={0.1}>
           <div className="bg-[#111827] border border-gray-700/50 rounded-2xl p-8 space-y-8 hover:border-amber-500/30 transition-all duration-200">
             <div>
               <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-3">
@@ -126,8 +110,10 @@ export default function AboutPage() {
               </p>
             </div>
           </div>
+          </ScrollReveal>
 
           {/* What you get */}
+          <ScrollReveal delay={0.2}>
           <div className="bg-[#111827] border border-gray-700/50 rounded-2xl p-8 hover:border-amber-500/30 transition-all duration-200">
             <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-3">
               <span className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center">
@@ -137,7 +123,7 @@ export default function AboutPage() {
               </span>
               What you get
             </h2>
-            <ul className="space-y-4 pl-11">
+            <StaggerChildren className="space-y-4 pl-11">
               {[
                 "Professional PDF invoices with your branding",
                 "Automatic payment reminders so you do not have to chase clients",
@@ -146,17 +132,21 @@ export default function AboutPage() {
                 "Client portal where customers can view and pay invoices",
                 "20 free invoices per month, no credit card required",
               ].map((item) => (
-                <li key={item} className="flex items-start gap-3 text-gray-300">
+                <StaggerItem key={item}>
+                <li className="flex items-start gap-3 text-gray-300 list-none">
                   <svg className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
                   </svg>
                   {item}
                 </li>
+                </StaggerItem>
               ))}
-            </ul>
+            </StaggerChildren>
           </div>
+          </ScrollReveal>
 
           {/* Get in touch */}
+          <ScrollReveal delay={0.3}>
           <div className="bg-[#111827] border border-gray-700/50 rounded-2xl p-8 hover:border-amber-500/30 transition-all duration-200">
             <h2 className="text-xl font-bold text-white mb-4">Get in touch</h2>
             <p className="text-gray-300 leading-relaxed">
@@ -177,9 +167,11 @@ export default function AboutPage() {
               .
             </p>
           </div>
+          </ScrollReveal>
         </section>
 
         {/* CTA */}
+        <ScrollReveal delay={0.4} scale>
         <div className="mt-16 bg-gradient-to-r from-amber-500/10 to-amber-600/5 border border-amber-500/20 rounded-2xl p-10 text-center hover:border-amber-500/40 transition-all duration-300">
           <h3 className="text-2xl font-bold mb-3 text-white">
             Try it free. 20 invoices per month, no card needed.
@@ -191,6 +183,7 @@ export default function AboutPage() {
             Start Free
           </Link>
         </div>
+        </ScrollReveal>
       </main>
 
       <footer className="border-t border-gray-700/30 py-8 text-center text-gray-500 text-sm">
@@ -214,5 +207,6 @@ export default function AboutPage() {
         &copy; {new Date().getFullYear()} TradeInvoice. Operated by Vlad Mazilu Alexandru, Netherlands.
       </footer>
     </div>
+    </PageTransition>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback, createContext, useContext } from "react";
+import { motion, AnimatePresence } from "@/components/animations";
 
 interface ToastMessage {
   id: number;
@@ -45,10 +46,15 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
     <ToastContext.Provider value={{ toast: addToast }}>
       {children}
       <div className="fixed top-4 right-4 z-[9999] flex flex-col gap-3 pointer-events-none">
+        <AnimatePresence>
         {messages.map((msg) => (
-          <div
+          <motion.div
             key={msg.id}
-            className={`pointer-events-auto px-5 py-3.5 rounded-2xl shadow-2xl text-sm font-medium animate-slide-in border backdrop-blur-xl transition-all duration-200 ${
+            initial={{ opacity: 0, x: 100 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 100 }}
+            transition={{ type: "spring", stiffness: 400, damping: 30 }}
+            className={`pointer-events-auto px-5 py-3.5 rounded-2xl shadow-2xl text-sm font-medium border backdrop-blur-xl transition-all duration-200 ${
               msg.type === "success"
                 ? "bg-emerald-500/15 text-emerald-300 border-emerald-500/30 shadow-emerald-500/10"
                 : msg.type === "error"
@@ -74,8 +80,9 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
               )}
               {msg.text}
             </div>
-          </div>
+          </motion.div>
         ))}
+        </AnimatePresence>
       </div>
     </ToastContext.Provider>
   );

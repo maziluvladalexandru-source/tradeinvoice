@@ -1,38 +1,18 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useCallback } from "react";
-
-/* ──────────────────────────── Scroll animation hook ──────────────────────────── */
-function useScrollReveal() {
-  const ref = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          el.classList.add("opacity-100", "translate-y-0");
-          el.classList.remove("opacity-0", "translate-y-8");
-          observer.unobserve(el);
-        }
-      },
-      { threshold: 0.15 }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-  return ref;
-}
-
-function Reveal({ children, className = "" }: { children: React.ReactNode; className?: string }) {
-  const ref = useScrollReveal();
-  return (
-    <div ref={ref} className={`opacity-0 translate-y-8 transition-all duration-700 ease-out ${className}`}>
-      {children}
-    </div>
-  );
-}
+import { useCallback } from "react";
+import {
+  FadeIn,
+  StaggerChildren,
+  StaggerItem,
+  ScrollReveal,
+  AnimatedCounter,
+  GradientText,
+  FloatingOrb,
+  GlowCard,
+  motion,
+} from "@/components/animations";
 
 /* ──────────────────────────── SVG Flag components ──────────────────────────── */
 function FlagNL() {
@@ -80,32 +60,51 @@ function FlagBE() {
 /* ──────────────────────────── Invoice mockup ──────────────────────────── */
 function InvoiceMockup() {
   return (
-    <div className="relative animate-float">
-      <div className="w-[280px] md:w-[320px] bg-[#111827]/80 backdrop-blur-md border border-gray-700/50 rounded-2xl p-6 shadow-2xl shadow-amber-500/10 hover:border-amber-500/30 transition-all duration-300">
+    <motion.div
+      className="relative"
+      initial={{ opacity: 0, y: 40, rotateY: -8 }}
+      animate={{ opacity: 1, y: 0, rotateY: 0 }}
+      transition={{ duration: 0.8, delay: 0.4, ease: [0.25, 0.4, 0.25, 1] }}
+    >
+      <motion.div
+        className="w-[280px] md:w-[320px] bg-[#111827]/80 backdrop-blur-md border border-gray-700/50 rounded-2xl p-6 shadow-2xl shadow-amber-500/10 hover:border-amber-500/30 transition-all duration-300"
+        animate={{ y: [0, -8, 0] }}
+        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+        whileHover={{ scale: 1.03, rotateY: 4, transition: { type: "spring", stiffness: 300 } }}
+      >
         {/* Header */}
         <div className="flex items-center justify-between mb-5">
           <div>
             <div className="text-xs text-gray-500 uppercase tracking-wider">Invoice</div>
             <div className="text-white font-bold text-lg">#INV-0042</div>
           </div>
-          <div className="bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 text-xs font-bold px-3 py-1 rounded-full">
+          <motion.div
+            className="bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 text-xs font-bold px-3 py-1 rounded-full"
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 0.8, type: "spring", stiffness: 500 }}
+          >
             PAID
-          </div>
+          </motion.div>
         </div>
         {/* Line items */}
         <div className="space-y-3 mb-5">
-          <div className="flex justify-between text-sm">
-            <span className="text-gray-400">Kitchen renovation</span>
-            <span className="text-white font-medium">€2,400</span>
-          </div>
-          <div className="flex justify-between text-sm">
-            <span className="text-gray-400">Materials</span>
-            <span className="text-white font-medium">€850</span>
-          </div>
-          <div className="flex justify-between text-sm">
-            <span className="text-gray-400">Plumbing work</span>
-            <span className="text-white font-medium">€600</span>
-          </div>
+          {[
+            { label: "Kitchen renovation", amount: "€2,400" },
+            { label: "Materials", amount: "€850" },
+            { label: "Plumbing work", amount: "€600" },
+          ].map((item, i) => (
+            <motion.div
+              key={item.label}
+              className="flex justify-between text-sm"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.6 + i * 0.1 }}
+            >
+              <span className="text-gray-400">{item.label}</span>
+              <span className="text-white font-medium">{item.amount}</span>
+            </motion.div>
+          ))}
         </div>
         <div className="border-t border-gray-700/50 pt-3">
           <div className="flex justify-between text-sm text-gray-500 mb-1">
@@ -116,13 +115,20 @@ function InvoiceMockup() {
             <span>VAT 21%</span>
             <span>€808.50</span>
           </div>
-          <div className="flex justify-between font-bold text-lg">
+          <motion.div
+            className="flex justify-between font-bold text-lg"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1 }}
+          >
             <span className="text-amber-400">Total</span>
             <span className="text-amber-400">€4,658.50</span>
-          </div>
+          </motion.div>
         </div>
-      </div>
-    </div>
+      </motion.div>
+      {/* Glow behind card */}
+      <div className="absolute -inset-4 bg-amber-500/5 rounded-3xl blur-2xl -z-10 animate-breathe" />
+    </motion.div>
   );
 }
 
@@ -188,8 +194,6 @@ function Cross() {
 
 /* ──────────────────────────── PAGE ──────────────────────────── */
 export default function Home() {
-  const heroRef = useRef<HTMLDivElement>(null);
-
   const handleSmoothScroll = useCallback((e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
@@ -248,8 +252,14 @@ export default function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
+
       {/* ═══════════════ HEADER ═══════════════ */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-[#0a0f1e]/80 backdrop-blur-xl border-b border-gray-700/30">
+      <motion.header
+        className="fixed top-0 left-0 right-0 z-50 bg-[#0a0f1e]/80 backdrop-blur-xl border-b border-gray-700/30"
+        initial={{ y: -80 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.5, ease: [0.25, 0.4, 0.25, 1] }}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
           <Link href="/" className="text-2xl font-bold text-amber-400 tracking-tight hover:text-amber-300 transition-colors">
             TradeInvoice
@@ -268,62 +278,75 @@ export default function Home() {
             >
               Pricing
             </a>
-            <Link
-              href="/auth/login"
-              className="bg-gradient-to-r from-amber-500 to-amber-400 text-gray-950 px-5 py-2.5 rounded-xl font-semibold text-sm sm:text-base hover:from-amber-400 hover:to-amber-300 transition-all duration-200 shadow-lg shadow-amber-500/20 hover:shadow-amber-500/30 hover:scale-[1.02]"
-            >
-              Sign In
-            </Link>
+            <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
+              <Link
+                href="/auth/login"
+                className="bg-gradient-to-r from-amber-500 to-amber-400 text-gray-950 px-5 py-2.5 rounded-xl font-semibold text-sm sm:text-base hover:from-amber-400 hover:to-amber-300 transition-all duration-200 shadow-lg shadow-amber-500/20 hover:shadow-amber-500/30"
+              >
+                Sign In
+              </Link>
+            </motion.div>
           </div>
         </div>
-      </header>
+      </motion.header>
 
       {/* ═══════════════ 1. HERO ═══════════════ */}
       <section
-        ref={heroRef}
-        className="relative min-h-screen flex items-center pt-20 overflow-hidden premium-glow"
-        style={{ background: "linear-gradient(135deg, #0a0f1e 0%, #1e1b4b 50%, #0a0f1e 100%)" }}
+        className="relative min-h-screen flex items-center pt-20 overflow-hidden gradient-mesh"
       >
         {/* Background grid pattern */}
-        <div
-          className="absolute inset-0 opacity-[0.03]"
-          style={{
-            backgroundImage: "radial-gradient(circle, #fff 1px, transparent 1px)",
-            backgroundSize: "40px 40px",
-          }}
-        />
-        {/* Gradient orbs */}
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-amber-500/10 rounded-full blur-[128px]" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-[128px]" />
+        <div className="absolute inset-0 dot-grid" />
+
+        {/* Animated floating orbs */}
+        <FloatingOrb color="amber" size="xl" className="top-1/4 left-[15%]" delay={0} />
+        <FloatingOrb color="purple" size="lg" className="bottom-1/4 right-[20%]" delay={3} />
+        <FloatingOrb color="blue" size="md" className="top-[60%] left-[60%]" delay={6} />
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-20 md:py-0">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             {/* Left: copy */}
             <div className="text-center lg:text-left">
-              <div className="inline-block bg-amber-500/10 border border-amber-500/30 text-amber-400 text-sm font-semibold px-4 py-1.5 rounded-full mb-6 animate-fade-in">
-                Built for tradespeople, not accountants
-              </div>
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-[1.1] mb-6">
-                Get Paid Faster.
-                <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-amber-500">
-                  No Per-User Fees.
-                </span>
-              </h1>
-              <p className="text-lg sm:text-xl text-gray-400 mb-8 max-w-lg mx-auto lg:mx-0 leading-relaxed">
-                Create professional invoices in 60 seconds. Automatic payment
-                reminders chase your clients for you. One flat price, no hidden fees, no nonsense.
-              </p>
-              <div className="flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start">
-                <Link
-                  href="/auth/login"
-                  className="inline-block bg-gradient-to-r from-amber-500 to-amber-400 text-gray-950 px-8 py-4 rounded-xl font-bold text-lg hover:from-amber-400 hover:to-amber-300 transition-all duration-200 shadow-lg shadow-amber-500/25 hover:shadow-amber-500/40 hover:scale-[1.02] animate-pulse-glow btn-press"
-                >
-                  Start Free - 20 Invoices/Month
-                </Link>
-                <span className="text-gray-500 text-sm">No credit card required</span>
-              </div>
+              <FadeIn delay={0.1}>
+                <div className="inline-block bg-amber-500/10 border border-amber-500/30 text-amber-400 text-sm font-semibold px-4 py-1.5 rounded-full mb-6">
+                  Built for tradespeople, not accountants
+                </div>
+              </FadeIn>
+
+              <FadeIn delay={0.2}>
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-[1.1] mb-6">
+                  Get Paid Faster.
+                  <br />
+                  <GradientText className="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-[1.1]">
+                    No Per-User Fees.
+                  </GradientText>
+                </h1>
+              </FadeIn>
+
+              <FadeIn delay={0.35}>
+                <p className="text-lg sm:text-xl text-gray-400 mb-8 max-w-lg mx-auto lg:mx-0 leading-relaxed">
+                  Create professional invoices in 60 seconds. Automatic payment
+                  reminders chase your clients for you. One flat price, no hidden fees, no nonsense.
+                </p>
+              </FadeIn>
+
+              <FadeIn delay={0.5}>
+                <div className="flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start">
+                  <motion.div
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.97 }}
+                  >
+                    <Link
+                      href="/auth/login"
+                      className="inline-block bg-gradient-to-r from-amber-500 to-amber-400 text-gray-950 px-8 py-4 rounded-xl font-bold text-lg hover:from-amber-400 hover:to-amber-300 transition-all duration-200 shadow-lg shadow-amber-500/25 hover:shadow-amber-500/40 animate-pulse-glow btn-press"
+                    >
+                      Start Free - 20 Invoices/Month
+                    </Link>
+                  </motion.div>
+                  <span className="text-gray-500 text-sm">No credit card required</span>
+                </div>
+              </FadeIn>
             </div>
+
             {/* Right: invoice mockup */}
             <div className="hidden lg:flex justify-center lg:justify-end">
               <InvoiceMockup />
@@ -333,43 +356,40 @@ export default function Home() {
       </section>
 
       {/* ═══════════════ 2. TRUST BAR ═══════════════ */}
-      <section className="bg-[#0a0f1e] border-y border-gray-700/30">
+      <section className="bg-[#0a0f1e] border-y border-gray-700/30 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-10">
-            <span className="text-gray-500 text-sm font-medium">Available across Europe</span>
-            <div className="flex items-center gap-6 sm:gap-8">
-              <div className="flex items-center gap-2">
-                <FlagNL />
-                <span className="text-gray-400 text-sm">Netherlands</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <FlagUK />
-                <span className="text-gray-400 text-sm">United Kingdom</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <FlagDE />
-                <span className="text-gray-400 text-sm">Germany</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <FlagBE />
-                <span className="text-gray-400 text-sm">Belgium</span>
-              </div>
+          <ScrollReveal>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-10">
+              <span className="text-gray-500 text-sm font-medium">Available across Europe</span>
+              <StaggerChildren staggerDelay={0.1} className="flex items-center gap-6 sm:gap-8">
+                {[
+                  { Flag: FlagNL, name: "Netherlands" },
+                  { Flag: FlagUK, name: "United Kingdom" },
+                  { Flag: FlagDE, name: "Germany" },
+                  { Flag: FlagBE, name: "Belgium" },
+                ].map((c) => (
+                  <StaggerItem key={c.name}>
+                    <motion.div
+                      className="flex items-center gap-2"
+                      whileHover={{ scale: 1.08, y: -2 }}
+                      transition={{ type: "spring", stiffness: 400 }}
+                    >
+                      <c.Flag />
+                      <span className="text-gray-400 text-sm">{c.name}</span>
+                    </motion.div>
+                  </StaggerItem>
+                ))}
+              </StaggerChildren>
             </div>
-          </div>
+          </ScrollReveal>
         </div>
       </section>
 
       {/* ═══════════════ 3. HOW IT WORKS ═══════════════ */}
       <section className="bg-[#0a0f1e] py-20 sm:py-28 relative">
-        <div
-          className="absolute inset-0 opacity-[0.02]"
-          style={{
-            backgroundImage: "radial-gradient(circle, #f59e0b 1px, transparent 1px)",
-            backgroundSize: "32px 32px",
-          }}
-        />
+        <div className="absolute inset-0 dot-grid-amber" />
         <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
-          <Reveal>
+          <ScrollReveal>
             <div className="text-center mb-16">
               <span className="inline-block bg-amber-500/10 border border-amber-500/30 text-amber-400 text-sm font-semibold px-4 py-1.5 rounded-full mb-4">
                 HOW IT WORKS
@@ -381,11 +401,19 @@ export default function Home() {
                 From creating your invoice to getting paid, the whole process takes minutes.
               </p>
             </div>
-          </Reveal>
+          </ScrollReveal>
 
           <div className="grid md:grid-cols-3 gap-8 relative">
             {/* Connecting line (desktop only) */}
-            <div className="hidden md:block absolute top-16 left-[20%] right-[20%] h-0.5 bg-gradient-to-r from-amber-500/40 via-amber-400/40 to-emerald-400/40" />
+            <div className="hidden md:block absolute top-16 left-[20%] right-[20%] h-0.5 overflow-hidden">
+              <motion.div
+                className="h-full bg-gradient-to-r from-amber-500/40 via-amber-400/40 to-emerald-400/40"
+                initial={{ width: 0 }}
+                whileInView={{ width: "100%" }}
+                viewport={{ once: true }}
+                transition={{ duration: 1, delay: 0.5 }}
+              />
+            </div>
 
             {[
               {
@@ -419,16 +447,20 @@ export default function Home() {
                 ),
               },
             ].map((item, i) => (
-              <Reveal key={item.step} className={`delay-${i * 100}`}>
-                <div className="relative bg-[#111827] border border-gray-700/50 rounded-2xl p-8 text-center hover:border-amber-500/30 transition-all duration-200 hover:shadow-lg hover:shadow-amber-500/5">
-                  <div className="mx-auto w-14 h-14 bg-amber-500/10 border-2 border-amber-500/30 rounded-full flex items-center justify-center text-lg font-bold text-amber-400 mb-5 relative z-10">
+              <FadeIn key={item.step} delay={i * 0.15} direction={i === 0 ? "left" : i === 2 ? "right" : "up"}>
+                <GlowCard className="p-8 text-center h-full">
+                  <motion.div
+                    className="mx-auto w-14 h-14 bg-amber-500/10 border-2 border-amber-500/30 rounded-full flex items-center justify-center text-lg font-bold text-amber-400 mb-5 relative z-10"
+                    whileHover={{ rotate: 360, scale: 1.1 }}
+                    transition={{ duration: 0.5 }}
+                  >
                     {item.step}
-                  </div>
+                  </motion.div>
                   <div className="flex justify-center mb-4">{item.icon}</div>
                   <h3 className="text-lg font-semibold text-white mb-2">{item.title}</h3>
                   <p className="text-gray-400 text-sm leading-relaxed">{item.desc}</p>
-                </div>
-              </Reveal>
+                </GlowCard>
+              </FadeIn>
             ))}
           </div>
         </div>
@@ -437,7 +469,7 @@ export default function Home() {
       {/* ═══════════════ 4. FEATURES GRID ═══════════════ */}
       <section className="bg-[#0a0f1e] py-20 sm:py-28 border-t border-gray-700/20">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <Reveal>
+          <ScrollReveal>
             <div className="text-center mb-16">
               <span className="inline-block bg-amber-500/10 border border-amber-500/30 text-amber-400 text-sm font-semibold px-4 py-1.5 rounded-full mb-4">
                 FEATURES
@@ -449,70 +481,39 @@ export default function Home() {
                 No bloat. No learning curve. Just the tools that actually matter.
               </p>
             </div>
-          </Reveal>
+          </ScrollReveal>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <StaggerChildren staggerDelay={0.1} className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
-              {
-                icon: <IconInvoice />,
-                title: "Professional Invoices",
-                desc: "Clean, branded PDF invoices that make you look polished. Add your logo, customize colors, and include all the details your clients need.",
-                color: "text-amber-400",
-              },
-              {
-                icon: <IconBell />,
-                title: "Auto Payment Reminders",
-                desc: "Your clients get polite nudges at 7 days, 3 days, and when overdue. You never have to send that awkward follow-up text again.",
-                color: "text-amber-400",
-              },
-              {
-                icon: <IconGlobe />,
-                title: "Multi-Country Support",
-                desc: "Generate invoices in English, Dutch, or German. Perfect for working across borders in the EU with proper VAT handling.",
-                color: "text-amber-400",
-              },
-              {
-                icon: <IconClock />,
-                title: "Time Tracking",
-                desc: "Track your hours directly in the app. Convert tracked time into invoice line items with a single click.",
-                color: "text-emerald-400",
-              },
-              {
-                icon: <IconReceipt />,
-                title: "Expense Tracking",
-                desc: "Log project expenses and materials. Keep a clear record of costs so nothing slips through the cracks.",
-                color: "text-emerald-400",
-              },
-              {
-                icon: <IconChart />,
-                title: "Financial Reports",
-                desc: "See your revenue, outstanding payments, and overdue invoices at a glance. Know exactly where your business stands.",
-                color: "text-emerald-400",
-              },
-            ].map((feature, i) => (
-              <Reveal key={feature.title} className={`delay-${(i % 3) * 100}`}>
-                <div className="group bg-[#111827] border border-gray-700/50 rounded-2xl p-6 hover:border-amber-500/30 transition-all duration-200 hover:shadow-lg hover:shadow-amber-500/5 h-full">
-                  <div className={`${feature.color} mb-4 w-12 h-12 rounded-xl bg-white/[0.03] border border-gray-700/50 flex items-center justify-center group-hover:border-amber-500/30 transition-colors`}>{feature.icon}</div>
-                  <h3 className="text-lg font-semibold text-white mb-2">{feature.title}</h3>
-                  <p className="text-gray-400 text-sm leading-relaxed">{feature.desc}</p>
-                </div>
-              </Reveal>
+              { icon: <IconInvoice />, title: "Professional Invoices", desc: "Clean, branded PDF invoices that make you look polished. Add your logo, customize colors, and include all the details your clients need.", color: "text-amber-400" },
+              { icon: <IconBell />, title: "Auto Payment Reminders", desc: "Your clients get polite nudges at 7 days, 3 days, and when overdue. You never have to send that awkward follow-up text again.", color: "text-amber-400" },
+              { icon: <IconGlobe />, title: "Multi-Country Support", desc: "Generate invoices in English, Dutch, or German. Perfect for working across borders in the EU with proper VAT handling.", color: "text-amber-400" },
+              { icon: <IconClock />, title: "Time Tracking", desc: "Track your hours directly in the app. Convert tracked time into invoice line items with a single click.", color: "text-emerald-400" },
+              { icon: <IconReceipt />, title: "Expense Tracking", desc: "Log project expenses and materials. Keep a clear record of costs so nothing slips through the cracks.", color: "text-emerald-400" },
+              { icon: <IconChart />, title: "Financial Reports", desc: "See your revenue, outstanding payments, and overdue invoices at a glance. Know exactly where your business stands.", color: "text-emerald-400" },
+            ].map((feature) => (
+              <StaggerItem key={feature.title}>
+                <GlowCard className="p-6 h-full group" glowColor={feature.color.includes("emerald") ? "emerald" : "amber"}>
+                  <motion.div
+                    className={`${feature.color} mb-4 w-12 h-12 rounded-xl bg-white/[0.03] border border-gray-700/50 flex items-center justify-center group-hover:border-amber-500/30 transition-colors relative z-10`}
+                    whileHover={{ rotate: -8, scale: 1.1 }}
+                  >
+                    {feature.icon}
+                  </motion.div>
+                  <h3 className="text-lg font-semibold text-white mb-2 relative z-10">{feature.title}</h3>
+                  <p className="text-gray-400 text-sm leading-relaxed relative z-10">{feature.desc}</p>
+                </GlowCard>
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerChildren>
         </div>
       </section>
 
       {/* ═══════════════ 5. SOCIAL PROOF ═══════════════ */}
       <section className="bg-[#0a0f1e] py-20 sm:py-28 border-t border-gray-700/20 relative">
-        <div
-          className="absolute inset-0 opacity-[0.02]"
-          style={{
-            backgroundImage: "radial-gradient(circle, #f59e0b 1px, transparent 1px)",
-            backgroundSize: "32px 32px",
-          }}
-        />
+        <div className="absolute inset-0 dot-grid-amber" />
         <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
-          <Reveal>
+          <ScrollReveal>
             <div className="text-center mb-16">
               <h2 className="text-3xl sm:text-4xl font-bold text-white mb-3">
                 Built for Tradespeople Across Europe
@@ -521,41 +522,50 @@ export default function Home() {
                 TradeInvoice is designed for tradespeople across Europe.
               </p>
             </div>
-          </Reveal>
+          </ScrollReveal>
 
-          <Reveal>
-            <div className="grid sm:grid-cols-3 gap-8 mb-16">
-              {[
-                { number: "4", label: "Countries Supported", color: "text-amber-400" },
-                { number: "60s", label: "Average Invoice Creation Time", color: "text-emerald-400" },
-                { number: "€15", label: "Flat Monthly Price", color: "text-blue-400" },
-              ].map((stat) => (
-                <div key={stat.label} className="text-center bg-[#111827] border border-gray-700/50 rounded-2xl p-8 hover:border-amber-500/30 transition-all duration-200">
-                  <div className={`text-4xl sm:text-5xl font-extrabold ${stat.color} mb-2`}>{stat.number}</div>
-                  <div className="text-gray-400 font-medium">{stat.label}</div>
-                </div>
-              ))}
-            </div>
-          </Reveal>
+          <StaggerChildren staggerDelay={0.15} className="grid sm:grid-cols-3 gap-8 mb-16">
+            {[
+              { number: 4, label: "Countries Supported", color: "text-amber-400", suffix: "" },
+              { number: 60, label: "Average Invoice Creation Time", color: "text-emerald-400", suffix: "s" },
+              { number: 15, label: "Flat Monthly Price", color: "text-blue-400", prefix: "€" },
+            ].map((stat) => (
+              <StaggerItem key={stat.label}>
+                <GlowCard className="text-center p-8">
+                  <div className={`text-4xl sm:text-5xl font-extrabold ${stat.color} mb-2`}>
+                    <AnimatedCounter
+                      value={stat.number}
+                      prefix={stat.prefix || ""}
+                      suffix={stat.suffix || ""}
+                      duration={1.2}
+                    />
+                  </div>
+                  <div className="text-gray-400 font-medium relative z-10">{stat.label}</div>
+                </GlowCard>
+              </StaggerItem>
+            ))}
+          </StaggerChildren>
 
-          <Reveal>
+          <FadeIn>
             <div className="max-w-2xl mx-auto bg-gradient-to-r from-amber-500/10 to-amber-600/5 border border-amber-500/20 rounded-2xl p-8 sm:p-10 text-center">
               <p className="text-lg sm:text-xl text-white font-medium leading-relaxed">
                 Built for tradespeople. Simple, honest, no nonsense.
               </p>
             </div>
-          </Reveal>
+          </FadeIn>
         </div>
       </section>
 
       {/* ═══════════════ 6. PRICING ═══════════════ */}
       <section
         id="pricing"
-        className="py-20 sm:py-28 border-t border-gray-700/20"
-        style={{ background: "linear-gradient(135deg, #0a0f1e 0%, #1e1b4b 50%, #0a0f1e 100%)" }}
+        className="py-20 sm:py-28 border-t border-gray-700/20 gradient-mesh relative"
       >
-        <div className="max-w-5xl mx-auto px-4 sm:px-6">
-          <Reveal>
+        <FloatingOrb color="amber" size="md" className="top-20 right-[10%]" delay={2} />
+        <FloatingOrb color="purple" size="sm" className="bottom-20 left-[10%]" delay={5} />
+
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 relative z-10">
+          <ScrollReveal>
             <div className="text-center mb-16">
               <span className="inline-block bg-amber-500/10 border border-amber-500/30 text-amber-400 text-sm font-semibold px-4 py-1.5 rounded-full mb-4">
                 PRICING
@@ -567,12 +577,16 @@ export default function Home() {
                 No surprises. No per-user fees. Ever.
               </p>
             </div>
-          </Reveal>
+          </ScrollReveal>
 
           <div className="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
             {/* Free */}
-            <Reveal>
-              <div className="bg-[#111827] border border-gray-700/50 rounded-2xl p-8 h-full flex flex-col hover:border-gray-600/50 transition-all duration-200">
+            <FadeIn direction="left" delay={0.1}>
+              <motion.div
+                className="bg-[#111827] border border-gray-700/50 rounded-2xl p-8 h-full flex flex-col hover:border-gray-600/50 transition-all duration-200"
+                whileHover={{ y: -4 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
                 <div className="text-center mb-8">
                   <h3 className="text-xl font-bold text-white mb-2">Free</h3>
                   <div className="flex items-baseline justify-center gap-1">
@@ -586,28 +600,47 @@ export default function Home() {
                     "Payment reminders",
                     "Professional PDF invoices",
                     "Client management",
-                  ].map((f) => (
-                    <li key={f} className="flex items-center gap-3 text-gray-300 text-sm">
+                  ].map((f, i) => (
+                    <motion.li
+                      key={f}
+                      className="flex items-center gap-3 text-gray-300 text-sm"
+                      initial={{ opacity: 0, x: -10 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: 0.3 + i * 0.08 }}
+                    >
                       <Check />
                       {f}
-                    </li>
+                    </motion.li>
                   ))}
                 </ul>
-                <Link
-                  href="/auth/login"
-                  className="block w-full bg-white/5 text-white py-3.5 rounded-xl font-semibold text-center hover:bg-white/10 transition-all duration-200 border border-gray-700/50 hover:border-gray-600/50"
-                >
-                  Get Started
-                </Link>
-              </div>
-            </Reveal>
+                <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                  <Link
+                    href="/auth/login"
+                    className="block w-full bg-white/5 text-white py-3.5 rounded-xl font-semibold text-center hover:bg-white/10 transition-all duration-200 border border-gray-700/50 hover:border-gray-600/50"
+                  >
+                    Get Started
+                  </Link>
+                </motion.div>
+              </motion.div>
+            </FadeIn>
 
             {/* Pro */}
-            <Reveal>
-              <div className="relative bg-amber-500/[0.07] border-2 border-amber-500/50 rounded-2xl p-8 h-full flex flex-col shadow-lg shadow-amber-500/10 hover:shadow-amber-500/20 transition-all duration-200">
-                <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-amber-500 to-amber-400 text-gray-950 text-xs font-bold px-4 py-1.5 rounded-full shadow-lg shadow-amber-500/20">
+            <FadeIn direction="right" delay={0.2}>
+              <motion.div
+                className="relative bg-amber-500/[0.07] border-2 border-amber-500/50 rounded-2xl p-8 h-full flex flex-col shadow-lg shadow-amber-500/10 animate-border-glow"
+                whileHover={{ y: -6 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
+                <motion.span
+                  className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-amber-500 to-amber-400 text-gray-950 text-xs font-bold px-4 py-1.5 rounded-full shadow-lg shadow-amber-500/20"
+                  initial={{ scale: 0, y: 10 }}
+                  whileInView={{ scale: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.5, type: "spring", stiffness: 500 }}
+                >
                   MOST POPULAR
-                </span>
+                </motion.span>
                 <div className="text-center mb-8">
                   <h3 className="text-xl font-bold text-white mb-2">Pro</h3>
                   <div className="flex items-baseline justify-center gap-1">
@@ -622,36 +655,39 @@ export default function Home() {
                     "Multi-language invoices",
                     "Partial payment tracking",
                     "Priority email support",
-                  ].map((f) => (
-                    <li key={f} className="flex items-center gap-3 text-gray-300 text-sm">
+                  ].map((f, i) => (
+                    <motion.li
+                      key={f}
+                      className="flex items-center gap-3 text-gray-300 text-sm"
+                      initial={{ opacity: 0, x: -10 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: 0.4 + i * 0.08 }}
+                    >
                       <Check color="text-amber-400" />
                       {f}
-                    </li>
+                    </motion.li>
                   ))}
                 </ul>
-                <Link
-                  href="/auth/login"
-                  className="block w-full bg-gradient-to-r from-amber-500 to-amber-400 text-gray-950 py-3.5 rounded-xl font-bold text-center hover:from-amber-400 hover:to-amber-300 transition-all duration-200 shadow-lg shadow-amber-500/25 hover:shadow-amber-500/40 hover:scale-[1.01] btn-press"
-                >
-                  Upgrade to Pro
-                </Link>
-              </div>
-            </Reveal>
+                <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+                  <Link
+                    href="/auth/login"
+                    className="block w-full bg-gradient-to-r from-amber-500 to-amber-400 text-gray-950 py-3.5 rounded-xl font-bold text-center hover:from-amber-400 hover:to-amber-300 transition-all duration-200 shadow-lg shadow-amber-500/25 hover:shadow-amber-500/40 btn-press"
+                  >
+                    Upgrade to Pro
+                  </Link>
+                </motion.div>
+              </motion.div>
+            </FadeIn>
           </div>
         </div>
       </section>
 
       {/* ═══════════════ 7. COMPARISON TABLE ═══════════════ */}
       <section className="bg-[#0a0f1e] py-20 sm:py-28 border-t border-gray-700/20 relative">
-        <div
-          className="absolute inset-0 opacity-[0.02]"
-          style={{
-            backgroundImage: "radial-gradient(circle, #f59e0b 1px, transparent 1px)",
-            backgroundSize: "32px 32px",
-          }}
-        />
+        <div className="absolute inset-0 dot-grid-amber" />
         <div className="max-w-5xl mx-auto px-4 sm:px-6 relative z-10">
-          <Reveal>
+          <ScrollReveal>
             <div className="text-center mb-12">
               <span className="inline-block bg-amber-500/10 border border-amber-500/30 text-amber-400 text-sm font-semibold px-4 py-1.5 rounded-full mb-4">
                 COMPARE
@@ -663,9 +699,9 @@ export default function Home() {
                 No bloated features you will never use. No per-user fees eating into your margins.
               </p>
             </div>
-          </Reveal>
+          </ScrollReveal>
 
-          <Reveal>
+          <FadeIn>
             <div className="overflow-x-auto bg-[#111827] rounded-2xl border border-gray-700/50">
               <table className="w-full text-sm sm:text-base">
                 <thead>
@@ -680,33 +716,19 @@ export default function Home() {
                 </thead>
                 <tbody className="text-gray-300">
                   {[
-                    {
-                      label: "Price",
-                      us: "€15/mo",
-                      usColor: "text-amber-400 font-bold",
-                      c1: "From €40/mo",
-                      c2: "From €5.99/mo",
-                    },
-                    {
-                      label: "Per-user fees",
-                      us: "check",
-                      c1: "cross",
-                      c2: "cross",
-                    },
-                    {
-                      label: "Unlimited invoices",
-                      us: "check",
-                      c1: "cross",
-                      c2: "cross",
-                    },
-                    {
-                      label: "Auto reminders",
-                      us: "check",
-                      c1: "check",
-                      c2: "cross",
-                    },
+                    { label: "Price", us: "€15/mo", usColor: "text-amber-400 font-bold", c1: "From €40/mo", c2: "From €5.99/mo" },
+                    { label: "Per-user fees", us: "check", c1: "cross", c2: "cross" },
+                    { label: "Unlimited invoices", us: "check", c1: "cross", c2: "cross" },
+                    { label: "Auto reminders", us: "check", c1: "check", c2: "cross" },
                   ].map((row, i) => (
-                    <tr key={row.label} className={`border-b border-gray-700/30 ${i % 2 === 0 ? "bg-white/[0.01]" : ""} hover:bg-white/[0.03] transition-colors`}>
+                    <motion.tr
+                      key={row.label}
+                      className={`border-b border-gray-700/30 ${i % 2 === 0 ? "bg-white/[0.01]" : ""} hover:bg-white/[0.03] transition-colors`}
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: i * 0.1 }}
+                    >
                       <td className="py-3.5 px-4 sm:px-6 font-medium text-gray-300">{row.label}</td>
                       <td className="py-3.5 px-4 sm:px-6 text-center">
                         {row.us === "check" ? (
@@ -735,19 +757,19 @@ export default function Home() {
                           row.c2
                         )}
                       </td>
-                    </tr>
+                    </motion.tr>
                   ))}
                 </tbody>
               </table>
             </div>
-          </Reveal>
+          </FadeIn>
         </div>
       </section>
 
       {/* ═══════════════ 8. FAQ ═══════════════ */}
       <section className="bg-[#0a0f1e] py-20 sm:py-28 border-t border-gray-700/20">
         <div className="max-w-3xl mx-auto px-4 sm:px-6">
-          <Reveal>
+          <ScrollReveal>
             <div className="text-center mb-12">
               <h2 className="text-3xl sm:text-4xl font-bold text-white mb-3">
                 Frequently Asked Questions
@@ -756,32 +778,17 @@ export default function Home() {
                 Everything you need to know before getting started.
               </p>
             </div>
-          </Reveal>
+          </ScrollReveal>
 
           <div className="space-y-3">
             {[
-              {
-                q: "Do I need accounting software to use TradeInvoice?",
-                a: "Nope. TradeInvoice works on its own. You don't need Xero, QuickBooks, or anything else. Just create an invoice, send it, and get paid.",
-              },
-              {
-                q: "Is my data safe?",
-                a: "Yes. All data is encrypted and payments go through Stripe. We never see or store any card details.",
-              },
-              {
-                q: "Can I cancel anytime?",
-                a: "Yes. No contracts, no cancellation fees. Downgrade to free or cancel from your settings whenever you want.",
-              },
-              {
-                q: "Do my clients need to sign up to pay?",
-                a: "No. They get an email with a link. They click it, see the invoice, and pay. No account needed.",
-              },
-              {
-                q: "What happens after my 20 free invoices?",
-                a: "You can upgrade to Pro for €15/month for unlimited invoices. Or just wait. Your free plan resets every month, 20 fresh invoices, no cost, no expiry.",
-              },
-            ].map((faq) => (
-              <Reveal key={faq.q}>
+              { q: "Do I need accounting software to use TradeInvoice?", a: "Nope. TradeInvoice works on its own. You don't need Xero, QuickBooks, or anything else. Just create an invoice, send it, and get paid." },
+              { q: "Is my data safe?", a: "Yes. All data is encrypted and payments go through Stripe. We never see or store any card details." },
+              { q: "Can I cancel anytime?", a: "Yes. No contracts, no cancellation fees. Downgrade to free or cancel from your settings whenever you want." },
+              { q: "Do my clients need to sign up to pay?", a: "No. They get an email with a link. They click it, see the invoice, and pay. No account needed." },
+              { q: "What happens after my 20 free invoices?", a: "You can upgrade to Pro for €15/month for unlimited invoices. Or just wait. Your free plan resets every month, 20 fresh invoices, no cost, no expiry." },
+            ].map((faq, i) => (
+              <FadeIn key={faq.q} delay={i * 0.08}>
                 <details className="group bg-[#111827] border border-gray-700/50 rounded-xl hover:border-amber-500/30 transition-all duration-200">
                   <summary className="flex items-center justify-between cursor-pointer p-5 sm:p-6 text-white font-semibold list-none text-sm sm:text-base">
                     {faq.q}
@@ -800,76 +807,72 @@ export default function Home() {
                     {faq.a}
                   </p>
                 </details>
-              </Reveal>
+              </FadeIn>
             ))}
           </div>
         </div>
       </section>
 
       {/* ═══════════════ 9. FINAL CTA ═══════════════ */}
-      <section
-        className="py-20 sm:py-28 border-t border-gray-700/20"
-        style={{ background: "linear-gradient(135deg, #1e1b4b 0%, #0a0f1e 50%, #1e1b4b 100%)" }}
-      >
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
-          <Reveal>
+      <section className="py-20 sm:py-28 border-t border-gray-700/20 gradient-mesh relative overflow-hidden">
+        <FloatingOrb color="amber" size="lg" className="top-10 left-[20%]" delay={1} />
+        <FloatingOrb color="purple" size="md" className="bottom-10 right-[20%]" delay={4} />
+
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center relative z-10">
+          <ScrollReveal>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6">
               Ready to get paid faster?
             </h2>
             <p className="text-lg text-gray-400 mb-10 max-w-xl mx-auto">
               Stop chasing payments. Start getting paid on time.
             </p>
-            <Link
-              href="/auth/login"
-              className="inline-block bg-gradient-to-r from-amber-500 to-amber-400 text-gray-950 px-10 py-4 rounded-xl font-bold text-lg hover:from-amber-400 hover:to-amber-300 transition-all duration-200 shadow-lg shadow-amber-500/25 hover:shadow-amber-500/40 hover:scale-[1.02] btn-press"
+            <motion.div
+              className="inline-block"
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.97 }}
             >
-              Start Free - 20 Invoices/Month
-            </Link>
+              <Link
+                href="/auth/login"
+                className="inline-block bg-gradient-to-r from-amber-500 to-amber-400 text-gray-950 px-10 py-4 rounded-xl font-bold text-lg hover:from-amber-400 hover:to-amber-300 transition-all duration-200 shadow-lg shadow-amber-500/25 hover:shadow-amber-500/40 animate-pulse-glow btn-press"
+              >
+                Start Free - 20 Invoices/Month
+              </Link>
+            </motion.div>
             <p className="mt-4 text-gray-500 text-sm">
               No credit card required. No strings attached.
             </p>
-          </Reveal>
+          </ScrollReveal>
         </div>
       </section>
 
       {/* ═══════════════ 10. FOOTER ═══════════════ */}
       <footer className="bg-[#0a0f1e] border-t border-gray-700/30 py-12">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="text-center md:text-left">
-              <div className="text-xl font-bold text-amber-400 mb-1">TradeInvoice</div>
-              <p className="text-gray-500 text-sm">Simple invoicing for tradespeople</p>
+          <FadeIn>
+            <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+              <div className="text-center md:text-left">
+                <div className="text-xl font-bold text-amber-400 mb-1">TradeInvoice</div>
+                <p className="text-gray-500 text-sm">Simple invoicing for tradespeople</p>
+              </div>
+              <div className="flex items-center gap-4 sm:gap-6 flex-wrap justify-center text-sm">
+                <Link href="/about" className="text-gray-500 hover:text-amber-400 transition-colors">About</Link>
+                <Link href="/blog" className="text-gray-500 hover:text-amber-400 transition-colors">Blog</Link>
+                <Link href="/terms" className="text-gray-500 hover:text-amber-400 transition-colors">Terms of Service</Link>
+                <Link href="/privacy" className="text-gray-500 hover:text-amber-400 transition-colors">Privacy Policy</Link>
+                <Link href="/dpa" className="text-gray-500 hover:text-amber-400 transition-colors">DPA</Link>
+                <Link href="/contact" className="text-gray-500 hover:text-amber-400 transition-colors">Contact</Link>
+              </div>
             </div>
-            <div className="flex items-center gap-4 sm:gap-6 flex-wrap justify-center text-sm">
-              <Link href="/about" className="text-gray-500 hover:text-amber-400 transition-colors">
-                About
-              </Link>
-              <Link href="/blog" className="text-gray-500 hover:text-amber-400 transition-colors">
-                Blog
-              </Link>
-              <Link href="/terms" className="text-gray-500 hover:text-amber-400 transition-colors">
-                Terms of Service
-              </Link>
-              <Link href="/privacy" className="text-gray-500 hover:text-amber-400 transition-colors">
-                Privacy Policy
-              </Link>
-              <Link href="/dpa" className="text-gray-500 hover:text-amber-400 transition-colors">
-                DPA
-              </Link>
-              <Link href="/contact" className="text-gray-500 hover:text-amber-400 transition-colors">
-                Contact
-              </Link>
+            <div className="mt-6 flex items-center justify-center gap-4 text-sm text-gray-500">
+              <span>Also available in:</span>
+              <Link href="/nl" className="text-amber-400 hover:text-amber-300 transition-colors">Nederlands</Link>
+              <span className="text-gray-700">|</span>
+              <Link href="/de" className="text-amber-400 hover:text-amber-300 transition-colors">Deutsch</Link>
             </div>
-          </div>
-          <div className="mt-6 flex items-center justify-center gap-4 text-sm text-gray-500">
-            <span>Also available in:</span>
-            <Link href="/nl" className="text-amber-400 hover:text-amber-300 transition-colors">Nederlands</Link>
-            <span className="text-gray-700">|</span>
-            <Link href="/de" className="text-amber-400 hover:text-amber-300 transition-colors">Deutsch</Link>
-          </div>
-          <div className="mt-6 pt-6 border-t border-gray-700/30 text-center text-gray-600 text-sm">
-            © {new Date().getFullYear()} TradeInvoice. Operated by Vlad Mazilu Alexandru, Netherlands.
-          </div>
+            <div className="mt-6 pt-6 border-t border-gray-700/30 text-center text-gray-600 text-sm">
+              © {new Date().getFullYear()} TradeInvoice. Operated by Vlad Mazilu Alexandru, Netherlands.
+            </div>
+          </FadeIn>
         </div>
       </footer>
     </div>

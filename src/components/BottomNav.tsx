@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import { motion, AnimatePresence } from "@/components/animations";
 
 const mainTabs = [
   {
@@ -69,8 +70,15 @@ export default function BottomNav() {
       )}
 
       {/* More menu slide-up */}
+      <AnimatePresence>
       {showMore && (
-        <div className="fixed bottom-16 left-0 right-0 z-50 md:hidden pb-[env(safe-area-inset-bottom)]">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 20 }}
+          transition={{ type: "spring", stiffness: 400, damping: 30 }}
+          className="fixed bottom-16 left-0 right-0 z-50 md:hidden pb-[env(safe-area-inset-bottom)]"
+        >
           <div className="mx-3 mb-2 bg-[#111827] border border-gray-700/50 rounded-2xl overflow-hidden shadow-2xl shadow-black/50">
             {moreItems.map((item) => {
               const isActive =
@@ -95,8 +103,9 @@ export default function BottomNav() {
               );
             })}
           </div>
-        </div>
+        </motion.div>
       )}
+      </AnimatePresence>
 
       {/* Bottom nav bar */}
       <nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-[#0a0f1e] border-t border-gray-700/50 pb-[env(safe-area-inset-bottom)]">
@@ -123,7 +132,9 @@ export default function BottomNav() {
           })}
 
           {/* More button */}
-          <button
+          <motion.button
+            whileTap={{ scale: 0.9 }}
+            transition={{ type: "spring", stiffness: 400, damping: 17 }}
             onClick={() => setShowMore(!showMore)}
             className={`flex flex-col items-center justify-center gap-0.5 w-full h-full transition-colors ${
               isMoreActive || showMore
@@ -135,7 +146,7 @@ export default function BottomNav() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
             </svg>
             <span className="text-[10px] font-medium">More</span>
-          </button>
+          </motion.button>
         </div>
       </nav>
     </>

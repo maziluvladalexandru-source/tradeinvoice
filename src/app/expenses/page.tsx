@@ -6,6 +6,7 @@ import BottomNav from "@/components/BottomNav";
 import UpgradeModal from "@/components/UpgradeModal";
 import { useToast } from "@/components/Toast";
 import DonutChart from "@/components/DonutChart";
+import { PageTransition, FadeIn, StaggerChildren, StaggerItem, motion } from "@/components/animations";
 
 interface Expense {
   id: string;
@@ -374,8 +375,10 @@ export default function ExpensesPage() {
   return (
     <div className="min-h-screen bg-[#0a0f1e] pb-24 md:pb-0 premium-glow">
       <Navbar />
+      <PageTransition>
       <div className="max-w-6xl mx-auto px-4 py-8">
         {/* Header */}
+        <FadeIn>
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-10">
           <div>
             <h1 className="text-4xl font-bold text-white tracking-tight">Expenses</h1>
@@ -412,8 +415,10 @@ export default function ExpensesPage() {
             </button>
           )}
         </div>
+        </FadeIn>
 
         {/* Tab Toggle */}
+        <FadeIn delay={0.1}>
         <div className="flex gap-1 bg-[#111827] rounded-xl p-1 border border-gray-700/50 mb-10 w-fit">
           <button
             onClick={() => setActiveTab("expenses")}
@@ -439,10 +444,12 @@ export default function ExpensesPage() {
             )}
           </button>
         </div>
+        </FadeIn>
 
         {activeTab === "expenses" ? (
           <>
             {/* Summary Cards */}
+            <FadeIn delay={0.15}>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
               <div className="relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl p-5 border border-gray-700/50 hover:border-amber-500/30 hover:shadow-lg hover:shadow-amber-500/10 transition-all duration-300 col-span-1 sm:col-span-2 lg:col-span-1">
                 <div className="absolute inset-0 bg-gradient-to-br from-red-500/10 to-transparent pointer-events-none" />
@@ -459,6 +466,7 @@ export default function ExpensesPage() {
                 </div>
               ))}
             </div>
+            </FadeIn>
 
             {/* Filters */}
             <div className="flex flex-wrap gap-3 mb-6">
@@ -736,9 +744,10 @@ export default function ExpensesPage() {
                   </button>
                 </div>
               ) : (
-                <div className="divide-y divide-white/10/50">
+                <StaggerChildren className="divide-y divide-white/10/50">
                   {expenses.map((expense) => (
-                    <div key={expense.id} className={`p-4 border-l-4 ${CATEGORY_BORDER_LEFT[expense.category] || CATEGORY_BORDER_LEFT.other} hover:bg-white/5 hover:border-amber-500/30 hover:shadow-lg hover:shadow-amber-500/10 transition-all duration-200`}>
+                    <StaggerItem key={expense.id}>
+                    <motion.div whileHover={{ y: -2 }} className={`p-4 border-l-4 ${CATEGORY_BORDER_LEFT[expense.category] || CATEGORY_BORDER_LEFT.other} hover:bg-white/5 hover:border-amber-500/30 hover:shadow-lg hover:shadow-amber-500/10 transition-all duration-200`}>
                       <div className="flex items-start gap-3">
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 mb-1">
@@ -798,9 +807,10 @@ export default function ExpensesPage() {
                           </button>
                         </div>
                       </div>
-                    </div>
+                    </motion.div>
+                    </StaggerItem>
                   ))}
-                </div>
+                </StaggerChildren>
               )}
             </div>
           </>
@@ -1037,9 +1047,10 @@ export default function ExpensesPage() {
                       </button>
                     </div>
                   ) : (
-                    <div className="divide-y divide-white/10/50">
+                    <StaggerChildren className="divide-y divide-white/10/50">
                       {mileageEntries.map((entry) => (
-                        <div key={entry.id} className="p-4 border-l-4 border-l-blue-500 hover:bg-white/5 hover:border-amber-500/30 hover:shadow-lg hover:shadow-amber-500/10 transition-all duration-200">
+                        <StaggerItem key={entry.id}>
+                        <motion.div whileHover={{ y: -2 }} className="p-4 border-l-4 border-l-blue-500 hover:bg-white/5 hover:border-amber-500/30 hover:shadow-lg hover:shadow-amber-500/10 transition-all duration-200">
                           <div className="flex items-start gap-3">
                             <div className="flex-1 min-w-0">
                               <div className="flex items-center gap-2 mb-1">
@@ -1077,9 +1088,10 @@ export default function ExpensesPage() {
                               </button>
                             </div>
                           </div>
-                        </div>
+                        </motion.div>
+                        </StaggerItem>
                       ))}
-                    </div>
+                    </StaggerChildren>
                   )}
                 </div>
               </>
@@ -1114,6 +1126,7 @@ export default function ExpensesPage() {
       )}
 
       {showUpgrade && <UpgradeModal feature={upgradeFeature} onClose={() => setShowUpgrade(false)} />}
+      </PageTransition>
       <BottomNav />
     </div>
   );

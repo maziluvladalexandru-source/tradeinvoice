@@ -7,6 +7,7 @@ import BottomNav from "@/components/BottomNav";
 import UpgradeModal from "@/components/UpgradeModal";
 import { useToast } from "@/components/Toast";
 import { useTimer } from "@/components/TimerContext";
+import { PageTransition, FadeIn, StaggerChildren, StaggerItem, motion } from "@/components/animations";
 
 interface Client {
   id: string;
@@ -290,8 +291,9 @@ export default function TimeTrackingPage() {
   return (
     <div className="min-h-screen bg-[#0a0f1e] pb-24 md:pb-0 premium-glow">
       <Navbar />
-      <div className="max-w-6xl mx-auto px-4 py-8">
+      <PageTransition className="max-w-6xl mx-auto px-4 py-8">
         {/* Header */}
+        <FadeIn>
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-10">
           <div>
             <h1 className="text-4xl font-bold text-white tracking-tight">Time Tracking</h1>
@@ -306,9 +308,14 @@ export default function TimeTrackingPage() {
             Add Entry
           </button>
         </div>
+        </FadeIn>
 
         {/* Timer */}
-        <div className={`relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl border p-6 mb-8 transition-all duration-300 ${timerRunning ? "border-amber-500/30 shadow-xl shadow-amber-500/20" : "border-gray-700/50"}`}>
+        <FadeIn delay={0.1}>
+        <motion.div
+          animate={timerRunning ? { scale: [1, 1.005, 1] } : {}}
+          transition={timerRunning ? { duration: 2, repeat: Infinity, ease: "easeInOut" } : {}}
+          className={`relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl border p-6 mb-8 transition-all duration-300 ${timerRunning ? "border-amber-500/30 shadow-xl shadow-amber-500/20" : "border-gray-700/50"}`}>
           {timerRunning && <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 to-transparent pointer-events-none" />}
           <div className="relative flex flex-col md:flex-row md:items-center gap-3">
             {/* Row 1: Description input (full width on mobile, flex-1 on desktop) */}
@@ -367,26 +374,33 @@ export default function TimeTrackingPage() {
               </button>
             )}
           </div>
-        </div>
+        </motion.div>
+        </FadeIn>
 
         {/* Summary Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-          <div className="relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl border border-gray-700/50 border-l-4 border-l-blue-500 p-5 hover:border-white/20 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300">
+        <StaggerChildren className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+          <StaggerItem>
+          <motion.div whileHover={{ y: -2 }} className="relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl border border-gray-700/50 border-l-4 border-l-blue-500 p-5 hover:border-white/20 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300">
             <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent pointer-events-none" />
             <p className="relative text-gray-400 text-sm mb-1">This Week</p>
             <p className="relative text-2xl font-bold text-white tabular-nums">{weekHours.toFixed(1)}h</p>
-          </div>
-          <div className="relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl border border-gray-700/50 border-l-4 border-l-emerald-500 p-5 hover:border-white/20 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300">
+          </motion.div>
+          </StaggerItem>
+          <StaggerItem>
+          <motion.div whileHover={{ y: -2 }} className="relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl border border-gray-700/50 border-l-4 border-l-emerald-500 p-5 hover:border-white/20 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300">
             <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-transparent pointer-events-none" />
             <p className="relative text-gray-400 text-sm mb-1">This Month</p>
             <p className="relative text-2xl font-bold text-white tabular-nums">{monthHours.toFixed(1)}h</p>
-          </div>
-          <div className="relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl border border-gray-700/50 border-l-4 border-l-amber-500 p-5 hover:border-white/20 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300">
+          </motion.div>
+          </StaggerItem>
+          <StaggerItem>
+          <motion.div whileHover={{ y: -2 }} className="relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl border border-gray-700/50 border-l-4 border-l-amber-500 p-5 hover:border-white/20 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300">
             <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 to-transparent pointer-events-none" />
             <p className="relative text-gray-400 text-sm mb-1">Unbilled</p>
             <p className="relative text-2xl font-bold text-amber-400 tabular-nums">&euro;{unbilledAmount.toFixed(2)}</p>
-          </div>
-        </div>
+          </motion.div>
+          </StaggerItem>
+        </StaggerChildren>
 
         {/* Filters */}
         <div className="flex flex-col md:flex-row md:flex-wrap md:items-center gap-3 mb-8">
@@ -558,12 +572,13 @@ export default function TimeTrackingPage() {
         ) : (
           <div className="space-y-8">
             {Object.entries(grouped).map(([dateLabel, dateEntries]) => (
-              <div key={dateLabel}>
+              <FadeIn key={dateLabel}>
                 <h3 className="text-sm font-semibold text-gray-400 mb-3 flex items-center gap-2"><span className="w-1 h-4 bg-amber-500/40 rounded-full" />{dateLabel}</h3>
-                <div className="space-y-2">
+                <StaggerChildren className="space-y-2">
                   {dateEntries.map((entry) => (
-                    <div
-                      key={entry.id}
+                    <StaggerItem key={entry.id}>
+                    <motion.div
+                      whileHover={{ y: -2 }}
                       className={`bg-[#111827] backdrop-blur-sm rounded-xl border p-4 flex flex-col sm:flex-row items-start sm:items-center gap-3 transition-all duration-300 hover:shadow-lg hover:shadow-amber-500/5 ${
                         entry.invoiced ? "border-white/5 opacity-60" : "border-gray-700/50 hover:border-amber-500/30"
                       }`}
@@ -617,14 +632,15 @@ export default function TimeTrackingPage() {
                           </div>
                         )}
                       </div>
-                    </div>
+                    </motion.div>
+                    </StaggerItem>
                   ))}
-                </div>
-              </div>
+                </StaggerChildren>
+              </FadeIn>
             ))}
           </div>
         )}
-      </div>
+      </PageTransition>
       <BottomNav />
       {showUpgrade && <UpgradeModal feature="Time Tracking" onClose={() => setShowUpgrade(false)} />}
     </div>
