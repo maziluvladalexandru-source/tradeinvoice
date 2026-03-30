@@ -385,8 +385,8 @@ export default function Home() {
       {/* ═══════════════ 1. HERO with BackgroundPaths ═══════════════ */}
       <section className="relative min-h-screen overflow-hidden">
         {/* Animated SVG path background */}
-        <div className="absolute inset-0 z-0 [&>div]:!bg-[#0a0f1e]">
-          <BackgroundPaths title=" " />
+        <div className="absolute inset-0 z-0">
+          <BackgroundPaths />
         </div>
 
         {/* Hero content overlay */}

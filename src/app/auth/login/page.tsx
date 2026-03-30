@@ -75,7 +75,7 @@ function LoginContent() {
       <div className="min-h-screen bg-[#0a0f1e] flex items-center justify-center px-4 relative overflow-hidden">
         {/* BackgroundPaths as animated background */}
         <div className="absolute inset-0 z-0 [&>div]:!bg-[#0a0f1e]">
-          <BackgroundPaths title=" " />
+          <BackgroundPaths />
         </div>
 
         <motion.div
@@ -129,7 +129,7 @@ function LoginContent() {
     <div className="min-h-screen bg-[#0a0f1e] flex items-center justify-center px-4 relative overflow-hidden">
       {/* BackgroundPaths as animated background */}
       <div className="absolute inset-0 z-0 [&>div]:!bg-[#0a0f1e]">
-        <BackgroundPaths title=" " />
+        <BackgroundPaths />
       </div>
 
       <motion.div
