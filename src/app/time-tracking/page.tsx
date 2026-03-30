@@ -260,9 +260,9 @@ export default function TimeTrackingPage() {
 
   if (!isPro && !loading) {
     return (
-      <>
+      <div className="min-h-screen bg-[#0a0f1e] pb-24 md:pb-0 premium-glow">
         <Navbar />
-        <main className="max-w-6xl mx-auto px-4 py-8 pb-24 md:pb-8">
+        <div className="max-w-6xl mx-auto px-4 py-8">
           <div className="text-center py-20">
             <div className="w-20 h-20 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center mx-auto mb-6">
               <svg className="w-10 h-10 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -280,17 +280,17 @@ export default function TimeTrackingPage() {
               Upgrade to Pro
             </button>
           </div>
-        </main>
+        </div>
         <BottomNav />
         {showUpgrade && <UpgradeModal feature="Time Tracking" onClose={() => setShowUpgrade(false)} />}
-      </>
+      </div>
     );
   }
 
   return (
-    <>
+    <div className="min-h-screen bg-[#0a0f1e] pb-24 md:pb-0 premium-glow">
       <Navbar />
-      <main className="max-w-6xl mx-auto px-4 py-8 pb-24 md:pb-8">
+      <div className="max-w-6xl mx-auto px-4 py-8">
         {/* Header */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-10">
           <div>
@@ -374,17 +374,17 @@ export default function TimeTrackingPage() {
           <div className="relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl border border-gray-700/50 border-l-4 border-l-blue-500 p-5 hover:border-white/20 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300">
             <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent pointer-events-none" />
             <p className="relative text-gray-400 text-sm mb-1">This Week</p>
-            <p className="relative text-2xl font-bold text-white">{weekHours.toFixed(1)}h</p>
+            <p className="relative text-2xl font-bold text-white tabular-nums">{weekHours.toFixed(1)}h</p>
           </div>
           <div className="relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl border border-gray-700/50 border-l-4 border-l-emerald-500 p-5 hover:border-white/20 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300">
             <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-transparent pointer-events-none" />
             <p className="relative text-gray-400 text-sm mb-1">This Month</p>
-            <p className="relative text-2xl font-bold text-white">{monthHours.toFixed(1)}h</p>
+            <p className="relative text-2xl font-bold text-white tabular-nums">{monthHours.toFixed(1)}h</p>
           </div>
           <div className="relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl border border-gray-700/50 border-l-4 border-l-amber-500 p-5 hover:border-white/20 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300">
             <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 to-transparent pointer-events-none" />
             <p className="relative text-gray-400 text-sm mb-1">Unbilled</p>
-            <p className="relative text-2xl font-bold text-amber-400">&euro;{unbilledAmount.toFixed(2)}</p>
+            <p className="relative text-2xl font-bold text-amber-400 tabular-nums">&euro;{unbilledAmount.toFixed(2)}</p>
           </div>
         </div>
 
@@ -592,10 +592,10 @@ export default function TimeTrackingPage() {
                       </div>
                       <div className="flex items-center gap-4 shrink-0">
                         <div className="text-right">
-                          <p className="text-white font-medium">{entry.hours}h</p>
-                          <p className="text-xs text-gray-500">&euro;{entry.hourlyRate}/hr</p>
+                          <p className="text-white font-medium tabular-nums">{entry.hours}h</p>
+                          <p className="text-xs text-gray-500 tabular-nums">&euro;{entry.hourlyRate}/hr</p>
                         </div>
-                        <p className="text-amber-400 font-semibold min-w-[80px] text-right">
+                        <p className="text-amber-400 font-semibold min-w-[80px] text-right tabular-nums">
                           &euro;{(entry.hours * entry.hourlyRate).toFixed(2)}
                         </p>
                         {!entry.invoiced && (
@@ -624,9 +624,9 @@ export default function TimeTrackingPage() {
             ))}
           </div>
         )}
-      </main>
+      </div>
       <BottomNav />
       {showUpgrade && <UpgradeModal feature="Time Tracking" onClose={() => setShowUpgrade(false)} />}
-    </>
+    </div>
   );
 }

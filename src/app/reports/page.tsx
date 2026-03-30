@@ -239,25 +239,25 @@ export default function ReportsPage() {
                   <div className="relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl p-5 border border-gray-700/50 border-l-4 border-l-emerald-500 hover:border-white/20 transition-all duration-300">
                     <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-transparent pointer-events-none" />
                     <p className="text-sm font-medium text-gray-400 mb-1">Revenue</p>
-                    <p className="text-lg md:text-2xl font-bold text-emerald-400 truncate">{fmtCurrency(data.revenue)}</p>
+                    <p className="text-lg md:text-2xl font-bold text-emerald-400 truncate tabular-nums">{fmtCurrency(data.revenue)}</p>
                     <p className="text-sm text-gray-500 mt-1">{data.invoicesPaid} invoice{data.invoicesPaid !== 1 ? "s" : ""} paid</p>
                   </div>
                   <div className="relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl p-5 border border-gray-700/50 border-l-4 border-l-red-500 hover:border-white/20 transition-all duration-300">
                     <div className="absolute inset-0 bg-gradient-to-br from-red-500/10 to-transparent pointer-events-none" />
                     <p className="text-sm font-medium text-gray-400 mb-1">Expenses</p>
-                    <p className="text-lg md:text-2xl font-bold text-red-400 truncate">{fmtCurrency(data.totalExpenses)}</p>
+                    <p className="text-lg md:text-2xl font-bold text-red-400 truncate tabular-nums">{fmtCurrency(data.totalExpenses)}</p>
                     <p className="text-sm text-gray-500 mt-1">{fmtCurrency(data.deductibleExpenses)} deductible</p>
                   </div>
                   <div className="relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl p-5 border border-gray-700/50 border-l-4 border-l-blue-500 hover:border-white/20 transition-all duration-300">
                     <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent pointer-events-none" />
                     <p className="text-sm font-medium text-gray-400 mb-1">Mileage Deduction</p>
-                    <p className="text-lg md:text-2xl font-bold text-blue-400 truncate">{fmtCurrency(data.mileageDeduction)}</p>
+                    <p className="text-lg md:text-2xl font-bold text-blue-400 truncate tabular-nums">{fmtCurrency(data.mileageDeduction)}</p>
                     <p className="text-sm text-gray-500 mt-1">{data.totalKm.toFixed(1)} km</p>
                   </div>
                   <div className="relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl p-5 border border-gray-700/50 border-l-4 border-l-amber-500 hover:border-white/20 transition-all duration-300">
                     <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 to-transparent pointer-events-none" />
                     <p className="text-sm font-medium text-gray-400 mb-1">Net Profit</p>
-                    <p className={`text-lg md:text-2xl font-bold truncate ${data.netProfit >= 0 ? "text-amber-400" : "text-red-400"}`}>
+                    <p className={`text-lg md:text-2xl font-bold truncate tabular-nums ${data.netProfit >= 0 ? "text-amber-400" : "text-red-400"}`}>
                       {fmtCurrency(data.netProfit)}
                     </p>
                     <p className="text-sm text-gray-500 mt-1">{fmtCurrency(data.totalOutstanding)} outstanding</p>
@@ -291,15 +291,15 @@ export default function ReportsPage() {
                         <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Income</p>
                         <div className="flex justify-between text-sm">
                           <span className="text-gray-400">Revenue (incl. VAT)</span>
-                          <span className="text-emerald-400 font-semibold">{fmtCurrency(data.revenue)}</span>
+                          <span className="text-emerald-400 font-semibold tabular-nums">{fmtCurrency(data.revenue)}</span>
                         </div>
                         <div className="flex justify-between text-sm mt-1">
                           <span className="text-gray-400">VAT Collected</span>
-                          <span className="text-gray-300">-{fmtCurrency(data.taxCollected)}</span>
+                          <span className="text-gray-300 tabular-nums">-{fmtCurrency(data.taxCollected)}</span>
                         </div>
                         <div className="flex justify-between text-sm mt-1 pt-1 border-t border-white/5">
                           <span className="text-gray-300 font-medium">Revenue (excl. VAT)</span>
-                          <span className="text-white font-semibold">{fmtCurrency(data.revenueBeforeTax)}</span>
+                          <span className="text-white font-semibold tabular-nums">{fmtCurrency(data.revenueBeforeTax)}</span>
                         </div>
                       </div>
 
@@ -308,7 +308,7 @@ export default function ReportsPage() {
                         {Object.entries(data.expenseByCategory).sort((a, b) => b[1] - a[1]).map(([cat, amount]) => (
                           <div key={cat} className="flex justify-between text-sm mt-1">
                             <span className="text-gray-400">{CATEGORY_LABELS[cat] || cat}</span>
-                            <span className="text-red-400">-{fmtCurrency(amount)}</span>
+                            <span className="text-red-400 tabular-nums">-{fmtCurrency(amount)}</span>
                           </div>
                         ))}
                         {Object.keys(data.expenseByCategory).length === 0 && (
@@ -316,7 +316,7 @@ export default function ReportsPage() {
                         )}
                         <div className="flex justify-between text-sm mt-1 pt-1 border-t border-white/5">
                           <span className="text-gray-300 font-medium">Total Expenses</span>
-                          <span className="text-red-400 font-semibold">-{fmtCurrency(data.totalExpenses)}</span>
+                          <span className="text-red-400 font-semibold tabular-nums">-{fmtCurrency(data.totalExpenses)}</span>
                         </div>
                       </div>
 
@@ -324,28 +324,28 @@ export default function ReportsPage() {
                         <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Deductions</p>
                         <div className="flex justify-between text-sm">
                           <span className="text-gray-400">Mileage ({data.totalKm.toFixed(1)} km)</span>
-                          <span className="text-blue-400">{fmtCurrency(data.mileageDeduction)}</span>
+                          <span className="text-blue-400 tabular-nums">{fmtCurrency(data.mileageDeduction)}</span>
                         </div>
                         <div className="flex justify-between text-sm mt-1">
                           <span className="text-gray-400">Deductible Expenses</span>
-                          <span className="text-blue-400">{fmtCurrency(data.deductibleExpenses)}</span>
+                          <span className="text-blue-400 tabular-nums">{fmtCurrency(data.deductibleExpenses)}</span>
                         </div>
                         <div className="flex justify-between text-sm mt-1 pt-1 border-t border-white/5">
                           <span className="text-gray-300 font-medium">Total Deductions</span>
-                          <span className="text-blue-400 font-semibold">{fmtCurrency(data.totalDeductions)}</span>
+                          <span className="text-blue-400 font-semibold tabular-nums">{fmtCurrency(data.totalDeductions)}</span>
                         </div>
                       </div>
 
                       <div className="pt-1">
                         <div className="flex justify-between">
                           <span className="text-white font-semibold">Net Profit</span>
-                          <span className={`text-lg font-bold ${data.netProfit >= 0 ? "text-emerald-400" : "text-red-400"}`}>
+                          <span className={`text-lg font-bold tabular-nums ${data.netProfit >= 0 ? "text-emerald-400" : "text-red-400"}`}>
                             {fmtCurrency(data.netProfit)}
                           </span>
                         </div>
                         <div className="flex justify-between text-sm mt-2">
                           <span className="text-gray-400">Estimated Taxable Profit</span>
-                          <span className="text-amber-400 font-semibold">{fmtCurrency(data.taxableProfit)}</span>
+                          <span className="text-amber-400 font-semibold tabular-nums">{fmtCurrency(data.taxableProfit)}</span>
                         </div>
                       </div>
                     </div>

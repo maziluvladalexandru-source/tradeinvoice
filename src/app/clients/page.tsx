@@ -255,7 +255,7 @@ export default function ClientsPage() {
                   <svg className="w-3.5 h-3.5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                   Total Invoiced
                 </p>
-                <p className="text-lg md:text-2xl font-bold text-amber-400 mt-1 truncate">{formatCurrency(totalRevenue, primaryCurrency)}</p>
+                <p className="text-lg md:text-2xl font-bold text-amber-400 mt-1 truncate tabular-nums">{formatCurrency(totalRevenue, primaryCurrency)}</p>
               </div>
             </div>
             <div className="bg-[#111827] backdrop-blur-sm rounded-2xl p-5 border border-gray-700/50 border-l-4 border-l-emerald-500 hover:border-gray-600/50 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300 relative overflow-hidden">
@@ -474,7 +474,7 @@ export default function ClientsPage() {
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4 pt-4 border-t border-gray-700/50">
                     <div>
                       <p className="text-xs text-gray-500 uppercase tracking-wider">Total Invoiced</p>
-                      <p className="text-sm sm:text-lg font-bold text-white mt-0.5 truncate">
+                      <p className="text-sm sm:text-lg font-bold text-white mt-0.5 truncate tabular-nums">
                         {client.invoiceCount > 0
                           ? formatCurrency(client.totalInvoiced, client.currency)
                           : "--"}

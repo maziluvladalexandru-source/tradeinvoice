@@ -447,14 +447,14 @@ export default function ExpensesPage() {
               <div className="relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl p-5 border border-gray-700/50 hover:border-amber-500/30 hover:shadow-lg hover:shadow-amber-500/10 transition-all duration-300 col-span-1 sm:col-span-2 lg:col-span-1">
                 <div className="absolute inset-0 bg-gradient-to-br from-red-500/10 to-transparent pointer-events-none" />
                 <p className="text-sm font-medium text-gray-400 mb-1">Total Expenses</p>
-                <p className="text-lg md:text-2xl font-bold text-red-400 truncate">{fmtCurrency(totalExpenses)}</p>
+                <p className="text-lg md:text-2xl font-bold text-red-400 truncate tabular-nums">{fmtCurrency(totalExpenses)}</p>
                 <p className="text-sm text-gray-500 mt-1">{TIME_FILTERS.find((f) => f.value === timeFilter)?.label}</p>
               </div>
               {categoryBreakdown.slice(0, 3).map((cat) => (
                 <div key={cat.value} className="relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl p-5 border border-gray-700/50 hover:border-amber-500/30 hover:shadow-lg hover:shadow-amber-500/10 transition-all duration-300">
                   <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 to-transparent pointer-events-none" />
                   <p className="text-sm font-medium text-gray-400 mb-1">{cat.label}</p>
-                  <p className="text-xl font-bold text-white">{fmtCurrency(cat.total)}</p>
+                  <p className="text-xl font-bold text-white tabular-nums">{fmtCurrency(cat.total)}</p>
                   <p className="text-sm text-gray-500 mt-1">{cat.count} expense{cat.count !== 1 ? "s" : ""}</p>
                 </div>
               ))}
@@ -676,7 +676,7 @@ export default function ExpensesPage() {
                         <div key={cat.value}>
                           <div className="flex items-center justify-between mb-1">
                             <span className="text-sm font-medium text-gray-300">{cat.label}</span>
-                            <span className="text-sm font-semibold text-white">{fmtCurrency(cat.total)}</span>
+                            <span className="text-sm font-semibold text-white tabular-nums">{fmtCurrency(cat.total)}</span>
                           </div>
                           <div className="h-2 bg-white/10 rounded-full overflow-hidden">
                             <div
@@ -775,7 +775,7 @@ export default function ExpensesPage() {
                           )}
                         </div>
                         <div className="text-right shrink-0">
-                          <p className="text-lg font-bold text-white">{fmtCurrency(expense.amount)}</p>
+                          <p className="text-lg font-bold text-white tabular-nums">{fmtCurrency(expense.amount)}</p>
                         </div>
                         <div className="flex items-center gap-1 shrink-0">
                           <button
@@ -830,19 +830,19 @@ export default function ExpensesPage() {
                   <div className="relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl p-5 border border-gray-700/50 hover:border-amber-500/30 hover:shadow-lg hover:shadow-amber-500/10 transition-all duration-300">
                     <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent pointer-events-none" />
                     <p className="text-sm font-medium text-gray-400 mb-1">Total Distance</p>
-                    <p className="text-lg md:text-2xl font-bold text-blue-400">{totalKm.toFixed(1)} km</p>
+                    <p className="text-lg md:text-2xl font-bold text-blue-400 tabular-nums">{totalKm.toFixed(1)} km</p>
                     <p className="text-sm text-gray-500 mt-1">{TIME_FILTERS.find((f) => f.value === timeFilter)?.label}</p>
                   </div>
                   <div className="relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl p-5 border border-gray-700/50 hover:border-amber-500/30 hover:shadow-lg hover:shadow-amber-500/10 transition-all duration-300">
                     <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-transparent pointer-events-none" />
                     <p className="text-sm font-medium text-gray-400 mb-1">Tax Deduction</p>
-                    <p className="text-lg md:text-2xl font-bold text-emerald-400 truncate">{fmtCurrency(totalDeduction)}</p>
+                    <p className="text-lg md:text-2xl font-bold text-emerald-400 truncate tabular-nums">{fmtCurrency(totalDeduction)}</p>
                     <p className="text-sm text-gray-500 mt-1">at standard rates</p>
                   </div>
                   <div className="relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl p-5 border border-gray-700/50 hover:border-amber-500/30 hover:shadow-lg hover:shadow-amber-500/10 transition-all duration-300">
                     <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 to-transparent pointer-events-none" />
                     <p className="text-sm font-medium text-gray-400 mb-1">Billable</p>
-                    <p className="text-lg md:text-2xl font-bold text-amber-400">{billableKm.toFixed(1)} km</p>
+                    <p className="text-lg md:text-2xl font-bold text-amber-400 tabular-nums">{billableKm.toFixed(1)} km</p>
                     <p className="text-sm text-gray-500 mt-1">{mileageEntries.filter((e) => e.billable).length} trip{mileageEntries.filter((e) => e.billable).length !== 1 ? "s" : ""}</p>
                   </div>
                 </div>
@@ -1062,7 +1062,7 @@ export default function ExpensesPage() {
                               </div>
                             </div>
                             <div className="text-right shrink-0">
-                              <p className="text-lg font-bold text-emerald-400">{fmtCurrency(entry.distance * entry.ratePerKm)}</p>
+                              <p className="text-lg font-bold text-emerald-400 tabular-nums">{fmtCurrency(entry.distance * entry.ratePerKm)}</p>
                               <p className="text-xs text-gray-500">{fmtCurrency(entry.ratePerKm)}/km</p>
                             </div>
                             <div className="flex items-center gap-1 shrink-0">
