@@ -332,25 +332,23 @@ export default function DashboardPage() {
                     key={invoice.id}
                     className="group px-5 py-3 hover:bg-white/[0.02] transition-colors"
                   >
-                    {/* Desktop row */}
-                    <div className="hidden sm:flex items-center gap-3">
-                      <Link href={`/invoices/${invoice.id}`} className="flex items-center gap-3 flex-1 min-w-0">
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2">
-                            <span className="font-medium text-white text-sm">{invoice.invoiceNumber}</span>
-                            <span className="text-gray-500 text-sm truncate">{invoice.clientName}</span>
-                          </div>
+                    {/* Desktop row - fixed columns for alignment */}
+                    <div className="hidden sm:grid items-center gap-3" style={{ gridTemplateColumns: "1fr 90px 100px 80px" }}>
+                      <Link href={`/invoices/${invoice.id}`} className="min-w-0">
+                        <div className="flex items-center gap-2">
+                          <span className="font-medium text-white text-sm">{invoice.invoiceNumber}</span>
+                          <span className="text-gray-500 text-sm truncate">{invoice.clientName}</span>
                         </div>
                       </Link>
                       <span className={`inline-flex items-center gap-1 capitalize whitespace-nowrap ${statusColors[invoice.status] || ""}`}>
                         <span className={`w-1.5 h-1.5 rounded-full ${statusDot[invoice.status] || ""}`} />
                         {invoice.status}
                       </span>
-                      <span className="text-sm font-semibold text-white w-28 text-right tabular-nums">
+                      <span className="text-sm font-semibold text-white text-right tabular-nums">
                         {formatCurrency(invoice.total, invoice.currency)}
                       </span>
                       {/* Hover-only actions */}
-                      <div className="opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-0.5">
+                      <div className="opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-end gap-0.5">
                         <InvoiceCardActions invoiceId={invoice.id} status={invoice.status} type={invoice.type} />
                         <a href={`/api/invoices/${invoice.id}/pdf`} target="_blank" className="p-1.5 rounded-lg text-gray-400 hover:text-amber-500 hover:bg-gray-700/50 transition-colors" title="Download PDF" aria-label="Download PDF">
                           <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -459,23 +457,21 @@ export default function DashboardPage() {
                   key={quote.id}
                   className="group px-5 py-3 hover:bg-white/[0.02] transition-colors"
                 >
-                  <div className="flex items-center gap-3">
-                    <Link href={`/invoices/${quote.id}`} className="flex items-center gap-2 flex-1 min-w-0">
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2">
-                          <span className="font-medium text-white text-sm">{quote.invoiceNumber}</span>
-                          <span className="text-gray-500 text-sm truncate">{quote.clientName}</span>
-                        </div>
+                  <div className="grid items-center gap-3" style={{ gridTemplateColumns: "1fr 90px 100px 40px" }}>
+                    <Link href={`/invoices/${quote.id}`} className="min-w-0">
+                      <div className="flex items-center gap-2">
+                        <span className="font-medium text-white text-sm">{quote.invoiceNumber}</span>
+                        <span className="text-gray-500 text-sm truncate">{quote.clientName}</span>
                       </div>
                     </Link>
                     <span className={`inline-flex items-center gap-1 capitalize whitespace-nowrap ${statusColors[quote.status] || ""}`}>
                       <span className={`w-1.5 h-1.5 rounded-full ${statusDot[quote.status] || ""}`} />
                       {quote.status}
                     </span>
-                    <span className="text-sm font-semibold text-white tabular-nums">
+                    <span className="text-sm font-semibold text-white text-right tabular-nums">
                       {formatCurrency(quote.total, quote.currency)}
                     </span>
-                    <div className="opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div className="opacity-0 group-hover:opacity-100 transition-opacity flex justify-end">
                       <InvoiceCardActions invoiceId={quote.id} status={quote.status} type="quote" />
                     </div>
                   </div>

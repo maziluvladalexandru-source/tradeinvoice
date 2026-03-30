@@ -249,45 +249,44 @@ export default function InvoicesListPage() {
                   key={invoice.id}
                   className={`p-3 sm:p-4 bg-[#111827] hover:bg-[#1a2235] transition-all rounded-xl border border-gray-700/30 hover:border-amber-500/30 border-l-4 ${statusBorder[invoice.status] || "border-l-gray-600"}`}
                 >
-                  {/* Desktop layout */}
-                  <div className="hidden sm:flex items-center gap-3">
+                  {/* Desktop layout - fixed column widths for alignment */}
+                  <div className="hidden sm:grid items-center gap-3" style={{ gridTemplateColumns: "1fr 110px 90px 110px 120px" }}>
                     <Link
                       href={`/invoices/${invoice.id}`}
-                      className="flex items-center gap-3 flex-1 min-w-0"
+                      className="min-w-0"
                     >
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2">
-                          <p className="font-medium text-white">{invoice.invoiceNumber}</p>
-                          {invoice.isRecurring && (
-                            <span className="bg-cyan-500/20 text-cyan-300 ring-1 ring-cyan-400/40 px-1.5 py-0.5 rounded-full text-[10px] font-semibold uppercase">
-                              Recurring
-                            </span>
-                          )}
-                        </div>
-                        <p className="text-sm text-gray-400 truncate">{invoice.client.name}</p>
+                      <div className="flex items-center gap-2">
+                        <p className="font-medium text-white">{invoice.invoiceNumber}</p>
+                        {invoice.isRecurring && (
+                          <span className="bg-cyan-500/20 text-cyan-300 ring-1 ring-cyan-400/40 px-1.5 py-0.5 rounded-full text-[10px] font-semibold uppercase">
+                            Recurring
+                          </span>
+                        )}
                       </div>
-                      <p className="text-xs text-gray-500 whitespace-nowrap">
-                        Due {fmtDate(invoice.dueDate)}
-                      </p>
+                      <p className="text-sm text-gray-400 truncate">{invoice.client.name}</p>
                     </Link>
+
+                    <p className="text-xs text-gray-500 whitespace-nowrap">
+                      Due {fmtDate(invoice.dueDate)}
+                    </p>
 
                     <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold capitalize whitespace-nowrap ${statusColors[invoice.status] || ""}`}>
                       <span className={`w-1.5 h-1.5 rounded-full ${statusDot[invoice.status] || ""}`} />
                       {invoice.status}
                     </span>
 
-                    <div className="text-right whitespace-nowrap min-w-[80px]">
-                      <p className="text-base font-bold text-white">
+                    <div className="text-right whitespace-nowrap">
+                      <p className="text-base font-bold text-white tabular-nums">
                         {formatCurrency(invoice.total, invoice.currency)}
                       </p>
                       {invoice.paidAmount > 0 && invoice.paidAmount < invoice.total && (
-                        <p className="text-xs text-amber-400">
+                        <p className="text-xs text-amber-400 tabular-nums">
                           Due: {formatCurrency(invoice.total - invoice.paidAmount, invoice.currency)}
                         </p>
                       )}
                     </div>
 
-                    <div className="flex items-center gap-1 ml-2">
+                    <div className="flex items-center justify-end gap-1">
                       <Link href={`/invoices/${invoice.id}`} className="p-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-colors" title="View">
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />

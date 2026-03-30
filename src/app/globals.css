@@ -6,6 +6,13 @@ body {
   background-color: #0a0f1e;
 }
 
+/* Dark background for all dropdown options (fixes white flash on select) */
+select,
+select option {
+  background-color: #111827;
+  color: #f3f4f6;
+}
+
 /* Premium radial gradient glow for page backgrounds */
 .premium-glow {
   position: relative;
