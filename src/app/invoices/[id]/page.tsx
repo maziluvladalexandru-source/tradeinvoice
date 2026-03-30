@@ -40,7 +40,7 @@ interface Invoice {
   depositPaidAt: string | null;
   client: { id: string; name: string; email: string; phone: string | null; address: string | null; vatNumber: string | null };
   lineItems: { id: string; description: string; quantity: number; unitPrice: number; total: number }[];
-  user: { businessName: string | null; email: string; plan?: string; businessAddress?: string | null; businessPhone?: string | null; kvkNumber?: string | null; vatNumber?: string | null; bankDetails?: string | null; logoUrl?: string | null };
+  user: { businessName: string | null; email: string; plan?: string; businessAddress?: string | null; businessPhone?: string | null; kvkNumber?: string | null; vatNumber?: string | null; bankDetails?: string | null; logoUrl?: string | null; lateFeeEnabled?: boolean; lateFeeRate?: number; lateFeeGraceDays?: number };
 }
 
 export default function InvoiceDetailPage() {
@@ -527,6 +527,35 @@ export default function InvoiceDetailPage() {
                 <span>Total</span>
                 <span className="tabular-nums text-amber-400">{fmt(invoice.total)}</span>
               </div>
+              {invoice.status === "overdue" && invoice.user.lateFeeEnabled && (() => {
+                const dueDate = new Date(invoice.dueDate);
+                const now = new Date();
+                const graceDays = invoice.user.lateFeeGraceDays || 0;
+                const graceDate = new Date(dueDate.getTime() + graceDays * 86400000);
+                const daysOverdue = Math.max(0, Math.floor((now.getTime() - dueDate.getTime()) / 86400000));
+                const daysAccruing = Math.max(0, Math.floor((now.getTime() - graceDate.getTime()) / 86400000));
+                if (daysAccruing <= 0) return null;
+                const monthsOverdue = daysAccruing / 30;
+                const rate = invoice.user.lateFeeRate || 2.0;
+                const outstandingAmount = invoice.total - (invoice.paidAmount || 0);
+                const lateFee = Math.round(outstandingAmount * (rate / 100) * monthsOverdue * 100) / 100;
+                const totalWithFee = outstandingAmount + lateFee;
+                return (
+                  <div className="mt-3 pt-3 border-t border-red-500/20 space-y-2">
+                    <div className="flex justify-between text-red-400 text-sm">
+                      <span>{daysOverdue} days overdue</span>
+                    </div>
+                    <div className="flex justify-between text-red-400 text-sm">
+                      <span>Late fee ({rate}%/mo)</span>
+                      <span className="tabular-nums">{fmt(lateFee)}</span>
+                    </div>
+                    <div className="flex justify-between text-lg font-bold text-red-400">
+                      <span>Total with late fee</span>
+                      <span className="tabular-nums">{fmt(totalWithFee)}</span>
+                    </div>
+                  </div>
+                );
+              })()}
               {invoice.depositPercent && invoice.depositAmount && (
                 <div className={`flex justify-between pt-1 ${invoice.depositPaid ? "text-green-400" : "text-amber-400"}`}>
                   <span>Deposit ({invoice.depositPercent}%)</span>

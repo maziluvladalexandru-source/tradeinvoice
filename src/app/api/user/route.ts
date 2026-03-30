@@ -36,6 +36,7 @@ export async function PATCH(req: NextRequest) {
       notifyOnView, notifyOnPay, notifyReminders,
       emailInvoiceSubject, emailInvoiceMessage, emailReminderSubject, emailReminderMessage,
       reminderFirstDays, reminderSecondDays, reminderOverdueDays, remindersEnabled,
+      lateFeeEnabled, lateFeeRate, lateFeeGraceDays,
     } = await req.json();
 
     // Validate logoUrl: must be base64 image or empty, max 500KB
@@ -82,6 +83,9 @@ export async function PATCH(req: NextRequest) {
         ...(reminderSecondDays !== undefined ? { reminderSecondDays: typeof reminderSecondDays === "number" ? Math.max(1, Math.min(30, reminderSecondDays)) : null } : {}),
         ...(reminderOverdueDays !== undefined ? { reminderOverdueDays: typeof reminderOverdueDays === "number" ? Math.max(1, Math.min(30, reminderOverdueDays)) : null } : {}),
         ...(remindersEnabled !== undefined ? { remindersEnabled: !!remindersEnabled } : {}),
+        ...(lateFeeEnabled !== undefined ? { lateFeeEnabled: !!lateFeeEnabled } : {}),
+        ...(lateFeeRate !== undefined ? { lateFeeRate: typeof lateFeeRate === "number" ? Math.max(0, Math.min(100, lateFeeRate)) : 2.0 } : {}),
+        ...(lateFeeGraceDays !== undefined ? { lateFeeGraceDays: typeof lateFeeGraceDays === "number" ? Math.max(0, Math.min(90, lateFeeGraceDays)) : 0 } : {}),
       },
     });
 

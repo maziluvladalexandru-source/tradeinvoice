@@ -45,6 +45,11 @@ model User {
   reminderSecondDays  Int?     @default(3)
   reminderOverdueDays Int?     @default(1)
   remindersEnabled    Boolean? @default(true)
+
+  // Late payment fees
+  lateFeeEnabled   Boolean @default(false)
+  lateFeeRate      Float   @default(2.0)  // percentage per month
+  lateFeeGraceDays Int     @default(0)
   stripeCustomerId String?
   stripeSubscriptionId String?
   invoiceCount  Int       @default(0) // monthly invoice count

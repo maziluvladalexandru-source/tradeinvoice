@@ -73,6 +73,9 @@ const translations: Record<string, Record<string, string>> = {
     referenceInvoice: "Reference Invoice",
     reverseChargeNote: "VAT reverse-charged (BTW verlegd) — Article 44 EU VAT Directive",
     serviceDateEqualsInvoiceDate: "Service date equals invoice date",
+    lateFee: "Late Payment Fee",
+    daysOverdue: "days overdue",
+    totalWithLateFee: "Total with Late Fee",
   },
   nl: {
     invoice: "Factuur",
@@ -108,6 +111,9 @@ const translations: Record<string, Record<string, string>> = {
     referenceInvoice: "Referentiefactuur",
     reverseChargeNote: "BTW verlegd — Artikel 44 EU BTW-richtlijn",
     serviceDateEqualsInvoiceDate: "Leveringsdatum is gelijk aan factuurdatum",
+    lateFee: "Vertragingsrente",
+    daysOverdue: "dagen te laat",
+    totalWithLateFee: "Totaal met vertragingsrente",
   },
   de: {
     invoice: "Rechnung",
@@ -143,6 +149,9 @@ const translations: Record<string, Record<string, string>> = {
     referenceInvoice: "Referenzrechnung",
     reverseChargeNote: "Steuerschuldnerschaft des Leistungsempfängers — Artikel 44 EU-MwSt-Richtlinie",
     serviceDateEqualsInvoiceDate: "Leistungsdatum entspricht Rechnungsdatum",
+    lateFee: "Verzugszinsen",
+    daysOverdue: "Tage uberfällig",
+    totalWithLateFee: "Gesamt mit Verzugszinsen",
   },
 };
 
@@ -413,6 +422,36 @@ export async function GET(
                 <span class="totals-label" style="color: #92400e;">${t("balanceDue")}</span>
                 <span class="totals-value" style="color: #92400e;">${formatCurrency(invoice.total - invoice.paidAmount, invoice.currency)}</span>
               </div>` : ""}
+            ${(() => {
+              if (invoice.status !== "overdue" || !invoice.user.lateFeeEnabled) return "";
+              const dueDate = new Date(invoice.dueDate);
+              const now = new Date();
+              const graceDays = invoice.user.lateFeeGraceDays || 0;
+              const graceDate = new Date(dueDate.getTime() + graceDays * 86400000);
+              const daysOverdue = Math.max(0, Math.floor((now.getTime() - dueDate.getTime()) / 86400000));
+              const daysAccruing = Math.max(0, Math.floor((now.getTime() - graceDate.getTime()) / 86400000));
+              if (daysAccruing <= 0) return "";
+              const monthsOverdue = daysAccruing / 30;
+              const rate = invoice.user.lateFeeRate || 2.0;
+              const outstandingAmount = invoice.total - (invoice.paidAmount || 0);
+              const lateFee = Math.round(outstandingAmount * (rate / 100) * monthsOverdue * 100) / 100;
+              const totalWithFee = outstandingAmount + lateFee;
+              return `
+              <div style="margin-top: 8px; padding-top: 8px; border-top: 2px solid #fee2e2;">
+                <div class="totals-row" style="color: #991b1b; font-size: 12px;">
+                  <span class="totals-label">${daysOverdue} ${t("daysOverdue")}</span>
+                  <span class="totals-value"></span>
+                </div>
+                <div class="totals-row" style="color: #991b1b;">
+                  <span class="totals-label">${t("lateFee")} (${rate}%/mo)</span>
+                  <span class="totals-value">${formatCurrency(lateFee, invoice.currency)}</span>
+                </div>
+                <div class="totals-row total" style="background: #dc2626; margin-top: 4px;">
+                  <span class="totals-label">${t("totalWithLateFee")}</span>
+                  <span class="totals-value">${formatCurrency(totalWithFee, invoice.currency)}</span>
+                </div>
+              </div>`;
+            })()}
           </div>
         </div>
 

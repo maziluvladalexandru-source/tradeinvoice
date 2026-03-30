@@ -47,6 +47,9 @@ interface User {
   reminderSecondDays: number | null;
   reminderOverdueDays: number | null;
   remindersEnabled: boolean | null;
+  lateFeeEnabled: boolean;
+  lateFeeRate: number;
+  lateFeeGraceDays: number;
 }
 
 interface TeamMember {
@@ -108,6 +111,7 @@ const NAV_SECTIONS = [
       { id: "section-invoice-defaults", label: "Invoice Defaults" },
       { id: "section-tax-registration", label: "Tax & Registration" },
       { id: "section-payment-details", label: "Payment Details" },
+      { id: "section-late-fees", label: "Late Payment Fees" },
     ],
   },
   {
@@ -182,6 +186,11 @@ function SettingsContent() {
   const [reminderSecondDays, setReminderSecondDays] = useState(3);
   const [reminderOverdueDays, setReminderOverdueDays] = useState(1);
   const [remindersEnabled, setRemindersEnabled] = useState(true);
+
+  // Late payment fees
+  const [lateFeeEnabled, setLateFeeEnabled] = useState(false);
+  const [lateFeeRate, setLateFeeRate] = useState(2.0);
+  const [lateFeeGraceDays, setLateFeeGraceDays] = useState(0);
 
   // Security
   const [signingOutAll, setSigningOutAll] = useState(false);
@@ -284,6 +293,9 @@ function SettingsContent() {
         setReminderSecondDays(u.reminderSecondDays ?? 3);
         setReminderOverdueDays(u.reminderOverdueDays ?? 1);
         setRemindersEnabled(u.remindersEnabled ?? true);
+        setLateFeeEnabled(u.lateFeeEnabled ?? false);
+        setLateFeeRate(u.lateFeeRate ?? 2.0);
+        setLateFeeGraceDays(u.lateFeeGraceDays ?? 0);
       })
       .catch(() => router.push("/auth/login"))
       .finally(() => setLoading(false));
@@ -364,6 +376,7 @@ function SettingsContent() {
         notifyOnView, notifyOnPay, notifyReminders,
         emailInvoiceSubject, emailInvoiceMessage, emailReminderSubject, emailReminderMessage,
         reminderFirstDays, reminderSecondDays, reminderOverdueDays, remindersEnabled,
+        lateFeeEnabled, lateFeeRate, lateFeeGraceDays,
       }),
     });
     if (res.ok) {
@@ -1018,6 +1031,63 @@ function SettingsContent() {
                 )}
               </div>
 
+              </FadeIn>
+
+              {/* Late Payment Fees */}
+              <FadeIn delay={0.1}>
+              <div id="section-late-fees" className="scroll-mt-24 bg-[#111827] backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 space-y-5 hover:border-gray-600/60 transition-all duration-300">
+                <h2 className="text-lg font-semibold text-white mb-2 flex items-center gap-2">
+                  <svg className="w-5 h-5 text-amber-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  Late Payment Fees
+                  <div className="flex-1 h-px bg-gradient-to-r from-amber-500/20 to-transparent ml-2" />
+                </h2>
+                <p className="text-sm text-gray-400">Automatically calculate late payment fees for overdue invoices.</p>
+
+                <div className="flex items-center justify-between">
+                  <label className="text-sm text-gray-300">Enable late payment fees</label>
+                  <label className="relative inline-flex items-center cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={lateFeeEnabled}
+                      onChange={(e) => setLateFeeEnabled(e.target.checked)}
+                      className="sr-only peer"
+                    />
+                    <div className="w-11 h-6 bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600" />
+                  </label>
+                </div>
+
+                {lateFeeEnabled && (
+                  <div className="space-y-4 pt-2">
+                    <div>
+                      <label className="block text-sm text-gray-300 mb-1">Interest rate (% per month)</label>
+                      <input
+                        type="number"
+                        min="0"
+                        max="100"
+                        step="0.1"
+                        value={lateFeeRate}
+                        onChange={(e) => setLateFeeRate(parseFloat(e.target.value) || 0)}
+                        className="w-full bg-gray-800/50 border border-gray-600/50 rounded-lg px-3 py-2 text-white text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      />
+                      <p className="text-xs text-gray-500 mt-1">Common EU rate: 2% per month. Applied to the invoice total for each month overdue.</p>
+                    </div>
+                    <div>
+                      <label className="block text-sm text-gray-300 mb-1">Grace period (days)</label>
+                      <input
+                        type="number"
+                        min="0"
+                        max="90"
+                        value={lateFeeGraceDays}
+                        onChange={(e) => setLateFeeGraceDays(parseInt(e.target.value) || 0)}
+                        className="w-full bg-gray-800/50 border border-gray-600/50 rounded-lg px-3 py-2 text-white text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      />
+                      <p className="text-xs text-gray-500 mt-1">Number of days after the due date before late fees start accruing.</p>
+                    </div>
+                  </div>
+                )}
+              </div>
               </FadeIn>
 
               {/* ==================== COMMUNICATION ==================== */}
