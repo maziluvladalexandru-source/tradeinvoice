@@ -61,6 +61,7 @@ export default function InvoicesListPage() {
   const [sortDir, setSortDir] = useState<SortDir>("desc");
   const [duplicating, setDuplicating] = useState<string | null>(null);
   const [markingPaid, setMarkingPaid] = useState<string | null>(null);
+  const [exporting, setExporting] = useState(false);
 
   useEffect(() => {
     fetch("/api/invoices")
@@ -154,6 +155,29 @@ export default function InvoicesListPage() {
     }
   }
 
+  async function handleExportCsv() {
+    setExporting(true);
+    try {
+      const params = new URLSearchParams({ format: "csv" });
+      if (statusFilter !== "all") params.set("status", statusFilter);
+      const res = await fetch(`/api/invoices/export?${params}`);
+      if (!res.ok) throw new Error("Export failed");
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = res.headers.get("Content-Disposition")?.split("filename=")[1] || "invoices-export.csv";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    } catch {
+      // ignore
+    } finally {
+      setExporting(false);
+    }
+  }
+
   const SortIcon = ({ field }: { field: SortField }) => {
     if (sortField !== field) return null;
     return (
@@ -175,15 +199,27 @@ export default function InvoicesListPage() {
             <h1 className="text-3xl font-bold text-white tracking-tight">Invoices</h1>
             <div className="w-16 h-1 bg-gradient-to-r from-amber-500 to-amber-300 rounded-full mt-2" />
           </div>
-          <Link
-            href="/invoices/new"
-            className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-gray-950 px-5 py-2.5 rounded-xl font-semibold text-sm shadow-lg shadow-amber-500/20 transition-all duration-200 hover:shadow-xl hover:shadow-amber-500/30 hover:-translate-y-0.5 btn-press"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 4v16m8-8H4" />
-            </svg>
-            New Invoice
-          </Link>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={handleExportCsv}
+              disabled={exporting}
+              className="inline-flex items-center gap-2 border border-gray-700/50 hover:border-gray-600 text-gray-300 hover:text-white px-4 py-2.5 rounded-xl font-medium text-sm transition-all duration-200 hover:bg-white/5 disabled:opacity-50"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+              </svg>
+              {exporting ? "Exporting..." : "Download CSV"}
+            </button>
+            <Link
+              href="/invoices/new"
+              className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-gray-950 px-5 py-2.5 rounded-xl font-semibold text-sm shadow-lg shadow-amber-500/20 transition-all duration-200 hover:shadow-xl hover:shadow-amber-500/30 hover:-translate-y-0.5 btn-press"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 4v16m8-8H4" />
+              </svg>
+              New Invoice
+            </Link>
+          </div>
         </div>
         </FadeIn>
 
