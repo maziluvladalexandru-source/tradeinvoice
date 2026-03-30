@@ -99,9 +99,9 @@ function InvoiceMockup() {
         </div>
         <div className="space-y-3 mb-5">
           {[
-            { label: "Kitchen renovation", amount: "\u20AC2,400" },
-            { label: "Materials", amount: "\u20AC850" },
-            { label: "Plumbing work", amount: "\u20AC600" },
+            { label: "Kitchen renovation", amount: "€2,400" },
+            { label: "Materials", amount: "€850" },
+            { label: "Plumbing work", amount: "€600" },
           ].map((item, i) => (
             <motion.div
               key={item.label}
@@ -118,11 +118,11 @@ function InvoiceMockup() {
         <div className="border-t border-gray-700/50 pt-3">
           <div className="flex justify-between text-sm text-gray-500 mb-1">
             <span>Subtotal</span>
-            <span>\u20AC3,850</span>
+            <span>€3,850</span>
           </div>
           <div className="flex justify-between text-sm text-gray-500 mb-2">
             <span>VAT 21%</span>
-            <span>\u20AC808.50</span>
+            <span>€808.50</span>
           </div>
           <motion.div
             className="flex justify-between font-bold text-lg"
@@ -131,7 +131,7 @@ function InvoiceMockup() {
             transition={{ delay: 1 }}
           >
             <span className="text-amber-400">Total</span>
-            <span className="text-amber-400">\u20AC4,658.50</span>
+            <span className="text-amber-400">€4,658.50</span>
           </motion.div>
         </div>
       </motion.div>
@@ -322,7 +322,7 @@ export default function Home() {
         name: "What happens after my 20 free invoices?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "You can upgrade to Pro for \u20ac15/month for unlimited invoices. Or just wait. Your free plan resets every month, 20 fresh invoices, no cost, no expiry.",
+          text: "You can upgrade to Pro for €15/month for unlimited invoices. Or just wait. Your free plan resets every month, 20 fresh invoices, no cost, no expiry.",
         },
       },
     ],
@@ -758,7 +758,7 @@ export default function Home() {
                 </thead>
                 <tbody className="text-gray-300">
                   {[
-                    { label: "Price", us: "\u20AC15/mo", usColor: "text-amber-400 font-bold", c1: "From \u20AC40/mo", c2: "From \u20AC5.99/mo" },
+                    { label: "Price", us: "€15/mo", usColor: "text-amber-400 font-bold", c1: "From €40/mo", c2: "From €5.99/mo" },
                     { label: "Per-user fees", us: "check", c1: "cross", c2: "cross" },
                     { label: "Unlimited invoices", us: "check", c1: "cross", c2: "cross" },
                     { label: "Auto reminders", us: "check", c1: "check", c2: "cross" },
@@ -828,7 +828,7 @@ export default function Home() {
               { q: "Is my data safe?", a: "Yes. All data is encrypted and payments go through Stripe. We never see or store any card details." },
               { q: "Can I cancel anytime?", a: "Yes. No contracts, no cancellation fees. Downgrade to free or cancel from your settings whenever you want." },
               { q: "Do my clients need to sign up to pay?", a: "No. They get an email with a link. They click it, see the invoice, and pay. No account needed." },
-              { q: "What happens after my 20 free invoices?", a: "You can upgrade to Pro for \u20AC15/month for unlimited invoices. Or just wait. Your free plan resets every month, 20 fresh invoices, no cost, no expiry." },
+              { q: "What happens after my 20 free invoices?", a: "You can upgrade to Pro for €15/month for unlimited invoices. Or just wait. Your free plan resets every month, 20 fresh invoices, no cost, no expiry." },
             ].map((faq, i) => (
               <FadeIn key={faq.q} delay={i * 0.08}>
                 <details className="group bg-[#111827] border border-gray-700/50 rounded-xl hover:border-amber-500/30 transition-all duration-200">
