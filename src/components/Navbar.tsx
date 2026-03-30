@@ -13,7 +13,6 @@ export default function Navbar() {
   const links = [
     { href: "/dashboard", label: "Dashboard" },
     { href: "/invoices", label: "Invoices" },
-    { href: "/invoices/new", label: "New Invoice" },
     { href: "/clients", label: "Clients" },
     { href: "/expenses", label: "Expenses" },
     { href: "/time-tracking", label: "Time" },
@@ -69,12 +68,12 @@ export default function Navbar() {
               </svg>
               TradeInvoice
             </Link>
-            <div className="hidden md:flex items-center gap-1">
+            <div className="hidden md:flex items-center gap-0.5">
               {links.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                  className={`px-3 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-all duration-200 ${
                     pathname === link.href ||
                     (link.href !== "/dashboard" &&
                       link.href !== "/invoices" &&
@@ -86,12 +85,25 @@ export default function Navbar() {
                   {link.label}
                 </Link>
               ))}
+              <Link
+                href="/invoices/new"
+                className={`ml-1 px-2.5 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-all duration-200 ${
+                  pathname === "/invoices/new"
+                    ? "bg-amber-500 text-black shadow-sm shadow-amber-500/20"
+                    : "bg-amber-500/15 text-amber-400 hover:bg-amber-500/25"
+                }`}
+                title="New Invoice"
+              >
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="inline-block">
+                  <path d="M8 3v10M3 8h10" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                </svg>
+              </Link>
             </div>
           </div>
           <button
             onClick={handleLogout}
             disabled={loggingOut}
-            className="text-sm text-gray-400 hover:text-white px-4 py-1.5 rounded-full border border-white/10 hover:border-white/20 hover:bg-white/5 transition-all duration-200"
+            className="hidden md:block text-sm text-gray-500 hover:text-gray-300 transition-colors duration-200"
           >
             {loggingOut ? "Signing out..." : "Sign Out"}
           </button>
