@@ -7,7 +7,12 @@ import { rateLimit } from "@/lib/rate-limit";
 export async function GET() {
   try {
     const user = await requireUser();
-    return NextResponse.json(user);
+    // Omit sensitive fields from response
+    const fullUser = user as Record<string, unknown>;
+    const safeUser = Object.fromEntries(
+      Object.entries(fullUser).filter(([key]) => !["stripeCustomerId", "stripeSubscriptionId"].includes(key))
+    );
+    return NextResponse.json(safeUser);
   } catch (error) {
     if (error instanceof Error && error.message === "Unauthorized") {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

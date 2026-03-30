@@ -1,5 +1,6 @@
 import { Resend } from "resend";
 import { portalUrl } from "@/lib/portal";
+import { escapeHtml } from "@/lib/utils";
 
 function getResend() {
   return new Resend(process.env.RESEND_API_KEY);
@@ -33,7 +34,7 @@ function emailLayout(businessName: string, content: string, accentColor?: string
                           ${businessName.charAt(0).toUpperCase()}
                         </td>
                         <td style="padding-left: 14px;">
-                          <p style="margin: 0; font-size: 18px; font-weight: 800; color: #ffffff; letter-spacing: -0.01em;">${businessName}</p>
+                          <p style="margin: 0; font-size: 18px; font-weight: 800; color: #ffffff; letter-spacing: -0.01em;">${escapeHtml(businessName)}</p>
                         </td>
                       </tr>
                     </table>
@@ -111,9 +112,9 @@ export async function sendInvoiceEmail(
     to,
     subject: `Invoice ${invoiceNumber} — ${total} from ${from}`,
     html: emailLayout(from, `
-      <p style="margin: 0 0 8px; font-size: 16px; color: #d6d3d1; line-height: 1.5;">Hi ${clientName},</p>
+      <p style="margin: 0 0 8px; font-size: 16px; color: #d6d3d1; line-height: 1.5;">Hi ${escapeHtml(clientName)},</p>
       <p style="margin: 0 0 28px; font-size: 16px; color: #a8a29e; line-height: 1.5;">
-        You have received a new invoice from <strong style="color: #ffffff;">${from}</strong>.
+        You have received a new invoice from <strong style="color: #ffffff;">${escapeHtml(from)}</strong>.
       </p>
 
       <!-- Amount Highlight -->
@@ -133,7 +134,7 @@ export async function sendInvoiceEmail(
             <table role="presentation" cellpadding="0" cellspacing="0" style="width: 100%;">
               <tr>
                 <td style="font-size: 13px; color: #78716c; font-weight: 500;">Invoice Number</td>
-                <td style="text-align: right; font-size: 14px; font-weight: 700; color: #ffffff; font-family: 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace;">${invoiceNumber}</td>
+                <td style="text-align: right; font-size: 14px; font-weight: 700; color: #ffffff; font-family: 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace;">${escapeHtml(invoiceNumber)}</td>
               </tr>
             </table>
           </td>
@@ -143,7 +144,7 @@ export async function sendInvoiceEmail(
             <table role="presentation" cellpadding="0" cellspacing="0" style="width: 100%;">
               <tr>
                 <td style="font-size: 13px; color: #78716c; font-weight: 500;">Due Date</td>
-                <td style="text-align: right; font-size: 14px; font-weight: 700; color: #fbbf24;">${dueDate}</td>
+                <td style="text-align: right; font-size: 14px; font-weight: 700; color: #fbbf24;">${escapeHtml(dueDate)}</td>
               </tr>
             </table>
           </td>
@@ -153,7 +154,7 @@ export async function sendInvoiceEmail(
             <table role="presentation" cellpadding="0" cellspacing="0" style="width: 100%;">
               <tr>
                 <td style="font-size: 13px; color: #78716c; font-weight: 500;">From</td>
-                <td style="text-align: right; font-size: 14px; font-weight: 600; color: #d6d3d1;">${from}</td>
+                <td style="text-align: right; font-size: 14px; font-weight: 600; color: #d6d3d1;">${escapeHtml(from)}</td>
               </tr>
             </table>
           </td>
@@ -183,7 +184,7 @@ export async function sendInvoiceEmail(
       </p>
       ${portalLink ? `
       <p style="margin: 20px 0 0; padding-top: 16px; border-top: 1px solid #292524; font-size: 12px; color: #57534e; text-align: center;">
-        <a href="${portalLink}" style="color: #78716c; text-decoration: underline;">View all your invoices from ${from}</a>
+        <a href="${portalLink}" style="color: #78716c; text-decoration: underline;">View all your invoices from ${escapeHtml(from)}</a>
       </p>
       ` : ""}
     `),
@@ -217,7 +218,7 @@ export async function sendOverdueInvoiceEmail(
         </tr>
       </table>
 
-      <p style="margin: 0 0 8px; font-size: 16px; color: #d6d3d1; line-height: 1.5;">Hi ${clientName},</p>
+      <p style="margin: 0 0 8px; font-size: 16px; color: #d6d3d1; line-height: 1.5;">Hi ${escapeHtml(clientName)},</p>
       <p style="margin: 0 0 24px; font-size: 16px; color: #a8a29e; line-height: 1.5;">
         This is an urgent reminder that payment for the following invoice is now <strong style="color: #ef4444;">overdue</strong>. Please arrange payment at your earliest convenience to avoid any disruption.
       </p>
@@ -319,7 +320,7 @@ export async function sendInvoiceViewedNotification(
           <td style="text-align: center;">
             <h2 style="margin: 0 0 8px; font-size: 18px; font-weight: 700; color: #ffffff;">Invoice Viewed</h2>
             <p style="margin: 0 0 4px; font-size: 15px; color: #d6d3d1; line-height: 1.5;">
-              <strong style="color: #ffffff;">${clientName}</strong> has viewed invoice <strong style="font-family: monospace; color: #f59e0b;">${invoiceNumber}</strong>.
+              <strong style="color: #ffffff;">${escapeHtml(clientName)}</strong> has viewed invoice <strong style="font-family: monospace; color: #f59e0b;">${escapeHtml(invoiceNumber)}</strong>.
             </p>
             <p style="margin: 0 0 20px; font-size: 13px; color: #78716c;">Just now</p>
           </td>
@@ -368,7 +369,7 @@ export async function sendInvoicePaidNotification(
           <td style="text-align: center;">
             <h2 style="margin: 0 0 8px; font-size: 18px; font-weight: 700; color: #4ade80;">Payment Received!</h2>
             <p style="margin: 0; font-size: 15px; color: #d6d3d1; line-height: 1.5;">
-              <strong style="color: #ffffff;">${clientName}</strong> has paid invoice <strong style="font-family: monospace; color: #f59e0b;">${invoiceNumber}</strong>.
+              <strong style="color: #ffffff;">${escapeHtml(clientName)}</strong> has paid invoice <strong style="font-family: monospace; color: #f59e0b;">${escapeHtml(invoiceNumber)}</strong>.
             </p>
           </td>
         </tr>
@@ -390,7 +391,7 @@ export async function sendPaymentReminder(
     to,
     subject: `Payment Reminder: Invoice ${invoiceNumber} - ${daysMessage}`,
     html: emailLayout("TradeInvoice", `
-      <p style="margin: 0 0 20px; font-size: 16px; color: #d6d3d1; line-height: 1.5;">Hi ${clientName},</p>
+      <p style="margin: 0 0 20px; font-size: 16px; color: #d6d3d1; line-height: 1.5;">Hi ${escapeHtml(clientName)},</p>
       <p style="margin: 0 0 24px; font-size: 16px; color: #a8a29e; line-height: 1.5;">This is a friendly reminder about an outstanding invoice.</p>
 
       <!-- Reminder Card -->

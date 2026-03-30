@@ -10,6 +10,7 @@ const publicPaths = [
   "/api/stripe/webhook",
   "/api/cron/reminders",
   "/api/cron/recurring",
+  "/api/cron/scheduled",
 ];
 
 export function middleware(req: NextRequest) {
@@ -65,11 +66,10 @@ export function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
-  // Allow static files and API PDF routes
+  // Allow static files
   if (
     pathname.startsWith("/_next") ||
-    pathname.startsWith("/favicon") ||
-    pathname.includes("/pdf")
+    pathname.startsWith("/favicon")
   ) {
     return NextResponse.next();
   }

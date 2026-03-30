@@ -21,7 +21,7 @@ export async function GET(req: NextRequest) {
     // Check if the current user is logged in
     const user = await getCurrentUser();
 
-    if (user) {
+    if (user && user.email === member.email) {
       // Link the current user as the team member
       await prisma.teamMember.update({
         where: { id: member.id },
@@ -34,7 +34,12 @@ export async function GET(req: NextRequest) {
       return NextResponse.redirect(new URL("/dashboard", req.url));
     }
 
-    // Not logged in — redirect to login with the invite email pre-filled
+    if (user && user.email !== member.email) {
+      // Wrong account logged in - redirect to login with correct email
+      return NextResponse.redirect(new URL(`/auth/login?email=${encodeURIComponent(member.email)}&invite=${token}&error=wrong-account`, req.url));
+    }
+
+    // Not logged in - redirect to login with the invite email pre-filled
     return NextResponse.redirect(new URL(`/auth/login?email=${encodeURIComponent(member.email)}&invite=${token}`, req.url));
   } catch (error) {
     console.error("Accept invite error:", error);

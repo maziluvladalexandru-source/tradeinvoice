@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { requireUser } from "@/lib/auth";
 import { formatCurrency, formatDate } from "@/lib/utils";
 import { getCountryConfig, formatComplianceFooter } from "@/lib/country-config";
 
@@ -150,8 +151,9 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
-  const invoice = await prisma.invoice.findUnique({
-    where: { id: params.id },
+  const user = await requireUser();
+  const invoice = await prisma.invoice.findFirst({
+    where: { id: params.id, userId: user.id },
     include: { client: true, lineItems: true, user: true },
   });
 

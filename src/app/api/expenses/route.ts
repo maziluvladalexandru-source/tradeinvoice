@@ -71,6 +71,10 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Receipt upload requires a Pro plan" }, { status: 403 });
     }
 
+    // Validate receipt is an image data URI
+    if (receiptUrl && typeof receiptUrl === "string" && !receiptUrl.startsWith("data:image/")) {
+      return NextResponse.json({ error: "Receipt must be an image" }, { status: 400 });
+    }
     // Validate receipt size (base64 ~1.37x original, so 5MB file ≈ 6.85MB base64)
     if (receiptUrl && receiptUrl.length > 7 * 1024 * 1024) {
       return NextResponse.json({ error: "Receipt image too large. Maximum 5MB." }, { status: 400 });

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import Navbar from "@/components/Navbar";
+
 import { articles, getArticleBySlug } from "../articles";
 
 interface Props {
@@ -262,7 +262,6 @@ export default function ArticlePage({ params }: Props) {
 
   return (
     <div className="min-h-screen bg-[#0a0f1e] text-white premium-glow">
-      <Navbar />
 
       <script
         type="application/ld+json"

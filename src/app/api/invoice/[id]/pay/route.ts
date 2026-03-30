@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { getStripeClient } from "@/lib/stripe";
 import { logSecurityEvent } from "@/lib/security-log";
 import { appUrl } from "@/lib/utils";
+import { verifyPortalToken } from "@/lib/portal";
 
 // Simple in-memory rate limit: max 3 payment link creations per invoice per hour
 const payRateLimit = new Map<string, number[]>();
@@ -29,6 +30,12 @@ export async function POST(
 
     if (!invoice) {
       return NextResponse.json({ error: "Invoice not found" }, { status: 404 });
+    }
+
+    // Verify portal token for unauthenticated access
+    const token = request.nextUrl.searchParams.get("token");
+    if (!token || !verifyPortalToken(invoice.clientId, token)) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     if (invoice.status === "paid") {

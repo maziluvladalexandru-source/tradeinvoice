@@ -280,7 +280,7 @@ export default function DashboardPage() {
           </FadeIn>
 
           {/* ROW 2 -- Secondary Stats */}
-          <StaggerChildren staggerDelay={0.1} delay={0.2} className="grid grid-cols-3 gap-3 md:gap-4 mb-6">
+          <StaggerChildren staggerDelay={0.1} delay={0.2} className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 mb-6">
             {[
               { label: "Overdue", value: stats.overdueCount, color: stats.overdueCount > 0 ? "text-red-400" : "text-gray-600", border: stats.overdueCount > 0 ? "border-t-red-500" : "border-t-gray-700/30", hover: "hover:border-red-500/30", hasAlert: stats.overdueCount > 0 },
               { label: "Avg. Days to Pay", value: stats.avgDaysToPayment, color: "text-blue-400", border: "border-t-blue-500/40", hover: "hover:border-blue-500/30" },

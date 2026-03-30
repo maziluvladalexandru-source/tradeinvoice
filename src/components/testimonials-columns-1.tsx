@@ -1,13 +1,13 @@
-/* eslint-disable @typescript-eslint/no-unused-vars, @next/next/no-img-element */
+/* eslint-disable @next/next/no-img-element */
 "use client";
 import React from "react";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 
-const testimonials: Array<{ text: string; image: string; name: string; role: string }> = [];
+type Testimonial = { text: string; image: string; name: string; role: string };
 
 export const TestimonialsColumn = (props: {
   className?: string;
-  testimonials: typeof testimonials;
+  testimonials: Testimonial[];
   duration?: number;
 }) => {
   return (

@@ -33,6 +33,14 @@ export const VALID_CURRENCIES = ["EUR", "GBP", "USD"] as const;
 
 export const VALID_INVOICE_STATUSES = ["draft", "sent", "paid", "overdue", "cancelled"] as const;
 
+export function escapeHtml(text: string): string {
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
 export function formatDate(date: Date | string, locale: string = "en-GB"): string {
   const d = typeof date === "string" ? new Date(date) : date;
   return d.toLocaleDateString(locale, { day: "numeric", month: "long", year: "numeric" });

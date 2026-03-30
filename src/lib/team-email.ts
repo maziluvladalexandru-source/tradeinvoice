@@ -8,6 +8,14 @@ function getFromEmail() {
   return process.env.FROM_EMAIL || "TradeInvoice <noreply@tradeinvoice.app>";
 }
 
+function escapeHtml(text: string): string {
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
 export async function sendTeamInviteEmail(to: string, businessName: string, acceptUrl: string) {
   await getResend().emails.send({
     from: getFromEmail(),
@@ -29,7 +37,7 @@ export async function sendTeamInviteEmail(to: string, businessName: string, acce
                   <td style="padding: 36px 36px 32px;">
                     <p style="margin: 0 0 8px; font-size: 18px; font-weight: 700; color: #ffffff;">Team Invitation</p>
                     <p style="margin: 0 0 24px; font-size: 16px; color: #a8a29e; line-height: 1.5;">
-                      <strong style="color: #ffffff;">${businessName}</strong> has invited you to join their team on TradeInvoice.
+                      <strong style="color: #ffffff;">${escapeHtml(businessName)}</strong> has invited you to join their team on TradeInvoice.
                     </p>
                     <p style="margin: 0 0 24px; font-size: 14px; color: #78716c; line-height: 1.5;">
                       As a team member, you can create invoices, view clients, and log time and expenses.

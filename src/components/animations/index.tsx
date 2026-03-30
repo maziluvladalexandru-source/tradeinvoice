@@ -251,11 +251,14 @@ export function FloatingOrb({
   return (
     <motion.div
       className={`absolute rounded-full blur-[128px] pointer-events-none ${colors[color]} ${sizes[size]} ${className}`}
-      animate={{
+      initial={{ opacity: 0 }}
+      whileInView={{
+        opacity: 1,
         x: [0, 30, -20, 0],
         y: [0, -40, 20, 0],
         scale: [1, 1.1, 0.95, 1],
       }}
+      viewport={{ once: false, amount: 0.1 }}
       transition={{
         duration: 12 + delay * 2,
         repeat: Infinity,

@@ -40,6 +40,9 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
       if (body.receiptUrl && user.plan !== "pro") {
         return NextResponse.json({ error: "Receipt upload requires a Pro plan" }, { status: 403 });
       }
+      if (body.receiptUrl && typeof body.receiptUrl === "string" && !body.receiptUrl.startsWith("data:image/")) {
+        return NextResponse.json({ error: "Receipt must be an image" }, { status: 400 });
+      }
       if (body.receiptUrl && body.receiptUrl.length > 7 * 1024 * 1024) {
         return NextResponse.json({ error: "Receipt image too large. Maximum 5MB." }, { status: 400 });
       }

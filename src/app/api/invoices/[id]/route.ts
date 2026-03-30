@@ -88,7 +88,13 @@ export async function PATCH(
       if (body.invoiceNumber) data.invoiceNumber = body.invoiceNumber;
       if (body.dueDate) data.dueDate = new Date(body.dueDate);
       if (body.serviceDate !== undefined) data.serviceDate = body.serviceDate ? new Date(body.serviceDate) : null;
-      if (body.currency) data.currency = body.currency;
+      if (body.currency) {
+        const { VALID_CURRENCIES } = await import("@/lib/utils");
+        if (!VALID_CURRENCIES.includes(body.currency)) {
+          return NextResponse.json({ error: "Invalid currency" }, { status: 400 });
+        }
+        data.currency = body.currency;
+      }
       if (body.taxRate !== undefined) {
         const tr = Number(body.taxRate);
         if (!isNaN(tr) && tr >= 0 && tr <= 100) data.taxRate = tr;
@@ -96,7 +102,13 @@ export async function PATCH(
       if (body.reverseCharge !== undefined) data.reverseCharge = !!body.reverseCharge;
       if (body.invoiceCountry) data.invoiceCountry = body.invoiceCountry;
       if (body.language) data.language = body.language;
-      if (body.invoiceTheme) data.invoiceTheme = body.invoiceTheme;
+      if (body.invoiceTheme) {
+        const validThemes = ["classic", "modern", "minimal"];
+        if (!validThemes.includes(body.invoiceTheme)) {
+          return NextResponse.json({ error: "Invalid invoice theme" }, { status: 400 });
+        }
+        data.invoiceTheme = body.invoiceTheme;
+      }
       if (body.isRecurring !== undefined) data.isRecurring = !!body.isRecurring;
       if (body.recurringInterval !== undefined) data.recurringInterval = body.recurringInterval || null;
       if (body.referenceInvoice !== undefined) data.referenceInvoice = body.referenceInvoice || null;

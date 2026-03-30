@@ -1,9 +1,13 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 
-function FloatingPaths({ position }: { position: number }) {
-    const paths = Array.from({ length: 12 }, (_, i) => ({
+// Pre-computed path configs outside component to prevent re-creation on every render
+const PATH_COUNT = 8; // Reduced from 12
+
+function generatePaths(position: number) {
+    return Array.from({ length: PATH_COUNT }, (_, i) => ({
         id: i,
         d: `M-${380 - i * 5 * position} -${189 + i * 6}C-${
             380 - i * 5 * position
@@ -14,8 +18,14 @@ function FloatingPaths({ position }: { position: number }) {
         } ${875 - i * 6} ${684 - i * 5 * position} ${875 - i * 6}`,
         color: `rgba(15,23,42,${0.1 + i * 0.03})`,
         width: 0.5 + i * 0.03,
+        duration: 20 + i * 3, // Deterministic, not Math.random()
     }));
+}
 
+const pathsPositive = generatePaths(1);
+const pathsNegative = generatePaths(-1);
+
+function FloatingPaths({ paths }: { paths: ReturnType<typeof generatePaths> }) {
     return (
         <div className="absolute inset-0 pointer-events-none">
             <svg
@@ -38,7 +48,7 @@ function FloatingPaths({ position }: { position: number }) {
                             pathOffset: [0, 1, 0],
                         }}
                         transition={{
-                            duration: 20 + Math.random() * 10,
+                            duration: path.duration,
                             repeat: Number.POSITIVE_INFINITY,
                             ease: "linear",
                         }}
@@ -50,10 +60,21 @@ function FloatingPaths({ position }: { position: number }) {
 }
 
 export function BackgroundPaths() {
+    const [shouldAnimate, setShouldAnimate] = useState(false);
+
+    useEffect(() => {
+        const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        if (!prefersReduced) {
+            setShouldAnimate(true);
+        }
+    }, []);
+
+    if (!shouldAnimate) return null;
+
     return (
         <div className="absolute inset-0 w-full h-full overflow-hidden">
-            <FloatingPaths position={1} />
-            <FloatingPaths position={-1} />
+            <FloatingPaths paths={pathsPositive} />
+            <FloatingPaths paths={pathsNegative} />
         </div>
     );
 }
