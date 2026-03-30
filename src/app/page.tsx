@@ -15,12 +15,11 @@ import {
 import { BackgroundPaths } from "@/components/ui/background-paths";
 import { BentoGrid } from "@/components/ui/bento-grid";
 import type { BentoItem } from "@/components/ui/bento-grid";
-import { CreativePricing } from "@/components/ui/creative-pricing";
 // GradientText available from "@/components/ui/gradient-text" if needed
 import AnimatedTextCycle from "@/components/ui/animated-text-cycle";
 import { GlowCard as SpotlightCard } from "@/components/spotlight-card";
 import { TestimonialsColumn } from "@/components/testimonials-columns-1";
-import { FileText, Bell, Globe, Clock, Receipt, BarChart3, Zap, Star, Sparkles } from "lucide-react";
+import { FileText, Bell, Globe, Clock, Receipt, BarChart3 } from "lucide-react";
 
 /* ------------------------------------------------------------------ */
 /*  SVG Flag components                                                */
@@ -237,48 +236,39 @@ const featureItems: BentoItem[] = [
 /* ------------------------------------------------------------------ */
 /*  Pricing tiers                                                      */
 /* ------------------------------------------------------------------ */
-const pricingTiers = [
+const pricingPlans = [
   {
     name: "Free",
-    icon: <Zap className="w-6 h-6" />,
-    price: 0,
-    description: "Perfect for getting started",
+    price: "€0",
+    period: "forever",
+    description: "Get started with no commitment",
     features: [
       "20 invoices per month",
       "Payment reminders",
-      "Professional PDFs",
+      "Professional PDF invoices",
       "Client management",
+      "Expense tracking",
+      "Time tracking",
     ],
-    color: "emerald",
+    cta: "Start Free",
+    popular: false,
   },
   {
     name: "Pro",
-    icon: <Star className="w-6 h-6" />,
-    price: 15,
+    price: "€15",
+    period: "/month",
     description: "For full-time tradespeople",
     features: [
       "Unlimited invoices",
+      "Everything in Free",
       "Multi-language support",
       "Partial payment tracking",
       "Priority email support",
       "Financial reports",
+      "Invoice themes",
     ],
+    cta: "Upgrade to Pro",
     popular: true,
-    color: "amber",
-  },
-  {
-    name: "Business",
-    icon: <Sparkles className="w-6 h-6" />,
-    price: 29,
-    description: "For growing teams",
-    features: [
-      "Everything in Pro",
-      "Multiple team members",
-      "Team management",
-      "API access",
-      "Custom branding",
-    ],
-    color: "blue",
   },
 ];
 
@@ -669,23 +659,69 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══════════════ 7. PRICING (CreativePricing) ═══════════════ */}
+      {/* ═══════════════ 7. PRICING ═══════════════ */}
       <section
         id="pricing"
         className="py-20 sm:py-28 border-t border-gray-700/20 relative bg-[#0a0f1e]"
       >
-        <FloatingOrb color="amber" size="md" className="top-20 right-[10%]" delay={2} />
-        <FloatingOrb color="purple" size="sm" className="bottom-20 left-[10%]" delay={5} />
-
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 relative z-10">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 relative z-10">
           <ScrollReveal>
-            <CreativePricing
-              tag="Simple Pricing"
-              title="Honest, Flat Pricing"
-              description="No surprises. No per-user fees. Ever."
-              tiers={pricingTiers}
-            />
+            <div className="text-center mb-14">
+              <span className="inline-block bg-amber-500/10 border border-amber-500/30 text-amber-400 text-sm font-semibold px-4 py-1.5 rounded-full mb-4">
+                PRICING
+              </span>
+              <h2 className="text-3xl sm:text-4xl font-bold text-white mb-3">
+                Honest, flat pricing
+              </h2>
+              <p className="text-gray-400 max-w-lg mx-auto">
+                No surprises. No per-user fees. Cancel anytime.
+              </p>
+            </div>
           </ScrollReveal>
+
+          <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+            {pricingPlans.map((plan, i) => (
+              <FadeIn key={plan.name} delay={i * 0.15}>
+                <div className={`relative rounded-2xl p-8 h-full ${
+                  plan.popular
+                    ? "bg-gradient-to-b from-amber-500/10 to-[#111827] border-2 border-amber-500/40"
+                    : "bg-[#111827] border border-gray-700/50"
+                }`}>
+                  {plan.popular && (
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-amber-500 text-gray-950 text-xs font-bold px-4 py-1 rounded-full">
+                      MOST POPULAR
+                    </div>
+                  )}
+                  <h3 className="text-xl font-bold text-white mb-1">{plan.name}</h3>
+                  <p className="text-gray-400 text-sm mb-6">{plan.description}</p>
+                  <div className="flex items-baseline gap-1 mb-8">
+                    <span className="text-4xl font-extrabold text-white">{plan.price}</span>
+                    <span className="text-gray-500 text-sm">{plan.period}</span>
+                  </div>
+                  <ul className="space-y-3 mb-8">
+                    {plan.features.map((feature) => (
+                      <li key={feature} className="flex items-center gap-3 text-sm text-gray-300">
+                        <svg className="w-4 h-4 text-amber-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                        </svg>
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+                  <Link
+                    href="/auth/login"
+                    className={`block w-full text-center py-3 rounded-xl font-semibold text-sm transition-all ${
+                      plan.popular
+                        ? "bg-gradient-to-r from-amber-500 to-amber-400 text-gray-950 hover:from-amber-400 hover:to-amber-300 shadow-lg shadow-amber-500/20"
+                        : "bg-white/5 border border-gray-700/50 text-white hover:bg-white/10"
+                    }`}
+                  >
+                    {plan.cta}
+                  </Link>
+                </div>
+              </FadeIn>
+            ))}
+          </div>
         </div>
       </section>
 
