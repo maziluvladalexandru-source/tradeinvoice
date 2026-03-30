@@ -55,5 +55,21 @@ export async function GET(req: NextRequest) {
     }
   }
 
-  return NextResponse.json({ success: true, results });
+  // Cleanup: delete stale sessions (keep 5 most recent per user)
+  let sessionsDeleted = 0;
+  try {
+    const users = await prisma.user.findMany({ select: { id: true } });
+    for (const u of users) {
+      const sessions = await prisma.session.findMany({ where: { userId: u.id }, orderBy: { expiresAt: "desc" }, select: { id: true } });
+      if (sessions.length > 5) {
+        const toDelete = sessions.slice(5).map(s => s.id);
+        await prisma.session.deleteMany({ where: { id: { in: toDelete } } });
+        sessionsDeleted += toDelete.length;
+      }
+    }
+  } catch (e) {
+    console.error("Session cleanup error:", e);
+  }
+
+  return NextResponse.json({ success: true, results, sessionsDeleted });
 }
