@@ -605,7 +605,7 @@ export default function ExpensesPage() {
                             {form.receiptUrl ? "Change Receipt" : "Upload Receipt"}
                             <input
                               type="file"
-                              accept="image/*"
+                              accept="image/jpeg,image/png,image/webp,image/heic"
                               capture="environment"
                               onChange={handleReceiptUpload}
                               className="hidden"
@@ -613,6 +613,18 @@ export default function ExpensesPage() {
                           </label>
                           {form.receiptUrl && (
                             <div className="flex items-center gap-2">
+                              <button
+                                type="button"
+                                onClick={() => setViewingReceipt(form.receiptUrl)}
+                                className="relative group"
+                              >
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                <img
+                                  src={form.receiptUrl}
+                                  alt="Receipt preview"
+                                  className="w-10 h-10 rounded-lg border border-white/10 object-cover group-hover:border-amber-500/50 transition-colors"
+                                />
+                              </button>
                               <span className="text-sm text-green-400">Receipt attached</span>
                               <button
                                 type="button"
