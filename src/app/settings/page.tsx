@@ -35,6 +35,7 @@ interface User {
   defaultCountry: string | null;
   defaultLanguage: string | null;
   invoiceNumberPrefix: string | null;
+  invoiceFormat: string | null;
   notifyOnView: boolean | null;
   notifyOnPay: boolean | null;
   notifyReminders: boolean | null;
@@ -162,6 +163,8 @@ function SettingsContent() {
   const [defaultCountry, setDefaultCountry] = useState("NL");
   const [defaultLanguage, setDefaultLanguage] = useState("en");
   const [invoiceNumberPrefix, setInvoiceNumberPrefix] = useState("INV");
+  const [invoiceFormat, setInvoiceFormat] = useState("PREFIX-NUMBER");
+  const [nextInvoiceNumber, setNextInvoiceNumber] = useState("");
 
   // Notification preferences
   const [notifyOnView, setNotifyOnView] = useState(true);
@@ -269,6 +272,7 @@ function SettingsContent() {
         setDefaultCountry(u.defaultCountry || "NL");
         setDefaultLanguage(u.defaultLanguage || "en");
         setInvoiceNumberPrefix(u.invoiceNumberPrefix || "INV");
+        setInvoiceFormat(u.invoiceFormat || "PREFIX-NUMBER");
         setNotifyOnView(u.notifyOnView ?? true);
         setNotifyOnPay(u.notifyOnPay ?? true);
         setNotifyReminders(u.notifyReminders ?? false);
@@ -284,6 +288,14 @@ function SettingsContent() {
       .catch(() => router.push("/auth/login"))
       .finally(() => setLoading(false));
   }, [router]);
+
+  useEffect(() => {
+    if (!user) return;
+    fetch("/api/invoices/next-number")
+      .then((r) => r.json())
+      .then((data) => setNextInvoiceNumber(data.nextNumber || ""))
+      .catch(() => {});
+  }, [user]);
 
   useEffect(() => {
     if (user?.plan === "pro") {
@@ -348,7 +360,7 @@ function SettingsContent() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         name, businessName, businessAddress, businessPhone, kvkNumber, vatNumber, bankDetails,
-        defaultPaymentTerms, defaultTaxRate, defaultCurrency, defaultCountry, defaultLanguage, invoiceNumberPrefix,
+        defaultPaymentTerms, defaultTaxRate, defaultCurrency, defaultCountry, defaultLanguage, invoiceNumberPrefix, invoiceFormat,
         notifyOnView, notifyOnPay, notifyReminders,
         emailInvoiceSubject, emailInvoiceMessage, emailReminderSubject, emailReminderMessage,
         reminderFirstDays, reminderSecondDays, reminderOverdueDays, remindersEnabled,
@@ -813,7 +825,35 @@ function SettingsContent() {
                       maxLength={10}
                       className="w-full px-4 py-3 rounded-xl border border-white/10 text-lg focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 outline-none bg-white/5 text-white placeholder-gray-500 transition-all font-mono"
                     />
-                    <p className="text-xs text-gray-500 mt-1">Invoices will be numbered {invoiceNumberPrefix || "INV"}-0001, {invoiceNumberPrefix || "INV"}-0002, etc.</p>
+                    <p className="text-xs text-gray-500 mt-1">Prefix used in invoice numbers (e.g. INV, PROJ, FA)</p>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-400 mb-1">
+                      Invoice Number Format
+                    </label>
+                    <select
+                      value={invoiceFormat}
+                      onChange={(e) => setInvoiceFormat(e.target.value)}
+                      className="w-full px-4 py-3 rounded-xl border border-white/10 text-lg focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 outline-none bg-white/5 text-white transition-all"
+                    >
+                      <option className="bg-[#111827] text-white" value="PREFIX-NUMBER">PREFIX-NUMBER ({invoiceNumberPrefix || "INV"}-0001)</option>
+                      <option className="bg-[#111827] text-white" value="PREFIX-YEAR-NUMBER">PREFIX-YEAR-NUMBER ({invoiceNumberPrefix || "INV"}-{new Date().getFullYear()}-0001)</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-400 mb-1">
+                      Next Invoice Number
+                    </label>
+                    <input
+                      value={nextInvoiceNumber}
+                      readOnly
+                      className="w-full px-4 py-3 rounded-xl border border-white/10 text-lg outline-none bg-white/5 text-gray-400 font-mono cursor-default"
+                    />
+                    <p className="text-xs text-gray-500 mt-1">Auto-generated based on your prefix and format. Save settings to apply changes.</p>
                   </div>
                 </div>
               </div>

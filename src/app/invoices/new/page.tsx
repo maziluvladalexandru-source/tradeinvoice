@@ -34,6 +34,7 @@ interface UserProfile {
   defaultCountry: string | null;
   defaultLanguage: string | null;
   invoiceNumberPrefix: string | null;
+  invoiceFormat: string | null;
 }
 
 interface LineItem {

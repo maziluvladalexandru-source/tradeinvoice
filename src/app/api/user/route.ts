@@ -32,7 +32,7 @@ export async function PATCH(req: NextRequest) {
 
     const {
       name, businessName, businessAddress, businessPhone, kvkNumber, vatNumber, bankDetails, logoUrl,
-      defaultPaymentTerms, defaultTaxRate, defaultCurrency, defaultCountry, defaultLanguage, invoiceNumberPrefix,
+      defaultPaymentTerms, defaultTaxRate, defaultCurrency, defaultCountry, defaultLanguage, invoiceNumberPrefix, invoiceFormat,
       notifyOnView, notifyOnPay, notifyReminders,
       emailInvoiceSubject, emailInvoiceMessage, emailReminderSubject, emailReminderMessage,
       reminderFirstDays, reminderSecondDays, reminderOverdueDays, remindersEnabled,
@@ -70,6 +70,7 @@ export async function PATCH(req: NextRequest) {
         ...(defaultCountry !== undefined ? { defaultCountry: sanitizeString(defaultCountry, 10) } : {}),
         ...(defaultLanguage !== undefined ? { defaultLanguage: sanitizeString(defaultLanguage, 10) } : {}),
         ...(invoiceNumberPrefix !== undefined ? { invoiceNumberPrefix: invoiceNumberPrefix ? sanitizeString(invoiceNumberPrefix, 20) : null } : {}),
+        ...(invoiceFormat !== undefined ? { invoiceFormat: invoiceFormat === "PREFIX-YEAR-NUMBER" ? "PREFIX-YEAR-NUMBER" : "PREFIX-NUMBER" } : {}),
         ...(notifyOnView !== undefined ? { notifyOnView: !!notifyOnView } : {}),
         ...(notifyOnPay !== undefined ? { notifyOnPay: !!notifyOnPay } : {}),
         ...(notifyReminders !== undefined ? { notifyReminders: !!notifyReminders } : {}),

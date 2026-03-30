@@ -27,6 +27,7 @@ model User {
   defaultCountry       String? @default("NL")
   defaultLanguage      String? @default("en")
   invoiceNumberPrefix  String? @default("INV")
+  invoiceFormat        String? @default("PREFIX-NUMBER")
 
   // Notification preferences
   notifyOnView    Boolean? @default(true)
