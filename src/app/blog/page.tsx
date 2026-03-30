@@ -4,6 +4,7 @@ import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import { articles } from "./articles";
 import { FadeIn, StaggerChildren, StaggerItem } from "@/components/animations";
+import { GlowCard as SpotlightCard } from "@/components/spotlight-card";
 
 export default function BlogIndex() {
   return (
@@ -48,31 +49,32 @@ export default function BlogIndex() {
         <StaggerChildren className="space-y-6" delay={0.2}>
           {articles.map((article) => (
             <StaggerItem key={article.slug}>
-            <Link
-              href={`/blog/${article.slug}`}
-              className="block group bg-[#111827] border border-gray-700/50 rounded-2xl p-6 md:p-8 hover:border-amber-500/30 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-200"
-            >
-              <div className="flex items-center gap-3 text-sm text-gray-500 mb-3">
-                <time dateTime={article.date}>
-                  {new Date(article.date).toLocaleDateString("en-GB", {
-                    day: "numeric",
-                    month: "long",
-                    year: "numeric",
-                  })}
-                </time>
-                <span className="text-gray-600">·</span>
-                <span>{article.readTime}</span>
-              </div>
-              <h2 className="text-xl md:text-2xl font-bold mb-2 text-white group-hover:text-amber-400 transition-colors duration-200">
-                {article.title}
-              </h2>
-              <p className="text-gray-400 leading-relaxed">{article.excerpt}</p>
-              <div className="mt-4 text-amber-400 text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center gap-1">
-                Read article
-                <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                </svg>
-              </div>
+            <Link href={`/blog/${article.slug}`} className="block group">
+              <SpotlightCard glowColor="orange" customSize className="!w-full !aspect-auto rounded-2xl">
+                <div className="p-6 md:p-8">
+                  <div className="flex items-center gap-3 text-sm text-gray-500 mb-3">
+                    <time dateTime={article.date}>
+                      {new Date(article.date).toLocaleDateString("en-GB", {
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric",
+                      })}
+                    </time>
+                    <span className="text-gray-600">·</span>
+                    <span>{article.readTime}</span>
+                  </div>
+                  <h2 className="text-xl md:text-2xl font-bold mb-2 text-white group-hover:text-amber-400 transition-colors duration-200">
+                    {article.title}
+                  </h2>
+                  <p className="text-gray-400 leading-relaxed">{article.excerpt}</p>
+                  <div className="mt-4 text-amber-400 text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center gap-1">
+                    Read article
+                    <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                    </svg>
+                  </div>
+                </div>
+              </SpotlightCard>
             </Link>
             </StaggerItem>
           ))}

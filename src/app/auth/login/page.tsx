@@ -3,7 +3,9 @@
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { motion, FloatingOrb } from "@/components/animations";
+import { motion } from "@/components/animations";
+import { BackgroundPaths } from "@/components/ui/background-paths";
+import { GradientText } from "@/components/ui/gradient-text";
 
 declare global {
   interface Window {
@@ -70,9 +72,11 @@ function LoginContent() {
 
   if (sent) {
     return (
-      <div className="min-h-screen bg-[#0a0f1e] flex items-center justify-center px-4 gradient-mesh relative overflow-hidden">
-        <FloatingOrb color="amber" size="lg" className="top-1/4 left-1/4" delay={0} />
-        <FloatingOrb color="blue" size="md" className="bottom-1/3 right-1/4" delay={3} />
+      <div className="min-h-screen bg-[#0a0f1e] flex items-center justify-center px-4 relative overflow-hidden">
+        {/* BackgroundPaths as animated background */}
+        <div className="absolute inset-0 z-0 [&>div]:!bg-[#0a0f1e]">
+          <BackgroundPaths title=" " />
+        </div>
 
         <motion.div
           className="max-w-md w-full text-center relative z-10"
@@ -122,11 +126,11 @@ function LoginContent() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0f1e] flex items-center justify-center px-4 gradient-mesh relative overflow-hidden">
-      {/* Animated floating orbs */}
-      <FloatingOrb color="amber" size="lg" className="top-1/4 left-[15%]" delay={0} />
-      <FloatingOrb color="blue" size="md" className="bottom-1/4 right-[20%]" delay={3} />
-      <FloatingOrb color="purple" size="sm" className="top-[60%] left-[60%]" delay={6} />
+    <div className="min-h-screen bg-[#0a0f1e] flex items-center justify-center px-4 relative overflow-hidden">
+      {/* BackgroundPaths as animated background */}
+      <div className="absolute inset-0 z-0 [&>div]:!bg-[#0a0f1e]">
+        <BackgroundPaths title=" " />
+      </div>
 
       <motion.div
         className="max-w-md w-full relative z-10"
@@ -140,7 +144,14 @@ function LoginContent() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
         >
-          <Link href="/" className="text-2xl font-bold text-amber-400 hover:text-amber-300 transition-colors">TradeInvoice</Link>
+          <Link href="/" className="inline-block">
+            <GradientText
+              as="span"
+              className="text-3xl font-bold !bg-[#0a0f1e] tracking-tight"
+            >
+              TradeInvoice
+            </GradientText>
+          </Link>
           <p className="text-gray-400 mt-2">Sign in to your account</p>
         </motion.div>
 

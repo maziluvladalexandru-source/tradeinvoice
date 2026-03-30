@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { PageTransition, FadeIn, StaggerChildren, StaggerItem } from "@/components/animations";
+import { GradientText } from "@/components/ui/gradient-text";
+import { GlowCard as SpotlightCard } from "@/components/spotlight-card";
 
 export default function ContactPage() {
   return (
@@ -27,16 +29,20 @@ export default function ContactPage() {
           <div className="inline-block bg-amber-500/10 border border-amber-500/30 text-amber-400 text-sm font-semibold px-4 py-1.5 rounded-full mb-6">
             Get in Touch
           </div>
-          <h1 className="text-3xl md:text-4xl font-extrabold text-white mb-3">Contact Us</h1>
+          <h1 className="text-3xl md:text-4xl font-extrabold text-white mb-3">
+            <GradientText as="span" className="!bg-[#0a0f1e] text-3xl md:text-4xl font-extrabold">
+              Contact Us
+            </GradientText>
+          </h1>
           <p className="text-gray-400 text-lg">We are here to help.</p>
         </div>
         </FadeIn>
 
         <StaggerChildren className="space-y-6">
           <StaggerItem>
-          <section className="bg-[#111827] border border-gray-700/50 rounded-2xl p-6 hover:border-amber-500/30 transition-all duration-200 group">
-            <div className="flex items-start gap-4">
-              <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center shrink-0 group-hover:bg-amber-500/20 transition-colors">
+          <SpotlightCard glowColor="orange" customSize className="!w-full !aspect-auto rounded-2xl">
+            <div className="p-6 flex items-start gap-4">
+              <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center shrink-0">
                 <svg className="w-5 h-5 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
                 </svg>
@@ -54,13 +60,13 @@ export default function ContactPage() {
                 </p>
               </div>
             </div>
-          </section>
+          </SpotlightCard>
           </StaggerItem>
 
           <StaggerItem>
-          <section className="bg-[#111827] border border-gray-700/50 rounded-2xl p-6 hover:border-amber-500/30 transition-all duration-200 group">
-            <div className="flex items-start gap-4">
-              <div className="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center shrink-0 group-hover:bg-blue-500/20 transition-colors">
+          <SpotlightCard glowColor="blue" customSize className="!w-full !aspect-auto rounded-2xl">
+            <div className="p-6 flex items-start gap-4">
+              <div className="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center shrink-0">
                 <svg className="w-5 h-5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
@@ -72,13 +78,13 @@ export default function ContactPage() {
                 </p>
               </div>
             </div>
-          </section>
+          </SpotlightCard>
           </StaggerItem>
 
           <StaggerItem>
-          <section className="bg-[#111827] border border-gray-700/50 rounded-2xl p-6 hover:border-amber-500/30 transition-all duration-200 group">
-            <div className="flex items-start gap-4">
-              <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center shrink-0 group-hover:bg-emerald-500/20 transition-colors">
+          <SpotlightCard glowColor="green" customSize className="!w-full !aspect-auto rounded-2xl">
+            <div className="p-6 flex items-start gap-4">
+              <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center shrink-0">
                 <svg className="w-5 h-5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
                 </svg>
@@ -102,13 +108,13 @@ export default function ContactPage() {
                 </p>
               </div>
             </div>
-          </section>
+          </SpotlightCard>
           </StaggerItem>
 
           <StaggerItem>
-          <section className="bg-[#111827] border border-gray-700/50 rounded-2xl p-6 hover:border-amber-500/30 transition-all duration-200 group">
-            <div className="flex items-start gap-4">
-              <div className="w-10 h-10 rounded-xl bg-red-500/10 border border-red-500/30 flex items-center justify-center shrink-0 group-hover:bg-red-500/20 transition-colors">
+          <SpotlightCard glowColor="red" customSize className="!w-full !aspect-auto rounded-2xl">
+            <div className="p-6 flex items-start gap-4">
+              <div className="w-10 h-10 rounded-xl bg-red-500/10 border border-red-500/30 flex items-center justify-center shrink-0">
                 <svg className="w-5 h-5 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
                 </svg>
@@ -127,7 +133,7 @@ export default function ContactPage() {
                 </p>
               </div>
             </div>
-          </section>
+          </SpotlightCard>
           </StaggerItem>
         </StaggerChildren>
       </main>

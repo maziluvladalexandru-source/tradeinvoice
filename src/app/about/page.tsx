@@ -1,7 +1,65 @@
 "use client";
 
 import Link from "next/link";
-import { ScrollReveal, FadeIn, StaggerChildren, StaggerItem, PageTransition } from "@/components/animations";
+import { ScrollReveal, FadeIn, PageTransition } from "@/components/animations";
+import { GradientText } from "@/components/ui/gradient-text";
+import { GlowCard as SpotlightCard } from "@/components/spotlight-card";
+import { BentoGrid } from "@/components/ui/bento-grid";
+import type { BentoItem } from "@/components/ui/bento-grid";
+import { FileText, Bell, Globe, Clock, Receipt, CheckCircle } from "lucide-react";
+
+const valueItems: BentoItem[] = [
+  {
+    title: "Professional PDF Invoices",
+    meta: "Branded",
+    description: "Clean invoices with your logo, colors, and all the details your clients need.",
+    icon: <FileText className="w-4 h-4 text-amber-500" />,
+    status: "Core",
+    tags: ["PDF", "Branding"],
+    colSpan: 2,
+    hasPersistentHover: true,
+  },
+  {
+    title: "Auto Payment Reminders",
+    meta: "Set & forget",
+    description: "No more chasing clients. Reminders go out automatically.",
+    icon: <Bell className="w-4 h-4 text-amber-500" />,
+    status: "Active",
+    tags: ["Automation"],
+  },
+  {
+    title: "BTW/VAT Calculations",
+    meta: "NL, UK, DE, BE",
+    description: "Proper VAT handling for invoicing across EU borders.",
+    icon: <Globe className="w-4 h-4 text-blue-500" />,
+    tags: ["EU", "VAT"],
+  },
+  {
+    title: "Time & Expense Tracking",
+    meta: "Built-in",
+    description: "Track hours and log expenses directly in the app.",
+    icon: <Clock className="w-4 h-4 text-emerald-500" />,
+    tags: ["Tracking"],
+    colSpan: 2,
+  },
+  {
+    title: "Client Portal",
+    meta: "Self-service",
+    description: "Customers can view and pay invoices online. No sign-up required.",
+    icon: <Receipt className="w-4 h-4 text-purple-500" />,
+    tags: ["Payments"],
+  },
+  {
+    title: "20 Free Invoices/Month",
+    meta: "No card needed",
+    description: "Get started for free. No credit card, no strings attached.",
+    icon: <CheckCircle className="w-4 h-4 text-emerald-500" />,
+    status: "Free",
+    tags: ["Free tier"],
+    colSpan: 2,
+    hasPersistentHover: true,
+  },
+];
 
 export default function AboutPage() {
   return (
@@ -21,7 +79,7 @@ export default function AboutPage() {
         </div>
       </header>
 
-      <main className="max-w-3xl mx-auto px-4 py-16">
+      <main className="max-w-4xl mx-auto px-4 py-16">
         {/* Hero section */}
         <FadeIn>
         <div className="mb-12">
@@ -29,7 +87,10 @@ export default function AboutPage() {
             Our Story
           </div>
           <h1 className="text-3xl md:text-4xl font-extrabold text-white mb-4">
-            About TradeInvoice
+            About{" "}
+            <GradientText as="span" className="!bg-[#0a0f1e] text-3xl md:text-4xl font-extrabold">
+              TradeInvoice
+            </GradientText>
           </h1>
           <p className="text-gray-400 text-lg max-w-2xl">
             Built by a tradesperson who got tired of overpriced, overcomplicated invoicing software.
@@ -38,17 +99,19 @@ export default function AboutPage() {
         </FadeIn>
 
         <section className="space-y-8">
-          {/* Founder card */}
+          {/* Founder card with SpotlightCard */}
           <ScrollReveal>
-          <div className="bg-[#111827] border border-gray-700/50 rounded-2xl p-6 flex items-center gap-5 hover:border-amber-500/30 transition-all duration-200">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-500/20 to-amber-600/10 border border-amber-500/40 flex items-center justify-center text-amber-400 text-xl font-bold shrink-0">
-              VM
+          <SpotlightCard glowColor="orange" customSize className="!w-full !aspect-auto rounded-2xl">
+            <div className="p-6 flex items-center gap-5">
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-500/20 to-amber-600/10 border border-amber-500/40 flex items-center justify-center text-amber-400 text-xl font-bold shrink-0">
+                VM
+              </div>
+              <div>
+                <p className="text-white font-semibold text-lg">Vlad Mazilu Alexandru</p>
+                <p className="text-gray-400 text-sm">Founder, based in the Netherlands</p>
+              </div>
             </div>
-            <div>
-              <p className="text-white font-semibold text-lg">Vlad Mazilu Alexandru</p>
-              <p className="text-gray-400 text-sm">Founder, based in the Netherlands</p>
-            </div>
-          </div>
+          </SpotlightCard>
           </ScrollReveal>
 
           {/* Content sections */}
@@ -112,37 +175,16 @@ export default function AboutPage() {
           </div>
           </ScrollReveal>
 
-          {/* What you get */}
+          {/* What you get - BentoGrid */}
           <ScrollReveal delay={0.2}>
-          <div className="bg-[#111827] border border-gray-700/50 rounded-2xl p-8 hover:border-amber-500/30 transition-all duration-200">
-            <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-3">
-              <span className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center">
-                <svg className="w-4 h-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </span>
-              What you get
+          <div className="mb-6">
+            <h2 className="text-xl font-bold text-white mb-2 flex items-center gap-3">
+              <GradientText as="span" className="!bg-[#0a0f1e] text-xl font-bold">
+                What you get
+              </GradientText>
             </h2>
-            <StaggerChildren className="space-y-4 pl-11">
-              {[
-                "Professional PDF invoices with your branding",
-                "Automatic payment reminders so you do not have to chase clients",
-                "BTW/VAT calculations for NL, UK, DE, and BE",
-                "Time tracking and expense management",
-                "Client portal where customers can view and pay invoices",
-                "20 free invoices per month, no credit card required",
-              ].map((item) => (
-                <StaggerItem key={item}>
-                <li className="flex items-start gap-3 text-gray-300 list-none">
-                  <svg className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                  </svg>
-                  {item}
-                </li>
-                </StaggerItem>
-              ))}
-            </StaggerChildren>
           </div>
+          <BentoGrid items={valueItems} />
           </ScrollReveal>
 
           {/* Get in touch */}
