@@ -29,7 +29,7 @@ export async function getNextInvoiceNumber(prefix: string = "INV"): Promise<stri
   return `${prefix}-${year}${month}-${random}`;
 }
 
-export const VALID_CURRENCIES = ["EUR", "GBP", "USD"] as const;
+export const VALID_CURRENCIES = ["EUR", "GBP", "USD", "RON", "PLN", "CHF"] as const;
 
 export const VALID_INVOICE_STATUSES = ["draft", "sent", "paid", "overdue", "cancelled"] as const;
 

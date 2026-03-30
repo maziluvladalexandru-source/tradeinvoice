@@ -31,6 +31,8 @@ interface DashboardData {
   stats: {
     totalOutstanding: number;
     paidThisMonth: number;
+    outstandingByCurrency?: Record<string, number>;
+    paidThisMonthByCurrency?: Record<string, number>;
     overdueCount: number;
     avgDaysToPayment: number | null;
     revenueLastMonth: number;
@@ -242,12 +244,26 @@ export default function DashboardPage() {
                   <p className="text-4xl md:text-5xl font-extrabold text-amber-400 tracking-tight tabular-nums">
                     {fc(stats.totalOutstanding)}
                   </p>
+                  {stats.outstandingByCurrency && Object.keys(stats.outstandingByCurrency).length > 1 && (
+                    <div className="flex flex-wrap gap-x-3 mt-1.5">
+                      {Object.entries(stats.outstandingByCurrency).map(([cur, amt]) => (
+                        <span key={cur} className="text-xs text-gray-500 tabular-nums">{formatCurrency(amt, cur)}</span>
+                      ))}
+                    </div>
+                  )}
                 </div>
                 <div className="sm:text-right">
                   <p className="text-sm font-medium text-gray-400 uppercase tracking-wider mb-1.5">Paid This Month</p>
                   <p className="text-3xl font-bold text-emerald-400 tabular-nums">
                     {fc(stats.paidThisMonth)}
                   </p>
+                  {stats.paidThisMonthByCurrency && Object.keys(stats.paidThisMonthByCurrency).length > 1 && (
+                    <div className="flex flex-wrap gap-x-3 mt-1">
+                      {Object.entries(stats.paidThisMonthByCurrency).map(([cur, amt]) => (
+                        <span key={cur} className="text-xs text-gray-500 tabular-nums">{formatCurrency(amt, cur)}</span>
+                      ))}
+                    </div>
+                  )}
                   {stats.revenueLastMonth > 0 && (
                     <motion.p
                       className={`text-sm mt-1.5 font-medium ${stats.revenueChange >= 0 ? "text-emerald-500" : "text-red-400"}`}

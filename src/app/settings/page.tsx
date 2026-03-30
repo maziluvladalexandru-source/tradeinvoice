@@ -7,6 +7,7 @@ import BottomNav from "@/components/BottomNav";
 import UpgradeModal, { ProBadge } from "@/components/UpgradeModal";
 import { toast } from "@/components/Toast";
 import { PageTransition, FadeIn } from "@/components/animations";
+import { getCountryConfig } from "@/lib/country-config";
 
 export default function SettingsPage() {
   return (
@@ -832,8 +833,12 @@ function SettingsContent() {
                       onChange={(e) => setDefaultCurrency(e.target.value)}
                       className="w-full px-4 py-3 rounded-xl border border-white/10 text-lg focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 outline-none bg-white/5 text-white transition-all"
                     >
-                      <option className="bg-[#111827] text-white" value="EUR">EUR</option>
-                      <option className="bg-[#111827] text-white" value="GBP">GBP</option>
+                      <option className="bg-[#111827] text-white" value="EUR">EUR - Euro</option>
+                      <option className="bg-[#111827] text-white" value="GBP">GBP - British Pound</option>
+                      <option className="bg-[#111827] text-white" value="USD">USD - US Dollar</option>
+                      <option className="bg-[#111827] text-white" value="RON">RON - Romanian Leu</option>
+                      <option className="bg-[#111827] text-white" value="PLN">PLN - Polish Zloty</option>
+                      <option className="bg-[#111827] text-white" value="CHF">CHF - Swiss Franc</option>
                     </select>
                   </div>
 
@@ -843,7 +848,10 @@ function SettingsContent() {
                     </label>
                     <select
                       value={defaultCountry}
-                      onChange={(e) => setDefaultCountry(e.target.value)}
+                      onChange={(e) => {
+                        setDefaultCountry(e.target.value);
+                        setDefaultCurrency(getCountryConfig(e.target.value).defaultCurrency);
+                      }}
                       className="w-full px-4 py-3 rounded-xl border border-white/10 text-lg focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500/50 outline-none bg-white/5 text-white transition-all"
                     >
                       <option className="bg-[#111827] text-white" value="NL">Netherlands</option>

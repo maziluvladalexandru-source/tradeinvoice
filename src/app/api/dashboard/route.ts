@@ -21,15 +21,27 @@ export async function GET() {
     const actualInvoices = invoices.filter((i) => i.type !== "quote");
     const quotes = invoices.filter((i) => i.type === "quote");
 
-    const totalOutstanding = actualInvoices
-      .filter((i) => ["sent", "viewed", "overdue"].includes(i.status))
+    const outstandingInvoices = actualInvoices
+      .filter((i) => ["sent", "viewed", "overdue"].includes(i.status));
+    const totalOutstanding = outstandingInvoices
       .reduce((sum, i) => sum + i.total, 0);
 
-    const paidThisMonth = actualInvoices
+    const paidThisMonthInvoices = actualInvoices
       .filter(
         (i) => i.status === "paid" && i.paidAt && new Date(i.paidAt) >= monthStart
-      )
+      );
+    const paidThisMonth = paidThisMonthInvoices
       .reduce((sum, i) => sum + i.total, 0);
+
+    // Per-currency breakdown for multi-currency awareness
+    const outstandingByCurrency: Record<string, number> = {};
+    for (const inv of outstandingInvoices) {
+      outstandingByCurrency[inv.currency] = (outstandingByCurrency[inv.currency] || 0) + inv.total;
+    }
+    const paidThisMonthByCurrency: Record<string, number> = {};
+    for (const inv of paidThisMonthInvoices) {
+      paidThisMonthByCurrency[inv.currency] = (paidThisMonthByCurrency[inv.currency] || 0) + inv.total;
+    }
 
     const overdueCount = actualInvoices.filter(
       (i) => i.status === "overdue"
@@ -156,6 +168,8 @@ export async function GET() {
       stats: {
         totalOutstanding,
         paidThisMonth,
+        outstandingByCurrency,
+        paidThisMonthByCurrency,
         overdueCount,
         avgDaysToPayment,
         revenueLastMonth,
