@@ -108,7 +108,7 @@ export async function PATCH(
       if (body.invoiceCountry) data.invoiceCountry = body.invoiceCountry;
       if (body.language) data.language = body.language;
       if (body.invoiceTheme) {
-        const validThemes = ["classic", "modern", "minimal"];
+        const validThemes = ["classic", "modern", "minimal", "bold", "elegant", "contractor"];
         if (!validThemes.includes(body.invoiceTheme)) {
           return NextResponse.json({ error: "Invalid invoice theme" }, { status: 400 });
         }

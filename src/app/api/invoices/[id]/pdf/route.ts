@@ -35,6 +35,27 @@ const themeColors: Record<string, { primary: string; primaryLight: string; heade
     tableBg: "#fafafa",
     bodyFont: "'Georgia', 'Times New Roman', serif",
   },
+  bold: {
+    primary: "#0f172a",
+    primaryLight: "#fef3c7",
+    headerBg: "#0f172a",
+    tableBg: "#f8fafc",
+    bodyFont: "'Inter', 'Helvetica Neue', Arial, sans-serif",
+  },
+  elegant: {
+    primary: "#4a3728",
+    primaryLight: "#faf6f1",
+    headerBg: "#4a3728",
+    tableBg: "#faf8f5",
+    bodyFont: "'Georgia', 'Garamond', 'Times New Roman', serif",
+  },
+  contractor: {
+    primary: "#1a1a2e",
+    primaryLight: "#fce4ec",
+    headerBg: "#1a1a2e",
+    tableBg: "#f5f5f7",
+    bodyFont: "'Courier New', 'Consolas', monospace",
+  },
 };
 
 // Multi-language translations

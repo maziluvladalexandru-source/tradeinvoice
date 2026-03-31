@@ -108,6 +108,82 @@ export default function NewInvoicePage() {
   );
 }
 
+// ─── Preview translations (matches PDF route) ──────────────────────────────
+const previewTranslations: Record<string, Record<string, string>> = {
+  en: {
+    invoice: "Invoice",
+    quote: "Quote",
+    credit_note: "Credit Note",
+    issued: "Issued",
+    due: "Due",
+    billTo: "Bill To",
+    from: "From",
+    description: "Description",
+    qty: "Qty",
+    price: "Price",
+    amount: "Amount",
+    subtotal: "Subtotal",
+    vat: "VAT",
+    total: "Total",
+    deposit: "Deposit",
+    note: "Note",
+    paymentNotes: "Payment Notes",
+    paymentInfo: "Payment Information",
+    bankDetails: "Bank Details",
+    ref: "Ref",
+    noClient: "No client selected",
+    addLineItems: "Add line items to see them here",
+  },
+  nl: {
+    invoice: "Factuur",
+    quote: "Offerte",
+    credit_note: "Creditnota",
+    issued: "Uitgegeven",
+    due: "Vervaldatum",
+    billTo: "Factuur aan",
+    from: "Van",
+    description: "Omschrijving",
+    qty: "Aantal",
+    price: "Prijs",
+    amount: "Bedrag",
+    subtotal: "Subtotaal",
+    vat: "BTW",
+    total: "Totaal",
+    deposit: "Aanbetaling",
+    note: "Opmerking",
+    paymentNotes: "Betaalopmerkingen",
+    paymentInfo: "Betaalinformatie",
+    bankDetails: "Bankgegevens",
+    ref: "Ref",
+    noClient: "Geen klant geselecteerd",
+    addLineItems: "Voeg regelitems toe om ze hier te zien",
+  },
+  de: {
+    invoice: "Rechnung",
+    quote: "Angebot",
+    credit_note: "Gutschrift",
+    issued: "Ausgestellt",
+    due: "Fällig",
+    billTo: "Rechnungsempfänger",
+    from: "Von",
+    description: "Beschreibung",
+    qty: "Menge",
+    price: "Preis",
+    amount: "Betrag",
+    subtotal: "Zwischensumme",
+    vat: "MwSt",
+    total: "Gesamt",
+    deposit: "Anzahlung",
+    note: "Hinweis",
+    paymentNotes: "Zahlungshinweise",
+    paymentInfo: "Zahlungsinformationen",
+    bankDetails: "Bankverbindung",
+    ref: "Ref",
+    noClient: "Kein Kunde ausgewählt",
+    addLineItems: "Positionen hinzufügen, um sie hier zu sehen",
+  },
+};
+
 // ─── Live Preview Component ─────────────────────────────────────────────────
 function InvoicePreview({
   invoiceNumber,
@@ -127,6 +203,7 @@ function InvoicePreview({
   invoiceCountry,
   invoiceTheme = "classic",
   depositPercent,
+  language = "en",
 }: {
   invoiceNumber: string;
   invoiceType: string;
@@ -145,8 +222,11 @@ function InvoicePreview({
   invoiceCountry: string;
   invoiceTheme?: string;
   depositPercent?: number | null;
+  language?: string;
 }) {
   const countryConfig = getCountryConfig(invoiceCountry);
+  const lang = previewTranslations[language] || previewTranslations.en;
+  const t = (key: string) => lang[key] || previewTranslations.en[key] || key;
   const fmt = (n: number) =>
     new Intl.NumberFormat("en-IE", { style: "currency", currency }).format(n);
 
@@ -160,12 +240,7 @@ function InvoicePreview({
   };
 
   const today = new Date().toISOString().split("T")[0];
-  const docLabel =
-    invoiceType === "quote"
-      ? "Quote"
-      : invoiceType === "credit_note"
-      ? "Credit Note"
-      : "Invoice";
+  const docLabel = t(invoiceType === "quote" ? "quote" : invoiceType === "credit_note" ? "credit_note" : "invoice");
 
   const validItems = lineItems.filter((i) => i.description || i.unitPrice > 0);
   const subtotal = lineItems.reduce(
@@ -184,7 +259,7 @@ function InvoicePreview({
     if (bankData && (bankData.iban || bankData.bankName)) {
       return (
         <div className={`rounded-lg border p-3 ${bgClass}`}>
-          <p className={`text-[10px] font-semibold mb-1.5 ${labelClass}`}>Payment Information</p>
+          <p className={`text-[10px] font-semibold mb-1.5 ${labelClass}`}>{t("paymentInfo")}</p>
           <div className="space-y-0.5 text-xs">
             {bankData.iban && (
               <div className="flex gap-2">
@@ -217,7 +292,7 @@ function InvoicePreview({
     if (user?.bankDetails && !bankData) {
       return (
         <div className={`rounded-lg border p-3 ${bgClass}`}>
-          <p className={`text-[10px] font-semibold mb-0.5 ${labelClass}`}>Payment Information</p>
+          <p className={`text-[10px] font-semibold mb-0.5 ${labelClass}`}>{t("paymentInfo")}</p>
           <p className="text-gray-700 text-xs whitespace-pre-line leading-relaxed">{user.bankDetails}</p>
         </div>
       );
@@ -228,7 +303,7 @@ function InvoicePreview({
   const PaymentNotesSection = () =>
     paymentNotes ? (
       <div className="bg-amber-50 rounded-lg border border-amber-200/80 p-3">
-        <p className="text-[10px] font-semibold text-amber-900 mb-0.5">Payment Notes</p>
+        <p className="text-[10px] font-semibold text-amber-900 mb-0.5">{t("paymentNotes")}</p>
         <p className="text-amber-800 text-xs whitespace-pre-line leading-relaxed">{paymentNotes}</p>
       </div>
     ) : null;
@@ -259,7 +334,7 @@ function InvoicePreview({
   const EmptyRows = () => (
     <tr>
       <td colSpan={4} className="text-center text-gray-300 text-xs py-6 italic">
-        Add line items to see them here
+        {t("addLineItems")}
       </td>
     </tr>
   );
@@ -317,7 +392,7 @@ function InvoicePreview({
               {description && <p className="text-gray-500 text-xs mt-0.5 truncate">{description}</p>}
               <div className="mt-3 space-y-1 text-xs">
                 <div className="flex gap-2">
-                  <span className="text-gray-400 w-16 shrink-0">Issued</span>
+                  <span className="text-gray-400 w-16 shrink-0">{t("issued")}</span>
                   <span className="text-gray-700 font-medium">{fmtDate(today)}</span>
                 </div>
                 {serviceDate && (
@@ -330,25 +405,25 @@ function InvoicePreview({
                   <p className="text-[10px] text-amber-600 italic mt-0.5">{countryConfig.serviceDateNote}</p>
                 )}
                 <div className="flex gap-2">
-                  <span className="text-gray-400 w-16 shrink-0">Due</span>
+                  <span className="text-gray-400 w-16 shrink-0">{t("due")}</span>
                   <span className="text-gray-700 font-medium">{fmtDate(dueDate)}</span>
                 </div>
               </div>
               {invoiceType === "credit_note" && referenceInvoice && (
-                <p className="text-xs text-gray-400 mt-2">Ref: {referenceInvoice}</p>
+                <p className="text-xs text-gray-400 mt-2">{t("ref")}: {referenceInvoice}</p>
               )}
             </div>
             <div className="text-left sm:text-right flex-shrink-0">
-              <p className="text-[10px] font-semibold uppercase tracking-widest mb-1 text-[#1e40af]">Bill To</p>
+              <p className="text-[10px] font-semibold uppercase tracking-widest mb-1 text-[#1e40af]">{t("billTo")}</p>
               {selectedClient ? (
                 <>
                   <p className="text-sm font-semibold text-gray-900">{selectedClient.name}</p>
                   <p className="text-gray-500 text-xs">{selectedClient.email}</p>
                   {selectedClient.address && <p className="text-gray-500 text-xs mt-0.5 whitespace-pre-line">{selectedClient.address}</p>}
-                  {selectedClient.vatNumber && <p className="text-gray-500 text-xs mt-0.5">VAT: {selectedClient.vatNumber}</p>}
+                  {selectedClient.vatNumber && <p className="text-gray-500 text-xs mt-0.5">{t("vat")}: {selectedClient.vatNumber}</p>}
                 </>
               ) : (
-                <p className="text-gray-300 text-xs italic">No client selected</p>
+                <p className="text-gray-300 text-xs italic">{t("noClient")}</p>
               )}
             </div>
           </div>
@@ -358,7 +433,7 @@ function InvoicePreview({
         {notesToClient && (
           <div className="px-5 sm:px-6 pb-4">
             <div className="rounded-lg border border-blue-200/80 bg-blue-50 p-3">
-              <p className="text-[10px] font-semibold mb-0.5 text-blue-900">Note</p>
+              <p className="text-[10px] font-semibold mb-0.5 text-blue-900">{t("note")}</p>
               <p className="text-xs whitespace-pre-line leading-relaxed text-blue-800">{notesToClient}</p>
             </div>
           </div>
@@ -369,10 +444,10 @@ function InvoicePreview({
           <table className="w-full text-xs sm:text-sm">
             <thead>
               <tr className="bg-[#1e40af]/8 border-y border-[#1e40af]/15">
-                <th className="text-left text-[10px] font-semibold uppercase tracking-wider py-2.5 pr-2 text-[#1e40af]">Description</th>
-                <th className="text-center text-[10px] font-semibold uppercase tracking-wider py-2.5 px-2 w-12 text-[#1e40af]">Qty</th>
-                <th className="text-right text-[10px] font-semibold uppercase tracking-wider py-2.5 px-2 w-20 text-[#1e40af]">Price</th>
-                <th className="text-right text-[10px] font-semibold uppercase tracking-wider py-2.5 pl-2 w-20 text-[#1e40af]">Amount</th>
+                <th className="text-left text-[10px] font-semibold uppercase tracking-wider py-2.5 pr-2 text-[#1e40af]">{t("description")}</th>
+                <th className="text-center text-[10px] font-semibold uppercase tracking-wider py-2.5 px-2 w-12 text-[#1e40af]">{t("qty")}</th>
+                <th className="text-right text-[10px] font-semibold uppercase tracking-wider py-2.5 px-2 w-20 text-[#1e40af]">{t("price")}</th>
+                <th className="text-right text-[10px] font-semibold uppercase tracking-wider py-2.5 pl-2 w-20 text-[#1e40af]">{t("amount")}</th>
               </tr>
             </thead>
             <tbody>
@@ -391,12 +466,12 @@ function InvoicePreview({
           <div className="border-t border-gray-200 py-4">
             <div className="flex flex-col items-end space-y-1">
               <div className="w-full max-w-[200px] flex justify-between text-xs">
-                <span className="text-gray-400">Subtotal</span>
+                <span className="text-gray-400">{t("subtotal")}</span>
                 <span className="text-gray-700 tabular-nums">{fmt(subtotal)}</span>
               </div>
               {taxRate > 0 && (
                 <div className="w-full max-w-[200px] flex justify-between text-xs">
-                  <span className="text-gray-400">VAT ({taxRate}%)</span>
+                  <span className="text-gray-400">{t("vat")} ({taxRate}%)</span>
                   <span className="text-gray-700 tabular-nums">{fmt(tax)}</span>
                 </div>
               )}
@@ -406,13 +481,13 @@ function InvoicePreview({
                 </div>
               )}
               <div className="w-full max-w-[200px] flex justify-between pt-2 border-t-2 border-[#1e40af]">
-                <span className="text-sm font-bold text-[#1e40af]">Total</span>
+                <span className="text-sm font-bold text-[#1e40af]">{t("total")}</span>
                 <span className="text-base sm:text-lg font-bold tabular-nums text-[#1e40af]">{fmt(total)}</span>
               </div>
               {depositPercent && total > 0 && (
                 <div className="w-full max-w-[200px] mt-2 bg-amber-50 border border-amber-200 rounded-lg p-2">
                   <div className="flex justify-between text-xs">
-                    <span className="text-amber-700 font-semibold">Deposit ({depositPercent}%)</span>
+                    <span className="text-amber-700 font-semibold">{t("deposit")} ({depositPercent}%)</span>
                     <span className="text-amber-800 font-bold tabular-nums">{fmt(total * depositPercent / 100)}</span>
                   </div>
                 </div>
@@ -490,7 +565,7 @@ function InvoicePreview({
         <div className="px-5 sm:px-6 py-4">
           <div className="flex flex-wrap gap-2">
             <div className="bg-slate-50 rounded-lg px-3 py-2 border border-slate-100">
-              <p className="text-[9px] uppercase tracking-wider text-slate-400 font-semibold">Issued</p>
+              <p className="text-[9px] uppercase tracking-wider text-slate-400 font-semibold">{t("issued")}</p>
               <p className="text-xs font-semibold text-slate-700">{fmtDate(today)}</p>
             </div>
             {serviceDate && (
@@ -500,7 +575,7 @@ function InvoicePreview({
               </div>
             )}
             <div className="bg-amber-50 rounded-lg px-3 py-2 border border-amber-200/50">
-              <p className="text-[9px] uppercase tracking-wider text-amber-500 font-semibold">Due</p>
+              <p className="text-[9px] uppercase tracking-wider text-amber-500 font-semibold">{t("due")}</p>
               <p className="text-xs font-semibold text-amber-700">{fmtDate(dueDate)}</p>
             </div>
           </div>
@@ -508,23 +583,23 @@ function InvoicePreview({
             <p className="text-[10px] text-amber-600 italic mt-2">{countryConfig.serviceDateNote}</p>
           )}
           {invoiceType === "credit_note" && referenceInvoice && (
-            <p className="text-xs text-slate-400 mt-2">Ref: {referenceInvoice}</p>
+            <p className="text-xs text-slate-400 mt-2">{t("ref")}: {referenceInvoice}</p>
           )}
         </div>
 
         {/* Bill To — card */}
         <div className="px-5 sm:px-6 pb-4">
           <div className="bg-slate-50 rounded-xl p-4 border border-slate-100">
-            <p className="text-[10px] font-semibold uppercase tracking-widest mb-2 text-slate-400">Bill To</p>
+            <p className="text-[10px] font-semibold uppercase tracking-widest mb-2 text-slate-400">{t("billTo")}</p>
             {selectedClient ? (
               <>
                 <p className="text-sm font-bold text-slate-800">{selectedClient.name}</p>
                 <p className="text-slate-500 text-xs mt-0.5">{selectedClient.email}</p>
                 {selectedClient.address && <p className="text-slate-500 text-xs mt-0.5 whitespace-pre-line">{selectedClient.address}</p>}
-                {selectedClient.vatNumber && <p className="text-slate-500 text-xs mt-1">VAT: {selectedClient.vatNumber}</p>}
+                {selectedClient.vatNumber && <p className="text-slate-500 text-xs mt-1">{t("vat")}: {selectedClient.vatNumber}</p>}
               </>
             ) : (
-              <p className="text-slate-300 text-xs italic">No client selected</p>
+              <p className="text-slate-300 text-xs italic">{t("noClient")}</p>
             )}
           </div>
         </div>
@@ -533,7 +608,7 @@ function InvoicePreview({
         {notesToClient && (
           <div className="px-5 sm:px-6 pb-4">
             <div className="rounded-xl border border-amber-200/60 bg-amber-50/50 p-3">
-              <p className="text-[10px] font-semibold mb-0.5 text-amber-800">Note</p>
+              <p className="text-[10px] font-semibold mb-0.5 text-amber-800">{t("note")}</p>
               <p className="text-xs whitespace-pre-line leading-relaxed text-amber-700">{notesToClient}</p>
             </div>
           </div>
@@ -545,10 +620,10 @@ function InvoicePreview({
             <table className="w-full text-xs sm:text-sm">
               <thead>
                 <tr className="bg-slate-800">
-                  <th className="text-left text-[10px] font-semibold uppercase tracking-wider py-3 pl-4 pr-2 text-slate-300">Description</th>
-                  <th className="text-center text-[10px] font-semibold uppercase tracking-wider py-3 px-2 w-12 text-slate-300">Qty</th>
-                  <th className="text-right text-[10px] font-semibold uppercase tracking-wider py-3 px-2 w-20 text-slate-300">Price</th>
-                  <th className="text-right text-[10px] font-semibold uppercase tracking-wider py-3 pl-2 pr-4 w-20 text-slate-300">Amount</th>
+                  <th className="text-left text-[10px] font-semibold uppercase tracking-wider py-3 pl-4 pr-2 text-slate-300">{t("description")}</th>
+                  <th className="text-center text-[10px] font-semibold uppercase tracking-wider py-3 px-2 w-12 text-slate-300">{t("qty")}</th>
+                  <th className="text-right text-[10px] font-semibold uppercase tracking-wider py-3 px-2 w-20 text-slate-300">{t("price")}</th>
+                  <th className="text-right text-[10px] font-semibold uppercase tracking-wider py-3 pl-2 pr-4 w-20 text-slate-300">{t("amount")}</th>
                 </tr>
               </thead>
               <tbody>
@@ -569,12 +644,12 @@ function InvoicePreview({
             <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl p-4 min-w-[200px] text-white">
               <div className="space-y-1.5">
                 <div className="flex justify-between text-xs">
-                  <span className="text-slate-400">Subtotal</span>
+                  <span className="text-slate-400">{t("subtotal")}</span>
                   <span className="text-slate-200 tabular-nums">{fmt(subtotal)}</span>
                 </div>
                 {taxRate > 0 && (
                   <div className="flex justify-between text-xs">
-                    <span className="text-slate-400">VAT ({taxRate}%)</span>
+                    <span className="text-slate-400">{t("vat")} ({taxRate}%)</span>
                     <span className="text-slate-200 tabular-nums">{fmt(tax)}</span>
                   </div>
                 )}
@@ -582,13 +657,13 @@ function InvoicePreview({
                   <p className="text-[10px] text-amber-400 italic">{countryConfig.reverseChargeText}</p>
                 )}
                 <div className="flex justify-between pt-2 border-t border-slate-600">
-                  <span className="text-sm font-bold text-amber-400">Total</span>
+                  <span className="text-sm font-bold text-amber-400">{t("total")}</span>
                   <span className="text-lg font-extrabold tabular-nums text-white">{fmt(total)}</span>
                 </div>
                 {depositPercent && total > 0 && (
                   <div className="mt-2 bg-amber-500/20 border border-amber-500/30 rounded-lg p-2">
                     <div className="flex justify-between text-xs">
-                      <span className="text-amber-300 font-semibold">Deposit ({depositPercent}%)</span>
+                      <span className="text-amber-300 font-semibold">{t("deposit")} ({depositPercent}%)</span>
                       <span className="text-amber-200 font-bold tabular-nums">{fmt(total * depositPercent / 100)}</span>
                     </div>
                   </div>
@@ -606,6 +681,526 @@ function InvoicePreview({
 
         {/* Footer */}
         <div className="px-6 py-3 bg-slate-50 border-t border-slate-100">
+          <ComplianceFooter />
+          <WatermarkFooter />
+        </div>
+      </div>
+    );
+  }
+
+  // ════════════════════════════════════════════════════════════════════════════
+  // BOLD THEME — Dark header, bright amber accent, high contrast, large numbers
+  // ════════════════════════════════════════════════════════════════════════════
+  if (invoiceTheme === "bold") {
+    return (
+      <div className="bg-white rounded-2xl shadow-lg overflow-hidden text-gray-900 text-sm transition-all duration-300">
+        {/* Thick amber accent bar */}
+        <div className="h-2 bg-amber-500" />
+
+        {/* Dark navy header */}
+        <header className="bg-[#0f172a] px-5 sm:px-6 pt-6 pb-5">
+          <div className="flex items-start justify-between">
+            <div className="flex items-center gap-3">
+              {user?.logoUrl ? (
+                <img src={user.logoUrl} alt="" className="w-12 h-12 rounded-xl object-cover flex-shrink-0 ring-2 ring-amber-500/30" />
+              ) : (
+                <div className="w-12 h-12 rounded-xl bg-amber-500 flex items-center justify-center flex-shrink-0">
+                  <span className="text-xl font-black text-[#0f172a] leading-none">{businessInitial}</span>
+                </div>
+              )}
+              <div>
+                <h2 className="text-lg font-black text-white tracking-tight">
+                  {user?.businessName || user?.name || "Your Business"}
+                </h2>
+                <div className="text-[11px] text-slate-400 space-y-0.5 mt-0.5">
+                  {user?.businessAddress && <p>{user.businessAddress}</p>}
+                  <p>
+                    {user?.email || "your@email.com"}
+                    {user?.businessPhone && ` · ${user.businessPhone}`}
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="text-right">
+              <p className="text-[10px] font-bold uppercase tracking-widest text-amber-500 mb-0.5">{docLabel}</p>
+              <p className="text-2xl sm:text-3xl font-black text-white tracking-tight font-mono">
+                {invoiceNumber || "INV-0000"}
+              </p>
+              {description && <p className="text-slate-400 text-xs mt-0.5 truncate max-w-[140px]">{description}</p>}
+            </div>
+          </div>
+          {(user?.kvkNumber || user?.vatNumber) && (
+            <div className="flex gap-3 mt-3 text-[10px] text-slate-500">
+              {user.kvkNumber && <span>{countryConfig.businessRegLabel}: {user.kvkNumber}</span>}
+              {user.vatNumber && <span>{countryConfig.taxIdLabel}: {user.vatNumber}</span>}
+            </div>
+          )}
+        </header>
+
+        {/* Dates row */}
+        <div className="px-5 sm:px-6 py-4 bg-slate-50 border-b border-slate-200">
+          <div className="flex flex-wrap gap-3">
+            <div>
+              <p className="text-[9px] uppercase tracking-wider text-slate-400 font-bold">{t("issued")}</p>
+              <p className="text-sm font-bold text-[#0f172a]">{fmtDate(today)}</p>
+            </div>
+            {serviceDate && (
+              <div>
+                <p className="text-[9px] uppercase tracking-wider text-slate-400 font-bold">{countryConfig.serviceDateLabel}</p>
+                <p className="text-sm font-bold text-[#0f172a]">{fmtDate(serviceDate)}</p>
+              </div>
+            )}
+            <div>
+              <p className="text-[9px] uppercase tracking-wider text-amber-600 font-bold">{t("due")}</p>
+              <p className="text-sm font-bold text-amber-700">{fmtDate(dueDate)}</p>
+            </div>
+          </div>
+          {invoiceCountry === "DE" && serviceDate && serviceDate === today && (
+            <p className="text-[10px] text-amber-600 italic mt-2">{countryConfig.serviceDateNote}</p>
+          )}
+          {invoiceType === "credit_note" && referenceInvoice && (
+            <p className="text-xs text-slate-400 mt-2">{t("ref")}: {referenceInvoice}</p>
+          )}
+        </div>
+
+        {/* Bill To */}
+        <div className="px-5 sm:px-6 py-4">
+          <p className="text-[10px] font-black uppercase tracking-widest mb-2 text-[#0f172a]">{t("billTo")}</p>
+          {selectedClient ? (
+            <>
+              <p className="text-base font-bold text-[#0f172a]">{selectedClient.name}</p>
+              <p className="text-slate-500 text-xs mt-0.5">{selectedClient.email}</p>
+              {selectedClient.address && <p className="text-slate-500 text-xs mt-0.5 whitespace-pre-line">{selectedClient.address}</p>}
+              {selectedClient.vatNumber && <p className="text-slate-500 text-xs mt-1">{t("vat")}: {selectedClient.vatNumber}</p>}
+            </>
+          ) : (
+            <p className="text-slate-300 text-xs italic">{t("noClient")}</p>
+          )}
+        </div>
+
+        {/* Notes to Client */}
+        {notesToClient && (
+          <div className="px-5 sm:px-6 pb-4">
+            <div className="rounded-lg border-2 border-amber-300 bg-amber-50 p-3">
+              <p className="text-[10px] font-bold mb-0.5 text-amber-900">{t("note")}</p>
+              <p className="text-xs whitespace-pre-line leading-relaxed text-amber-800">{notesToClient}</p>
+            </div>
+          </div>
+        )}
+
+        {/* Line Items */}
+        <div className="px-5 sm:px-6">
+          <table className="w-full text-xs sm:text-sm">
+            <thead>
+              <tr className="bg-[#0f172a]">
+                <th className="text-left text-[10px] font-bold uppercase tracking-wider py-3 pl-4 pr-2 text-amber-400">{t("description")}</th>
+                <th className="text-center text-[10px] font-bold uppercase tracking-wider py-3 px-2 w-12 text-amber-400">{t("qty")}</th>
+                <th className="text-right text-[10px] font-bold uppercase tracking-wider py-3 px-2 w-20 text-amber-400">{t("price")}</th>
+                <th className="text-right text-[10px] font-bold uppercase tracking-wider py-3 pl-2 pr-4 w-20 text-amber-400">{t("amount")}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {validItems.length > 0 ? validItems.map((item, idx) => (
+                <tr key={idx} className={`${idx % 2 === 0 ? "bg-white" : "bg-slate-50"} ${idx < validItems.length - 1 ? "border-b border-slate-100" : ""}`}>
+                  <td className="text-[#0f172a] text-xs font-semibold py-3 pl-4 pr-2 truncate max-w-[120px]">{item.description || "--"}</td>
+                  <td className="text-slate-600 text-xs text-center py-3 px-2 tabular-nums font-mono">{item.quantity}</td>
+                  <td className="text-slate-600 text-xs text-right py-3 px-2 tabular-nums font-mono">{fmt(item.unitPrice)}</td>
+                  <td className="text-[#0f172a] text-xs font-bold text-right py-3 pl-2 pr-4 tabular-nums font-mono">{fmt(item.quantity * item.unitPrice)}</td>
+                </tr>
+              )) : <EmptyRows />}
+            </tbody>
+          </table>
+
+          {/* Totals */}
+          <div className="mt-4 mb-4 flex justify-end">
+            <div className="min-w-[220px]">
+              <div className="space-y-1.5 bg-slate-50 rounded-t-xl p-4">
+                <div className="flex justify-between text-xs">
+                  <span className="text-slate-500 font-semibold">{t("subtotal")}</span>
+                  <span className="text-[#0f172a] font-bold tabular-nums font-mono">{fmt(subtotal)}</span>
+                </div>
+                {taxRate > 0 && (
+                  <div className="flex justify-between text-xs">
+                    <span className="text-slate-500 font-semibold">{t("vat")} ({taxRate}%)</span>
+                    <span className="text-[#0f172a] font-bold tabular-nums font-mono">{fmt(tax)}</span>
+                  </div>
+                )}
+                {reverseCharge && (
+                  <p className="text-[10px] text-amber-600 italic">{countryConfig.reverseChargeText}</p>
+                )}
+              </div>
+              <div className="bg-[#0f172a] rounded-b-xl p-4 flex justify-between items-center">
+                <span className="text-sm font-black text-amber-400">{t("total")}</span>
+                <span className="text-xl font-black tabular-nums text-white font-mono">{fmt(total)}</span>
+              </div>
+              {depositPercent && total > 0 && (
+                <div className="mt-2 bg-amber-100 border-2 border-amber-300 rounded-xl p-3">
+                  <div className="flex justify-between text-xs">
+                    <span className="text-amber-800 font-bold">{t("deposit")} ({depositPercent}%)</span>
+                    <span className="text-amber-900 font-black tabular-nums font-mono">{fmt(total * depositPercent / 100)}</span>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Bank + Payment Notes */}
+        <div className="px-5 sm:px-6 pb-4 space-y-3">
+          <BankSection labelClass="text-[#0f172a]" bgClass="bg-slate-50 border-slate-200" />
+          <PaymentNotesSection />
+        </div>
+
+        {/* Footer */}
+        <div className="px-6 py-3 bg-[#0f172a]/5 border-t border-[#0f172a]/10">
+          <ComplianceFooter />
+          <WatermarkFooter />
+        </div>
+      </div>
+    );
+  }
+
+  // ════════════════════════════════════════════════════════════════════════════
+  // ELEGANT THEME — Serif fonts, thin borders, muted colors, sophisticated
+  // ════════════════════════════════════════════════════════════════════════════
+  if (invoiceTheme === "elegant") {
+    return (
+      <div className="bg-white rounded-lg overflow-hidden text-gray-900 text-sm transition-all duration-300 border border-stone-200" style={{ fontFamily: "Georgia, 'Times New Roman', serif" }}>
+        {/* Thin gold accent line */}
+        <div className="h-[2px] bg-gradient-to-r from-transparent via-[#c9a96e] to-transparent" />
+
+        {/* Header - sophisticated, light */}
+        <div className="px-6 sm:px-8 pt-8 pb-5">
+          <div className="flex justify-between items-start">
+            <div className="flex items-center gap-3">
+              {user?.logoUrl ? (
+                <img src={user.logoUrl} alt="" className="w-10 h-10 rounded object-cover flex-shrink-0 opacity-90" />
+              ) : (
+                <div className="w-10 h-10 rounded bg-[#4a3728] flex items-center justify-center flex-shrink-0">
+                  <span className="text-lg font-normal text-[#c9a96e] leading-none" style={{ fontFamily: "Georgia, serif" }}>{businessInitial}</span>
+                </div>
+              )}
+              <div>
+                <h2 className="text-base font-normal tracking-wide text-[#4a3728]" style={{ fontStyle: "italic" }}>
+                  {user?.businessName || user?.name || "Your Business"}
+                </h2>
+                <div className="text-[10px] text-stone-400 mt-0.5" style={{ fontFamily: "system-ui, sans-serif" }}>
+                  {user?.businessAddress && <>{user.businessAddress} · </>}
+                  {user?.email || "your@email.com"}
+                  {user?.businessPhone && ` · ${user.businessPhone}`}
+                </div>
+              </div>
+            </div>
+            <div className="text-right">
+              {(user?.kvkNumber || user?.vatNumber) && (
+                <div className="text-[10px] text-stone-400 space-y-0.5 mb-2" style={{ fontFamily: "system-ui, sans-serif" }}>
+                  {user.kvkNumber && <p>{countryConfig.businessRegLabel}: {user.kvkNumber}</p>}
+                  {user.vatNumber && <p>{countryConfig.taxIdLabel}: {user.vatNumber}</p>}
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Centered doc label */}
+          <div className="text-center py-6 border-t border-stone-200 mt-5">
+            <p className="text-[11px] uppercase tracking-[0.3em] text-[#c9a96e] mb-1.5" style={{ fontFamily: "system-ui, sans-serif" }}>
+              {docLabel}
+            </p>
+            <p className="text-2xl sm:text-3xl font-normal text-[#4a3728] tracking-tight">
+              {invoiceNumber || "INV-0000"}
+            </p>
+            {description && <p className="text-stone-400 text-xs mt-2 truncate" style={{ fontFamily: "system-ui, sans-serif" }}>{description}</p>}
+          </div>
+
+          {/* Dates + Bill To */}
+          <div className="flex flex-col sm:flex-row sm:justify-between gap-6 border-t border-stone-200 pt-5 pb-2">
+            <div className="flex-1" style={{ fontFamily: "system-ui, sans-serif" }}>
+              <div className="space-y-1.5 text-xs">
+                <div className="flex gap-3">
+                  <span className="text-stone-400 w-20 shrink-0">{t("issued")}</span>
+                  <span className="text-[#4a3728]">{fmtDate(today)}</span>
+                </div>
+                {serviceDate && (
+                  <div className="flex gap-3">
+                    <span className="text-stone-400 w-20 shrink-0">{countryConfig.serviceDateLabel}</span>
+                    <span className="text-[#4a3728]">{fmtDate(serviceDate)}</span>
+                  </div>
+                )}
+                {invoiceCountry === "DE" && serviceDate && serviceDate === today && (
+                  <p className="text-[10px] text-amber-600 italic mt-0.5">{countryConfig.serviceDateNote}</p>
+                )}
+                <div className="flex gap-3">
+                  <span className="text-stone-400 w-20 shrink-0">{t("due")}</span>
+                  <span className="text-[#4a3728]">{fmtDate(dueDate)}</span>
+                </div>
+              </div>
+              {invoiceType === "credit_note" && referenceInvoice && (
+                <p className="text-xs text-stone-400 mt-2">{t("ref")}: {referenceInvoice}</p>
+              )}
+            </div>
+            <div className="text-left sm:text-right flex-shrink-0" style={{ fontFamily: "system-ui, sans-serif" }}>
+              <p className="text-[10px] uppercase tracking-[0.2em] text-[#c9a96e] mb-1.5">{t("billTo")}</p>
+              {selectedClient ? (
+                <>
+                  <p className="text-sm text-[#4a3728]">{selectedClient.name}</p>
+                  <p className="text-stone-400 text-xs mt-0.5">{selectedClient.email}</p>
+                  {selectedClient.address && <p className="text-stone-400 text-xs mt-0.5 whitespace-pre-line">{selectedClient.address}</p>}
+                  {selectedClient.vatNumber && <p className="text-stone-400 text-xs mt-1">{t("vat")}: {selectedClient.vatNumber}</p>}
+                </>
+              ) : (
+                <p className="text-stone-300 text-xs italic">{t("noClient")}</p>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Notes to Client */}
+        {notesToClient && (
+          <div className="px-6 sm:px-8 pb-5">
+            <div className="border-l-2 border-[#c9a96e]/40 pl-4 py-1">
+              <p className="text-[10px] text-[#c9a96e] mb-0.5" style={{ fontFamily: "system-ui, sans-serif" }}>{t("note")}</p>
+              <p className="text-xs whitespace-pre-line leading-relaxed text-[#4a3728]/70" style={{ fontFamily: "system-ui, sans-serif" }}>{notesToClient}</p>
+            </div>
+          </div>
+        )}
+
+        {/* Line Items */}
+        <div className="px-6 sm:px-8" style={{ fontFamily: "system-ui, sans-serif" }}>
+          <table className="w-full text-xs">
+            <thead>
+              <tr className="border-y border-[#c9a96e]/30">
+                <th className="text-left text-[10px] font-normal uppercase tracking-[0.15em] py-3 pr-2 text-[#c9a96e]">{t("description")}</th>
+                <th className="text-center text-[10px] font-normal uppercase tracking-[0.15em] py-3 px-2 w-12 text-[#c9a96e]">{t("qty")}</th>
+                <th className="text-right text-[10px] font-normal uppercase tracking-[0.15em] py-3 px-2 w-20 text-[#c9a96e]">{t("price")}</th>
+                <th className="text-right text-[10px] font-normal uppercase tracking-[0.15em] py-3 pl-2 w-20 text-[#c9a96e]">{t("amount")}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {validItems.length > 0 ? validItems.map((item, idx) => (
+                <tr key={idx} className="border-b border-stone-100">
+                  <td className="text-[#4a3728] text-xs py-3.5 pr-2 truncate max-w-[120px]">{item.description || "--"}</td>
+                  <td className="text-stone-400 text-xs text-center py-3.5 px-2 tabular-nums">{item.quantity}</td>
+                  <td className="text-stone-400 text-xs text-right py-3.5 px-2 tabular-nums">{fmt(item.unitPrice)}</td>
+                  <td className="text-[#4a3728] text-xs text-right py-3.5 pl-2 tabular-nums">{fmt(item.quantity * item.unitPrice)}</td>
+                </tr>
+              )) : <EmptyRows />}
+            </tbody>
+          </table>
+
+          {/* Totals */}
+          <div className="py-6">
+            <div className="flex flex-col items-end space-y-1.5">
+              <div className="w-full max-w-[200px] flex justify-between text-xs">
+                <span className="text-stone-400">{t("subtotal")}</span>
+                <span className="text-[#4a3728] tabular-nums">{fmt(subtotal)}</span>
+              </div>
+              {taxRate > 0 && (
+                <div className="w-full max-w-[200px] flex justify-between text-xs">
+                  <span className="text-stone-400">{t("vat")} ({taxRate}%)</span>
+                  <span className="text-[#4a3728] tabular-nums">{fmt(tax)}</span>
+                </div>
+              )}
+              {reverseCharge && (
+                <div className="w-full max-w-[200px]">
+                  <p className="text-[10px] text-amber-600 italic">{countryConfig.reverseChargeText}</p>
+                </div>
+              )}
+              <div className="w-full max-w-[200px] flex justify-between pt-3 border-t border-[#c9a96e]/40">
+                <span className="text-sm text-[#4a3728]" style={{ fontFamily: "Georgia, serif" }}>{t("total")}</span>
+                <span className="text-lg tabular-nums text-[#4a3728]" style={{ fontFamily: "Georgia, serif" }}>{fmt(total)}</span>
+              </div>
+              {depositPercent && total > 0 && (
+                <div className="w-full max-w-[200px] mt-2 bg-[#faf6f1] border border-[#c9a96e]/30 rounded-lg p-2">
+                  <div className="flex justify-between text-xs">
+                    <span className="text-[#4a3728] font-semibold">{t("deposit")} ({depositPercent}%)</span>
+                    <span className="text-[#4a3728] font-bold tabular-nums">{fmt(total * depositPercent / 100)}</span>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Bank + Payment Notes */}
+        <div className="px-6 sm:px-8 pb-5 space-y-3" style={{ fontFamily: "system-ui, sans-serif" }}>
+          <BankSection labelClass="text-[#c9a96e]" bgClass="bg-[#faf6f1] border-stone-200" />
+          <PaymentNotesSection />
+        </div>
+
+        {/* Footer */}
+        <div className="px-6 sm:px-8 py-4 border-t border-stone-200">
+          <ComplianceFooter />
+          <WatermarkFooter />
+        </div>
+      </div>
+    );
+  }
+
+  // ════════════════════════════════════════════════════════════════════════════
+  // CONTRACTOR THEME — Rugged, industrial, monospace numbers, red accent
+  // ════════════════════════════════════════════════════════════════════════════
+  if (invoiceTheme === "contractor") {
+    return (
+      <div className="bg-white rounded-2xl shadow-sm overflow-hidden text-gray-900 text-sm transition-all duration-300 border border-slate-300">
+        {/* Red accent bar */}
+        <div className="h-1.5 bg-[#e94560]" />
+
+        {/* Header */}
+        <header className="bg-[#1a1a2e] px-5 sm:px-6 pt-5 pb-4">
+          <div className="flex items-start justify-between">
+            <div className="flex items-center gap-3">
+              {user?.logoUrl ? (
+                <img src={user.logoUrl} alt="" className="w-11 h-11 rounded-lg object-cover flex-shrink-0 ring-2 ring-[#e94560]/30" />
+              ) : (
+                <div className="w-11 h-11 rounded-lg bg-[#e94560] flex items-center justify-center flex-shrink-0">
+                  <span className="text-lg font-bold text-white leading-none font-mono">{businessInitial}</span>
+                </div>
+              )}
+              <div>
+                <h2 className="text-base font-bold text-white tracking-tight font-mono">
+                  {user?.businessName || user?.name || "Your Business"}
+                </h2>
+                <div className="text-[11px] text-slate-400 space-y-0.5 mt-0.5 font-mono">
+                  {user?.businessAddress && <p>{user.businessAddress}</p>}
+                  <p>
+                    {user?.email || "your@email.com"}
+                    {user?.businessPhone && ` | ${user.businessPhone}`}
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="text-right">
+              <p className="text-[10px] font-bold uppercase tracking-widest text-[#e94560] mb-0.5 font-mono">{docLabel}</p>
+              <p className="text-xl sm:text-2xl font-bold text-white tracking-tight font-mono">
+                {invoiceNumber || "INV-0000"}
+              </p>
+              {description && <p className="text-slate-400 text-xs mt-0.5 truncate max-w-[140px] font-mono">{description}</p>}
+            </div>
+          </div>
+          {(user?.kvkNumber || user?.vatNumber) && (
+            <div className="flex gap-3 mt-3 text-[10px] text-slate-500 font-mono">
+              {user.kvkNumber && <span>{countryConfig.businessRegLabel}: {user.kvkNumber}</span>}
+              {user.vatNumber && <span>{countryConfig.taxIdLabel}: {user.vatNumber}</span>}
+            </div>
+          )}
+        </header>
+
+        {/* Dates - industrial style */}
+        <div className="px-5 sm:px-6 py-3 bg-slate-100 border-b-2 border-[#e94560]/20 font-mono">
+          <div className="flex flex-wrap gap-4 text-xs">
+            <div>
+              <span className="text-slate-400 uppercase text-[9px] tracking-wider">{t("issued")}: </span>
+              <span className="text-[#1a1a2e] font-bold">{fmtDate(today)}</span>
+            </div>
+            {serviceDate && (
+              <div>
+                <span className="text-slate-400 uppercase text-[9px] tracking-wider">{countryConfig.serviceDateLabel}: </span>
+                <span className="text-[#1a1a2e] font-bold">{fmtDate(serviceDate)}</span>
+              </div>
+            )}
+            <div>
+              <span className="text-[#e94560] uppercase text-[9px] tracking-wider font-bold">{t("due")}: </span>
+              <span className="text-[#e94560] font-bold">{fmtDate(dueDate)}</span>
+            </div>
+          </div>
+          {invoiceCountry === "DE" && serviceDate && serviceDate === today && (
+            <p className="text-[10px] text-amber-600 italic mt-1">{countryConfig.serviceDateNote}</p>
+          )}
+          {invoiceType === "credit_note" && referenceInvoice && (
+            <p className="text-xs text-slate-400 mt-1">{t("ref")}: {referenceInvoice}</p>
+          )}
+        </div>
+
+        {/* Bill To */}
+        <div className="px-5 sm:px-6 py-4">
+          <p className="text-[10px] font-bold uppercase tracking-widest mb-1.5 text-[#e94560] font-mono">{t("billTo")}</p>
+          {selectedClient ? (
+            <>
+              <p className="text-sm font-bold text-[#1a1a2e]">{selectedClient.name}</p>
+              <p className="text-slate-500 text-xs mt-0.5">{selectedClient.email}</p>
+              {selectedClient.address && <p className="text-slate-500 text-xs mt-0.5 whitespace-pre-line">{selectedClient.address}</p>}
+              {selectedClient.vatNumber && <p className="text-slate-500 text-xs mt-1 font-mono">{t("vat")}: {selectedClient.vatNumber}</p>}
+            </>
+          ) : (
+            <p className="text-slate-300 text-xs italic">{t("noClient")}</p>
+          )}
+        </div>
+
+        {/* Notes to Client */}
+        {notesToClient && (
+          <div className="px-5 sm:px-6 pb-4">
+            <div className="rounded-lg border border-[#e94560]/20 bg-red-50 p-3">
+              <p className="text-[10px] font-bold mb-0.5 text-[#e94560] font-mono">{t("note")}</p>
+              <p className="text-xs whitespace-pre-line leading-relaxed text-slate-700">{notesToClient}</p>
+            </div>
+          </div>
+        )}
+
+        {/* Line Items */}
+        <div className="px-5 sm:px-6">
+          <table className="w-full text-xs sm:text-sm font-mono">
+            <thead>
+              <tr className="bg-[#1a1a2e]">
+                <th className="text-left text-[10px] font-bold uppercase tracking-wider py-2.5 pl-4 pr-2 text-[#e94560]">{t("description")}</th>
+                <th className="text-center text-[10px] font-bold uppercase tracking-wider py-2.5 px-2 w-12 text-[#e94560]">{t("qty")}</th>
+                <th className="text-right text-[10px] font-bold uppercase tracking-wider py-2.5 px-2 w-20 text-[#e94560]">{t("price")}</th>
+                <th className="text-right text-[10px] font-bold uppercase tracking-wider py-2.5 pl-2 pr-4 w-20 text-[#e94560]">{t("amount")}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {validItems.length > 0 ? validItems.map((item, idx) => (
+                <tr key={idx} className={`${idx % 2 === 0 ? "bg-white" : "bg-slate-50"} ${idx < validItems.length - 1 ? "border-b border-slate-200" : ""}`}>
+                  <td className="text-[#1a1a2e] text-xs py-2.5 pl-4 pr-2 truncate max-w-[120px]" style={{ fontFamily: "system-ui, sans-serif" }}>{item.description || "--"}</td>
+                  <td className="text-slate-600 text-xs text-center py-2.5 px-2 tabular-nums">{item.quantity}</td>
+                  <td className="text-slate-600 text-xs text-right py-2.5 px-2 tabular-nums">{fmt(item.unitPrice)}</td>
+                  <td className="text-[#1a1a2e] text-xs font-bold text-right py-2.5 pl-2 pr-4 tabular-nums">{fmt(item.quantity * item.unitPrice)}</td>
+                </tr>
+              )) : <EmptyRows />}
+            </tbody>
+          </table>
+
+          {/* Totals */}
+          <div className="border-t-2 border-[#1a1a2e] py-4 font-mono">
+            <div className="flex flex-col items-end space-y-1">
+              <div className="w-full max-w-[220px] flex justify-between text-xs">
+                <span className="text-slate-500">{t("subtotal")}</span>
+                <span className="text-[#1a1a2e] font-bold tabular-nums">{fmt(subtotal)}</span>
+              </div>
+              {taxRate > 0 && (
+                <div className="w-full max-w-[220px] flex justify-between text-xs">
+                  <span className="text-slate-500">{t("vat")} ({taxRate}%)</span>
+                  <span className="text-[#1a1a2e] font-bold tabular-nums">{fmt(tax)}</span>
+                </div>
+              )}
+              {reverseCharge && (
+                <div className="w-full max-w-[220px]">
+                  <p className="text-[10px] text-amber-600 italic">{countryConfig.reverseChargeText}</p>
+                </div>
+              )}
+              <div className="w-full max-w-[220px] flex justify-between pt-2 border-t-2 border-[#e94560]">
+                <span className="text-sm font-bold text-[#e94560]">{t("total")}</span>
+                <span className="text-lg font-bold tabular-nums text-[#1a1a2e]">{fmt(total)}</span>
+              </div>
+              {depositPercent && total > 0 && (
+                <div className="w-full max-w-[220px] mt-2 bg-red-50 border border-[#e94560]/30 rounded-lg p-2">
+                  <div className="flex justify-between text-xs">
+                    <span className="text-[#e94560] font-bold">{t("deposit")} ({depositPercent}%)</span>
+                    <span className="text-[#1a1a2e] font-bold tabular-nums">{fmt(total * depositPercent / 100)}</span>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Bank + Payment Notes */}
+        <div className="px-5 sm:px-6 pb-4 space-y-3">
+          <BankSection labelClass="text-[#1a1a2e]" bgClass="bg-slate-50 border-slate-200" />
+          <PaymentNotesSection />
+        </div>
+
+        {/* Footer */}
+        <div className="px-6 py-3 bg-slate-50 border-t border-slate-200">
           <ComplianceFooter />
           <WatermarkFooter />
         </div>
@@ -659,7 +1254,7 @@ function InvoicePreview({
           <div className="flex-1" style={{ fontFamily: "system-ui, sans-serif" }}>
             <div className="space-y-1.5 text-xs">
               <div className="flex gap-3">
-                <span className="text-gray-400 w-20 shrink-0">Issued</span>
+                <span className="text-gray-400 w-20 shrink-0">{t("issued")}</span>
                 <span className="text-gray-600">{fmtDate(today)}</span>
               </div>
               {serviceDate && (
@@ -672,25 +1267,25 @@ function InvoicePreview({
                 <p className="text-[10px] text-amber-600 italic mt-0.5">{countryConfig.serviceDateNote}</p>
               )}
               <div className="flex gap-3">
-                <span className="text-gray-400 w-20 shrink-0">Due</span>
+                <span className="text-gray-400 w-20 shrink-0">{t("due")}</span>
                 <span className="text-gray-600">{fmtDate(dueDate)}</span>
               </div>
             </div>
             {invoiceType === "credit_note" && referenceInvoice && (
-              <p className="text-xs text-gray-400 mt-2">Ref: {referenceInvoice}</p>
+              <p className="text-xs text-gray-400 mt-2">{t("ref")}: {referenceInvoice}</p>
             )}
           </div>
           <div className="text-left sm:text-right flex-shrink-0" style={{ fontFamily: "system-ui, sans-serif" }}>
-            <p className="text-[10px] uppercase tracking-[0.2em] text-gray-400 mb-1.5">Bill To</p>
+            <p className="text-[10px] uppercase tracking-[0.2em] text-gray-400 mb-1.5">{t("billTo")}</p>
             {selectedClient ? (
               <>
                 <p className="text-sm text-gray-800">{selectedClient.name}</p>
                 <p className="text-gray-400 text-xs mt-0.5">{selectedClient.email}</p>
                 {selectedClient.address && <p className="text-gray-400 text-xs mt-0.5 whitespace-pre-line">{selectedClient.address}</p>}
-                {selectedClient.vatNumber && <p className="text-gray-400 text-xs mt-1">VAT: {selectedClient.vatNumber}</p>}
+                {selectedClient.vatNumber && <p className="text-gray-400 text-xs mt-1">{t("vat")}: {selectedClient.vatNumber}</p>}
               </>
             ) : (
-              <p className="text-gray-300 text-xs italic">No client selected</p>
+              <p className="text-gray-300 text-xs italic">{t("noClient")}</p>
             )}
           </div>
         </div>
@@ -700,7 +1295,7 @@ function InvoicePreview({
       {notesToClient && (
         <div className="px-6 sm:px-8 pb-5">
           <div className="border-l-2 border-gray-200 pl-4 py-1">
-            <p className="text-[10px] text-gray-400 mb-0.5" style={{ fontFamily: "system-ui, sans-serif" }}>Note</p>
+            <p className="text-[10px] text-gray-400 mb-0.5" style={{ fontFamily: "system-ui, sans-serif" }}>{t("note")}</p>
             <p className="text-xs whitespace-pre-line leading-relaxed text-gray-600" style={{ fontFamily: "system-ui, sans-serif" }}>{notesToClient}</p>
           </div>
         </div>
@@ -711,10 +1306,10 @@ function InvoicePreview({
         <table className="w-full text-xs">
           <thead>
             <tr className="border-b border-gray-300">
-              <th className="text-left text-[10px] font-normal uppercase tracking-[0.15em] py-3 pr-2 text-gray-400">Description</th>
-              <th className="text-center text-[10px] font-normal uppercase tracking-[0.15em] py-3 px-2 w-12 text-gray-400">Qty</th>
-              <th className="text-right text-[10px] font-normal uppercase tracking-[0.15em] py-3 px-2 w-20 text-gray-400">Price</th>
-              <th className="text-right text-[10px] font-normal uppercase tracking-[0.15em] py-3 pl-2 w-20 text-gray-400">Amount</th>
+              <th className="text-left text-[10px] font-normal uppercase tracking-[0.15em] py-3 pr-2 text-gray-400">{t("description")}</th>
+              <th className="text-center text-[10px] font-normal uppercase tracking-[0.15em] py-3 px-2 w-12 text-gray-400">{t("qty")}</th>
+              <th className="text-right text-[10px] font-normal uppercase tracking-[0.15em] py-3 px-2 w-20 text-gray-400">{t("price")}</th>
+              <th className="text-right text-[10px] font-normal uppercase tracking-[0.15em] py-3 pl-2 w-20 text-gray-400">{t("amount")}</th>
             </tr>
           </thead>
           <tbody>
@@ -733,12 +1328,12 @@ function InvoicePreview({
         <div className="py-6">
           <div className="flex flex-col items-end space-y-1.5">
             <div className="w-full max-w-[200px] flex justify-between text-xs">
-              <span className="text-gray-400">Subtotal</span>
+              <span className="text-gray-400">{t("subtotal")}</span>
               <span className="text-gray-600 tabular-nums">{fmt(subtotal)}</span>
             </div>
             {taxRate > 0 && (
               <div className="w-full max-w-[200px] flex justify-between text-xs">
-                <span className="text-gray-400">VAT ({taxRate}%)</span>
+                <span className="text-gray-400">{t("vat")} ({taxRate}%)</span>
                 <span className="text-gray-600 tabular-nums">{fmt(tax)}</span>
               </div>
             )}
@@ -748,13 +1343,13 @@ function InvoicePreview({
               </div>
             )}
             <div className="w-full max-w-[200px] flex justify-between pt-3 border-t border-gray-300">
-              <span className="text-sm text-gray-800" style={{ fontFamily: "Georgia, serif" }}>Total</span>
+              <span className="text-sm text-gray-800" style={{ fontFamily: "Georgia, serif" }}>{t("total")}</span>
               <span className="text-lg tabular-nums text-gray-900" style={{ fontFamily: "Georgia, serif" }}>{fmt(total)}</span>
             </div>
             {depositPercent && total > 0 && (
               <div className="w-full max-w-[200px] mt-2 bg-amber-50 border border-amber-200 rounded-lg p-2">
                 <div className="flex justify-between text-xs">
-                  <span className="text-amber-700 font-semibold">Deposit ({depositPercent}%)</span>
+                  <span className="text-amber-700 font-semibold">{t("deposit")} ({depositPercent}%)</span>
                   <span className="text-amber-800 font-bold tabular-nums">{fmt(total * depositPercent / 100)}</span>
                 </div>
               </div>
@@ -1571,7 +2166,10 @@ function NewInvoiceForm() {
                   {[
                     { id: "classic", label: "Classic", desc: "Corporate" },
                     { id: "modern", label: "Modern", desc: "Bold & sleek" },
-                    { id: "minimal", label: "Minimal", desc: "Elegant" },
+                    { id: "minimal", label: "Minimal", desc: "Clean & airy" },
+                    { id: "bold", label: "Bold", desc: "High contrast" },
+                    { id: "elegant", label: "Elegant", desc: "Sophisticated" },
+                    { id: "contractor", label: "Contractor", desc: "Industrial" },
                   ].map((theme) => (
                     <button
                       key={theme.id}
@@ -1667,6 +2265,82 @@ function NewInvoiceForm() {
                             </div>
                             <div className="px-1.5 pb-1.5 mt-auto flex justify-end">
                               <div className="h-0.5 w-6 bg-gray-300 rounded-full" />
+                            </div>
+                          </div>
+                        )}
+                        {theme.id === "bold" && (
+                          <div className="w-full h-full flex flex-col">
+                            <div className="h-[4px] bg-amber-500" />
+                            <div className="bg-[#0f172a] px-1.5 py-1.5">
+                              <div className="flex items-center gap-1">
+                                <div className="w-2 h-2 rounded bg-amber-500 flex-shrink-0" />
+                                <div className="h-1.5 w-5 bg-white/30 rounded-full" />
+                              </div>
+                              <div className="h-2 w-10 bg-white/15 rounded mt-0.5 ml-auto" />
+                            </div>
+                            <div className="px-1.5 py-1 bg-slate-100 border-b border-slate-200">
+                              <div className="flex gap-2">
+                                <div className="h-1 w-4 bg-slate-300 rounded-full" />
+                                <div className="h-1 w-4 bg-amber-300 rounded-full" />
+                              </div>
+                            </div>
+                            <div className="px-1.5 mt-1 flex-1">
+                              <div className="h-1 w-full bg-[#0f172a] rounded-sm mb-0.5" />
+                              <div className="h-0.5 w-full bg-gray-100 rounded-full mb-0.5" />
+                              <div className="h-0.5 w-full bg-slate-50 rounded-full" />
+                            </div>
+                            <div className="px-1.5 pb-1 mt-auto flex justify-end">
+                              <div className="h-2 w-8 bg-[#0f172a] rounded-sm" />
+                            </div>
+                          </div>
+                        )}
+                        {theme.id === "elegant" && (
+                          <div className="w-full h-full flex flex-col">
+                            <div className="h-[1px] bg-gradient-to-r from-transparent via-[#c9a96e] to-transparent" />
+                            <div className="px-1.5 pt-2 flex justify-between items-center">
+                              <div className="flex items-center gap-1">
+                                <div className="w-1.5 h-1.5 rounded-sm bg-[#4a3728] flex-shrink-0" />
+                                <div className="h-0.5 w-5 bg-[#4a3728]/30 rounded-full" />
+                              </div>
+                              <div className="h-0.5 w-3 bg-stone-200 rounded-full" />
+                            </div>
+                            <div className="text-center py-1.5 border-t border-stone-200 mt-1.5 mx-1.5">
+                              <div className="h-0.5 w-4 bg-[#c9a96e]/50 rounded-full mx-auto mb-0.5" />
+                              <div className="h-1.5 w-8 bg-[#4a3728]/20 rounded mx-auto" />
+                            </div>
+                            <div className="px-1.5 border-t border-stone-200 mx-1.5 pt-1 flex-1">
+                              <div className="h-0.5 w-full border-b border-[#c9a96e]/20 mb-0.5" />
+                              <div className="h-0.5 w-full bg-stone-100 rounded-full mb-0.5" />
+                              <div className="h-0.5 w-full bg-stone-50 rounded-full" />
+                            </div>
+                            <div className="px-1.5 pb-1.5 mt-auto flex justify-end">
+                              <div className="h-0.5 w-5 border-t border-[#c9a96e]/30" />
+                            </div>
+                          </div>
+                        )}
+                        {theme.id === "contractor" && (
+                          <div className="w-full h-full flex flex-col">
+                            <div className="h-[3px] bg-[#e94560]" />
+                            <div className="bg-[#1a1a2e] px-1.5 py-1.5">
+                              <div className="flex items-center gap-1">
+                                <div className="w-2 h-2 rounded bg-[#e94560] flex-shrink-0" />
+                                <div className="h-1 w-5 bg-white/30 rounded-full" />
+                              </div>
+                              <div className="h-1.5 w-7 bg-white/20 rounded mt-0.5 ml-auto" />
+                            </div>
+                            <div className="px-1.5 py-0.5 bg-slate-100 border-b-2 border-[#e94560]/20">
+                              <div className="flex gap-2">
+                                <div className="h-0.5 w-6 bg-slate-300 rounded-full" />
+                                <div className="h-0.5 w-4 bg-[#e94560]/40 rounded-full" />
+                              </div>
+                            </div>
+                            <div className="px-1.5 mt-1 flex-1">
+                              <div className="h-1 w-full bg-[#1a1a2e] rounded-sm mb-0.5" />
+                              <div className="h-0.5 w-full bg-gray-100 rounded-full mb-0.5" />
+                              <div className="h-0.5 w-full bg-slate-50 rounded-full" />
+                            </div>
+                            <div className="px-1.5 pb-1 mt-auto">
+                              <div className="h-0.5 w-full border-t-2 border-[#e94560]/30" />
                             </div>
                           </div>
                         )}
@@ -2289,6 +2963,7 @@ function NewInvoiceForm() {
                   invoiceCountry={invoiceCountry}
                   invoiceTheme={invoiceTheme}
                   depositPercent={invoiceType === "quote" && depositEnabled && isPro ? depositPercent : null}
+                  language={language}
                 />
               </div>
             </div>

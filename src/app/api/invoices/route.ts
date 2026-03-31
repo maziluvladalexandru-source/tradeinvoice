@@ -166,7 +166,7 @@ export async function POST(req: NextRequest) {
         referenceInvoice: referenceInvoice || null,
         invoiceCountry: validatedCountry,
         language: user.plan === "pro" ? (language || "en") : "en",
-        invoiceTheme: user.plan === "pro" && invoiceTheme && ["classic", "modern", "minimal"].includes(invoiceTheme) ? invoiceTheme : "classic",
+        invoiceTheme: user.plan === "pro" && invoiceTheme && ["classic", "modern", "minimal", "bold", "elegant", "contractor"].includes(invoiceTheme) ? invoiceTheme : "classic",
         scheduledSendAt: scheduledSendAt ? new Date(scheduledSendAt) : null,
         depositPercent: invoiceType === "quote" && typeof depositPercent === "number" && depositPercent >= 1 && depositPercent <= 99 ? depositPercent : null,
         depositAmount: invoiceType === "quote" && typeof depositPercent === "number" && depositPercent >= 1 && depositPercent <= 99 ? Math.round(total * depositPercent) / 100 : null,
