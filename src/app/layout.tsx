@@ -6,6 +6,8 @@ import { ToastProvider } from "@/components/Toast";
 import { TimerProvider } from "@/components/TimerContext";
 import GlobalTimerBar from "@/components/GlobalTimerBar";
 import { cn } from "@/lib/utils";
+import { NextIntlClientProvider } from "next-intl";
+import { getLocale, getMessages } from "next-intl/server";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -61,13 +63,15 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = await getLocale();
+  const messages = await getMessages();
   return (
-    <html lang="en" className={cn("dark font-sans", inter.variable)}>
+    <html lang={locale} className={cn("dark font-sans", inter.variable)}>
       <head>
         <script
           type="application/ld+json"
@@ -101,13 +105,15 @@ export default function RootLayout({
         />
       </head>
       <body className={`${inter.className} antialiased bg-[#0a0f1e]`}>
-        <ToastProvider>
-          <TimerProvider>
-            <GlobalTimerBar />
-            {children}
-          </TimerProvider>
-          <CookieBanner />
-        </ToastProvider>
+        <NextIntlClientProvider messages={messages}>
+          <ToastProvider>
+            <TimerProvider>
+              <GlobalTimerBar />
+              {children}
+            </TimerProvider>
+            <CookieBanner />
+          </ToastProvider>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

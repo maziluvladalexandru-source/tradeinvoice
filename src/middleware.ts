@@ -11,6 +11,7 @@ const publicPaths = [
   "/api/cron/reminders",
   "/api/cron/recurring",
   "/api/cron/scheduled",
+  "/api/locale",
 ];
 
 export function middleware(req: NextRequest) {

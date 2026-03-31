@@ -3,23 +3,26 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import OfflineBanner from "./OfflineBanner";
+import LanguageSwitcher from "./LanguageSwitcher";
 import { motion } from "@/components/animations";
 
 export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
   const [loggingOut, setLoggingOut] = useState(false);
+  const t = useTranslations("nav");
 
   const links = [
-    { href: "/dashboard", label: "Dashboard" },
-    { href: "/invoices", label: "Invoices" },
-    { href: "/clients", label: "Clients" },
-    { href: "/expenses", label: "Expenses" },
-    { href: "/time-tracking", label: "Time" },
-    { href: "/reports", label: "Reports" },
-    { href: "/services", label: "Services" },
-    { href: "/settings", label: "Settings" },
+    { href: "/dashboard", label: t("dashboard") },
+    { href: "/invoices", label: t("invoices") },
+    { href: "/clients", label: t("clients") },
+    { href: "/expenses", label: t("expenses") },
+    { href: "/time-tracking", label: t("timeTracking") },
+    { href: "/reports", label: t("reports") },
+    { href: "/services", label: t("services") },
+    { href: "/settings", label: t("settings") },
   ];
 
   async function handleLogout() {
@@ -116,13 +119,16 @@ export default function Navbar() {
               </Link>
             </div>
           </div>
-          <button
-            onClick={handleLogout}
-            disabled={loggingOut}
-            className="hidden md:block text-sm text-gray-500 hover:text-gray-300 transition-colors duration-200"
-          >
-            {loggingOut ? "Signing out..." : "Sign Out"}
-          </button>
+          <div className="hidden md:flex items-center gap-2">
+            <LanguageSwitcher compact />
+            <button
+              onClick={handleLogout}
+              disabled={loggingOut}
+              className="text-sm text-gray-500 hover:text-gray-300 transition-colors duration-200"
+            >
+              {loggingOut ? "..." : t("signOut")}
+            </button>
+          </div>
         </div>
         {/* Mobile nav moved to BottomNav component */}
       </div>
