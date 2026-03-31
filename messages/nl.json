@@ -13,7 +13,9 @@
     "blog": "Blog",
     "pricing": "Prijzen",
     "signIn": "Inloggen",
-    "language": "Taal"
+    "language": "Taal",
+    "home": "Home",
+    "more": "Meer"
   },
   "landing": {
     "heroTagline": "Gemaakt voor vakmensen, niet voor accountants",
@@ -87,7 +89,20 @@
     "monthlyRevenue": "Maandelijkse omzet",
     "paidCount": "Betaald",
     "pendingCount": "In afwachting",
-    "overdueCount": "Achterstallig"
+    "overdueCount": "Achterstallig",
+    "avgDaysToPay": "Gem. dagen tot betaling",
+    "activeClients": "Actieve klanten",
+    "collectionProgress": "Incassovoortgang",
+    "collected": "geïnd",
+    "invoiced": "gefactureerd",
+    "freePlanUsage": "Gratis plan: {count}/20 facturen gebruikt deze maand",
+    "upgradePrompt": "Upgrade naar Pro voor onbeperkte facturen",
+    "upgrade": "Upgrade",
+    "invoiceStatus": "Factuurstatus",
+    "revenueThisMonth": "Omzet deze maand",
+    "collectionRate": "Incassopercentage",
+    "createFirstDesc": "Maak uw eerste factuur om betalingen te volgen.",
+    "createFirst": "Maak uw eerste factuur"
   },
   "invoices": {
     "title": "Facturen",
@@ -119,7 +134,18 @@
     "convertToInvoice": "Omzetten naar factuur",
     "bulkActions": "Bulkacties",
     "selected": "geselecteerd",
-    "exportCsv": "Exporteer CSV"
+    "exportCsv": "Exporteer CSV",
+    "downloadCsv": "Download CSV",
+    "exporting": "Exporteren...",
+    "invoicesTab": "Facturen",
+    "quotesTab": "Offertes",
+    "searchPlaceholder": "Zoek op factuurnummer of klantnaam...",
+    "allStatuses": "Alle statussen",
+    "loadingInvoices": "Facturen laden...",
+    "noInvoicesYet": "Nog geen facturen. Maak uw eerste factuur om te beginnen.",
+    "noMatch": "Geen facturen komen overeen met uw zoekopdracht.",
+    "recurring": "Terugkerend",
+    "due": "Vervalt"
   },
   "invoiceForm": {
     "createInvoice": "Factuur maken",
@@ -173,7 +199,25 @@
     "search": "Klanten zoeken...",
     "delete": "Verwijderen",
     "save": "Opslaan",
-    "cancel": "Annuleren"
+    "cancel": "Annuleren",
+    "totalClients": "Totaal klanten",
+    "totalInvoicesLabel": "Totaal facturen",
+    "saving": "Opslaan...",
+    "saveClient": "Klant opslaan",
+    "saveChanges": "Wijzigingen opslaan",
+    "sortByName": "Sorteer op naam",
+    "sortByRevenue": "Sorteer op omzet",
+    "sortByInvoices": "Sorteer op facturen",
+    "sortByRecent": "Sorteer op recent",
+    "noClientsDesc": "Voeg uw eerste klant toe om facturen te versturen en betalingen bij te houden.",
+    "noMatch": "Geen klanten komen overeen met uw zoekopdracht.",
+    "lastInvoice": "Laatste factuur",
+    "invoicesCount": "Facturen",
+    "statusLabel": "Status",
+    "never": "Nooit",
+    "newInvoice": "+ Nieuwe factuur",
+    "noInvoicesYet": "Nog geen facturen",
+    "addYourFirst": "Voeg uw eerste klant toe"
   },
   "expenses": {
     "title": "Uitgaven",
@@ -204,8 +248,37 @@
       "insurance": "Verzekering",
       "office": "Kantoor",
       "marketing": "Marketing",
-      "other": "Overig"
-    }
+      "other": "Overig",
+      "subcontractor": "Onderaannemer",
+      "fuelMileage": "Brandstof / Kilometers",
+      "officeAdmin": "Kantoor / Admin"
+    },
+    "subtitle": "Bijhouden van jobkosten, bonnen en aftrekposten",
+    "logMileage": "Kilometers registreren",
+    "mileage": "Kilometers",
+    "allCategories": "Alle categorieën",
+    "allTime": "Altijd",
+    "thisQuarter": "Dit kwartaal",
+    "thisYear": "Dit jaar",
+    "spendingByCategory": "Uitgaven per categorie",
+    "noExpensesDesc": "Begin met het bijhouden van uw jobkosten en zakelijke uitgaven.",
+    "addFirstExpense": "Voeg uw eerste uitgave toe",
+    "editExpenseTitle": "Uitgave bewerken",
+    "newExpense": "Nieuwe uitgave",
+    "receiptPhoto": "Bonnetje foto",
+    "changeReceipt": "Bon wijzigen",
+    "uploadReceiptBtn": "Bon uploaden",
+    "receiptAttached": "Bon bijgevoegd",
+    "billableToClient": "Factureerbaar aan klant",
+    "updateExpense": "Uitgave bijwerken",
+    "saveExpense": "Uitgave opslaan",
+    "totalDistance": "Totale afstand",
+    "taxDeductionLabel": "Fiscale aftrek",
+    "billable": "Factureerbaar",
+    "mileageLog": "Kilometerlog",
+    "noMileageYet": "Nog geen kilometerregistraties",
+    "noMileageDesc": "Begin met het registreren van uw zakelijke reizen om aftrekposten bij te houden.",
+    "logFirstTrip": "Registreer uw eerste rit"
   },
   "timeTracking": {
     "title": "Tijdregistratie",
@@ -344,7 +417,12 @@
     "verifying": "Uw inloglink wordt geverifieerd...",
     "verified": "Geverifieerd! U wordt doorgestuurd...",
     "invalidLink": "Ongeldige of verlopen link.",
-    "tryAgain": "Opnieuw proberen"
+    "tryAgain": "Opnieuw proberen",
+    "sending": "Verzenden...",
+    "clickLinkExpires": "Klik op de link om in te loggen. Verloopt in 15 minuten.",
+    "linkExpired": "Deze link is verlopen. Vraag een nieuwe aan.",
+    "missingToken": "Ongeldige inloglink.",
+    "and": "en"
   },
   "footer": {
     "about": "Over ons",

@@ -13,7 +13,9 @@
     "blog": "Blog",
     "pricing": "Pricing",
     "signIn": "Sign In",
-    "language": "Language"
+    "language": "Language",
+    "home": "Home",
+    "more": "More"
   },
   "landing": {
     "heroTagline": "Built for tradespeople, not accountants",
@@ -87,7 +89,20 @@
     "monthlyRevenue": "Monthly Revenue",
     "paidCount": "Paid",
     "pendingCount": "Pending",
-    "overdueCount": "Overdue"
+    "overdueCount": "Overdue",
+    "avgDaysToPay": "Avg. Days to Pay",
+    "activeClients": "Active Clients",
+    "collectionProgress": "Collection progress",
+    "collected": "collected",
+    "invoiced": "invoiced",
+    "freePlanUsage": "Free Plan: {count}/20 invoices used this month",
+    "upgradePrompt": "Upgrade to Pro for unlimited invoices",
+    "upgrade": "Upgrade",
+    "invoiceStatus": "Invoice Status",
+    "revenueThisMonth": "Revenue This Month",
+    "collectionRate": "Collection Rate",
+    "createFirstDesc": "Create your first invoice to start tracking payments.",
+    "createFirst": "Create Your First Invoice"
   },
   "invoices": {
     "title": "Invoices",
@@ -119,7 +134,18 @@
     "convertToInvoice": "Convert to Invoice",
     "bulkActions": "Bulk Actions",
     "selected": "selected",
-    "exportCsv": "Export CSV"
+    "exportCsv": "Export CSV",
+    "downloadCsv": "Download CSV",
+    "exporting": "Exporting...",
+    "invoicesTab": "Invoices",
+    "quotesTab": "Quotes",
+    "searchPlaceholder": "Search by invoice number or client name...",
+    "allStatuses": "All statuses",
+    "loadingInvoices": "Loading invoices...",
+    "noInvoicesYet": "No invoices yet. Create your first invoice to get started.",
+    "noMatch": "No invoices match your search.",
+    "recurring": "Recurring",
+    "due": "Due"
   },
   "invoiceForm": {
     "createInvoice": "Create Invoice",
@@ -173,7 +199,25 @@
     "search": "Search clients...",
     "delete": "Delete",
     "save": "Save",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "totalClients": "Total Clients",
+    "totalInvoicesLabel": "Total Invoices",
+    "saving": "Saving...",
+    "saveClient": "Save Client",
+    "saveChanges": "Save Changes",
+    "sortByName": "Sort by Name",
+    "sortByRevenue": "Sort by Revenue",
+    "sortByInvoices": "Sort by Invoices",
+    "sortByRecent": "Sort by Recent",
+    "noClientsDesc": "Add your first client to start sending invoices and tracking payments.",
+    "noMatch": "No clients match your search.",
+    "lastInvoice": "Last Invoice",
+    "invoicesCount": "Invoices",
+    "statusLabel": "Status",
+    "never": "Never",
+    "newInvoice": "+ New Invoice",
+    "noInvoicesYet": "No invoices yet",
+    "addYourFirst": "Add Your First Client"
   },
   "expenses": {
     "title": "Expenses",
@@ -204,8 +248,37 @@
       "insurance": "Insurance",
       "office": "Office",
       "marketing": "Marketing",
-      "other": "Other"
-    }
+      "other": "Other",
+      "subcontractor": "Subcontractor",
+      "fuelMileage": "Fuel / Mileage",
+      "officeAdmin": "Office / Admin"
+    },
+    "subtitle": "Track job costs, receipts & deductions",
+    "logMileage": "Log Mileage",
+    "mileage": "Mileage",
+    "allCategories": "All Categories",
+    "allTime": "All Time",
+    "thisQuarter": "This Quarter",
+    "thisYear": "This Year",
+    "spendingByCategory": "Spending by Category",
+    "noExpensesDesc": "Start tracking your job costs and business expenses.",
+    "addFirstExpense": "Add Your First Expense",
+    "editExpenseTitle": "Edit Expense",
+    "newExpense": "New Expense",
+    "receiptPhoto": "Receipt Photo",
+    "changeReceipt": "Change Receipt",
+    "uploadReceiptBtn": "Upload Receipt",
+    "receiptAttached": "Receipt attached",
+    "billableToClient": "Billable to client",
+    "updateExpense": "Update Expense",
+    "saveExpense": "Save Expense",
+    "totalDistance": "Total Distance",
+    "taxDeductionLabel": "Tax Deduction",
+    "billable": "Billable",
+    "mileageLog": "Mileage Log",
+    "noMileageYet": "No mileage entries yet",
+    "noMileageDesc": "Start logging your business travel to track deductions.",
+    "logFirstTrip": "Log Your First Trip"
   },
   "timeTracking": {
     "title": "Time Tracking",
@@ -344,7 +417,12 @@
     "verifying": "Verifying your sign-in link...",
     "verified": "Verified! Redirecting...",
     "invalidLink": "Invalid or expired link.",
-    "tryAgain": "Try again"
+    "tryAgain": "Try again",
+    "sending": "Sending...",
+    "clickLinkExpires": "Click the link to sign in. Expires in 15 minutes.",
+    "linkExpired": "This link has expired. Please request a new one.",
+    "missingToken": "Invalid sign-in link.",
+    "and": "and"
   },
   "footer": {
     "about": "About",

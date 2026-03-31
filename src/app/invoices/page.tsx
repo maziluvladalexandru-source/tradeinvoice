@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useMemo } from "react";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
@@ -52,6 +53,7 @@ type SortDir = "asc" | "desc";
 const statusOrder: Record<string, number> = { draft: 0, sent: 1, viewed: 2, overdue: 3, paid: 4 };
 
 export default function InvoicesListPage() {
+  const t = useTranslations("invoices");
   const router = useRouter();
   const [invoices, setInvoices] = useState<Invoice[]>([]);
   const [loading, setLoading] = useState(true);
@@ -201,7 +203,7 @@ export default function InvoicesListPage() {
         <FadeIn>
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-white tracking-tight">Invoices</h1>
+            <h1 className="text-3xl font-bold text-white tracking-tight">{t("title")}</h1>
             <div className="w-16 h-1 bg-gradient-to-r from-amber-500 to-amber-300 rounded-full mt-2" />
           </div>
           <div className="flex items-center gap-2">
@@ -213,7 +215,7 @@ export default function InvoicesListPage() {
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
               </svg>
-              {exporting ? "Exporting..." : "Download CSV"}
+              {exporting ? t("exporting") : t("downloadCsv")}
             </button>
             <Link
               href="/invoices/new"
@@ -222,7 +224,7 @@ export default function InvoicesListPage() {
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 4v16m8-8H4" />
               </svg>
-              New Invoice
+              {t("new")}
             </Link>
           </div>
         </div>
@@ -231,7 +233,7 @@ export default function InvoicesListPage() {
         {/* Type Tabs */}
         <FadeIn delay={0.05}>
         <div className="flex gap-1 mb-6 bg-[#111827] rounded-xl p-1 border border-gray-700/50 w-fit">
-          {([["all", "All"], ["invoice", "Invoices"], ["quote", "Quotes"]] as const).map(([value, label]) => (
+          {([["all", t("all")], ["invoice", t("invoicesTab")], ["quote", t("quotesTab")]] as const).map(([value, label]) => (
             <button
               key={value}
               onClick={() => setTypeFilter(value)}
@@ -256,7 +258,7 @@ export default function InvoicesListPage() {
             </svg>
             <input
               type="text"
-              placeholder="Search by invoice number or client name..."
+              placeholder={t("searchPlaceholder")}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-700/50 text-sm focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-[#111827] text-white placeholder-gray-500 transition-all duration-200 focus-glow"
@@ -267,12 +269,12 @@ export default function InvoicesListPage() {
             onChange={(e) => setStatusFilter(e.target.value)}
             className="px-4 py-2.5 rounded-xl border border-gray-700/50 text-sm focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none bg-[#111827] text-white transition-all duration-200"
           >
-            <option value="all">All statuses</option>
-            <option value="draft">Draft</option>
-            <option value="sent">Sent</option>
-            <option value="viewed">Viewed</option>
-            <option value="paid">Paid</option>
-            <option value="overdue">Overdue</option>
+            <option value="all">{t("allStatuses")}</option>
+            <option value="draft">{t("draft")}</option>
+            <option value="sent">{t("sent")}</option>
+            <option value="viewed">{t("viewed")}</option>
+            <option value="paid">{t("paid")}</option>
+            <option value="overdue">{t("overdue")}</option>
           </select>
         </div>
         </FadeIn>
@@ -281,16 +283,16 @@ export default function InvoicesListPage() {
         <FadeIn delay={0.15}>
         <div className="flex gap-2 mb-4">
           <button onClick={() => toggleSort("date")} className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${sortField === "date" ? "bg-amber-500/15 text-amber-400" : "text-gray-400 hover:text-white hover:bg-white/5"}`}>
-            Date <SortIcon field="date" />
+            {t("date")} <SortIcon field="date" />
           </button>
           <button onClick={() => toggleSort("amount")} className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${sortField === "amount" ? "bg-amber-500/15 text-amber-400" : "text-gray-400 hover:text-white hover:bg-white/5"}`}>
-            Amount <SortIcon field="amount" />
+            {t("amount")} <SortIcon field="amount" />
           </button>
           <button onClick={() => toggleSort("status")} className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${sortField === "status" ? "bg-amber-500/15 text-amber-400" : "text-gray-400 hover:text-white hover:bg-white/5"}`}>
-            Status <SortIcon field="status" />
+            {t("status")} <SortIcon field="status" />
           </button>
           <span className="ml-auto text-xs text-gray-500 self-center">
-            {filtered.length} {typeFilter === "quote" ? "quote" : "invoice"}{filtered.length !== 1 ? "s" : ""}
+            {filtered.length} {typeFilter === "quote" ? t("quote") : t("invoice")}{filtered.length !== 1 ? "s" : ""}
           </span>
         </div>
         </FadeIn>
@@ -301,7 +303,7 @@ export default function InvoicesListPage() {
           {loading ? (
             <div className="p-16 text-center">
               <div className="w-10 h-10 border-2 border-amber-500/30 border-t-amber-500 rounded-full animate-spin mx-auto" />
-              <p className="text-gray-400 mt-4 text-sm">Loading invoices...</p>
+              <p className="text-gray-400 mt-4 text-sm">{t("loadingInvoices")}</p>
             </div>
           ) : filtered.length === 0 ? (
             <div className="p-16 text-center">
@@ -311,9 +313,7 @@ export default function InvoicesListPage() {
                 </svg>
               </div>
               <p className="text-gray-400 text-sm">
-                {invoices.length === 0
-                  ? "No invoices yet. Create your first invoice to get started."
-                  : "No invoices match your search."}
+                {invoices.length === 0 ? t("noInvoicesYet") : t("noMatch")}
               </p>
             </div>
           ) : (
@@ -343,12 +343,12 @@ export default function InvoicesListPage() {
                     </Link>
 
                     <p className="text-xs text-gray-500 whitespace-nowrap">
-                      Due {fmtDate(invoice.dueDate)}
+                      {t("due")} {fmtDate(invoice.dueDate)}
                     </p>
 
                     <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold capitalize whitespace-nowrap ${statusColors[invoice.status] || ""}`}>
                       <span className={`w-1.5 h-1.5 rounded-full ${statusDot[invoice.status] || ""}`} />
-                      {invoice.status}
+                      {({"draft":t("draft"),"sent":t("sent"),"paid":t("paid"),"overdue":t("overdue"),"viewed":t("viewed")}[invoice.status] || invoice.status)}
                     </span>
 
                     <div className="text-right whitespace-nowrap">
@@ -405,7 +405,7 @@ export default function InvoicesListPage() {
                     <div className="flex items-center justify-between mt-2">
                       <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold capitalize whitespace-nowrap ${statusColors[invoice.status] || ""}`}>
                         <span className={`w-1.5 h-1.5 rounded-full ${statusDot[invoice.status] || ""}`} />
-                        {invoice.status}
+                        {({"draft":t("draft"),"sent":t("sent"),"paid":t("paid"),"overdue":t("overdue"),"viewed":t("viewed")}[invoice.status] || invoice.status)}
                       </span>
                       <div className="flex items-center gap-0.5">
                         <Link href={`/invoices/${invoice.id}`} className="p-1 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-colors" title="View">

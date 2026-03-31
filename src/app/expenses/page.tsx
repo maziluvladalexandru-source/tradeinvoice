@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
+import { useTranslations } from "next-intl";
 import Navbar from "@/components/Navbar";
 import BottomNav from "@/components/BottomNav";
 import UpgradeModal from "@/components/UpgradeModal";
@@ -65,14 +66,14 @@ const CATEGORY_BORDER_LEFT: Record<string, string> = {
   other: "border-l-gray-500",
 };
 
-const TIME_FILTERS = [
-  { value: "all", label: "All Time" },
-  { value: "month", label: "This Month" },
-  { value: "quarter", label: "This Quarter" },
-  { value: "year", label: "This Year" },
-];
-
 export default function ExpensesPage() {
+  const t = useTranslations("expenses");
+  const TIME_FILTERS = [
+    { value: "all", label: t("allTime") },
+    { value: "month", label: t("thisMonth") },
+    { value: "quarter", label: t("thisQuarter") },
+    { value: "year", label: t("thisYear") },
+  ];
   const [activeTab, setActiveTab] = useState<"expenses" | "mileage">("expenses");
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [mileageEntries, setMileageEntries] = useState<MileageEntry[]>([]);
@@ -381,9 +382,9 @@ export default function ExpensesPage() {
         <FadeIn>
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-10">
           <div>
-            <h1 className="text-4xl font-bold text-white tracking-tight">Expenses</h1>
+            <h1 className="text-4xl font-bold text-white tracking-tight">{t("title")}</h1>
             <div className="w-20 h-1 bg-gradient-to-r from-amber-500 to-amber-300 rounded-full mt-2" />
-            <p className="text-gray-400 mt-1">Track job costs, receipts &amp; deductions</p>
+            <p className="text-gray-400 mt-1">{t("subtitle")}</p>
           </div>
           {activeTab === "expenses" ? (
             <button
@@ -393,7 +394,7 @@ export default function ExpensesPage() {
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 4v16m8-8H4" />
               </svg>
-              Add Expense
+              {t("addExpense")}
             </button>
           ) : (
             <button
@@ -411,7 +412,7 @@ export default function ExpensesPage() {
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 4v16m8-8H4" />
               </svg>
-              Log Mileage
+              {t("logMileage")}
             </button>
           )}
         </div>
@@ -428,7 +429,7 @@ export default function ExpensesPage() {
                 : "text-gray-400 hover:text-white"
             }`}
           >
-            Expenses
+            {t("title")}
           </button>
           <button
             onClick={() => setActiveTab("mileage")}
@@ -438,7 +439,7 @@ export default function ExpensesPage() {
                 : "text-gray-400 hover:text-white"
             }`}
           >
-            Mileage
+            {t("mileage")}
             {userPlan !== "pro" && (
               <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-semibold">Pro</span>
             )}
@@ -490,7 +491,7 @@ export default function ExpensesPage() {
                 onChange={(e) => setCategoryFilter(e.target.value)}
                 className="bg-[#0d1321] border border-gray-700/50 rounded-xl px-4 py-2 text-sm text-gray-300 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20"
               >
-                <option value="">All Categories</option>
+                <option value="">{t("allCategories")}</option>
                 {CATEGORIES.map((cat) => (
                   <option key={cat.value} value={cat.value}>{cat.label}</option>
                 ))}
@@ -501,7 +502,7 @@ export default function ExpensesPage() {
             {showForm && (
               <div className="bg-[#111827] backdrop-blur-sm rounded-2xl border border-gray-700/50 hover:border-amber-500/30 hover:shadow-lg hover:shadow-amber-500/10 transition-all duration-300 p-6 mb-10">
                 <h2 className="text-lg font-semibold text-white mb-4">
-                  {editingId ? "Edit Expense" : "New Expense"}
+                  {editingId ? t("editExpenseTitle") : t("newExpense")}
                 </h2>
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -590,7 +591,7 @@ export default function ExpensesPage() {
                     {/* Receipt Upload */}
                     <div className="flex-1">
                       <label className="block text-sm font-medium text-gray-400 mb-1">
-                        Receipt Photo
+                        {t("receiptPhoto")}
                         {userPlan !== "pro" && (
                           <span className="ml-2 inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-semibold">Pro</span>
                         )}
@@ -602,7 +603,7 @@ export default function ExpensesPage() {
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
                             </svg>
-                            {form.receiptUrl ? "Change Receipt" : "Upload Receipt"}
+                            {form.receiptUrl ? t("changeReceipt") : t("uploadReceiptBtn")}
                             <input
                               type="file"
                               accept="image/jpeg,image/png,image/webp,image/heic"
@@ -670,7 +671,7 @@ export default function ExpensesPage() {
                       type="submit"
                       className="bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-gray-950 px-6 py-2.5 rounded-xl font-semibold shadow-lg shadow-amber-500/20 transition-all"
                     >
-                      {editingId ? "Update Expense" : "Save Expense"}
+                      {editingId ? t("updateExpense") : t("saveExpense")}
                     </button>
                     <button
                       type="button"
@@ -688,7 +689,7 @@ export default function ExpensesPage() {
             {categoryBreakdown.length > 0 && (
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 mb-10">
                 <div className="bg-[#111827] backdrop-blur-sm rounded-2xl border border-gray-700/50 hover:border-amber-500/30 hover:shadow-lg hover:shadow-amber-500/10 transition-all duration-300 p-6">
-                  <h2 className="text-lg font-semibold text-white mb-4">Spending by Category</h2>
+                  <h2 className="text-lg font-semibold text-white mb-4">{t("spendingByCategory")}</h2>
                   <div className="space-y-3">
                     {categoryBreakdown.sort((a, b) => b.total - a.total).map((cat) => {
                       const pct = totalExpenses > 0 ? (cat.total / totalExpenses) * 100 : 0;
@@ -743,8 +744,8 @@ export default function ExpensesPage() {
                   <svg className="w-16 h-16 text-gray-700 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2zM10 8.5a.5.5 0 11-1 0 .5.5 0 011 0zm5 5a.5.5 0 11-1 0 .5.5 0 011 0z" />
                   </svg>
-                  <h3 className="text-xl font-semibold text-white mb-2">No expenses yet</h3>
-                  <p className="text-gray-400 mb-6">Start tracking your job costs and business expenses.</p>
+                  <h3 className="text-xl font-semibold text-white mb-2">{t("noExpenses")}</h3>
+                  <p className="text-gray-400 mb-6">{t("noExpensesDesc")}</p>
                   <button
                     onClick={() => { resetForm(); setShowForm(true); }}
                     className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-gray-950 px-6 py-3 rounded-xl font-semibold shadow-lg shadow-amber-500/20 transition-all"
@@ -851,19 +852,19 @@ export default function ExpensesPage() {
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10">
                   <div className="relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl p-5 border border-gray-700/50 hover:border-amber-500/30 hover:shadow-lg hover:shadow-amber-500/10 transition-all duration-300">
                     <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent pointer-events-none" />
-                    <p className="text-sm font-medium text-gray-400 mb-1">Total Distance</p>
+                    <p className="text-sm font-medium text-gray-400 mb-1">{t("totalDistance")}</p>
                     <p className="text-lg md:text-2xl font-bold text-blue-400 tabular-nums">{totalKm.toFixed(1)} km</p>
                     <p className="text-sm text-gray-500 mt-1">{TIME_FILTERS.find((f) => f.value === timeFilter)?.label}</p>
                   </div>
                   <div className="relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl p-5 border border-gray-700/50 hover:border-amber-500/30 hover:shadow-lg hover:shadow-amber-500/10 transition-all duration-300">
                     <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-transparent pointer-events-none" />
-                    <p className="text-sm font-medium text-gray-400 mb-1">Tax Deduction</p>
+                    <p className="text-sm font-medium text-gray-400 mb-1">{t("taxDeductionLabel")}</p>
                     <p className="text-lg md:text-2xl font-bold text-emerald-400 truncate tabular-nums">{fmtCurrency(totalDeduction)}</p>
                     <p className="text-sm text-gray-500 mt-1">at standard rates</p>
                   </div>
                   <div className="relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl p-5 border border-gray-700/50 hover:border-amber-500/30 hover:shadow-lg hover:shadow-amber-500/10 transition-all duration-300">
                     <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 to-transparent pointer-events-none" />
-                    <p className="text-sm font-medium text-gray-400 mb-1">Billable</p>
+                    <p className="text-sm font-medium text-gray-400 mb-1">{t("billable")}</p>
                     <p className="text-lg md:text-2xl font-bold text-amber-400 tabular-nums">{billableKm.toFixed(1)} km</p>
                     <p className="text-sm text-gray-500 mt-1">{mileageEntries.filter((e) => e.billable).length} trip{mileageEntries.filter((e) => e.billable).length !== 1 ? "s" : ""}</p>
                   </div>
@@ -902,7 +903,7 @@ export default function ExpensesPage() {
                 {/* Add Mileage Form */}
                 {showMileageForm && (
                   <div className="bg-[#111827] backdrop-blur-sm rounded-2xl border border-gray-700/50 hover:border-amber-500/30 hover:shadow-lg hover:shadow-amber-500/10 transition-all duration-300 p-6 mb-10">
-                    <h2 className="text-lg font-semibold text-white mb-4">Log Mileage</h2>
+                    <h2 className="text-lg font-semibold text-white mb-4">{t("logMileage")}</h2>
                     <form onSubmit={handleMileageSubmit} className="space-y-4">
                       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                         <div>
@@ -1046,8 +1047,8 @@ export default function ExpensesPage() {
                       <svg className="w-16 h-16 text-gray-700 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l5.447 2.724A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
                       </svg>
-                      <h3 className="text-xl font-semibold text-white mb-2">No mileage entries yet</h3>
-                      <p className="text-gray-400 mb-6">Start logging your business travel to track deductions.</p>
+                      <h3 className="text-xl font-semibold text-white mb-2">{t("noMileageYet")}</h3>
+                      <p className="text-gray-400 mb-6">{t("noMileageDesc")}</p>
                       <button
                         onClick={() => { resetMileageForm(); setShowMileageForm(true); }}
                         className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-gray-950 px-6 py-3 rounded-xl font-semibold shadow-lg shadow-amber-500/20 transition-all"
@@ -1080,7 +1081,7 @@ export default function ExpensesPage() {
                                   </span>
                                 )}
                                 {entry.billable && (
-                                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-amber-500/10 text-amber-400 border border-amber-500/20">Billable</span>
+                                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-amber-500/10 text-amber-400 border border-amber-500/20">{t("billable")}</span>
                                 )}
                               </div>
                             </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback, Suspense } from "react";
+import { useTranslations } from "next-intl";
 import { useRouter, useSearchParams } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import BottomNav from "@/components/BottomNav";
@@ -137,6 +138,7 @@ const NAV_SECTIONS = [
 const ALL_ITEMS = NAV_SECTIONS.flatMap((s) => s.items);
 
 function SettingsContent() {
+  const t = useTranslations("settings");
   const router = useRouter();
   const searchParams = useSearchParams();
   const upgraded = searchParams.get("upgraded");
@@ -501,7 +503,7 @@ function SettingsContent() {
 
       <PageTransition className="max-w-7xl mx-auto px-4 py-10">
         <FadeIn>
-          <h1 className="text-4xl font-bold text-white mb-2 tracking-tight">Settings</h1>
+          <h1 className="text-4xl font-bold text-white mb-2 tracking-tight">{t("title")}</h1>
           <div className="w-20 h-1 bg-gradient-to-r from-amber-500 to-amber-300 rounded-full mb-10" />
         </FadeIn>
 
@@ -614,7 +616,7 @@ function SettingsContent() {
                         disabled={upgrading}
                         className="bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-gray-950 px-6 py-3 rounded-xl font-semibold shadow-lg shadow-amber-500/20 transition-all disabled:opacity-50"
                       >
-                        {upgrading ? "Loading..." : "Upgrade to Pro"}
+                        {upgrading ? "Loading..." : t("upgrade")}
                       </button>
                     </div>
                   </div>
@@ -1361,7 +1363,7 @@ function SettingsContent() {
                 disabled={saving}
                 className="w-full bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-gray-950 px-6 py-3.5 rounded-xl font-semibold text-lg shadow-lg shadow-amber-500/20 transition-all disabled:opacity-50"
               >
-                {saving ? "Saving..." : "Save Changes"}
+                {saving ? "Saving..." : t("save")}
               </button>
               </FadeIn>
             </form>

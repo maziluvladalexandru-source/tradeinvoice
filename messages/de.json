@@ -13,7 +13,9 @@
     "blog": "Blog",
     "pricing": "Preise",
     "signIn": "Anmelden",
-    "language": "Sprache"
+    "language": "Sprache",
+    "home": "Startseite",
+    "more": "Mehr"
   },
   "landing": {
     "heroTagline": "Für Handwerker gemacht, nicht für Buchhalter",
@@ -87,7 +89,20 @@
     "monthlyRevenue": "Monatlicher Umsatz",
     "paidCount": "Bezahlt",
     "pendingCount": "Ausstehend",
-    "overdueCount": "Überfällig"
+    "overdueCount": "Überfällig",
+    "avgDaysToPay": "Durchschn. Zahlungstage",
+    "activeClients": "Aktive Kunden",
+    "collectionProgress": "Inkassofortschritt",
+    "collected": "eingezogen",
+    "invoiced": "in Rechnung gestellt",
+    "freePlanUsage": "Kostenloser Plan: {count}/20 Rechnungen diesen Monat verwendet",
+    "upgradePrompt": "Auf Pro upgraden für unbegrenzte Rechnungen",
+    "upgrade": "Upgrade",
+    "invoiceStatus": "Rechnungsstatus",
+    "revenueThisMonth": "Umsatz diesen Monat",
+    "collectionRate": "Inkassoquote",
+    "createFirstDesc": "Erstellen Sie Ihre erste Rechnung, um Zahlungen zu verfolgen.",
+    "createFirst": "Erstellen Sie Ihre erste Rechnung"
   },
   "invoices": {
     "title": "Rechnungen",
@@ -119,7 +134,18 @@
     "convertToInvoice": "In Rechnung umwandeln",
     "bulkActions": "Massenaktionen",
     "selected": "ausgewählt",
-    "exportCsv": "CSV exportieren"
+    "exportCsv": "CSV exportieren",
+    "downloadCsv": "CSV herunterladen",
+    "exporting": "Exportieren...",
+    "invoicesTab": "Rechnungen",
+    "quotesTab": "Angebote",
+    "searchPlaceholder": "Nach Rechnungsnummer oder Kundenname suchen...",
+    "allStatuses": "Alle Status",
+    "loadingInvoices": "Rechnungen laden...",
+    "noInvoicesYet": "Noch keine Rechnungen. Erstellen Sie Ihre erste Rechnung.",
+    "noMatch": "Keine Rechnungen entsprechen Ihrer Suche.",
+    "recurring": "Wiederkehrend",
+    "due": "Fällig"
   },
   "invoiceForm": {
     "createInvoice": "Rechnung erstellen",
@@ -173,7 +199,25 @@
     "search": "Kunden suchen...",
     "delete": "Löschen",
     "save": "Speichern",
-    "cancel": "Abbrechen"
+    "cancel": "Abbrechen",
+    "totalClients": "Kunden gesamt",
+    "totalInvoicesLabel": "Rechnungen gesamt",
+    "saving": "Speichern...",
+    "saveClient": "Kunde speichern",
+    "saveChanges": "Änderungen speichern",
+    "sortByName": "Nach Name sortieren",
+    "sortByRevenue": "Nach Umsatz sortieren",
+    "sortByInvoices": "Nach Rechnungen sortieren",
+    "sortByRecent": "Nach Neueste sortieren",
+    "noClientsDesc": "Fügen Sie Ihren ersten Kunden hinzu, um Rechnungen zu senden und Zahlungen zu verfolgen.",
+    "noMatch": "Keine Kunden entsprechen Ihrer Suche.",
+    "lastInvoice": "Letzte Rechnung",
+    "invoicesCount": "Rechnungen",
+    "statusLabel": "Status",
+    "never": "Nie",
+    "newInvoice": "+ Neue Rechnung",
+    "noInvoicesYet": "Noch keine Rechnungen",
+    "addYourFirst": "Ersten Kunden hinzufügen"
   },
   "expenses": {
     "title": "Ausgaben",
@@ -204,8 +248,37 @@
       "insurance": "Versicherung",
       "office": "Büro",
       "marketing": "Marketing",
-      "other": "Sonstiges"
-    }
+      "other": "Sonstiges",
+      "subcontractor": "Subunternehmer",
+      "fuelMileage": "Kraftstoff / Kilometer",
+      "officeAdmin": "Büro / Admin"
+    },
+    "subtitle": "Jobkosten, Belege & Abzüge verfolgen",
+    "logMileage": "Kilometer erfassen",
+    "mileage": "Kilometer",
+    "allCategories": "Alle Kategorien",
+    "allTime": "Gesamte Zeit",
+    "thisQuarter": "Dieses Quartal",
+    "thisYear": "Dieses Jahr",
+    "spendingByCategory": "Ausgaben nach Kategorie",
+    "noExpensesDesc": "Beginnen Sie mit der Erfassung Ihrer Jobkosten und Geschäftsausgaben.",
+    "addFirstExpense": "Erste Ausgabe hinzufügen",
+    "editExpenseTitle": "Ausgabe bearbeiten",
+    "newExpense": "Neue Ausgabe",
+    "receiptPhoto": "Belegfoto",
+    "changeReceipt": "Beleg ändern",
+    "uploadReceiptBtn": "Beleg hochladen",
+    "receiptAttached": "Beleg angehängt",
+    "billableToClient": "Dem Kunden berechenbar",
+    "updateExpense": "Ausgabe aktualisieren",
+    "saveExpense": "Ausgabe speichern",
+    "totalDistance": "Gesamtstrecke",
+    "taxDeductionLabel": "Steuerabzug",
+    "billable": "Berechenbar",
+    "mileageLog": "Kilometerprotokoll",
+    "noMileageYet": "Noch keine Kilometereinträge",
+    "noMileageDesc": "Beginnen Sie mit der Erfassung Ihrer Geschäftsreisen für Steuerabzüge.",
+    "logFirstTrip": "Erste Fahrt erfassen"
   },
   "timeTracking": {
     "title": "Zeiterfassung",
@@ -344,7 +417,12 @@
     "verifying": "Ihr Anmeldelink wird überprüft...",
     "verified": "Verifiziert! Sie werden weitergeleitet...",
     "invalidLink": "Ungültiger oder abgelaufener Link.",
-    "tryAgain": "Erneut versuchen"
+    "tryAgain": "Erneut versuchen",
+    "sending": "Senden...",
+    "clickLinkExpires": "Klicken Sie auf den Link, um sich anzumelden. Läuft in 15 Minuten ab.",
+    "linkExpired": "Dieser Link ist abgelaufen. Bitte fordern Sie einen neuen an.",
+    "missingToken": "Ungültiger Anmeldelink.",
+    "and": "und"
   },
   "footer": {
     "about": "Über uns",

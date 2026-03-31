@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { formatCurrency } from "@/lib/utils";
 import Navbar from "@/components/Navbar";
 import BottomNav from "@/components/BottomNav";
@@ -146,6 +147,7 @@ function LoadingSkeleton() {
 
 export default function DashboardPage() {
   const router = useRouter();
+  const t = useTranslations("dashboard");
   const [data, setData] = useState<DashboardData | null>(null);
   const [error, setError] = useState(false);
 
@@ -214,7 +216,7 @@ export default function DashboardPage() {
           <FadeIn>
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
               <div>
-                <h1 className="text-4xl font-bold text-white tracking-tight">Dashboard</h1>
+                <h1 className="text-4xl font-bold text-white tracking-tight">{t("title")}</h1>
                 <motion.div
                   className="w-20 h-1 bg-gradient-to-r from-amber-500 to-amber-300 rounded-full mt-2"
                   initial={{ width: 0 }}
@@ -240,7 +242,7 @@ export default function DashboardPage() {
               <div className="absolute -bottom-16 -right-16 w-48 h-48 bg-emerald-500/[0.04] rounded-full blur-3xl pointer-events-none" />
               <div className="relative flex flex-col sm:flex-row sm:items-start sm:justify-between gap-6">
                 <div>
-                  <p className="text-sm font-medium text-gray-400 uppercase tracking-wider mb-1.5">Total Outstanding</p>
+                  <p className="text-sm font-medium text-gray-400 uppercase tracking-wider mb-1.5">{t("outstanding")}</p>
                   <p className="text-4xl md:text-5xl font-extrabold text-amber-400 tracking-tight tabular-nums">
                     {fc(stats.totalOutstanding)}
                   </p>
@@ -253,7 +255,7 @@ export default function DashboardPage() {
                   )}
                 </div>
                 <div className="sm:text-right">
-                  <p className="text-sm font-medium text-gray-400 uppercase tracking-wider mb-1.5">Paid This Month</p>
+                  <p className="text-sm font-medium text-gray-400 uppercase tracking-wider mb-1.5">{t("paidCount")}</p>
                   <p className="text-3xl font-bold text-emerald-400 tabular-nums">
                     {fc(stats.paidThisMonth)}
                   </p>
@@ -298,9 +300,9 @@ export default function DashboardPage() {
           {/* ROW 2 -- Secondary Stats */}
           <StaggerChildren staggerDelay={0.1} delay={0.2} className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 mb-6">
             {[
-              { label: "Overdue", value: stats.overdueCount, color: stats.overdueCount > 0 ? "text-red-400" : "text-gray-600", border: stats.overdueCount > 0 ? "border-t-red-500" : "border-t-gray-700/30", hover: "hover:border-red-500/30", hasAlert: stats.overdueCount > 0 },
-              { label: "Avg. Days to Pay", value: stats.avgDaysToPayment, color: "text-blue-400", border: "border-t-blue-500/40", hover: "hover:border-blue-500/30" },
-              { label: "Active Clients", value: stats.activeClientsCount, color: "text-purple-400", border: "border-t-purple-500/40", hover: "hover:border-purple-500/30" },
+              { label: t("overdue"), value: stats.overdueCount, color: stats.overdueCount > 0 ? "text-red-400" : "text-gray-600", border: stats.overdueCount > 0 ? "border-t-red-500" : "border-t-gray-700/30", hover: "hover:border-red-500/30", hasAlert: stats.overdueCount > 0 },
+              { label: t("avgDaysToPay"), value: stats.avgDaysToPayment, color: "text-blue-400", border: "border-t-blue-500/40", hover: "hover:border-blue-500/30" },
+              { label: t("activeClients"), value: stats.activeClientsCount, color: "text-purple-400", border: "border-t-purple-500/40", hover: "hover:border-purple-500/30" },
             ].map((stat) => (
               <StaggerItem key={stat.label}>
                 <motion.div
@@ -354,10 +356,10 @@ export default function DashboardPage() {
             <FadeIn delay={0.15} className="lg:col-span-3">
               <div className="bg-[#111827] rounded-2xl border border-gray-700/50 hover:border-amber-500/20 transition-all duration-300 shadow-lg shadow-black/10 h-full">
                 <div className="px-5 py-4 border-b border-gray-700/50 flex items-center justify-between">
-                  <h2 className="text-lg font-semibold text-white">Recent Invoices</h2>
+                  <h2 className="text-lg font-semibold text-white">{t("recentInvoices")}</h2>
                   {recentInvoices.length > 0 && (
                     <Link href="/invoices" className="text-xs text-amber-500 hover:text-amber-400 font-medium transition-colors duration-200">
-                      View All
+                      {t("viewAll")}
                     </Link>
                   )}
                 </div>
@@ -379,8 +381,8 @@ export default function DashboardPage() {
                         <path d="M140 137 L140 153 M132 145 L148 145" stroke="#f59e0b" strokeWidth="2.5" strokeLinecap="round" />
                       </svg>
                     </motion.div>
-                    <h3 className="text-xl font-semibold text-white mb-2">No invoices yet</h3>
-                    <p className="text-gray-400 text-sm mb-6">Create your first invoice to start tracking payments.</p>
+                    <h3 className="text-xl font-semibold text-white mb-2">{t("noInvoices")}</h3>
+                    <p className="text-gray-400 text-sm mb-6">{t("createFirstDesc")}</p>
                     <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
                       <Link
                         href="/invoices/new"

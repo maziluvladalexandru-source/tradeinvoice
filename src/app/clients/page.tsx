@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import BottomNav from "@/components/BottomNav";
@@ -93,6 +94,7 @@ function SkeletonCard() {
 }
 
 export default function ClientsPage() {
+  const t = useTranslations("clients");
   const [clients, setClients] = useState<Client[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
@@ -226,7 +228,7 @@ export default function ClientsPage() {
         <FadeIn>
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-4xl font-bold text-white tracking-tight">Clients</h1>
+            <h1 className="text-4xl font-bold text-white tracking-tight">{t("title")}</h1>
             <div className="w-20 h-1 bg-gradient-to-r from-amber-500 to-amber-300 rounded-full mt-2" />
             <p className="text-gray-400 mt-1">{clients.length} client{clients.length !== 1 ? "s" : ""}</p>
           </div>
@@ -234,7 +236,7 @@ export default function ClientsPage() {
             onClick={() => setShowForm(!showForm)}
             className="bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-gray-950 px-6 py-3 rounded-xl font-semibold text-lg shadow-lg shadow-amber-500/20 transition-all"
           >
-            {showForm ? "Cancel" : "+ Add Client"}
+            {showForm ? t("cancel") : t("addClient")}
           </button>
         </div>
         </FadeIn>
@@ -334,7 +336,7 @@ export default function ClientsPage() {
               disabled={saving}
               className="bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-gray-950 px-6 py-3 rounded-xl font-semibold shadow-lg shadow-amber-500/20 transition-all disabled:opacity-50"
             >
-              {saving ? "Saving..." : "Save Client"}
+              {saving ? t("saving") : t("saveClient")}
             </button>
           </form>
         )}
@@ -345,7 +347,7 @@ export default function ClientsPage() {
             <div className="relative flex-1">
               <svg className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
               <input
-                placeholder="Search clients..."
+                placeholder={t("search")}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 className="flex-1 w-full pl-10 px-4 py-2.5 rounded-xl border border-gray-700/50 bg-[#111827] text-white placeholder-gray-500 focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none transition-all"
@@ -356,10 +358,10 @@ export default function ClientsPage() {
               onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
               className="px-4 py-2.5 rounded-xl border border-gray-700/50 bg-[#111827] text-gray-300 focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 outline-none transition-all"
             >
-              <option value="name">Sort by Name</option>
-              <option value="totalInvoiced">Sort by Revenue</option>
-              <option value="invoiceCount">Sort by Invoices</option>
-              <option value="lastInvoiceDate">Sort by Recent</option>
+              <option value="name">{t("sortByName")}</option>
+              <option value="totalInvoiced">{t("sortByRevenue")}</option>
+              <option value="invoiceCount">{t("sortByInvoices")}</option>
+              <option value="lastInvoiceDate">{t("sortByRecent")}</option>
             </select>
           </div>
         )}
@@ -377,9 +379,9 @@ export default function ClientsPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold text-white mb-2">No clients yet</h3>
+              <h3 className="text-xl font-semibold text-white mb-2">{t("noClients")}</h3>
               <p className="text-gray-400 mb-6 max-w-sm mx-auto">
-                Add your first client to start sending invoices and tracking payments.
+                {t("noClientsDesc")}
               </p>
               <button
                 onClick={() => setShowForm(true)}
@@ -391,7 +393,7 @@ export default function ClientsPage() {
           </div>
         ) : filtered.length === 0 ? (
           <div className="bg-[#111827] backdrop-blur-sm rounded-2xl p-12 border border-gray-700/50 text-center">
-            <p className="text-gray-400 text-lg">No clients match your search.</p>
+            <p className="text-gray-400 text-lg">{t("noMatch")}</p>
           </div>
         ) : (
           <StaggerChildren className="space-y-3">
@@ -414,7 +416,7 @@ export default function ClientsPage() {
                       </div>
                       <div className="flex gap-2">
                         <button type="submit" disabled={editSaving} className="bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-gray-950 px-4 py-2 rounded-xl text-sm font-semibold shadow-sm shadow-amber-500/20 transition-all disabled:opacity-50">
-                          {editSaving ? "Saving..." : "Save Changes"}
+                          {editSaving ? t("saving") : t("saveChanges")}
                         </button>
                         <button type="button" onClick={() => setEditingId(null)} className="px-4 py-2 rounded-xl text-sm text-gray-400 hover:text-white hover:bg-white/5 transition-colors">
                           Cancel
@@ -480,7 +482,7 @@ export default function ClientsPage() {
                   {/* Stats Row */}
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4 pt-4 border-t border-gray-700/50">
                     <div>
-                      <p className="text-xs text-gray-500 uppercase tracking-wider">Total Invoiced</p>
+                      <p className="text-xs text-gray-500 uppercase tracking-wider">{t("totalInvoiced")}</p>
                       <p className="text-sm sm:text-lg font-bold text-white mt-0.5 truncate tabular-nums">
                         {client.invoiceCount > 0
                           ? formatCurrency(client.totalInvoiced, client.currency)
@@ -492,9 +494,9 @@ export default function ClientsPage() {
                       <p className="text-lg font-bold text-white mt-0.5">{client.invoiceCount}</p>
                     </div>
                     <div>
-                      <p className="text-xs text-gray-500 uppercase tracking-wider">Last Invoice</p>
+                      <p className="text-xs text-gray-500 uppercase tracking-wider">{t("lastInvoice")}</p>
                       <p className="text-sm font-medium text-gray-300 mt-1">
-                        {client.lastInvoiceDate ? timeAgo(client.lastInvoiceDate) : "Never"}
+                        {client.lastInvoiceDate ? timeAgo(client.lastInvoiceDate) : t("never")}
                       </p>
                       {client.lastInvoiceDate && (
                         <p className="text-xs text-gray-500">{formatDate(client.lastInvoiceDate)}</p>
@@ -505,27 +507,27 @@ export default function ClientsPage() {
                       <div className="flex flex-wrap gap-1.5 mt-1.5">
                         {client.statusBreakdown.paid > 0 && (
                           <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                            {client.statusBreakdown.paid} paid
+                            {client.statusBreakdown.paid} {t("paid")}
                           </span>
                         )}
                         {client.statusBreakdown.sent > 0 && (
                           <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-blue-500/10 text-blue-400 border border-blue-500/20">
-                            {client.statusBreakdown.sent} sent
+                            {client.statusBreakdown.sent} {t("sent")}
                           </span>
                         )}
                         {client.statusBreakdown.viewed > 0 && (
                           <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-yellow-500/10 text-yellow-400 border border-yellow-500/20">
-                            {client.statusBreakdown.viewed} viewed
+                            {client.statusBreakdown.viewed} {t("viewed")}
                           </span>
                         )}
                         {client.statusBreakdown.draft > 0 && (
                           <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-gray-500/10 text-gray-400 border border-gray-500/20">
-                            {client.statusBreakdown.draft} draft
+                            {client.statusBreakdown.draft} {t("draft")}
                           </span>
                         )}
                         {client.statusBreakdown.overdue > 0 && (
                           <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-red-500/10 text-red-400 border border-red-500/20">
-                            {client.statusBreakdown.overdue} overdue
+                            {client.statusBreakdown.overdue} {t("overdue")}
                           </span>
                         )}
                         {client.invoiceCount === 0 && (

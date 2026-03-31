@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, Suspense } from "react";
+import { useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { motion } from "@/components/animations";
@@ -25,6 +26,7 @@ export default function LoginPage() {
 }
 
 function LoginContent() {
+  const t = useTranslations("auth");
   const [email, setEmail] = useState("");
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -109,7 +111,7 @@ function LoginContent() {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.4 }}
             >
-              We sent a sign-in link to <span className="text-amber-400 font-medium">{email}</span>
+              {t("magicLinkSent")} <span className="text-amber-400 font-medium">{email}</span>
             </motion.p>
             <motion.p
               className="text-gray-500 mt-4 text-sm"
@@ -117,7 +119,7 @@ function LoginContent() {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5 }}
             >
-              Click the link to sign in. Expires in 15 minutes.
+              {t("clickLinkExpires")}
             </motion.p>
           </div>
         </motion.div>
@@ -152,7 +154,7 @@ function LoginContent() {
               TradeInvoice
             </GradientText>
           </Link>
-          <p className="text-gray-400 mt-2">Sign in to your account</p>
+          <p className="text-gray-400 mt-2">{t("signIn")}</p>
         </motion.div>
 
         <motion.div
@@ -172,8 +174,8 @@ function LoginContent() {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
               </svg>
               <span>
-                {errorParam === "invalid_token" ? "This link has expired. Please request a new one."
-                  : errorParam === "missing_token" ? "Invalid sign-in link."
+                {errorParam === "invalid_token" ? t("linkExpired")
+                  : errorParam === "missing_token" ? t("missingToken")
                   : error}
               </span>
             </motion.div>
@@ -256,7 +258,7 @@ function LoginContent() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.45 }}
           >
-            No password needed. We&apos;ll email you a sign-in link.
+            {t("noPassword")}
           </motion.p>
         </motion.div>
 
