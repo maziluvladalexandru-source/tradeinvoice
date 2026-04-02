@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
+import { useTranslations } from "next-intl";
 import Navbar from "@/components/Navbar";
 import BottomNav from "@/components/BottomNav";
 import UpgradeModal from "@/components/UpgradeModal";
@@ -31,16 +32,8 @@ interface ReportData {
   }>;
 }
 
-const CATEGORY_LABELS: Record<string, string> = {
-  materials: "Materials",
-  fuel: "Fuel / Mileage",
-  tools: "Tools & Equipment",
-  subcontractor: "Subcontractor",
-  office: "Office / Admin",
-  other: "Other",
-};
-
 export default function ReportsPage() {
+  const t = useTranslations("reports");
   const [data, setData] = useState<ReportData | null>(null);
   const [loading, setLoading] = useState(true);
   const [userPlan, setUserPlan] = useState("free");
@@ -98,7 +91,7 @@ export default function ReportsPage() {
     lines.push("EXPENSES");
     lines.push(`Total Expenses,${data.totalExpenses.toFixed(2)}`);
     for (const [cat, amount] of Object.entries(data.expenseByCategory)) {
-      lines.push(`  ${CATEGORY_LABELS[cat] || cat},${amount.toFixed(2)}`);
+      lines.push(`  ${t.has(`categories.${cat}`) ? t(`categories.${cat}`) : cat},${amount.toFixed(2)}`);
     }
     lines.push("");
     lines.push("MILEAGE");
@@ -143,9 +136,9 @@ export default function ReportsPage() {
         <FadeIn>
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
           <div>
-            <h1 className="text-4xl font-bold text-white tracking-tight">Reports</h1>
+            <h1 className="text-4xl font-bold text-white tracking-tight">{t("title")}</h1>
             <div className="w-20 h-1 bg-gradient-to-r from-amber-500 to-amber-300 rounded-full mt-2" />
-            <p className="text-gray-400 mt-1">Profit &amp; Loss overview</p>
+            <p className="text-gray-400 mt-1">{t("subtitle")}</p>
           </div>
           {data && (
             <button
@@ -155,7 +148,7 @@ export default function ReportsPage() {
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
               </svg>
-              Export CSV
+              {t("exportCsv")}
             </button>
           )}
         </div>
@@ -166,14 +159,14 @@ export default function ReportsPage() {
             <svg className="w-16 h-16 text-gray-700 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
             </svg>
-            <h3 className="text-xl font-semibold text-white mb-2">Profit &amp; Loss Reports</h3>
-            <p className="text-gray-400 mb-4">Track revenue, expenses, mileage deductions, and net profit.</p>
-            <p className="text-sm text-gray-500 mb-6">Filter by month, quarter, or year. Export as CSV for your accountant.</p>
+            <h3 className="text-xl font-semibold text-white mb-2">{t("proTitle")}</h3>
+            <p className="text-gray-400 mb-4">{t("proDescription")}</p>
+            <p className="text-sm text-gray-500 mb-6">{t("proSubDescription")}</p>
             <button
               onClick={() => setShowUpgrade(true)}
               className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-gray-950 px-6 py-3 rounded-xl font-semibold shadow-lg shadow-amber-500/20 transition-all"
             >
-              Upgrade to Pro
+              {t("upgradeToPro")}
             </button>
           </div>
         ) : (
@@ -191,7 +184,7 @@ export default function ReportsPage() {
                         : "text-gray-400 hover:text-white"
                     }`}
                   >
-                    {p}
+                    {t(p)}
                   </button>
                 ))}
               </div>
@@ -242,23 +235,23 @@ export default function ReportsPage() {
                   <StaggerItem>
                   <motion.div whileHover={{ y: -2 }} className="relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl p-5 border border-gray-700/50 border-l-4 border-l-emerald-500 hover:border-white/20 transition-all duration-300">
                     <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-transparent pointer-events-none" />
-                    <p className="text-sm font-medium text-gray-400 mb-1">Revenue</p>
+                    <p className="text-sm font-medium text-gray-400 mb-1">{t("revenue")}</p>
                     <p className="text-lg md:text-2xl font-bold text-emerald-400 truncate tabular-nums">{fmtCurrency(data.revenue)}</p>
-                    <p className="text-sm text-gray-500 mt-1">{data.invoicesPaid} invoice{data.invoicesPaid !== 1 ? "s" : ""} paid</p>
+                    <p className="text-sm text-gray-500 mt-1">{data.invoicesPaid === 1 ? t("invoicePaid", { count: 1 }) : t("invoicesPaidCount", { count: data.invoicesPaid })}</p>
                   </motion.div>
                   </StaggerItem>
                   <StaggerItem>
                   <motion.div whileHover={{ y: -2 }} className="relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl p-5 border border-gray-700/50 border-l-4 border-l-red-500 hover:border-white/20 transition-all duration-300">
                     <div className="absolute inset-0 bg-gradient-to-br from-red-500/10 to-transparent pointer-events-none" />
-                    <p className="text-sm font-medium text-gray-400 mb-1">Expenses</p>
+                    <p className="text-sm font-medium text-gray-400 mb-1">{t("expenses")}</p>
                     <p className="text-lg md:text-2xl font-bold text-red-400 truncate tabular-nums">{fmtCurrency(data.totalExpenses)}</p>
-                    <p className="text-sm text-gray-500 mt-1">{fmtCurrency(data.deductibleExpenses)} deductible</p>
+                    <p className="text-sm text-gray-500 mt-1">{t("deductible", { amount: fmtCurrency(data.deductibleExpenses) })}</p>
                   </motion.div>
                   </StaggerItem>
                   <StaggerItem>
                   <motion.div whileHover={{ y: -2 }} className="relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl p-5 border border-gray-700/50 border-l-4 border-l-blue-500 hover:border-white/20 transition-all duration-300">
                     <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent pointer-events-none" />
-                    <p className="text-sm font-medium text-gray-400 mb-1">Mileage Deduction</p>
+                    <p className="text-sm font-medium text-gray-400 mb-1">{t("mileageDeduction")}</p>
                     <p className="text-lg md:text-2xl font-bold text-blue-400 truncate tabular-nums">{fmtCurrency(data.mileageDeduction)}</p>
                     <p className="text-sm text-gray-500 mt-1">{data.totalKm.toFixed(1)} km</p>
                   </motion.div>
@@ -266,11 +259,11 @@ export default function ReportsPage() {
                   <StaggerItem>
                   <motion.div whileHover={{ y: -2 }} className="relative overflow-hidden bg-[#111827] backdrop-blur-sm rounded-2xl p-5 border border-gray-700/50 border-l-4 border-l-amber-500 hover:border-white/20 transition-all duration-300">
                     <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 to-transparent pointer-events-none" />
-                    <p className="text-sm font-medium text-gray-400 mb-1">Net Profit</p>
+                    <p className="text-sm font-medium text-gray-400 mb-1">{t("netProfit")}</p>
                     <p className={`text-lg md:text-2xl font-bold truncate tabular-nums ${data.netProfit >= 0 ? "text-amber-400" : "text-red-400"}`}>
                       {fmtCurrency(data.netProfit)}
                     </p>
-                    <p className="text-sm text-gray-500 mt-1">{fmtCurrency(data.totalOutstanding)} outstanding</p>
+                    <p className="text-sm text-gray-500 mt-1">{fmtCurrency(data.totalOutstanding)} {t("outstanding")}</p>
                   </motion.div>
                   </StaggerItem>
                 </StaggerChildren>
@@ -279,15 +272,15 @@ export default function ReportsPage() {
                 {(data.revenue > 0 || data.totalExpenses > 0) && (
                   <FadeIn delay={0.2}>
                   <div className="bg-[#111827] backdrop-blur-sm rounded-2xl border border-gray-700/50 border-t-[3px] border-t-amber-500/60 p-6 mb-8">
-                    <h2 className="text-lg font-semibold text-white mb-4">Profit Overview</h2>
+                    <h2 className="text-lg font-semibold text-white mb-4">{t("profitOverview")}</h2>
                     <div className="flex justify-center">
                       <DonutChart
                         segments={[
-                          { label: "Revenue", value: data.revenue, color: "#22c55e", displayValue: fmtCurrency(data.revenue) },
-                          { label: "Expenses", value: data.totalExpenses, color: "#ef4444", displayValue: fmtCurrency(data.totalExpenses) },
+                          { label: t("revenue"), value: data.revenue, color: "#22c55e", displayValue: fmtCurrency(data.revenue) },
+                          { label: t("expenses"), value: data.totalExpenses, color: "#ef4444", displayValue: fmtCurrency(data.totalExpenses) },
                         ]}
                         centerText={fmtCurrency(data.netProfit)}
-                        centerSubtext="net profit"
+                        centerSubtext={t("netProfitLabel")}
                         size={200}
                       />
                     </div>
@@ -299,66 +292,66 @@ export default function ReportsPage() {
                 <FadeIn delay={0.3}>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
                   <div className="bg-[#111827] backdrop-blur-sm rounded-2xl border border-gray-700/50 p-6">
-                    <h2 className="text-lg font-semibold text-white mb-4">Profit &amp; Loss Statement</h2>
+                    <h2 className="text-lg font-semibold text-white mb-4">{t("pnlStatement")}</h2>
                     <div className="space-y-3">
                       <div className="pb-3 border-b border-white/10">
-                        <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Income</p>
+                        <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">{t("income")}</p>
                         <div className="flex justify-between text-sm">
-                          <span className="text-gray-400">Revenue (incl. VAT)</span>
+                          <span className="text-gray-400">{t("revenueInclVat")}</span>
                           <span className="text-emerald-400 font-semibold tabular-nums">{fmtCurrency(data.revenue)}</span>
                         </div>
                         <div className="flex justify-between text-sm mt-1">
-                          <span className="text-gray-400">VAT Collected</span>
+                          <span className="text-gray-400">{t("vatCollected")}</span>
                           <span className="text-gray-300 tabular-nums">-{fmtCurrency(data.taxCollected)}</span>
                         </div>
                         <div className="flex justify-between text-sm mt-1 pt-1 border-t border-white/5">
-                          <span className="text-gray-300 font-medium">Revenue (excl. VAT)</span>
+                          <span className="text-gray-300 font-medium">{t("revenueExclVat")}</span>
                           <span className="text-white font-semibold tabular-nums">{fmtCurrency(data.revenueBeforeTax)}</span>
                         </div>
                       </div>
 
                       <div className="pb-3 border-b border-white/10">
-                        <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Expenses</p>
+                        <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">{t("expenses")}</p>
                         {Object.entries(data.expenseByCategory).sort((a, b) => b[1] - a[1]).map(([cat, amount]) => (
                           <div key={cat} className="flex justify-between text-sm mt-1">
-                            <span className="text-gray-400">{CATEGORY_LABELS[cat] || cat}</span>
+                            <span className="text-gray-400">{t.has(`categories.${cat}`) ? t(`categories.${cat}`) : cat}</span>
                             <span className="text-red-400 tabular-nums">-{fmtCurrency(amount)}</span>
                           </div>
                         ))}
                         {Object.keys(data.expenseByCategory).length === 0 && (
-                          <p className="text-sm text-gray-500">No expenses</p>
+                          <p className="text-sm text-gray-500">{t("noExpenses")}</p>
                         )}
                         <div className="flex justify-between text-sm mt-1 pt-1 border-t border-white/5">
-                          <span className="text-gray-300 font-medium">Total Expenses</span>
+                          <span className="text-gray-300 font-medium">{t("totalExpenses")}</span>
                           <span className="text-red-400 font-semibold tabular-nums">-{fmtCurrency(data.totalExpenses)}</span>
                         </div>
                       </div>
 
                       <div className="pb-3 border-b border-white/10">
-                        <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Deductions</p>
+                        <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">{t("deductions")}</p>
                         <div className="flex justify-between text-sm">
-                          <span className="text-gray-400">Mileage ({data.totalKm.toFixed(1)} km)</span>
+                          <span className="text-gray-400">{t("mileage")} ({data.totalKm.toFixed(1)} km)</span>
                           <span className="text-blue-400 tabular-nums">{fmtCurrency(data.mileageDeduction)}</span>
                         </div>
                         <div className="flex justify-between text-sm mt-1">
-                          <span className="text-gray-400">Deductible Expenses</span>
+                          <span className="text-gray-400">{t("deductibleExpenses")}</span>
                           <span className="text-blue-400 tabular-nums">{fmtCurrency(data.deductibleExpenses)}</span>
                         </div>
                         <div className="flex justify-between text-sm mt-1 pt-1 border-t border-white/5">
-                          <span className="text-gray-300 font-medium">Total Deductions</span>
+                          <span className="text-gray-300 font-medium">{t("totalDeductions")}</span>
                           <span className="text-blue-400 font-semibold tabular-nums">{fmtCurrency(data.totalDeductions)}</span>
                         </div>
                       </div>
 
                       <div className="pt-1">
                         <div className="flex justify-between">
-                          <span className="text-white font-semibold">Net Profit</span>
+                          <span className="text-white font-semibold">{t("netProfit")}</span>
                           <span className={`text-lg font-bold tabular-nums ${data.netProfit >= 0 ? "text-emerald-400" : "text-red-400"}`}>
                             {fmtCurrency(data.netProfit)}
                           </span>
                         </div>
                         <div className="flex justify-between text-sm mt-2">
-                          <span className="text-gray-400">Estimated Taxable Profit</span>
+                          <span className="text-gray-400">{t("estimatedTaxableProfit")}</span>
                           <span className="text-amber-400 font-semibold tabular-nums">{fmtCurrency(data.taxableProfit)}</span>
                         </div>
                       </div>
@@ -368,14 +361,14 @@ export default function ReportsPage() {
                   {/* Monthly Breakdown */}
                   {data.monthlyData.length > 1 && (
                     <div className="bg-[#111827] backdrop-blur-sm rounded-2xl border border-gray-700/50 p-6">
-                      <h2 className="text-lg font-semibold text-white mb-4">Monthly Breakdown</h2>
+                      <h2 className="text-lg font-semibold text-white mb-4">{t("monthlyBreakdown")}</h2>
                       <div className="space-y-3">
                         <div className="grid grid-cols-5 gap-2 text-xs font-semibold text-gray-500 uppercase tracking-wider pb-2 border-b border-white/10">
-                          <span>Month</span>
-                          <span className="text-right">Revenue</span>
-                          <span className="text-right">Expenses</span>
-                          <span className="text-right">Mileage</span>
-                          <span className="text-right">Profit</span>
+                          <span>{t("monthLabel")}</span>
+                          <span className="text-right">{t("revenue")}</span>
+                          <span className="text-right">{t("expenses")}</span>
+                          <span className="text-right">{t("mileage")}</span>
+                          <span className="text-right">{t("profit")}</span>
                         </div>
                         {data.monthlyData.map((m) => (
                           <div key={m.month} className="grid grid-cols-5 gap-2 text-sm py-1.5 border-b border-white/5">
@@ -392,7 +385,7 @@ export default function ReportsPage() {
 
                       {/* Simple bar chart */}
                       <div className="mt-6">
-                        <h3 className="text-sm font-semibold text-gray-400 mb-3">Revenue vs Expenses</h3>
+                        <h3 className="text-sm font-semibold text-gray-400 mb-3">{t("revenueVsExpenses")}</h3>
                         <div className="flex items-end gap-1 h-32">
                           {data.monthlyData.map((m, idx) => {
                             const maxVal = Math.max(...data.monthlyData.map((d) => Math.max(d.revenue, d.expenses)), 1);
@@ -420,10 +413,10 @@ export default function ReportsPage() {
                         </div>
                         <div className="flex gap-4 mt-2 text-xs text-gray-500">
                           <span className="flex items-center gap-1">
-                            <span className="w-2 h-2 rounded-full bg-emerald-500/50" /> Revenue
+                            <span className="w-2 h-2 rounded-full bg-emerald-500/50" /> {t("revenue")}
                           </span>
                           <span className="flex items-center gap-1">
-                            <span className="w-2 h-2 rounded-full bg-red-500/50" /> Expenses
+                            <span className="w-2 h-2 rounded-full bg-red-500/50" /> {t("expenses")}
                           </span>
                         </div>
                       </div>
