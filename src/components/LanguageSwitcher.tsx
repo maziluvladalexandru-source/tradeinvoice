@@ -1,13 +1,13 @@
-"use client";
+﻿"use client";
 
 import { useRouter } from "next/navigation";
 import { useLocale } from "next-intl";
 import { useState, useRef, useEffect } from "react";
 
 const languages = [
-  { code: "en", label: "English", flag: "🇬🇧" },
-  { code: "nl", label: "Nederlands", flag: "🇳🇱" },
-  { code: "de", label: "Deutsch", flag: "🇩🇪" },
+  { code: "en", label: "English", flag: "EN" },
+  { code: "nl", label: "Nederlands", flag: "NL" },
+  { code: "de", label: "Deutsch", flag: "DE" },
 ];
 
 export default function LanguageSwitcher({ compact = false }: { compact?: boolean }) {
@@ -51,7 +51,7 @@ export default function LanguageSwitcher({ compact = false }: { compact?: boolea
           compact ? "text-xs" : ""
         }`}
       >
-        <span>{current.flag}</span>
+        <span className="font-semibold text-xs">{current.flag}</span>
         {!compact && <span>{current.code.toUpperCase()}</span>}
         <svg className="w-3 h-3 opacity-50" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
@@ -67,7 +67,7 @@ export default function LanguageSwitcher({ compact = false }: { compact?: boolea
                 lang.code === locale ? "text-amber-400 font-medium" : "text-gray-300"
               }`}
             >
-              <span>{lang.flag}</span>
+              <span className="font-semibold text-xs w-6">{lang.flag}</span>
               <span>{lang.label}</span>
               {lang.code === locale && (
                 <svg className="w-3.5 h-3.5 ml-auto text-amber-400" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor">
