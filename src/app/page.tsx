@@ -20,6 +20,7 @@ import type { BentoItem } from "@/components/ui/bento-grid";
 import AnimatedTextCycle from "@/components/ui/animated-text-cycle";
 import { GlowCard as SpotlightCard } from "@/components/spotlight-card";
 import { TestimonialsColumn } from "@/components/testimonials-columns-1";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { FileText, Bell, Globe, Clock, Receipt, BarChart3 } from "lucide-react";
 
 /* ------------------------------------------------------------------ */
@@ -382,6 +383,7 @@ export default function Home() {
             >
               {tNav("pricing")}
             </a>
+            <LanguageSwitcher compact />
             <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
               <Link
                 href="/auth/login"
