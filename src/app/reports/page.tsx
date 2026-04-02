@@ -79,39 +79,39 @@ export default function ReportsPage() {
   function exportCSV() {
     if (!data) return;
     const lines: string[] = [];
-    lines.push("Profit & Loss Report");
-    lines.push(`Period: ${data.period.from.split("T")[0]} to ${data.period.to.split("T")[0]}`);
+    lines.push(t("pnlStatement"));
+    lines.push(`${t("period")}: ${data.period.from.split("T")[0]} - ${data.period.to.split("T")[0]}`);
     lines.push("");
-    lines.push("INCOME");
-    lines.push(`Revenue (incl. tax),${data.revenue.toFixed(2)}`);
-    lines.push(`Tax Collected (VAT),${data.taxCollected.toFixed(2)}`);
-    lines.push(`Revenue (excl. tax),${data.revenueBeforeTax.toFixed(2)}`);
-    lines.push(`Invoices Paid,${data.invoicesPaid}`);
+    lines.push(t("income").toUpperCase());
+    lines.push(`${t("revenueInclVat")},${data.revenue.toFixed(2)}`);
+    lines.push(`${t("vatCollected")},${data.taxCollected.toFixed(2)}`);
+    lines.push(`${t("revenueExclVat")},${data.revenueBeforeTax.toFixed(2)}`);
+    lines.push(`${t("invoicesPaid")},${data.invoicesPaid}`);
     lines.push("");
-    lines.push("EXPENSES");
-    lines.push(`Total Expenses,${data.totalExpenses.toFixed(2)}`);
+    lines.push(t("expenses").toUpperCase());
+    lines.push(`${t("totalExpenses")},${data.totalExpenses.toFixed(2)}`);
     for (const [cat, amount] of Object.entries(data.expenseByCategory)) {
       lines.push(`  ${t.has(`categories.${cat}`) ? t(`categories.${cat}`) : cat},${amount.toFixed(2)}`);
     }
     lines.push("");
-    lines.push("MILEAGE");
-    lines.push(`Total Distance (km),${data.totalKm.toFixed(1)}`);
-    lines.push(`Mileage Deduction,${data.mileageDeduction.toFixed(2)}`);
+    lines.push(t("mileage").toUpperCase());
+    lines.push(`${t("mileage")} (km),${data.totalKm.toFixed(1)}`);
+    lines.push(`${t("mileageDeduction")},${data.mileageDeduction.toFixed(2)}`);
     lines.push("");
-    lines.push("DEDUCTIONS");
-    lines.push(`Deductible Expenses,${data.deductibleExpenses.toFixed(2)}`);
-    lines.push(`Mileage Deduction,${data.mileageDeduction.toFixed(2)}`);
-    lines.push(`Total Deductions,${data.totalDeductions.toFixed(2)}`);
+    lines.push(t("deductions").toUpperCase());
+    lines.push(`${t("deductibleExpenses")},${data.deductibleExpenses.toFixed(2)}`);
+    lines.push(`${t("mileageDeduction")},${data.mileageDeduction.toFixed(2)}`);
+    lines.push(`${t("totalDeductions")},${data.totalDeductions.toFixed(2)}`);
     lines.push("");
-    lines.push("PROFIT");
-    lines.push(`Net Profit,${data.netProfit.toFixed(2)}`);
-    lines.push(`Taxable Profit (estimated),${data.taxableProfit.toFixed(2)}`);
-    lines.push(`Outstanding,${data.totalOutstanding.toFixed(2)}`);
+    lines.push(t("profit").toUpperCase());
+    lines.push(`${t("netProfit")},${data.netProfit.toFixed(2)}`);
+    lines.push(`${t("estimatedTaxableProfit")},${data.taxableProfit.toFixed(2)}`);
+    lines.push(`${t("outstanding")},${data.totalOutstanding.toFixed(2)}`);
 
     if (data.monthlyData.length > 1) {
       lines.push("");
-      lines.push("MONTHLY BREAKDOWN");
-      lines.push("Month,Revenue,Expenses,Mileage Deduction,Net Profit");
+      lines.push(t("monthlyBreakdown").toUpperCase());
+      lines.push(`${t("monthLabel")},${t("revenue")},${t("expenses")},${t("mileageDeduction")},${t("profit")}`);
       for (const m of data.monthlyData) {
         lines.push(`${m.month},${m.revenue.toFixed(2)},${m.expenses.toFixed(2)},${m.mileageDeduction.toFixed(2)},${m.netProfit.toFixed(2)}`);
       }
