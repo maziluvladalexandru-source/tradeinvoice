@@ -58,7 +58,7 @@ export default function LanguageSwitcher({ compact = false }: { compact?: boolea
         </svg>
       </button>
       {open && (
-        <div className="absolute right-0 top-full mt-1 bg-[#0f1629] border border-gray-700/50 rounded-xl shadow-xl z-50 py-1 min-w-[140px]">
+        <div className="absolute right-0 top-full mt-1 bg-[#0f1629] border border-gray-700/50 rounded-xl shadow-xl z-[9999] py-1 min-w-[140px]">
           {languages.map((lang) => (
             <button
               key={lang.code}
