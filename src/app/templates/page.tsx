@@ -9,6 +9,10 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/templates",
   },
+  robots: {
+    index: true,
+    follow: true,
+  },
   keywords: [
     "free invoice template",
     "free invoice template Netherlands",

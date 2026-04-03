@@ -8,6 +8,10 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/dpa",
   },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function DataProcessingAgreement() {

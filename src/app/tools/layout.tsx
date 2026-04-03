@@ -7,6 +7,10 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/tools",
   },
+  robots: {
+    index: true,
+    follow: true,
+  },
   keywords: [
     "btw calculator",
     "vat calculator",

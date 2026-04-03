@@ -28,6 +28,10 @@ export function generateMetadata({
     title,
     description,
     alternates: { canonical: `/invoice-template/${trade.slug}` },
+    robots: {
+      index: true,
+      follow: true,
+    },
     keywords: trade.keywords,
     openGraph: {
       title,

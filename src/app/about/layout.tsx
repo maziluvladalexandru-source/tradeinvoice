@@ -7,6 +7,10 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/about",
   },
+  robots: {
+    index: true,
+    follow: true,
+  },
   openGraph: {
     title: "About TradeInvoice",
     description:

@@ -23,6 +23,10 @@ export function generateMetadata({ params }: Props): Metadata {
     alternates: {
       canonical: `/blog/${article.slug}`,
     },
+    robots: {
+      index: true,
+      follow: true,
+    },
     openGraph: {
       title: article.title,
       description: article.metaDescription,

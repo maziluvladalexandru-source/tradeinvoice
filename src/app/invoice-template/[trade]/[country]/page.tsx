@@ -38,6 +38,10 @@ export function generateMetadata({
     alternates: {
       canonical: `/invoice-template/${trade.slug}/${country.slug}`,
     },
+    robots: {
+      index: true,
+      follow: true,
+    },
     keywords: [
       `${trade.name.toLowerCase()} invoice template ${country.name.toLowerCase()}`,
       `${trade.name.toLowerCase()} invoice ${country.name.toLowerCase()}`,
