@@ -19,6 +19,17 @@ const THEMES: Theme[] = [
   { id: "corporate", label: "Corporate", desc: "Green geometric", isPro: true },
   { id: "professional", label: "Professional", desc: "Orange geometric", isPro: true },
   { id: "dutch", label: "Dutch", desc: "Factuur style", isPro: true },
+  { id: "detailed", label: "Detailed", desc: "Extended line items", isPro: true },
+  { id: "minimal2", label: "Ultra Minimal", desc: "Bare essentials", isPro: true },
+  { id: "service", label: "Service", desc: "Hourly rate focus", isPro: true },
+  { id: "receipt", label: "Receipt", desc: "Hybrid format", isPro: true },
+  { id: "dark", label: "Dark", desc: "Night mode style", isPro: true },
+  { id: "tax", label: "Tax Detail", desc: "EU tax focus", isPro: true },
+  { id: "freelancer", label: "Freelancer", desc: "Time tracking", isPro: true },
+  { id: "sepa", label: "SEPA", desc: "EU standard", isPro: true },
+  { id: "builder", label: "Builder", desc: "Construction trades", isPro: true },
+  { id: "tech", label: "Tech", desc: "IT services", isPro: true },
+  { id: "invoice-only", label: "Invoice Only", desc: "Payment terms bold", isPro: true },
 ];
 
 function ThemePreview({ id }: { id: string }) {
@@ -492,6 +503,464 @@ function ThemePreview({ id }: { id: string }) {
             <div className="h-1 w-8 bg-gray-200 rounded-full" />
             <div className="h-1 w-10 bg-gray-200 rounded-full" />
           </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (id === "detailed") {
+    return (
+      <div className="w-full h-full flex flex-col bg-white">
+        <div className="h-[3px] bg-[#7c3aed]" />
+        <div className="px-3 pt-3 flex justify-between items-start border-b-2 border-[#7c3aed]/20 pb-2">
+          <div className="flex items-center gap-2">
+            <div className="w-5 h-5 rounded-full bg-[#7c3aed] flex-shrink-0" />
+            <div className="space-y-1">
+              <div className="h-1.5 w-14 bg-[#7c3aed]/30 rounded-full" />
+              <div className="h-1 w-10 bg-[#7c3aed]/15 rounded-full" />
+            </div>
+          </div>
+          <div className="text-right space-y-1">
+            <div className="h-1 w-10 bg-gray-300 rounded-full ml-auto" />
+            <div className="h-1.5 w-12 bg-[#7c3aed]/40 rounded-full ml-auto" />
+          </div>
+        </div>
+        <div className="px-3 py-2 bg-[#7c3aed]/5 flex justify-between text-xs">
+          <div className="space-y-0.5">
+            <div className="h-1 w-8 bg-gray-300 rounded-full" />
+            <div className="h-1 w-10 bg-gray-200 rounded-full" />
+          </div>
+          <div className="h-1 w-6 bg-gray-300 rounded-full" />
+        </div>
+        <div className="px-3 mt-2 flex-1">
+          <div className="text-xs mb-1">
+            <div className="h-1 w-20 bg-gray-300 rounded-full mb-1" />
+            <div className="h-0.5 w-full bg-[#7c3aed]/20 mb-1" />
+          </div>
+          {[1, 2, 3, 4].map((i) => (
+            <div key={i} className="text-xs border-b border-gray-100 py-1 space-y-0.5">
+              <div className="flex justify-between">
+                <div className="h-0.5 w-14 bg-gray-200 rounded-full" />
+                <div className="h-0.5 w-8 bg-gray-300 rounded-full" />
+              </div>
+              <div className="flex justify-between">
+                <div className="h-0.5 w-12 bg-gray-100 rounded-full" />
+                <div className="h-0.5 w-6 bg-gray-200 rounded-full" />
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="px-3 pb-2 mt-1 space-y-0.5">
+          <div className="flex justify-end gap-2">
+            <div className="h-1 w-8 bg-gray-300 rounded-full" />
+            <div className="h-1 w-10 bg-[#7c3aed]/30 rounded-full" />
+          </div>
+          <div className="flex justify-end gap-2">
+            <div className="h-1 w-6 bg-gray-300 rounded-full" />
+            <div className="h-1.5 w-10 bg-[#7c3aed] rounded-full" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (id === "minimal2") {
+    return (
+      <div className="w-full h-full flex flex-col bg-white">
+        <div className="px-3 pt-3 pb-2 border-b border-gray-300">
+          <div className="h-1 w-16 bg-gray-400 rounded-full mb-2" />
+          <div className="h-0.5 w-full bg-gray-300" />
+        </div>
+        <div className="px-3 py-2 flex justify-between text-xs">
+          <div className="h-1 w-12 bg-gray-300 rounded-full" />
+          <div className="h-1 w-8 bg-gray-300 rounded-full" />
+        </div>
+        <div className="px-3 flex-1 space-y-1">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="flex justify-between text-xs py-1 border-b border-gray-200">
+              <div className="h-0.5 w-16 bg-gray-300 rounded-full" />
+              <div className="h-0.5 w-8 bg-gray-300 rounded-full" />
+            </div>
+          ))}
+        </div>
+        <div className="px-3 pb-3 flex justify-end pt-1 border-t border-gray-300">
+          <div className="h-1 w-12 bg-gray-400 rounded-full" />
+        </div>
+      </div>
+    );
+  }
+
+  if (id === "service") {
+    return (
+      <div className="w-full h-full flex flex-col bg-white">
+        <div className="h-[3px] bg-[#06b6d4]" />
+        <div className="px-3 pt-3 bg-[#e0f7fa] pb-2">
+          <div className="flex justify-between">
+            <div className="space-y-1">
+              <div className="h-1.5 w-14 bg-[#06b6d4]/40 rounded-full" />
+              <div className="h-1 w-10 bg-[#06b6d4]/20 rounded-full" />
+            </div>
+            <div className="h-2 w-12 bg-[#06b6d4] rounded" />
+          </div>
+        </div>
+        <div className="px-3 py-2 bg-[#0891b2] text-white text-xs flex justify-between">
+          <div className="h-1 w-10 bg-white/40 rounded-full" />
+          <div className="h-1 w-10 bg-white/40 rounded-full" />
+          <div className="h-1 w-8 bg-white/40 rounded-full" />
+        </div>
+        <div className="px-3 mt-2 flex-1 space-y-1">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="border-l-2 border-[#06b6d4] pl-2 py-1.5 border-b border-gray-100">
+              <div className="h-0.5 w-16 bg-gray-300 rounded-full mb-0.5" />
+              <div className="flex justify-between">
+                <div className="h-0.5 w-10 bg-gray-200 rounded-full" />
+                <div className="h-0.5 w-8 bg-[#06b6d4]/30 rounded-full" />
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="px-3 pb-2 mt-1 flex justify-end">
+          <div className="bg-[#0891b2] rounded px-2 py-1 flex items-center gap-1">
+            <div className="h-1 w-8 bg-white/40 rounded-full" />
+            <div className="h-1.5 w-10 bg-white rounded" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (id === "receipt") {
+    return (
+      <div className="w-full h-full flex flex-col bg-gray-100">
+        <div className="px-3 pt-3 bg-white border-b-2 border-dashed border-gray-300">
+          <div className="text-center space-y-1 mb-2">
+            <div className="h-1 w-16 bg-gray-400 rounded-full mx-auto" />
+            <div className="h-0.5 w-12 bg-gray-300 rounded-full mx-auto" />
+          </div>
+          <div className="h-0.5 w-full bg-gray-300 mb-1" />
+        </div>
+        <div className="px-3 py-2 bg-white space-y-1">
+          <div className="flex justify-between text-xs">
+            <div className="h-1 w-8 bg-gray-300 rounded-full" />
+            <div className="h-1 w-8 bg-gray-300 rounded-full" />
+          </div>
+          <div className="h-0.5 w-full bg-gray-200" />
+        </div>
+        <div className="px-3 mt-1 bg-white flex-1 space-y-0.5">
+          {[1, 2].map((i) => (
+            <div key={i} className="flex justify-between text-xs py-1 border-b border-gray-200">
+              <div className="h-0.5 w-14 bg-gray-300 rounded-full" />
+              <div className="h-0.5 w-8 bg-gray-300 rounded-full" />
+            </div>
+          ))}
+          <div className="flex justify-between font-bold text-xs py-1 bg-gray-50 px-1">
+            <div className="h-0.5 w-10 bg-gray-400 rounded-full" />
+            <div className="h-1 w-8 bg-gray-400 rounded-full" />
+          </div>
+        </div>
+        <div className="px-3 pb-2 bg-white mt-1 text-center border-t-2 border-dashed border-gray-300 pt-1">
+          <div className="h-0.5 w-10 bg-gray-300 rounded-full mx-auto text-xs" />
+        </div>
+      </div>
+    );
+  }
+
+  if (id === "dark") {
+    return (
+      <div className="w-full h-full flex flex-col bg-[#1a1a1a]">
+        <div className="h-[3px] bg-[#10b981]" />
+        <div className="px-3 pt-3 pb-2 border-b border-gray-700">
+          <div className="flex justify-between">
+            <div className="space-y-1">
+              <div className="h-1.5 w-14 bg-[#10b981]/50 rounded-full" />
+              <div className="h-1 w-10 bg-white/20 rounded-full" />
+            </div>
+            <div className="space-y-1">
+              <div className="h-1 w-10 bg-white/20 rounded-full ml-auto" />
+              <div className="h-1.5 w-12 bg-[#10b981]/40 rounded-full ml-auto" />
+            </div>
+          </div>
+        </div>
+        <div className="px-3 py-2 bg-gray-900 flex justify-between text-white/60 text-xs">
+          <div className="h-1 w-10 bg-white/20 rounded-full" />
+          <div className="h-1 w-10 bg-white/20 rounded-full" />
+          <div className="h-1 w-8 bg-white/20 rounded-full" />
+        </div>
+        <div className="px-3 mt-2 flex-1 space-y-0.5">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="border-b border-gray-700 py-1.5 flex justify-between">
+              <div className="h-0.5 w-16 bg-white/20 rounded-full" />
+              <div className="h-0.5 w-8 bg-[#10b981]/40 rounded-full" />
+            </div>
+          ))}
+        </div>
+        <div className="px-3 pb-2 mt-2 flex justify-end">
+          <div className="bg-[#10b981] rounded px-2 py-1 text-white flex items-center gap-1">
+            <div className="h-1 w-8 bg-white/60 rounded-full" />
+            <div className="h-1 w-6 bg-white rounded" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (id === "tax") {
+    return (
+      <div className="w-full h-full flex flex-col bg-white">
+        <div className="h-[3px] bg-[#8b5cf6]" />
+        <div className="px-3 pt-2 pb-1 border-b-2 border-[#8b5cf6]/20">
+          <div className="flex justify-between items-center">
+            <div className="space-y-1">
+              <div className="h-1.5 w-12 bg-[#8b5cf6]/30 rounded-full" />
+              <div className="h-0.5 w-8 bg-gray-300 rounded-full" />
+            </div>
+            <div className="text-right">
+              <div className="h-1.5 w-10 bg-[#8b5cf6] rounded px-1" />
+            </div>
+          </div>
+        </div>
+        <div className="px-3 py-1 bg-[#f3e8ff] text-xs grid grid-cols-3 gap-1">
+          <div className="h-1 w-6 bg-[#8b5cf6]/40 rounded-full" />
+          <div className="h-1 w-6 bg-[#8b5cf6]/40 rounded-full" />
+          <div className="h-1 w-6 bg-[#8b5cf6]/40 rounded-full" />
+        </div>
+        <div className="px-3 mt-1 flex-1 space-y-0.5">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="border-b border-gray-100 py-1">
+              <div className="flex justify-between text-xs">
+                <div className="h-0.5 w-14 bg-gray-200 rounded-full" />
+                <div className="h-0.5 w-8 bg-gray-300 rounded-full" />
+              </div>
+              <div className="grid grid-cols-3 gap-1 mt-0.5 text-xs">
+                <div className="h-0.5 w-4 bg-gray-100 rounded-full" />
+                <div className="h-0.5 w-4 bg-gray-100 rounded-full" />
+                <div className="h-0.5 w-4 bg-[#8b5cf6]/20 rounded-full" />
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="px-3 pb-2 mt-1 space-y-0.5 border-t-2 border-[#8b5cf6]/20 pt-1">
+          <div className="flex justify-end gap-3 text-xs">
+            <div className="h-0.5 w-8 bg-gray-300 rounded-full" />
+            <div className="h-0.5 w-8 bg-gray-300 rounded-full" />
+          </div>
+          <div className="flex justify-end gap-3 text-xs">
+            <div className="h-1 w-10 bg-[#8b5cf6]/30 rounded-full" />
+            <div className="h-1 w-10 bg-[#8b5cf6] rounded-full" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (id === "freelancer") {
+    return (
+      <div className="w-full h-full flex flex-col bg-white">
+        <div className="h-[3px] bg-[#ec4899]" />
+        <div className="px-3 pt-3 pb-2 bg-[#fce7f3]">
+          <div className="flex justify-between items-center">
+            <div className="space-y-1">
+              <div className="h-1.5 w-14 bg-[#ec4899]/40 rounded-full" />
+              <div className="h-1 w-10 bg-[#ec4899]/25 rounded-full" />
+            </div>
+            <div className="h-1.5 w-10 bg-[#ec4899] rounded-full" />
+          </div>
+        </div>
+        <div className="px-3 py-1 bg-white border-b border-gray-200 flex gap-2">
+          <div className="h-1 w-10 bg-[#ec4899]/30 rounded-full" />
+          <div className="h-1 w-12 bg-gray-300 rounded-full" />
+        </div>
+        <div className="px-3 mt-2 flex-1 space-y-1">
+          <div className="text-xs font-semibold text-gray-700 mb-1">
+            <div className="h-1 w-8 bg-gray-400 rounded-full" />
+          </div>
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="border-l-2 border-[#ec4899] pl-2 py-1 border-b border-gray-100">
+              <div className="flex justify-between text-xs mb-0.5">
+                <div className="h-0.5 w-12 bg-gray-300 rounded-full" />
+                <div className="h-0.5 w-8 bg-[#ec4899]/30 rounded-full" />
+              </div>
+              <div className="h-0.5 w-14 bg-gray-200 rounded-full" />
+            </div>
+          ))}
+        </div>
+        <div className="px-3 pb-2 mt-1 flex justify-end">
+          <div className="bg-[#ec4899] rounded px-2 py-1 text-white text-xs">
+            <div className="h-1 w-10 bg-white/60 rounded-full" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (id === "sepa") {
+    return (
+      <div className="w-full h-full flex flex-col bg-[#f5f5f5]">
+        <div className="px-3 pt-3 pb-2 bg-white border-b-2 border-[#003399]">
+          <div className="flex justify-between">
+            <div className="space-y-1">
+              <div className="h-1.5 w-12 bg-[#003399]/40 rounded-full" />
+              <div className="h-1 w-10 bg-gray-300 rounded-full" />
+            </div>
+            <div className="h-2 w-12 bg-[#003399]" />
+          </div>
+        </div>
+        <div className="px-3 py-2 bg-white flex gap-3 text-xs">
+          <div className="flex-1">
+            <div className="h-1 w-10 bg-gray-300 rounded-full mb-1" />
+            <div className="h-0.5 w-12 bg-gray-200 rounded-full" />
+          </div>
+          <div className="flex-1">
+            <div className="h-1 w-10 bg-gray-300 rounded-full mb-1" />
+            <div className="h-0.5 w-12 bg-gray-200 rounded-full" />
+          </div>
+        </div>
+        <div className="px-3 mt-1 bg-white flex-1">
+          <div className="border-2 border-[#003399]/30 p-1.5">
+            <div className="text-xs space-y-1">
+              {[1, 2].map((i) => (
+                <div key={i} className="flex justify-between">
+                  <div className="h-0.5 w-10 bg-gray-300 rounded-full" />
+                  <div className="h-0.5 w-8 bg-gray-300 rounded-full" />
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="mt-1 space-y-0.5">
+            {[1, 2].map((i) => (
+              <div key={i} className="flex justify-between text-xs border-b border-gray-200 py-1">
+                <div className="h-0.5 w-14 bg-gray-300 rounded-full" />
+                <div className="h-0.5 w-8 bg-gray-300 rounded-full" />
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="px-3 pb-2 mt-1 bg-white border-t border-gray-200 pt-1 flex justify-end">
+          <div className="h-1 w-14 bg-[#003399] rounded" />
+        </div>
+      </div>
+    );
+  }
+
+  if (id === "builder") {
+    return (
+      <div className="w-full h-full flex flex-col bg-white">
+        <div className="h-[4px] bg-[#f59e0b]" />
+        <div className="px-3 pt-3 pb-2 border-b border-[#f59e0b]/30">
+          <div className="flex justify-between">
+            <div className="space-y-1">
+              <div className="h-1.5 w-14 bg-[#f59e0b]/40 rounded-full" />
+              <div className="h-1 w-10 bg-gray-300 rounded-full" />
+            </div>
+            <div className="text-right space-y-1">
+              <div className="h-1 w-10 bg-gray-300 rounded-full ml-auto" />
+              <div className="h-1.5 w-12 bg-[#f59e0b]/30 rounded-full ml-auto" />
+            </div>
+          </div>
+        </div>
+        <div className="px-3 py-2 bg-[#fffbeb] flex justify-between text-xs">
+          <div className="h-1 w-8 bg-[#f59e0b]/40 rounded-full" />
+          <div className="h-1 w-10 bg-gray-300 rounded-full" />
+          <div className="h-1 w-8 bg-gray-300 rounded-full" />
+        </div>
+        <div className="px-3 mt-1 flex-1">
+          <div className="text-xs font-semibold mb-1">
+            <div className="h-1 w-10 bg-[#f59e0b]/50 rounded-full" />
+          </div>
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="border-l-4 border-[#f59e0b] pl-2 py-1.5 border-b border-gray-100">
+              <div className="flex justify-between">
+                <div className="h-0.5 w-14 bg-gray-300 rounded-full" />
+                <div className="h-0.5 w-8 bg-[#f59e0b]/30 rounded-full" />
+              </div>
+              <div className="h-0.5 w-20 bg-gray-200 rounded-full mt-0.5" />
+            </div>
+          ))}
+        </div>
+        <div className="px-3 pb-2 mt-1 flex justify-end">
+          <div className="bg-[#f59e0b] rounded px-2 py-1 text-white text-xs">
+            <div className="h-1 w-12 bg-white/60 rounded-full" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (id === "tech") {
+    return (
+      <div className="w-full h-full flex flex-col bg-white">
+        <div className="h-[3px] bg-[#3b82f6]" />
+        <div className="px-3 pt-3 pb-2 bg-[#eff6ff] border-b border-[#3b82f6]/20">
+          <div className="flex justify-between items-center">
+            <div className="space-y-1">
+              <div className="h-1.5 w-14 bg-[#3b82f6]/40 rounded-full" />
+              <div className="h-1 w-10 bg-[#3b82f6]/20 rounded-full" />
+            </div>
+            <div className="bg-[#3b82f6] px-2 py-1 rounded">
+              <div className="h-1.5 w-8 bg-white rounded" />
+            </div>
+          </div>
+        </div>
+        <div className="px-3 py-2 font-mono text-xs bg-gray-50 flex justify-between">
+          <div className="h-1 w-12 bg-gray-300 rounded-full" />
+          <div className="h-1 w-10 bg-gray-300 rounded-full" />
+          <div className="h-1 w-8 bg-gray-300 rounded-full" />
+        </div>
+        <div className="px-3 mt-2 flex-1">
+          <div className="space-y-1">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="bg-gray-50 rounded p-1.5 border-l-2 border-[#3b82f6]">
+                <div className="font-mono text-xs space-y-0.5">
+                  <div className="flex justify-between">
+                    <div className="h-0.5 w-16 bg-gray-300 rounded-full" />
+                    <div className="h-0.5 w-8 bg-[#3b82f6]/30 rounded-full" />
+                  </div>
+                  <div className="h-0.5 w-12 bg-gray-200 rounded-full" />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="px-3 pb-2 mt-2 flex justify-end">
+          <div className="bg-[#3b82f6] rounded px-2 py-1 text-white text-xs font-semibold">
+            <div className="h-1 w-10 bg-white/70 rounded-full" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (id === "invoice-only") {
+    return (
+      <div className="w-full h-full flex flex-col bg-white">
+        <div className="h-1 bg-[#dc2626]" />
+        <div className="px-3 pt-3 pb-2 border-b-2 border-[#dc2626]/30">
+          <div className="flex justify-between">
+            <div className="space-y-1">
+              <div className="h-1.5 w-12 bg-[#dc2626]/40 rounded-full" />
+              <div className="h-1 w-8 bg-gray-300 rounded-full" />
+            </div>
+            <div className="h-2 w-10 bg-[#dc2626] rounded" />
+          </div>
+        </div>
+        <div className="px-3 py-2 bg-[#fee2e2] flex justify-between">
+          <div className="h-1 w-10 bg-[#dc2626]/30 rounded-full" />
+          <div className="h-1 w-12 bg-gray-300 rounded-full" />
+        </div>
+        <div className="px-3 mt-2 flex-1 space-y-1">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="border-b border-gray-100 py-1.5 flex justify-between">
+              <div className="h-0.5 w-16 bg-gray-300 rounded-full" />
+              <div className="h-0.5 w-8 bg-gray-300 rounded-full" />
+            </div>
+          ))}
+        </div>
+        <div className="px-3 pb-1 mt-2 bg-[#fee2e2] p-2 rounded border-2 border-[#dc2626] text-center">
+          <div className="h-1 w-14 bg-[#dc2626]/40 rounded-full mx-auto mb-1" />
+          <div className="h-1.5 w-16 bg-[#dc2626] rounded-full mx-auto" />
+        </div>
+        <div className="px-3 pb-2 mt-1 flex justify-center">
+          <div className="h-0.5 w-20 bg-[#dc2626]/30 rounded-full" />
         </div>
       </div>
     );
