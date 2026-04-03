@@ -1210,6 +1210,541 @@ function InvoicePreview({
   }
 
   // ════════════════════════════════════════════════════════════════════════════
+  // CORPORATE THEME — Green diagonal geometric
+  // ════════════════════════════════════════════════════════════════════════════
+  if (invoiceTheme === "corporate") {
+    return (
+      <div className="bg-white rounded-2xl shadow-sm overflow-hidden text-gray-900 text-sm transition-all duration-300 border border-gray-200">
+        {/* Charcoal header with green diagonal stripes */}
+        <header className="relative bg-[#2d3748] px-5 sm:px-6 pt-5 pb-5 overflow-hidden">
+          <div className="absolute top-0 bottom-0 pointer-events-none" style={{ right: "22%", width: "56px", background: "#48bb78", opacity: 0.3, transform: "skewX(-14deg)" }} />
+          <div className="absolute top-0 bottom-0 pointer-events-none" style={{ right: "26.5%", width: "18px", background: "#48bb78", opacity: 0.18, transform: "skewX(-14deg)" }} />
+          <div className="relative flex items-start justify-between">
+            <div className="flex items-center gap-3">
+              {user?.logoUrl ? (
+                <img src={user.logoUrl} alt="" className="w-11 h-11 rounded-lg object-cover flex-shrink-0 ring-2 ring-[#48bb78]/30" />
+              ) : (
+                <div className="w-11 h-11 rounded-lg bg-[#48bb78] flex items-center justify-center flex-shrink-0">
+                  <span className="text-lg font-bold text-white leading-none">{businessInitial}</span>
+                </div>
+              )}
+              <div>
+                <h2 className="text-base font-bold text-white tracking-tight">{user?.businessName || user?.name || "Your Business"}</h2>
+                <div className="text-[11px] text-gray-400 space-y-0.5 mt-0.5">
+                  {user?.businessAddress && <p>{user.businessAddress}</p>}
+                  <p>{user?.email || "your@email.com"}{user?.businessPhone && ` · ${user.businessPhone}`}</p>
+                </div>
+              </div>
+            </div>
+            <div className="text-right">
+              <p className="text-[10px] font-semibold uppercase tracking-widest text-[#48bb78] mb-0.5">{docLabel}</p>
+              <p className="text-xl sm:text-2xl font-extrabold text-white tracking-tight font-mono">{invoiceNumber || "INV-0000"}</p>
+              {description && <p className="text-gray-400 text-xs mt-0.5 truncate max-w-[140px]">{description}</p>}
+            </div>
+          </div>
+          {(user?.kvkNumber || user?.vatNumber) && (
+            <div className="relative flex gap-3 mt-2 text-[10px] text-gray-500">
+              {user.kvkNumber && <span>{countryConfig.businessRegLabel}: {user.kvkNumber}</span>}
+              {user.vatNumber && <span>{countryConfig.taxIdLabel}: {user.vatNumber}</span>}
+            </div>
+          )}
+        </header>
+        <div className="h-1 bg-[#48bb78]" />
+
+        {/* Dates + Bill To */}
+        <div className="px-5 sm:px-6 py-4">
+          <div className="flex flex-col sm:flex-row sm:justify-between gap-4">
+            <div className="flex-1">
+              <div className="space-y-1 text-xs">
+                <div className="flex gap-2"><span className="text-gray-400 w-16 shrink-0">{t("issued")}</span><span className="text-gray-700 font-medium">{fmtDate(today)}</span></div>
+                {serviceDate && <div className="flex gap-2"><span className="text-gray-400 w-16 shrink-0">{countryConfig.serviceDateLabel}</span><span className="text-gray-700 font-medium">{fmtDate(serviceDate)}</span></div>}
+                {invoiceCountry === "DE" && serviceDate && serviceDate === today && <p className="text-[10px] text-amber-600 italic">{countryConfig.serviceDateNote}</p>}
+                <div className="flex gap-2"><span className="text-gray-400 w-16 shrink-0">{t("due")}</span><span className="text-gray-700 font-medium">{fmtDate(dueDate)}</span></div>
+              </div>
+              {invoiceType === "credit_note" && referenceInvoice && <p className="text-xs text-gray-400 mt-2">{t("ref")}: {referenceInvoice}</p>}
+            </div>
+            <div className="text-left sm:text-right flex-shrink-0">
+              <p className="text-[10px] font-semibold uppercase tracking-widest mb-1 text-[#48bb78]">{t("billTo")}</p>
+              {selectedClient ? (
+                <>
+                  <p className="text-sm font-semibold text-gray-900">{selectedClient.name}</p>
+                  <p className="text-gray-500 text-xs">{selectedClient.email}</p>
+                  {selectedClient.address && <p className="text-gray-500 text-xs mt-0.5 whitespace-pre-line">{selectedClient.address}</p>}
+                  {selectedClient.vatNumber && <p className="text-gray-500 text-xs mt-0.5">{t("vat")}: {selectedClient.vatNumber}</p>}
+                </>
+              ) : (
+                <p className="text-gray-300 text-xs italic">{t("noClient")}</p>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {notesToClient && (
+          <div className="px-5 sm:px-6 pb-4">
+            <div className="rounded-lg border border-green-200/80 bg-green-50 p-3">
+              <p className="text-[10px] font-semibold mb-0.5 text-green-900">{t("note")}</p>
+              <p className="text-xs whitespace-pre-line leading-relaxed text-green-800">{notesToClient}</p>
+            </div>
+          </div>
+        )}
+
+        {/* Line Items */}
+        <div className="px-5 sm:px-6">
+          <table className="w-full text-xs sm:text-sm">
+            <thead>
+              <tr className="bg-[#2d3748]">
+                <th className="text-center text-[10px] font-semibold uppercase tracking-wider py-2.5 pl-3 pr-2 w-8 text-[#48bb78]">#</th>
+                <th className="text-left text-[10px] font-semibold uppercase tracking-wider py-2.5 pr-2 text-[#48bb78]">{t("description")}</th>
+                <th className="text-right text-[10px] font-semibold uppercase tracking-wider py-2.5 px-2 w-20 text-[#48bb78]">{t("price")}</th>
+                <th className="text-center text-[10px] font-semibold uppercase tracking-wider py-2.5 px-2 w-10 text-[#48bb78]">{t("qty")}</th>
+                <th className="text-right text-[10px] font-semibold uppercase tracking-wider py-2.5 pl-2 pr-3 w-20 text-[#48bb78]">{t("amount")}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {validItems.length > 0 ? validItems.map((item, idx) => (
+                <tr key={idx} className={`${idx % 2 === 0 ? "bg-white" : "bg-gray-50"} ${idx < validItems.length - 1 ? "border-b border-gray-100" : ""}`}>
+                  <td className="text-gray-400 text-xs text-center py-2.5 pl-3 pr-2 tabular-nums">{idx + 1}</td>
+                  <td className="text-gray-800 text-xs py-2.5 pr-2 truncate max-w-[120px]">{item.description || "--"}</td>
+                  <td className="text-gray-500 text-xs text-right py-2.5 px-2 tabular-nums">{fmt(item.unitPrice)}</td>
+                  <td className="text-gray-500 text-xs text-center py-2.5 px-2 tabular-nums">{item.quantity}</td>
+                  <td className="text-gray-900 text-xs font-semibold text-right py-2.5 pl-2 pr-3 tabular-nums">{fmt(item.quantity * item.unitPrice)}</td>
+                </tr>
+              )) : (
+                <tr><td colSpan={5} className="text-center text-gray-300 text-xs py-6 italic">{t("addLineItems")}</td></tr>
+              )}
+            </tbody>
+          </table>
+          <div className="border-t border-gray-200 py-4">
+            <div className="flex flex-col items-end space-y-1">
+              <div className="w-full max-w-[200px] flex justify-between text-xs">
+                <span className="text-gray-400">{t("subtotal")}</span>
+                <span className="text-gray-700 tabular-nums">{fmt(subtotal)}</span>
+              </div>
+              {taxRate > 0 && (
+                <div className="w-full max-w-[200px] flex justify-between text-xs">
+                  <span className="text-gray-400">{t("vat")} ({taxRate}%)</span>
+                  <span className="text-gray-700 tabular-nums">{fmt(tax)}</span>
+                </div>
+              )}
+              {reverseCharge && <div className="w-full max-w-[200px]"><p className="text-[10px] text-amber-600 italic">{countryConfig.reverseChargeText}</p></div>}
+              <div className="w-full max-w-[200px] bg-[#48bb78] rounded-lg px-3 py-2 flex justify-between mt-1">
+                <span className="text-sm font-bold text-white">{t("total")}</span>
+                <span className="text-base font-extrabold tabular-nums text-white">{fmt(total)}</span>
+              </div>
+              {depositPercent && total > 0 && (
+                <div className="w-full max-w-[200px] mt-1 bg-green-50 border border-green-200 rounded-lg p-2">
+                  <div className="flex justify-between text-xs">
+                    <span className="text-green-700 font-semibold">{t("deposit")} ({depositPercent}%)</span>
+                    <span className="text-green-800 font-bold tabular-nums">{fmt(total * depositPercent / 100)}</span>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Two-column footer: contact left, bank right */}
+        <div className="px-5 sm:px-6 pb-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="space-y-1 text-xs text-gray-600">
+              {user?.businessAddress && <div className="flex items-start gap-1.5"><span className="text-[#48bb78] font-bold">▪</span><span className="whitespace-pre-line">{user.businessAddress}</span></div>}
+              {user?.businessPhone && <div className="flex items-center gap-1.5"><span className="text-[#48bb78] font-bold">▪</span><span>{user.businessPhone}</span></div>}
+              {user?.email && <div className="flex items-center gap-1.5"><span className="text-[#48bb78] font-bold">▪</span><span>{user.email}</span></div>}
+            </div>
+            <div className="space-y-2">
+              <BankSection labelClass="text-[#48bb78]" bgClass="bg-gray-50 border-gray-200" />
+              <PaymentNotesSection />
+            </div>
+          </div>
+        </div>
+
+        {/* Signature line */}
+        <div className="px-5 sm:px-6 pb-4">
+          <div className="grid grid-cols-2 gap-6">
+            <div><div className="border-t border-gray-300 mt-6 pt-1"><p className="text-[10px] text-gray-400">Authorized Signature</p></div></div>
+            <div><div className="border-t border-gray-300 mt-6 pt-1"><p className="text-[10px] text-gray-400">Date</p></div></div>
+          </div>
+        </div>
+
+        <div className="px-5 sm:px-6 py-3 bg-[#2d3748]/5 border-t border-[#48bb78]/20">
+          <ComplianceFooter />
+          <WatermarkFooter />
+        </div>
+      </div>
+    );
+  }
+
+  // ════════════════════════════════════════════════════════════════════════════
+  // PROFESSIONAL THEME — Orange geometric, same layout as corporate
+  // ════════════════════════════════════════════════════════════════════════════
+  if (invoiceTheme === "professional") {
+    return (
+      <div className="bg-white rounded-2xl shadow-sm overflow-hidden text-gray-900 text-sm transition-all duration-300 border border-gray-200">
+        {/* Navy header with orange diagonal stripes */}
+        <header className="relative bg-[#1a365d] px-5 sm:px-6 pt-5 pb-5 overflow-hidden">
+          <div className="absolute top-0 bottom-0 pointer-events-none" style={{ right: "22%", width: "56px", background: "#ed8936", opacity: 0.3, transform: "skewX(-14deg)" }} />
+          <div className="absolute top-0 bottom-0 pointer-events-none" style={{ right: "26.5%", width: "18px", background: "#ed8936", opacity: 0.18, transform: "skewX(-14deg)" }} />
+          <div className="relative flex items-start justify-between">
+            <div className="flex items-center gap-3">
+              {user?.logoUrl ? (
+                <img src={user.logoUrl} alt="" className="w-11 h-11 rounded-lg object-cover flex-shrink-0 ring-2 ring-[#ed8936]/30" />
+              ) : (
+                <div className="w-11 h-11 rounded-lg bg-[#ed8936] flex items-center justify-center flex-shrink-0">
+                  <span className="text-lg font-bold text-white leading-none">{businessInitial}</span>
+                </div>
+              )}
+              <div>
+                <h2 className="text-base font-bold text-white tracking-tight">{user?.businessName || user?.name || "Your Business"}</h2>
+                <div className="text-[11px] text-blue-200/60 space-y-0.5 mt-0.5">
+                  {user?.businessAddress && <p>{user.businessAddress}</p>}
+                  <p>{user?.email || "your@email.com"}{user?.businessPhone && ` · ${user.businessPhone}`}</p>
+                </div>
+              </div>
+            </div>
+            <div className="text-right">
+              <p className="text-[10px] font-semibold uppercase tracking-widest text-[#ed8936] mb-0.5">{docLabel}</p>
+              <p className="text-xl sm:text-2xl font-extrabold text-white tracking-tight font-mono">{invoiceNumber || "INV-0000"}</p>
+              {description && <p className="text-blue-200/50 text-xs mt-0.5 truncate max-w-[140px]">{description}</p>}
+            </div>
+          </div>
+          {(user?.kvkNumber || user?.vatNumber) && (
+            <div className="relative flex gap-3 mt-2 text-[10px] text-blue-300/50">
+              {user.kvkNumber && <span>{countryConfig.businessRegLabel}: {user.kvkNumber}</span>}
+              {user.vatNumber && <span>{countryConfig.taxIdLabel}: {user.vatNumber}</span>}
+            </div>
+          )}
+        </header>
+        <div className="h-1 bg-[#ed8936]" />
+
+        {/* Dates + Bill To */}
+        <div className="px-5 sm:px-6 py-4">
+          <div className="flex flex-col sm:flex-row sm:justify-between gap-4">
+            <div className="flex-1">
+              <div className="space-y-1 text-xs">
+                <div className="flex gap-2"><span className="text-gray-400 w-16 shrink-0">{t("issued")}</span><span className="text-gray-700 font-medium">{fmtDate(today)}</span></div>
+                {serviceDate && <div className="flex gap-2"><span className="text-gray-400 w-16 shrink-0">{countryConfig.serviceDateLabel}</span><span className="text-gray-700 font-medium">{fmtDate(serviceDate)}</span></div>}
+                {invoiceCountry === "DE" && serviceDate && serviceDate === today && <p className="text-[10px] text-amber-600 italic">{countryConfig.serviceDateNote}</p>}
+                <div className="flex gap-2"><span className="text-gray-400 w-16 shrink-0">{t("due")}</span><span className="text-gray-700 font-medium">{fmtDate(dueDate)}</span></div>
+              </div>
+              {invoiceType === "credit_note" && referenceInvoice && <p className="text-xs text-gray-400 mt-2">{t("ref")}: {referenceInvoice}</p>}
+            </div>
+            <div className="text-left sm:text-right flex-shrink-0">
+              <p className="text-[10px] font-semibold uppercase tracking-widest mb-1 text-[#ed8936]">{t("billTo")}</p>
+              {selectedClient ? (
+                <>
+                  <p className="text-sm font-semibold text-gray-900">{selectedClient.name}</p>
+                  <p className="text-gray-500 text-xs">{selectedClient.email}</p>
+                  {selectedClient.address && <p className="text-gray-500 text-xs mt-0.5 whitespace-pre-line">{selectedClient.address}</p>}
+                  {selectedClient.vatNumber && <p className="text-gray-500 text-xs mt-0.5">{t("vat")}: {selectedClient.vatNumber}</p>}
+                </>
+              ) : (
+                <p className="text-gray-300 text-xs italic">{t("noClient")}</p>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {notesToClient && (
+          <div className="px-5 sm:px-6 pb-4">
+            <div className="rounded-lg border border-orange-200/80 bg-orange-50 p-3">
+              <p className="text-[10px] font-semibold mb-0.5 text-orange-900">{t("note")}</p>
+              <p className="text-xs whitespace-pre-line leading-relaxed text-orange-800">{notesToClient}</p>
+            </div>
+          </div>
+        )}
+
+        {/* Line Items */}
+        <div className="px-5 sm:px-6">
+          <table className="w-full text-xs sm:text-sm">
+            <thead>
+              <tr className="bg-[#1a365d]">
+                <th className="text-center text-[10px] font-semibold uppercase tracking-wider py-2.5 pl-3 pr-2 w-8 text-[#ed8936]">#</th>
+                <th className="text-left text-[10px] font-semibold uppercase tracking-wider py-2.5 pr-2 text-[#ed8936]">{t("description")}</th>
+                <th className="text-right text-[10px] font-semibold uppercase tracking-wider py-2.5 px-2 w-20 text-[#ed8936]">{t("price")}</th>
+                <th className="text-center text-[10px] font-semibold uppercase tracking-wider py-2.5 px-2 w-10 text-[#ed8936]">{t("qty")}</th>
+                <th className="text-right text-[10px] font-semibold uppercase tracking-wider py-2.5 pl-2 pr-3 w-20 text-[#ed8936]">{t("amount")}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {validItems.length > 0 ? validItems.map((item, idx) => (
+                <tr key={idx} className={`${idx % 2 === 0 ? "bg-white" : "bg-gray-50"} ${idx < validItems.length - 1 ? "border-b border-gray-100" : ""}`}>
+                  <td className="text-gray-400 text-xs text-center py-2.5 pl-3 pr-2 tabular-nums">{idx + 1}</td>
+                  <td className="text-gray-800 text-xs py-2.5 pr-2 truncate max-w-[120px]">{item.description || "--"}</td>
+                  <td className="text-gray-500 text-xs text-right py-2.5 px-2 tabular-nums">{fmt(item.unitPrice)}</td>
+                  <td className="text-gray-500 text-xs text-center py-2.5 px-2 tabular-nums">{item.quantity}</td>
+                  <td className="text-gray-900 text-xs font-semibold text-right py-2.5 pl-2 pr-3 tabular-nums">{fmt(item.quantity * item.unitPrice)}</td>
+                </tr>
+              )) : (
+                <tr><td colSpan={5} className="text-center text-gray-300 text-xs py-6 italic">{t("addLineItems")}</td></tr>
+              )}
+            </tbody>
+          </table>
+          <div className="border-t border-gray-200 py-4">
+            <div className="flex flex-col items-end space-y-1">
+              <div className="w-full max-w-[200px] flex justify-between text-xs">
+                <span className="text-gray-400">{t("subtotal")}</span>
+                <span className="text-gray-700 tabular-nums">{fmt(subtotal)}</span>
+              </div>
+              {taxRate > 0 && (
+                <div className="w-full max-w-[200px] flex justify-between text-xs">
+                  <span className="text-gray-400">{t("vat")} ({taxRate}%)</span>
+                  <span className="text-gray-700 tabular-nums">{fmt(tax)}</span>
+                </div>
+              )}
+              {reverseCharge && <div className="w-full max-w-[200px]"><p className="text-[10px] text-amber-600 italic">{countryConfig.reverseChargeText}</p></div>}
+              <div className="w-full max-w-[200px] bg-[#ed8936] rounded-lg px-3 py-2 flex justify-between mt-1">
+                <span className="text-sm font-bold text-white">{t("total")}</span>
+                <span className="text-base font-extrabold tabular-nums text-white">{fmt(total)}</span>
+              </div>
+              {depositPercent && total > 0 && (
+                <div className="w-full max-w-[200px] mt-1 bg-orange-50 border border-orange-200 rounded-lg p-2">
+                  <div className="flex justify-between text-xs">
+                    <span className="text-orange-700 font-semibold">{t("deposit")} ({depositPercent}%)</span>
+                    <span className="text-orange-800 font-bold tabular-nums">{fmt(total * depositPercent / 100)}</span>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Two-column footer: contact left, bank right */}
+        <div className="px-5 sm:px-6 pb-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="space-y-1 text-xs text-gray-600">
+              {user?.businessAddress && <div className="flex items-start gap-1.5"><span className="text-[#ed8936] font-bold">▪</span><span className="whitespace-pre-line">{user.businessAddress}</span></div>}
+              {user?.businessPhone && <div className="flex items-center gap-1.5"><span className="text-[#ed8936] font-bold">▪</span><span>{user.businessPhone}</span></div>}
+              {user?.email && <div className="flex items-center gap-1.5"><span className="text-[#ed8936] font-bold">▪</span><span>{user.email}</span></div>}
+            </div>
+            <div className="space-y-2">
+              <BankSection labelClass="text-[#ed8936]" bgClass="bg-gray-50 border-gray-200" />
+              <PaymentNotesSection />
+            </div>
+          </div>
+        </div>
+
+        {/* Signature line */}
+        <div className="px-5 sm:px-6 pb-4">
+          <div className="grid grid-cols-2 gap-6">
+            <div><div className="border-t border-gray-300 mt-6 pt-1"><p className="text-[10px] text-gray-400">Authorized Signature</p></div></div>
+            <div><div className="border-t border-gray-300 mt-6 pt-1"><p className="text-[10px] text-gray-400">Date</p></div></div>
+          </div>
+        </div>
+
+        <div className="px-5 sm:px-6 py-3 bg-[#1a365d]/5 border-t border-[#ed8936]/20">
+          <ComplianceFooter />
+          <WatermarkFooter />
+        </div>
+      </div>
+    );
+  }
+
+  // ════════════════════════════════════════════════════════════════════════════
+  // DUTCH THEME — Netherlands business style, FACTUUR, BTW per line
+  // ════════════════════════════════════════════════════════════════════════════
+  if (invoiceTheme === "dutch") {
+    const btwLabel = invoiceType === "quote" ? "Offerte" : invoiceType === "credit_note" ? "Creditnota" : "Factuur";
+    return (
+      <div className="bg-white rounded-lg overflow-hidden text-gray-900 text-sm transition-all duration-300 border border-gray-200">
+        {/* Orange left accent + header */}
+        <header className="border-l-[5px] border-[#f97316] px-5 sm:px-6 pt-6 pb-5">
+          <div className="flex items-start justify-between">
+            <div>
+              <div className="flex items-center gap-3 mb-2">
+                {user?.logoUrl ? (
+                  <img src={user.logoUrl} alt="" className="w-10 h-10 rounded object-cover flex-shrink-0" />
+                ) : (
+                  <div className="w-10 h-10 rounded bg-[#f97316] flex items-center justify-center flex-shrink-0">
+                    <span className="text-base font-bold text-white leading-none">{businessInitial}</span>
+                  </div>
+                )}
+                <div>
+                  <h2 className="text-base font-bold text-gray-900">{user?.businessName || user?.name || "Uw Bedrijf"}</h2>
+                  <p className="text-[11px] text-gray-500 mt-0.5">{user?.businessAddress || ""}</p>
+                  <p className="text-[11px] text-gray-500">{user?.email || "uw@email.nl"}{user?.businessPhone && ` · ${user.businessPhone}`}</p>
+                </div>
+              </div>
+            </div>
+            {/* Invoice number top-right, large */}
+            <div className="text-right">
+              <p className="text-[10px] font-semibold uppercase tracking-widest text-[#f97316] mb-1">{btwLabel.toUpperCase()}</p>
+              <p className="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight font-mono">{invoiceNumber || "F-0000"}</p>
+              {description && <p className="text-gray-400 text-xs mt-0.5 truncate max-w-[150px]">{description}</p>}
+            </div>
+          </div>
+          <div className="mt-3 flex flex-wrap gap-4 text-xs">
+            <div>
+              <span className="text-gray-400">Factuurdatum: </span>
+              <span className="text-gray-700 font-medium">{fmtDate(today)}</span>
+            </div>
+            {serviceDate && (
+              <div>
+                <span className="text-gray-400">{countryConfig.serviceDateLabel}: </span>
+                <span className="text-gray-700 font-medium">{fmtDate(serviceDate)}</span>
+              </div>
+            )}
+            {invoiceCountry === "DE" && serviceDate && serviceDate === today && (
+              <p className="text-[10px] text-amber-600 italic">{countryConfig.serviceDateNote}</p>
+            )}
+            <div>
+              <span className="text-[#f97316] font-semibold">Vervaldatum: </span>
+              <span className="text-[#f97316] font-semibold">{fmtDate(dueDate)}</span>
+            </div>
+          </div>
+          {invoiceType === "credit_note" && referenceInvoice && (
+            <p className="text-xs text-gray-400 mt-2">Ref: {referenceInvoice}</p>
+          )}
+        </header>
+
+        {/* Bill To */}
+        <div className="px-5 sm:px-6 py-4 border-t border-gray-100">
+          <p className="text-[10px] font-semibold uppercase tracking-widest mb-1.5 text-[#f97316]">Factuur aan</p>
+          {selectedClient ? (
+            <>
+              <p className="text-sm font-bold text-gray-900">{selectedClient.name}</p>
+              <p className="text-gray-500 text-xs">{selectedClient.email}</p>
+              {selectedClient.address && <p className="text-gray-500 text-xs mt-0.5 whitespace-pre-line">{selectedClient.address}</p>}
+              {selectedClient.vatNumber && <p className="text-gray-500 text-xs mt-0.5">BTW-nr: {selectedClient.vatNumber}</p>}
+            </>
+          ) : (
+            <p className="text-gray-300 text-xs italic">Geen klant geselecteerd</p>
+          )}
+        </div>
+
+        {notesToClient && (
+          <div className="px-5 sm:px-6 pb-4">
+            <div className="rounded border-l-4 border-[#f97316] bg-orange-50 px-3 py-2">
+              <p className="text-[10px] font-semibold mb-0.5 text-orange-900">Opmerking</p>
+              <p className="text-xs whitespace-pre-line leading-relaxed text-orange-800">{notesToClient}</p>
+            </div>
+          </div>
+        )}
+
+        {/* Line Items — Dutch columns: Nr, Omschrijving, Prijs, Aantal, BTW, Totaal */}
+        <div className="px-5 sm:px-6">
+          <table className="w-full text-xs sm:text-sm">
+            <thead>
+              <tr className="border-t-2 border-b-2 border-gray-200 bg-gray-50">
+                <th className="text-center text-[10px] font-semibold uppercase tracking-wider py-2.5 pl-2 pr-1 w-8 text-[#f97316]">Nr</th>
+                <th className="text-left text-[10px] font-semibold uppercase tracking-wider py-2.5 pr-2 text-gray-600">Omschrijving</th>
+                <th className="text-right text-[10px] font-semibold uppercase tracking-wider py-2.5 px-2 w-18 text-gray-600">Prijs</th>
+                <th className="text-center text-[10px] font-semibold uppercase tracking-wider py-2.5 px-2 w-12 text-gray-600">Aantal</th>
+                {taxRate > 0 && <th className="text-right text-[10px] font-semibold uppercase tracking-wider py-2.5 px-2 w-16 text-gray-600">BTW</th>}
+                <th className="text-right text-[10px] font-semibold uppercase tracking-wider py-2.5 pl-2 pr-2 w-20 text-gray-600">Totaal</th>
+              </tr>
+            </thead>
+            <tbody>
+              {validItems.length > 0 ? validItems.map((item, idx) => (
+                <tr key={idx} className={`border-b border-gray-100 ${idx % 2 === 1 ? "bg-gray-50/50" : "bg-white"}`}>
+                  <td className="text-gray-400 text-xs text-center py-2.5 pl-2 pr-1 tabular-nums">{idx + 1}</td>
+                  <td className="text-gray-800 text-xs py-2.5 pr-2 truncate max-w-[110px]">{item.description || "--"}</td>
+                  <td className="text-gray-500 text-xs text-right py-2.5 px-2 tabular-nums">{fmt(item.unitPrice)}</td>
+                  <td className="text-gray-500 text-xs text-center py-2.5 px-2 tabular-nums">{item.quantity}</td>
+                  {taxRate > 0 && <td className="text-gray-500 text-xs text-right py-2.5 px-2 tabular-nums">{fmt(item.quantity * item.unitPrice * (taxRate / 100))}</td>}
+                  <td className="text-gray-900 text-xs font-semibold text-right py-2.5 pl-2 pr-2 tabular-nums">{fmt(item.quantity * item.unitPrice * (1 + taxRate / 100))}</td>
+                </tr>
+              )) : (
+                <tr><td colSpan={taxRate > 0 ? 6 : 5} className="text-center text-gray-300 text-xs py-6 italic">Voeg regelitems toe om ze hier te zien</td></tr>
+              )}
+            </tbody>
+          </table>
+
+          {/* Totals */}
+          <div className="border-t-2 border-gray-200 py-4">
+            <div className="flex flex-col items-end space-y-1">
+              <div className="w-full max-w-[220px] flex justify-between text-xs">
+                <span className="text-gray-400">Subtotaal (excl. BTW)</span>
+                <span className="text-gray-700 tabular-nums">{fmt(subtotal)}</span>
+              </div>
+              {taxRate > 0 && (
+                <div className="w-full max-w-[220px] flex justify-between text-xs">
+                  <span className="text-gray-400">BTW ({taxRate}%)</span>
+                  <span className="text-gray-700 tabular-nums">{fmt(tax)}</span>
+                </div>
+              )}
+              {reverseCharge && <div className="w-full max-w-[220px]"><p className="text-[10px] text-amber-600 italic">{countryConfig.reverseChargeText}</p></div>}
+              <div className="w-full max-w-[220px] flex justify-between pt-2 border-t-2 border-[#f97316] mt-1">
+                <span className="text-sm font-bold text-[#f97316]">Totaal incl. BTW</span>
+                <span className="text-lg font-black tabular-nums text-gray-900">{fmt(total)}</span>
+              </div>
+              {depositPercent && total > 0 && (
+                <div className="w-full max-w-[220px] mt-1 bg-orange-50 border border-orange-200 rounded p-2">
+                  <div className="flex justify-between text-xs">
+                    <span className="text-orange-700 font-semibold">Aanbetaling ({depositPercent}%)</span>
+                    <span className="text-orange-800 font-bold tabular-nums">{fmt(total * depositPercent / 100)}</span>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Payment Notes */}
+        <div className="px-5 sm:px-6 pb-4 space-y-3">
+          <PaymentNotesSection />
+        </div>
+
+        {/* Dutch footer: IBAN prominent + KVK/BTW-id */}
+        <div className="px-5 sm:px-6 pb-5 border-t border-gray-100 pt-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {/* Left: Bank details prominent */}
+            <div>
+              {bankData && bankData.iban && (
+                <div>
+                  <p className="text-[10px] font-semibold uppercase tracking-widest text-[#f97316] mb-2">Bankgegevens</p>
+                  <div className="space-y-1 text-xs">
+                    <div className="flex gap-2">
+                      <span className="text-gray-400 w-14 shrink-0">IBAN</span>
+                      <span className="text-gray-800 font-mono font-semibold">{formatIBAN(bankData.iban)}</span>
+                    </div>
+                    {bankData.bic && <div className="flex gap-2"><span className="text-gray-400 w-14 shrink-0">BIC</span><span className="text-gray-700 font-mono">{bankData.bic}</span></div>}
+                    {bankData.bankName && <div className="flex gap-2"><span className="text-gray-400 w-14 shrink-0">Bank</span><span className="text-gray-700">{bankData.bankName}</span></div>}
+                    {(bankData.accountHolder || user?.businessName) && <div className="flex gap-2"><span className="text-gray-400 w-14 shrink-0">t.n.v.</span><span className="text-gray-700">{bankData.accountHolder || user?.businessName}</span></div>}
+                  </div>
+                </div>
+              )}
+              {user?.bankDetails && !bankData && (
+                <div>
+                  <p className="text-[10px] font-semibold uppercase tracking-widest text-[#f97316] mb-1">Bankgegevens</p>
+                  <p className="text-gray-700 text-xs whitespace-pre-line">{user.bankDetails}</p>
+                </div>
+              )}
+            </div>
+            {/* Right: KVK + BTW-id */}
+            <div className="space-y-1 text-xs text-gray-600">
+              {user?.kvkNumber && (
+                <div className="flex gap-2">
+                  <span className="text-gray-400 w-20 shrink-0">KVK-nummer</span>
+                  <span className="font-medium text-gray-700">{user.kvkNumber}</span>
+                </div>
+              )}
+              {user?.vatNumber && (
+                <div className="flex gap-2">
+                  <span className="text-gray-400 w-20 shrink-0">BTW-nummer</span>
+                  <span className="font-medium text-gray-700">{user.vatNumber}</span>
+                </div>
+              )}
+              {user?.businessAddress && (
+                <div className="flex gap-2 mt-2">
+                  <span className="text-gray-400 w-20 shrink-0">Adres</span>
+                  <span className="text-gray-700 whitespace-pre-line">{user.businessAddress}</span>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        <div className="px-5 sm:px-6 py-3 bg-gray-50 border-t border-[#f97316]/15">
+          {invoiceCountry === "BE" && invoiceType === "credit_note" && referenceInvoice && (
+            <p className="text-[10px] text-amber-600 text-center mb-1">{countryConfig.creditNoteText}</p>
+          )}
+          <WatermarkFooter />
+        </div>
+      </div>
+    );
+  }
+
+  // ════════════════════════════════════════════════════════════════════════════
   // MINIMAL THEME — Ultra-clean, serif headings, hairline borders, whitespace
   // ════════════════════════════════════════════════════════════════════════════
   return (

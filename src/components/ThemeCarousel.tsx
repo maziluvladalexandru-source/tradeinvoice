@@ -16,6 +16,9 @@ const THEMES: Theme[] = [
   { id: "bold", label: "Bold", desc: "High contrast", isPro: true },
   { id: "elegant", label: "Elegant", desc: "Sophisticated", isPro: true },
   { id: "contractor", label: "Contractor", desc: "Industrial", isPro: true },
+  { id: "corporate", label: "Corporate", desc: "Green geometric", isPro: true },
+  { id: "professional", label: "Professional", desc: "Orange geometric", isPro: true },
+  { id: "dutch", label: "Dutch", desc: "Factuur style", isPro: true },
 ];
 
 function ThemePreview({ id }: { id: string }) {
@@ -291,6 +294,203 @@ function ThemePreview({ id }: { id: string }) {
           <div className="border-t-2 border-[#e94560]/30 pt-2 flex justify-between items-center">
             <div className="h-1 w-12 bg-slate-200 rounded-full" />
             <div className="h-2 w-12 bg-[#1a1a2e] rounded" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (id === "corporate") {
+    return (
+      <div className="w-full h-full flex flex-col bg-white">
+        <div className="relative bg-[#2d3748] px-3 py-3 overflow-hidden">
+          <div className="absolute top-0 bottom-0 pointer-events-none" style={{ right: "22%", width: "22px", background: "#48bb78", opacity: 0.35, transform: "skewX(-14deg)" }} />
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <div className="w-5 h-5 rounded bg-[#48bb78] flex-shrink-0" />
+              <div className="space-y-1">
+                <div className="h-1.5 w-14 bg-white/40 rounded-full" />
+                <div className="h-1 w-8 bg-white/20 rounded-full" />
+              </div>
+            </div>
+            <div className="text-right space-y-1">
+              <div className="h-1 w-8 bg-[#48bb78]/70 rounded-full ml-auto" />
+              <div className="h-2 w-14 bg-white/30 rounded" />
+            </div>
+          </div>
+        </div>
+        <div className="h-[2px] bg-[#48bb78]" />
+        <div className="px-3 mt-2 flex justify-between">
+          <div className="space-y-1">
+            <div className="h-1 w-12 bg-gray-200 rounded-full" />
+            <div className="h-1 w-10 bg-gray-200 rounded-full" />
+          </div>
+          <div className="space-y-1 items-end flex flex-col">
+            <div className="h-1 w-10 bg-gray-300 rounded-full" />
+            <div className="h-1 w-8 bg-gray-200 rounded-full" />
+          </div>
+        </div>
+        <div className="px-3 mt-3 flex-1">
+          <div className="h-4 w-full bg-[#2d3748] rounded-sm flex items-center px-2 mb-2">
+            <div className="h-1 w-4 bg-[#48bb78]/60 rounded-full" />
+            <div className="ml-2 h-1 w-10 bg-[#48bb78]/40 rounded-full" />
+            <div className="ml-auto h-1 w-6 bg-[#48bb78]/40 rounded-full" />
+          </div>
+          {[1, 2, 3].map((i) => (
+            <div key={i} className={`flex items-center px-1 py-1.5 border-b border-gray-100 ${i % 2 === 0 ? "bg-gray-50" : ""}`}>
+              <div className="h-1 w-3 bg-gray-200 rounded-full mr-1" />
+              <div className="h-1 w-12 bg-gray-200 rounded-full" />
+              <div className="ml-auto h-1 w-8 bg-gray-300 rounded-full" />
+            </div>
+          ))}
+        </div>
+        <div className="px-3 pb-3 mt-2 flex justify-end">
+          <div className="bg-[#48bb78] rounded px-3 py-1.5 flex items-center gap-1.5">
+            <div className="h-1 w-6 bg-white/60 rounded-full" />
+            <div className="h-1.5 w-8 bg-white rounded" />
+          </div>
+        </div>
+        <div className="px-3 pb-2 grid grid-cols-2 gap-2">
+          <div className="space-y-1">
+            <div className="h-1 w-10 bg-[#48bb78]/30 rounded-full" />
+            <div className="h-1 w-8 bg-gray-200 rounded-full" />
+          </div>
+          <div className="space-y-1">
+            <div className="h-1 w-12 bg-gray-200 rounded-full" />
+            <div className="h-1 w-10 bg-gray-200 rounded-full" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (id === "professional") {
+    return (
+      <div className="w-full h-full flex flex-col bg-white">
+        <div className="relative bg-[#1a365d] px-3 py-3 overflow-hidden">
+          <div className="absolute top-0 bottom-0 pointer-events-none" style={{ right: "22%", width: "22px", background: "#ed8936", opacity: 0.35, transform: "skewX(-14deg)" }} />
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <div className="w-5 h-5 rounded bg-[#ed8936] flex-shrink-0" />
+              <div className="space-y-1">
+                <div className="h-1.5 w-14 bg-white/40 rounded-full" />
+                <div className="h-1 w-8 bg-white/20 rounded-full" />
+              </div>
+            </div>
+            <div className="text-right space-y-1">
+              <div className="h-1 w-8 bg-[#ed8936]/70 rounded-full ml-auto" />
+              <div className="h-2 w-14 bg-white/30 rounded" />
+            </div>
+          </div>
+        </div>
+        <div className="h-[2px] bg-[#ed8936]" />
+        <div className="px-3 mt-2 flex justify-between">
+          <div className="space-y-1">
+            <div className="h-1 w-12 bg-gray-200 rounded-full" />
+            <div className="h-1 w-10 bg-gray-200 rounded-full" />
+          </div>
+          <div className="space-y-1 items-end flex flex-col">
+            <div className="h-1 w-10 bg-gray-300 rounded-full" />
+            <div className="h-1 w-8 bg-gray-200 rounded-full" />
+          </div>
+        </div>
+        <div className="px-3 mt-3 flex-1">
+          <div className="h-4 w-full bg-[#1a365d] rounded-sm flex items-center px-2 mb-2">
+            <div className="h-1 w-4 bg-[#ed8936]/60 rounded-full" />
+            <div className="ml-2 h-1 w-10 bg-[#ed8936]/40 rounded-full" />
+            <div className="ml-auto h-1 w-6 bg-[#ed8936]/40 rounded-full" />
+          </div>
+          {[1, 2, 3].map((i) => (
+            <div key={i} className={`flex items-center px-1 py-1.5 border-b border-gray-100 ${i % 2 === 0 ? "bg-gray-50" : ""}`}>
+              <div className="h-1 w-3 bg-gray-200 rounded-full mr-1" />
+              <div className="h-1 w-12 bg-gray-200 rounded-full" />
+              <div className="ml-auto h-1 w-8 bg-gray-300 rounded-full" />
+            </div>
+          ))}
+        </div>
+        <div className="px-3 pb-3 mt-2 flex justify-end">
+          <div className="bg-[#ed8936] rounded px-3 py-1.5 flex items-center gap-1.5">
+            <div className="h-1 w-6 bg-white/60 rounded-full" />
+            <div className="h-1.5 w-8 bg-white rounded" />
+          </div>
+        </div>
+        <div className="px-3 pb-2 grid grid-cols-2 gap-2">
+          <div className="space-y-1">
+            <div className="h-1 w-10 bg-[#ed8936]/30 rounded-full" />
+            <div className="h-1 w-8 bg-gray-200 rounded-full" />
+          </div>
+          <div className="space-y-1">
+            <div className="h-1 w-12 bg-gray-200 rounded-full" />
+            <div className="h-1 w-10 bg-gray-200 rounded-full" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (id === "dutch") {
+    return (
+      <div className="w-full h-full flex flex-col bg-white">
+        <div className="border-l-[4px] border-[#f97316] px-3 pt-3 pb-2">
+          <div className="flex items-start justify-between">
+            <div className="flex items-center gap-2">
+              <div className="w-5 h-5 rounded bg-[#f97316] flex-shrink-0" />
+              <div className="space-y-1">
+                <div className="h-1.5 w-14 bg-gray-300 rounded-full" />
+                <div className="h-1 w-8 bg-gray-200 rounded-full" />
+              </div>
+            </div>
+            <div className="text-right">
+              <div className="h-1 w-8 bg-[#f97316]/50 rounded-full ml-auto mb-1" />
+              <div className="h-3 w-14 bg-gray-200 rounded" />
+            </div>
+          </div>
+          <div className="mt-2 flex gap-3">
+            <div className="h-1 w-14 bg-gray-200 rounded-full" />
+            <div className="h-1 w-12 bg-[#f97316]/40 rounded-full" />
+          </div>
+        </div>
+        <div className="px-3 py-2 border-t border-gray-100">
+          <div className="h-1 w-8 bg-[#f97316]/40 rounded-full mb-1" />
+          <div className="h-1 w-16 bg-gray-200 rounded-full" />
+          <div className="h-1 w-12 bg-gray-200 rounded-full mt-1" />
+        </div>
+        <div className="px-3 mt-1 flex-1">
+          <div className="border-t-2 border-b-2 border-gray-200 bg-gray-50 flex items-center px-1 py-1.5 gap-1">
+            <div className="h-1 w-3 bg-[#f97316]/50 rounded-full" />
+            <div className="h-1 w-10 bg-gray-300 rounded-full" />
+            <div className="ml-auto flex gap-1">
+              <div className="h-1 w-5 bg-gray-300 rounded-full" />
+              <div className="h-1 w-5 bg-gray-300 rounded-full" />
+              <div className="h-1 w-5 bg-gray-300 rounded-full" />
+            </div>
+          </div>
+          {[1, 2, 3].map((i) => (
+            <div key={i} className={`flex items-center px-1 py-1.5 border-b border-gray-100 ${i % 2 === 1 ? "bg-gray-50/50" : ""}`}>
+              <div className="h-1 w-3 bg-gray-200 rounded-full mr-1" />
+              <div className="h-1 w-12 bg-gray-200 rounded-full" />
+              <div className="ml-auto flex gap-1">
+                <div className="h-1 w-5 bg-gray-200 rounded-full" />
+                <div className="h-1 w-5 bg-gray-200 rounded-full" />
+                <div className="h-1 w-5 bg-gray-300 rounded-full" />
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="px-3 pb-2 mt-2 flex justify-end">
+          <div className="border-t-2 border-[#f97316] pt-1.5 flex items-center gap-1.5">
+            <div className="h-1 w-14 bg-[#f97316]/40 rounded-full" />
+            <div className="h-2 w-10 bg-gray-800 rounded" />
+          </div>
+        </div>
+        <div className="px-3 pb-2 border-t border-gray-100 pt-1.5 grid grid-cols-2 gap-2">
+          <div className="space-y-1">
+            <div className="h-1 w-12 bg-gray-300 rounded-full" />
+            <div className="h-1 w-10 bg-gray-200 rounded-full" />
+          </div>
+          <div className="space-y-1">
+            <div className="h-1 w-8 bg-gray-200 rounded-full" />
+            <div className="h-1 w-10 bg-gray-200 rounded-full" />
           </div>
         </div>
       </div>
