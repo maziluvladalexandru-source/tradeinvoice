@@ -2308,6 +2308,437 @@ If you want to automate the early stages of this process, invoicing software lik
 - [Use our free BTW calculator](/tools)
 `,
   },
+  {
+    slug: "locksmith-invoice-template-guide",
+    title: "Locksmith Invoice Template: Everything You Need to Get Paid Faster",
+    excerpt: "A complete guide to creating a locksmith invoice that looks professional, covers your legal bases, and gets you paid without chasing clients.",
+    date: "2026-03-22",
+    readTime: "6 min read",
+    keyword: "locksmith invoice template",
+    metaDescription: "Create a professional locksmith invoice in minutes. Learn what to include, how to word emergency call-out fees, and download a free locksmith invoice template.",
+    content: `
+## What Makes a Locksmith Invoice Different
+
+Most trades invoice for planned work - a quote agreed in advance, then an invoice at the end. Locksmithing is different. A large chunk of your work is emergency call-outs: 2am lockouts, broken locks after a break-in, lost keys. The job is done before anyone signs anything, and the client is stressed, possibly half-dressed in a doorway in January.
+
+That is precisely why your locksmith invoice needs to be clear, itemised, and sent quickly. Clients who get a vague bill days later start questioning whether the charge was fair. Clients who get a detailed locksmith invoice template-style breakdown on the same day rarely dispute it.
+
+## What to Include on a Locksmith Invoice
+
+A solid locksmith invoice covers these sections:
+
+**Your business details**
+- Trading name and legal name
+- Address, phone, and email
+- KVK number (if operating in the Netherlands) or company registration
+- VAT number (BTW-id in NL, VAT number in the UK)
+- Invoice number (sequential - never skip or reuse)
+
+**Job details**
+- Date and time of the call-out - this is important for emergency pricing
+- Address where the work was carried out
+- Description of the problem: "Customer locked out of front door, Yale lock mechanism seized. Lock drilled and replaced with 5-pin Yale Superior."
+- Parts used with individual prices: "Yale Superior 5-pin cylinder x1 - €38.50"
+- Labour: break this into call-out fee + hourly or flat-rate labour
+
+**Charges**
+- Call-out fee (state this separately - it avoids arguments)
+- Labour charge
+- Parts
+- Any after-hours surcharge, if applicable
+- VAT / BTW at the correct rate
+- Total
+
+**Payment terms**
+- For emergency residential work, payment on completion is standard and worth stating: "Payment due on completion of works."
+- For commercial clients, net 14 or net 30 is normal.
+- Include your bank details or accepted payment methods (cash, card, bank transfer)
+
+## Wording That Prevents Disputes
+
+The number one cause of invoice disputes in locksmithing is vague descriptions. Compare these two:
+
+*Bad:* "Emergency call-out, lock replacement - £180 + VAT"
+
+*Good:* "Emergency call-out 22:15 on 15 March. Customer locked out of property at 14 Elm Street. Front door uPVC lock failed (mechanism jammed). Replaced with Ultion 3-star anti-snap cylinder. Parts: Ultion cylinder £55. Labour (1 hr): £85. After-hours surcharge: £40."
+
+The second version answers every question the client might have before they think to ask it. It also protects you if they dispute the charge with their bank or card issuer.
+
+A few phrases worth keeping in your locksmith invoice template:
+
+- "Emergency call-out fee applies outside standard hours (08:00-18:00 Mon-Fri)"
+- "Parts are non-refundable once fitted"
+- "Warranty: 12 months on parts and labour for manufacturer defects"
+
+## Invoicing for Locksmith Work in the Netherlands
+
+If you operate as a locksmith in the Netherlands (slotenmaker), you need to include your **KVK number** and **BTW-id** on every invoice. The BTW rate for labour is 21%. If you are on the kleineondernemersregeling (KOR) scheme and exempt from BTW, you still need to note "BTW vrijgesteld o.g.v. artikel 25 Wet OB 1968" on your invoice.
+
+Dutch clients increasingly expect invoices by email as PDF. Sending a WhatsApp photo of a handwritten receipt will get you paid - once. It will not get you a repeat booking or a referral.
+
+## Get Your Locksmith Invoice Template Set Up Once, Use It Forever
+
+The smartest thing you can do is build your locksmith invoice as a template: your details pre-filled, your standard call-out fee pre-loaded, and the job-specific fields blank for you to fill in at the job. If you do 3-5 emergency call-outs a day, spending 2 minutes on each invoice instead of 10 adds up to hours saved per week.
+
+[Create your free locksmith invoice template at TradeInvoice](https://tradeinvoice.vercel.app) - set it up once, send professional invoices from your phone in under a minute.
+`,
+  },
+  {
+    slug: "plumber-invoice-template-netherlands",
+    title: "Plumber Invoice Template for the Netherlands: What to Include and Why",
+    excerpt: "Invoicing for plumbers in the Netherlands explained: KVK, BTW rates, Dutch invoice requirements, and how to get paid on time every time.",
+    date: "2026-03-26",
+    readTime: "7 min read",
+    keyword: "plumber invoice template",
+    metaDescription: "A practical guide to creating a compliant plumber invoice in the Netherlands. Covers BTW rates, KVK requirements, payment terms, and a free plumber invoice template.",
+    content: `
+## Invoicing for Plumbers in the Netherlands: The Basics
+
+Whether you are a self-employed plumber (ZZP loodgieter) or running a small plumbing firm, your invoices need to meet Dutch legal requirements. The Belastingdienst is not flexible on this - a missing BTW-id or no invoice number sequence can cause real problems during a tax check.
+
+But beyond compliance, a well-structured plumber invoice template does something more valuable: it makes you look professional, reduces payment disputes, and gets money into your account faster.
+
+## The Dutch Legal Requirements for a Plumber Invoice
+
+Every invoice you send as a plumber in the Netherlands must include:
+
+**Your details**
+- Your full name or business name as registered with KVK
+- Your KVK number (8 digits, e.g. 12345678)
+- Your BTW-id (format: NL + 9 digits + B + 2 digits, e.g. NL123456789B01)
+- Business address and contact details
+
+**Client details**
+- Client's name and address
+- If they are a business: their VAT/BTW number (required for B2B invoices)
+
+**Invoice specifics**
+- A unique, sequential invoice number (2026-001, 2026-002 etc.)
+- Invoice date
+- Description of work: specific, not generic. "Leakage repair bathroom, replacement of flexi hose under washbasin, Keizersgracht 14, Amsterdam" is correct. "Plumbing work March" is not.
+- Itemised costs: labour and materials listed separately
+- BTW rate (21% on labour and most materials) and the calculated BTW amount
+- Total excluding BTW and total including BTW
+- Your IBAN and payment terms
+
+## BTW Rates for Plumbing Work
+
+For most plumbing jobs, BTW is 21%. However, there is one important exception: **renovation work on owner-occupied homes older than 2 years** qualifies for the reduced 9% BTW rate on labour (not materials). This applies to work like replacing a boiler, repairing pipework, or fitting a new bathroom in an existing home.
+
+Many plumbers miss this distinction and charge 21% on everything. That is fine - it is not illegal - but some clients will know the rules and push back. Knowing the rates and applying them correctly makes you look sharp.
+
+If you are on the KOR (kleineondernemersregeling) and exempt from charging BTW, you must still note this on every invoice: state "BTW vrijgesteld op grond van artikel 25 Wet OB 1968."
+
+## Structuring Your Plumber Invoice Template
+
+Here is a structure that works for most plumbing jobs:
+
+**Header:** Your logo (optional but professional), your name, KVK, BTW-id, address
+
+**Bill to:** Client name, address, client VAT number if applicable
+
+**Job details:**
+- Date of work
+- Address where work was carried out
+- Invoice number and invoice date
+
+**Line items:**
+| Description | Qty | Unit price | Total |
+|---|---|---|---|
+| Labour: boiler inspection and refit (2.5 hrs @ €65/hr) | 1 | €162.50 | €162.50 |
+| Cv-ketel onderdelen (lijst bijgevoegd) | 1 | €87.00 | €87.00 |
+
+**Totals:**
+- Subtotal (excl. BTW)
+- BTW 21% (or 9% on labour if applicable)
+- **Total incl. BTW**
+
+**Payment:** IBAN NL XX XXXX XXXX XXXX XX - betaling binnen 14 dagen
+
+## Getting Paid on Time
+
+Dutch B2C clients (homeowners) usually pay promptly if given easy options: iDEAL, bank transfer with a clear reference, or card. For B2B clients (property managers, housing corporations), net 30 is standard but net 14 is perfectly acceptable and worth asking for.
+
+Include a late payment clause on every invoice: "Bij te late betaling is 1% rente per maand verschuldigd en worden incassokosten in rekening gebracht conform de Wet Incassokosten." This is legally enforceable in the Netherlands and makes clients take your terms seriously.
+
+Set up your plumber invoice template once with all your standard details, and you can have a professional Dutch-compliant invoice sent within 2 minutes of finishing a job.
+
+[Start with a free plumber invoice template at TradeInvoice](https://tradeinvoice.vercel.app) - built for tradespeople in the Netherlands and beyond.
+`,
+  },
+  {
+    slug: "plumbing-invoice-wording-examples",
+    title: "Plumbing Invoice Wording: Exact Examples That Prevent Disputes",
+    excerpt: "The right invoice wording for plumbing jobs stops disputes before they start. See real examples for emergency call-outs, renovations, and commercial work.",
+    date: "2026-03-29",
+    readTime: "5 min read",
+    keyword: "plumbing invoice wording",
+    metaDescription: "Real plumbing invoice wording examples for call-outs, boiler work, and renovations. Avoid payment disputes with clear, professional invoice descriptions.",
+    content: `
+## Why Invoice Wording Matters More Than the Price
+
+Most invoice disputes are not really about money - they are about confusion. The client did not understand what they were paying for, did not expect a particular charge, or cannot reconcile the total with what they remember being told. Good plumbing invoice wording eliminates that confusion before it becomes a problem.
+
+This is not about writing an essay on every invoice. It is about using the right words in the right place, every time.
+
+## Invoice Wording Examples for Common Plumbing Jobs
+
+### Emergency Call-Out
+
+**Vague (causes disputes):**
+> Emergency plumbing - £240
+
+**Clear (no disputes):**
+> Emergency call-out 07:45, 14 March. Burst pipe under kitchen sink at [address]. Isolated mains supply, cut and replaced 300mm section of 15mm copper pipe, tested for leaks, restored supply. Call-out fee: £80. Labour (1.5 hrs @ £65/hr): £97.50. Materials (copper pipe, compression fittings): £22.50. Total: £200 + VAT.
+
+The key details: time, date, address, what was wrong, what you did, and how costs break down.
+
+### Boiler Service
+
+> Annual boiler service - Worcester Bosch 30i combi. Checked combustion analysis, flue integrity, heat exchanger, gas pressure, safety devices. Cleaned burner. All readings within manufacturer limits. Certificate issued. Labour (1 hr): €75. Replacement parts: nil. Total: €75 + BTW.
+
+Notice this includes the boiler make and model - essential for warranty purposes and for any follow-up work.
+
+### Bathroom Renovation
+
+> Supply and installation of new shower enclosure and tray (Grohe Vitalio Start System). Works include: removal of existing shower, waterproofing substrate, installation of enclosure and waste trap, connection to existing hot/cold supplies and 40mm waste. 2 days labour @ €320/day: €640. Materials (see attached schedule): €485. Total excl. BTW: €1,125. BTW 9% on labour (renovatie woning): €57.60. BTW 21% on materials: €101.85. **Total incl. BTW: €1,284.45.**
+
+This example uses the correct Dutch BTW split - 9% on labour for home renovation, 21% on materials.
+
+### Drain Clearance
+
+> High-pressure jetting of 4-inch soil stack, ground floor to manhole, [address]. Stack blocked due to scale build-up and wet wipes. Cleared and flow tested. CCTV survey not required. Labour (45 mins): £55. Call-out: £35. Total: £90 + VAT.
+
+## Wording for Payment Terms and Late Fees
+
+Your invoice wording should always include payment terms. Here are formulations that work:
+
+**Standard residential (UK):**
+> Payment due within 14 days of invoice date. Bank transfer to [sort code / account number] preferred. Please use invoice number as reference.
+
+**Standard residential (Netherlands):**
+> Betaling binnen 14 dagen na factuurdatum. Graag overmaken naar IBAN [NL XX XXXX XXXX XXXX XX] o.v.v. factuurnummer.
+
+**Late payment clause (NL, legally enforceable):**
+> Bij overschrijding van de betalingstermijn is de opdrachtgever van rechtswege in verzuim en is rente verschuldigd van 1% per maand, alsmede buitengerechtelijke incassokosten conform de Wet Incassokosten.
+
+**Warranty statement:**
+> All parts carry manufacturer warranty. Labour warranty: 12 months from date of completion for defects directly attributable to our workmanship.
+
+## One Template, Every Job
+
+The trick is not to write perfect wording from scratch every time - it is to build a template with your standard phrases pre-loaded, then fill in the job-specific details. Your call-out fee wording stays the same. Your BTW clause stays the same. Only the job description changes.
+
+[Build your plumbing invoice template at TradeInvoice](https://tradeinvoice.vercel.app) - pre-fill your standard wording, customise per job, send in under 2 minutes.
+`,
+  },
+  {
+    slug: "dutch-invoice-template-free",
+    title: "Free Dutch Invoice Template: What It Must Include to Be Legal",
+    excerpt: "A free Dutch invoice template needs more than your name and a total. Here's exactly what the Belastingdienst requires, with a real example you can use today.",
+    date: "2026-04-01",
+    readTime: "6 min read",
+    keyword: "dutch invoice template",
+    metaDescription: "Download a free Dutch invoice template that meets all Belastingdienst requirements. KVK number, BTW-id, invoice numbering, and payment terms explained clearly.",
+    content: `
+## What Dutch Law Actually Requires on an Invoice
+
+The Netherlands has some of the clearest invoicing rules in Europe. The Belastingdienst (Dutch Tax Authority) publishes a precise list of what every invoice must contain. A generic template from a random website may look professional but leave out legally required fields - which can cause problems during a BTW audit or when clients dispute charges.
+
+Here is what a compliant Dutch invoice template must include:
+
+### Mandatory Fields (No Exceptions)
+
+**Seller's details:**
+- Full name or registered business name (as listed with KVK)
+- KVK number (your 8-digit Kamer van Koophandel registration)
+- BTW-id (format: NL + 9 digits + B + 2 digits, e.g. NL123456789B01)
+- Business address (the registered address, which may differ from where you work)
+
+**Buyer's details:**
+- Full name or company name
+- Address
+- For B2B invoices: buyer's VAT/BTW number
+
+**Invoice details:**
+- A unique, sequential invoice number. This is non-negotiable - the sequence must not have gaps. Use a consistent format: 2026-001, 2026-002, or FAC-2026-001.
+- Invoice date (date of issue)
+- Description of goods or services: specific enough that the Belastingdienst understands what was supplied. "Consulting March" fails this test. "Strategy consulting, 12 hours, relating to digital transformation roadmap for client ABC" passes.
+- Quantity and unit price of each item
+- BTW rate applicable (21%, 9%, or 0%)
+- BTW amount in euros
+- Subtotal excluding BTW
+- Total including BTW
+
+**Payment details:**
+- Your IBAN
+- Payment term (e.g. "Betaling binnen 30 dagen na factuurdatum")
+
+### When You Are KOR-Exempt
+
+If you are registered under the Kleineondernemersregeling (KOR) and exempt from charging BTW, you still issue invoices - but you must include the phrase: **"BTW vrijgesteld op grond van artikel 25 Wet OB 1968."** Do not show a BTW amount or rate. Do not show your BTW-id (you may not have one if you are KOR-registered and below the threshold).
+
+## A Real Dutch Invoice Template Example
+
+Here is what a compliant invoice looks like for a Dutch tradesperson:
+
+---
+
+**Loodgietersbedrijf De Vries**
+Damrak 12, 1012 LG Amsterdam
+KVK: 12345678 | BTW-id: NL123456789B01
+Tel: 06-12345678 | info@devries-loodgieter.nl
+
+---
+
+**Factuur aan:**
+Administratie B.V.
+Herengracht 400
+1017 BX Amsterdam
+BTW: NL987654321B01
+
+**Factuurnummer:** 2026-047
+**Factuurdatum:** 1 april 2026
+**Betalingstermijn:** 14 dagen (uiterlijk 15 april 2026)
+
+---
+
+| Omschrijving | Aantal | Stukprijs | Totaal |
+|---|---|---|---|
+| Arbeid: vervanging cv-pomp, 2 uur | 1 | €130,00 | €130,00 |
+| Materiaal: Grundfos UPS2 pomp | 1 | €185,00 | €185,00 |
+| Voorrijkosten | 1 | €25,00 | €25,00 |
+
+Subtotaal excl. BTW: **€340,00**
+BTW 21%: **€71,40**
+**Totaal incl. BTW: €411,40**
+
+Betaling o.v.v. factuurnummer 2026-047:
+IBAN: NL12 ABNA 0123456789
+
+---
+
+## Common Mistakes to Avoid
+
+**KVK vs BTW-id confusion:** Your KVK number (8 digits) and BTW-id are different things. Both must appear on every invoice if you are BTW-plichtig.
+
+**Rounding errors:** Dutch invoices should show exact euro and cent amounts. Round at the total level, not per line item.
+
+**Missing the buyer's VAT number on B2B invoices:** For transactions between two Dutch businesses, you need the buyer's BTW number on the invoice. For consumer (B2C) invoices, it is not required.
+
+**Sending invoice images instead of PDFs:** A JPG of a handwritten invoice is not professional and makes record-keeping difficult for your client. Always send PDF.
+
+## A Free Dutch Invoice Template That Does the Work For You
+
+Rather than building your own Dutch invoice template from scratch, use a tool that pre-populates the required fields and handles BTW calculations automatically.
+
+[Create your free Dutch invoice at TradeInvoice](https://tradeinvoice.vercel.app) - compliant with Belastingdienst requirements, sends as PDF, and takes under 2 minutes per invoice.
+`,
+  },
+  {
+    slug: "electrician-invoice-template-netherlands",
+    title: "Electrician Invoice Template for the Netherlands: The Complete Guide",
+    excerpt: "Everything a Dutch electrician needs to know about invoicing: BTW rates, KVK requirements, what to write in job descriptions, and how to get paid faster.",
+    date: "2026-04-03",
+    readTime: "7 min read",
+    keyword: "electrician invoice template",
+    metaDescription: "Create a compliant electrician invoice in the Netherlands. Learn BTW rates for electrical work, required fields, and get a free electrician invoice template today.",
+    content: `
+## Why Electrician Invoices Need Extra Care
+
+Electrical work comes with a compliance layer that most other trades do not have. Certificates, inspection reports, NEN 1010 compliance declarations - these all tie back to your invoice as the commercial record of what was done. If your invoice description does not match your certificate, you have a problem.
+
+Beyond compliance, electrical work often involves a mix of high-value materials (consumer units, EV chargers, solar components) and labour, at different BTW rates. Getting this right on your electrician invoice is both a legal requirement and a practical way to avoid client disputes.
+
+## Dutch BTW Rates for Electrical Work
+
+This is where many electricians make expensive mistakes:
+
+**Labour on renovation work (bestaande woningen, older than 2 years):** 9% BTW applies to labour for renovation work on existing owner-occupied homes. This includes rewiring, adding circuits, fitting consumer units in existing homes.
+
+**Labour on new-build or commercial work:** 21% BTW.
+
+**Materials:** Always 21% BTW, regardless of the type of project.
+
+**EV charging installations:** The reduced 9% rate on labour can apply if the charger is being installed in an existing private home. In commercial settings, it is 21%.
+
+**Solar panel installations (zonnepanelen):** Since 2023, the BTW rate on solar panels supplied and installed on or near a residential home is 0%. This is a significant saving you can pass on to clients and a strong selling point.
+
+The correct way to show this on your electrician invoice template is to list labour and materials as separate line items with their respective BTW rates. Do not blend them into a single total.
+
+## What Your Electrician Invoice Must Include
+
+As an electrician operating in the Netherlands, your invoice must meet Belastingdienst requirements:
+
+**Your details:**
+- Registered business name (as with KVK)
+- KVK number
+- BTW-id
+- Business address
+
+**Client details:**
+- Name and address
+- BTW number (for business clients)
+
+**Job details:**
+- Sequential invoice number
+- Invoice date
+- Specific description of work carried out
+- Address where work was done
+- Date(s) of work
+
+**Financial details:**
+- Line items with quantities and unit prices
+- BTW rate per line (9% labour / 21% materials, or 0% for solar)
+- Subtotal excl. BTW
+- BTW amounts per rate
+- Total incl. BTW
+- Your IBAN and payment terms
+
+## Writing Clear Job Descriptions
+
+Electrical job descriptions need to be precise because they link to your safety certification. Compare:
+
+**Too vague:**
+> Electrical work, 2 days - €840 + BTW
+
+**Correct:**
+> Partial rewiring, first floor: replacement of ring main circuit serving 6 double sockets, installation of new 32A MCB in existing consumer unit (Hager). New cable in conduit, all connections made to BS 7671 / NEN 1010 standard. Test certificate issued. Labour (14 hrs): €560. Materials (2.5mm² T&E cable, conduit, MCB, sockets): €127.
+
+For larger projects, attach a materials schedule as a PDF to avoid cramming 20 line items into the invoice body.
+
+## An Electrician Invoice Example (Netherlands)
+
+**Elektra Installaties Hendriks**
+Industrieweg 5, 5611 AC Eindhoven
+KVK: 23456789 | BTW-id: NL234567890B01
+
+**Factuur aan:** Familie Bakker, Villapark 3, 5614 ER Eindhoven
+
+**Factuurnummer:** 2026-112 | **Datum:** 3 april 2026
+
+| Omschrijving | Bedrag excl. BTW |
+|---|---|
+| Arbeid: plaatsing laadpaal (Type 2, 11kW) incl. bekabeling 10m | €380,00 |
+| Materiaal: Easee Home lader, kabeldoorvoer, bevestigingsmateriaal | €620,00 |
+
+BTW 9% over arbeid (€380): **€34,20**
+BTW 21% over materiaal (€620): **€130,20**
+**Totaal incl. BTW: €1.164,40**
+
+Betaling binnen 14 dagen: IBAN NL23 RABO 0234567890
+
+## Protecting Yourself with Warranty Clauses
+
+Add a brief warranty statement to every electrician invoice:
+
+> "Garantie: 12 maanden op arbeid voor gebreken direct toe te schrijven aan onze werkzaamheden. Fabrieksgarantie op materialen conform leveranciersvoorwaarden."
+
+This sets clear expectations and protects you from claims outside your reasonable responsibility.
+
+[Set up your free electrician invoice template at TradeInvoice](https://tradeinvoice.vercel.app) - handles split BTW rates automatically, sends compliant PDF invoices in under 2 minutes.
+`,
+  },
 ];
 
 export function getArticleBySlug(slug: string): Article | undefined {
