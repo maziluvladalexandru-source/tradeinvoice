@@ -124,7 +124,16 @@
     "revenueThisMonth": "Omzet deze maand",
     "collectionRate": "Incassopercentage",
     "createFirstDesc": "Maak uw eerste factuur om betalingen te volgen.",
-    "createFirst": "Maak uw eerste factuur"
+    "createFirst": "Maak uw eerste factuur",
+    "greetingMorning": "Goedemorgen",
+    "greetingAfternoon": "Goedemiddag",
+    "greetingEvening": "Goedenavond",
+    "statusDraft": "Concept",
+    "statusSent": "Verzonden",
+    "statusViewed": "Bekeken",
+    "statusPaid": "Betaald",
+    "statusOverdue": "Achterstallig",
+    "vsLastMonth": "vs vorige maand"
   },
   "invoices": {
     "title": "Facturen",

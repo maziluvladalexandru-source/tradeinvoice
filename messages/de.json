@@ -124,7 +124,16 @@
     "revenueThisMonth": "Umsatz diesen Monat",
     "collectionRate": "Inkassoquote",
     "createFirstDesc": "Erstellen Sie Ihre erste Rechnung, um Zahlungen zu verfolgen.",
-    "createFirst": "Erstellen Sie Ihre erste Rechnung"
+    "createFirst": "Erstellen Sie Ihre erste Rechnung",
+    "greetingMorning": "Guten Morgen",
+    "greetingAfternoon": "Guten Nachmittag",
+    "greetingEvening": "Guten Abend",
+    "statusDraft": "Entwurf",
+    "statusSent": "Versendet",
+    "statusViewed": "Angezeigt",
+    "statusPaid": "Bezahlt",
+    "statusOverdue": "Überfällig",
+    "vsLastMonth": "vs. letzten Monat"
   },
   "invoices": {
     "title": "Rechnungen",

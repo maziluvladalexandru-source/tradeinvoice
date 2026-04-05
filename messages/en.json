@@ -124,7 +124,18 @@
     "revenueThisMonth": "Revenue This Month",
     "collectionRate": "Collection Rate",
     "createFirstDesc": "Create your first invoice to start tracking payments.",
-    "createFirst": "Create Your First Invoice"
+    "createFirst": "Create Your First Invoice",
+    "greetingMorning": "Good morning",
+    "greetingAfternoon": "Good afternoon",
+    "greetingEvening": "Good evening",
+    "statusDraft": "Draft",
+    "statusSent": "Sent",
+    "statusViewed": "Viewed",
+    "statusPaid": "Paid",
+    "statusOverdue": "Overdue",
+    "vsLastMonth": "vs last month",
+    "collected": "collected",
+    "invoiced": "invoiced"
   },
   "invoices": {
     "title": "Invoices",

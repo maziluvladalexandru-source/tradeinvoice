@@ -151,6 +151,17 @@ export default function DashboardPage() {
   const [data, setData] = useState<DashboardData | null>(null);
   const [error, setError] = useState(false);
 
+  const getStatusLabel = (status: string) => {
+    const statusMap: Record<string, string> = {
+      draft: t("statusDraft"),
+      sent: t("statusSent"),
+      viewed: t("statusViewed"),
+      paid: t("statusPaid"),
+      overdue: t("statusOverdue"),
+    };
+    return statusMap[status] || status;
+  };
+
   useEffect(() => {
     fetch("/api/dashboard")
       .then((res) => {
@@ -274,7 +285,7 @@ export default function DashboardPage() {
                       transition={{ delay: 0.5 }}
                     >
                       {stats.revenueChange >= 0 ? "\u2191" : "\u2193"}{" "}
-                      {Math.abs(Math.round(stats.revenueChange))}% vs last month
+                      {Math.abs(Math.round(stats.revenueChange))}% {t('dashboard.vsLastMonth')}
                     </motion.p>
                   )}
                 </div>
@@ -282,8 +293,8 @@ export default function DashboardPage() {
               {/* Collection progress bar */}
               <div className="relative mt-6">
                 <div className="flex justify-between text-xs text-gray-500 mb-1.5 font-medium">
-                  <span>Collection progress</span>
-                  <span className="tabular-nums">{Math.round(paidPercent)}% collected</span>
+                  <span>{t('dashboard.collectionProgress')}</span>
+                  <span className="tabular-nums">{Math.round(paidPercent)}% {t('dashboard.collected')}</span>
                 </div>
                 <div className="w-full h-2 bg-white/5 rounded-full overflow-hidden">
                   <motion.div
@@ -415,7 +426,7 @@ export default function DashboardPage() {
                           </Link>
                           <span className={`inline-flex items-center gap-1 capitalize whitespace-nowrap ${statusColors[invoice.status] || ""}`}>
                             <span className={`w-1.5 h-1.5 rounded-full ${statusDot[invoice.status] || ""}`} />
-                            {invoice.status}
+                            {getStatusLabel(invoice.status)}
                           </span>
                           <span className="text-sm font-semibold text-white text-right tabular-nums">
                             {formatCurrency(invoice.total, invoice.currency)}
@@ -445,7 +456,7 @@ export default function DashboardPage() {
                           <div className="flex items-center justify-between mt-1.5">
                             <span className={`inline-flex items-center gap-1 capitalize ${statusColors[invoice.status] || ""}`}>
                               <span className={`w-1.5 h-1.5 rounded-full ${statusDot[invoice.status] || ""}`} />
-                              {invoice.status}
+                              {getStatusLabel(invoice.status)}
                             </span>
                             <div className="flex items-center gap-0.5">
                               <InvoiceCardActions invoiceId={invoice.id} status={invoice.status} type={invoice.type} />
@@ -468,7 +479,7 @@ export default function DashboardPage() {
                     className="bg-[#111827] rounded-2xl border border-gray-700/50 hover:border-amber-500/20 p-5 transition-all duration-300 shadow-lg shadow-black/10"
                     whileHover={{ y: -2 }}
                   >
-                    <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Invoice Status</h3>
+                    <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">{t('dashboard.invoiceStatus')}</h3>
                     <div className="flex justify-center">
                       <DonutChart
                         segments={[
@@ -522,8 +533,8 @@ export default function DashboardPage() {
                     />
                   </div>
                   <div className="flex justify-between text-xs text-gray-500 mt-1.5 font-medium">
-                    <span className="tabular-nums">{fc(data.charts.totalCollected)} collected</span>
-                    <span className="tabular-nums">{fc(data.charts.totalInvoiced)} invoiced</span>
+                    <span className="tabular-nums">{fc(data.charts.totalCollected)} {t('collected')}</span>
+                    <span className="tabular-nums">{fc(data.charts.totalInvoiced)} {t('invoiced')}</span>
                   </div>
                 </motion.div>
               </StaggerItem>
@@ -536,7 +547,7 @@ export default function DashboardPage() {
               <div className="bg-[#111827] rounded-2xl border border-gray-700/50 hover:border-purple-500/20 mb-6 transition-all duration-300 shadow-lg shadow-black/10">
                 <div className="px-5 py-4 border-b border-gray-700/50 flex items-center justify-between">
                   <h2 className="text-lg font-semibold text-white flex items-center gap-2">
-                    Recent Quotes
+                    {t('recentQuotes')}
                     <motion.span
                       className="bg-purple-500/15 text-purple-300 ring-1 ring-purple-400/30 px-2 py-0.5 rounded-full text-xs font-semibold tabular-nums"
                       initial={{ scale: 0 }}
@@ -565,7 +576,7 @@ export default function DashboardPage() {
                         </Link>
                         <span className={`inline-flex items-center gap-1 capitalize whitespace-nowrap ${statusColors[quote.status] || ""}`}>
                           <span className={`w-1.5 h-1.5 rounded-full ${statusDot[quote.status] || ""}`} />
-                          {quote.status}
+                          {getStatusLabel(quote.status)}
                         </span>
                         <span className="text-sm font-semibold text-white text-right tabular-nums">
                           {formatCurrency(quote.total, quote.currency)}
