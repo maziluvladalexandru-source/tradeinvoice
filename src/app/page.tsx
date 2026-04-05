@@ -383,7 +383,7 @@ export default function Home() {
             >
               {tNav("pricing")}
             </a>
-            <LanguageSwitcher compact />
+            <LanguageSwitcher />
             <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
               <Link
                 href="/auth/login"
