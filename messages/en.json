@@ -133,9 +133,7 @@
     "statusViewed": "Viewed",
     "statusPaid": "Paid",
     "statusOverdue": "Overdue",
-    "vsLastMonth": "vs last month",
-    "collected": "collected",
-    "invoiced": "invoiced"
+    "vsLastMonth": "vs last month"
   },
   "invoices": {
     "title": "Invoices",
@@ -481,7 +479,12 @@
     "pro": "Pro",
     "mostPopular": "MOST POPULAR",
     "unlimited": "Unlimited",
-    "perMonth": "/month"
+    "perMonth": "/month",
+    "update": "Update",
+    "saving": "Saving...",
+    "create": "Create",
+    "preview": "Preview",
+    "invoiceCreated": "Invoice created"
   },
   "features": {
     "professionalInvoices": "Professional Invoices",

@@ -479,7 +479,12 @@
     "pro": "Pro",
     "mostPopular": "MEEST POPULAIR",
     "unlimited": "Onbeperkt",
-    "perMonth": "/maand"
+    "perMonth": "/maand",
+    "update": "Bijwerken",
+    "saving": "Bezig met opslaan...",
+    "create": "Maken",
+    "preview": "Voorbeeld",
+    "invoiceCreated": "Factuur gemaakt"
   },
   "features": {
     "professionalInvoices": "Professionele facturen",

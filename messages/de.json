@@ -479,7 +479,12 @@
     "pro": "Pro",
     "mostPopular": "BELIEBTESTE",
     "unlimited": "Unbegrenzt",
-    "perMonth": "/Monat"
+    "perMonth": "/Monat",
+    "update": "Aktualisieren",
+    "saving": "Wird gespeichert...",
+    "create": "Erstellen",
+    "preview": "Vorschau",
+    "invoiceCreated": "Rechnung erstellt"
   },
   "features": {
     "professionalInvoices": "Professionelle Rechnungen",
