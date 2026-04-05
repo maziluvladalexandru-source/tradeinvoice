@@ -287,7 +287,7 @@ export default function ExpensesPage() {
   }
 
   async function handleDelete(id: string) {
-    if (!confirm("Delete this expense?")) return;
+    if (!confirm(t('deleteExpenseConfirm'))) return;
     try {
       const res = await fetch(`/api/expenses/${id}`, { method: "DELETE" });
       if (res.ok) {
@@ -300,7 +300,7 @@ export default function ExpensesPage() {
   }
 
   async function handleDeleteMileage(id: string) {
-    if (!confirm("Delete this mileage entry?")) return;
+    if (!confirm(t('deleteMileageConfirm'))) return;
     try {
       const res = await fetch(`/api/mileage/${id}`, { method: "DELETE" });
       if (res.ok) {

@@ -176,7 +176,10 @@
     "noInvoicesYet": "Noch keine Rechnungen. Erstellen Sie Ihre erste Rechnung.",
     "noMatch": "Keine Rechnungen entsprechen Ihrer Suche.",
     "recurring": "Wiederkehrend",
-    "due": "Fällig"
+    "due": "Fällig",
+    "deleteConfirm": "Sind Sie sicher, dass Sie Rechnung {number} löschen möchten?",
+    "saving": "Wird gespeichert...",
+    "confirmPayment": "Zahlung bestätigen"
   },
   "invoiceForm": {
     "createInvoice": "Rechnung erstellen",
@@ -248,7 +251,8 @@
     "never": "Nie",
     "newInvoice": "+ Neue Rechnung",
     "noInvoicesYet": "Noch keine Rechnungen",
-    "addYourFirst": "Ersten Kunden hinzufügen"
+    "addYourFirst": "Ersten Kunden hinzufügen",
+    "deleteConfirm": "Kunde \"{name}\" löschen? Dies kann nicht rückgängig gemacht werden."
   },
   "expenses": {
     "title": "Ausgaben",
@@ -309,7 +313,9 @@
     "mileageLog": "Kilometerprotokoll",
     "noMileageYet": "Noch keine Kilometereinträge",
     "noMileageDesc": "Beginnen Sie mit der Erfassung Ihrer Geschäftsreisen für Steuerabzüge.",
-    "logFirstTrip": "Erste Fahrt erfassen"
+    "logFirstTrip": "Erste Fahrt erfassen",
+    "deleteExpenseConfirm": "Diese Ausgabe löschen?",
+    "deleteMileageConfirm": "Diesen Kilometerstand löschen?"
   },
   "timeTracking": {
     "title": "Zeiterfassung",

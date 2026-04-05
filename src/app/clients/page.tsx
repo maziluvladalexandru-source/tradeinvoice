@@ -184,7 +184,7 @@ export default function ClientsPage() {
       toast(`Cannot delete ${client.name} - has ${client.invoiceCount} invoice(s)`, "error");
       return;
     }
-    if (!confirm(`Delete client "${client.name}"? This cannot be undone.`)) return;
+    if (!confirm(t('deleteConfirm', { name: client.name }))) return;
     setDeleting(client.id);
     const res = await fetch(`/api/clients/${client.id}`, { method: "DELETE" });
     if (res.ok) {

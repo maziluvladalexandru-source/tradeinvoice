@@ -176,7 +176,10 @@
     "noInvoicesYet": "Nog geen facturen. Maak uw eerste factuur om te beginnen.",
     "noMatch": "Geen facturen komen overeen met uw zoekopdracht.",
     "recurring": "Terugkerend",
-    "due": "Vervalt"
+    "due": "Vervalt",
+    "deleteConfirm": "Weet u zeker dat u factuur {number} wilt verwijderen?",
+    "saving": "Bezig met opslaan...",
+    "confirmPayment": "Betaling bevestigen"
   },
   "invoiceForm": {
     "createInvoice": "Factuur maken",
@@ -248,7 +251,8 @@
     "never": "Nooit",
     "newInvoice": "+ Nieuwe factuur",
     "noInvoicesYet": "Nog geen facturen",
-    "addYourFirst": "Voeg uw eerste klant toe"
+    "addYourFirst": "Voeg uw eerste klant toe",
+    "deleteConfirm": "Client \"{name}\" verwijderen? Dit kan niet ongedaan gemaakt worden."
   },
   "expenses": {
     "title": "Uitgaven",
@@ -309,7 +313,9 @@
     "mileageLog": "Kilometerlog",
     "noMileageYet": "Nog geen kilometerregistraties",
     "noMileageDesc": "Begin met het registreren van uw zakelijke reizen om aftrekposten bij te houden.",
-    "logFirstTrip": "Registreer uw eerste rit"
+    "logFirstTrip": "Registreer uw eerste rit",
+    "deleteExpenseConfirm": "Deze uitgave verwijderen?",
+    "deleteMileageConfirm": "Dit kilometeraantal verwijderen?"
   },
   "timeTracking": {
     "title": "Tijdregistratie",

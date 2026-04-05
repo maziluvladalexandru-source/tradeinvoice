@@ -178,7 +178,10 @@
     "noInvoicesYet": "No invoices yet. Create your first invoice to get started.",
     "noMatch": "No invoices match your search.",
     "recurring": "Recurring",
-    "due": "Due"
+    "due": "Due",
+    "deleteConfirm": "Are you sure you want to delete invoice {number}?",
+    "saving": "Saving...",
+    "confirmPayment": "Confirm Payment"
   },
   "invoiceForm": {
     "createInvoice": "Create Invoice",
@@ -250,7 +253,8 @@
     "never": "Never",
     "newInvoice": "+ New Invoice",
     "noInvoicesYet": "No invoices yet",
-    "addYourFirst": "Add Your First Client"
+    "addYourFirst": "Add Your First Client",
+    "deleteConfirm": "Delete client \"{name}\"? This cannot be undone."
   },
   "expenses": {
     "title": "Expenses",
@@ -273,6 +277,8 @@
     "delete": "Delete",
     "save": "Save",
     "cancel": "Cancel",
+    "deleteExpenseConfirm": "Delete this expense?",
+    "deleteMileageConfirm": "Delete this mileage entry?",
     "categories": {
       "materials": "Materials",
       "tools": "Tools & Equipment",

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import Navbar from "@/components/Navbar";
 import BottomNav from "@/components/BottomNav";
 import Link from "next/link";
@@ -46,6 +47,7 @@ interface Invoice {
 export default function InvoiceDetailPage() {
   const params = useParams();
   const router = useRouter();
+  const t = useTranslations("invoices");
   const [invoice, setInvoice] = useState<Invoice | null>(null);
   const [loading, setLoading] = useState(true);
   const [sending, setSending] = useState(false);
@@ -153,7 +155,7 @@ export default function InvoiceDetailPage() {
   }
 
   async function deleteInvoice() {
-    if (!invoice || !confirm(`Are you sure you want to delete invoice ${invoice.invoiceNumber}? This cannot be undone.`)) return;
+    if (!invoice || !confirm(t('deleteConfirm', { number: invoice.invoiceNumber }))) return;
     const res = await fetch(`/api/invoices/${invoice.id}`, { method: "DELETE" });
     if (res.ok) router.push("/dashboard");
   }
@@ -834,7 +836,7 @@ export default function InvoiceDetailPage() {
                   disabled={markingPaid || !paidDate || paymentAmount <= 0 || (!isPro && paymentAmount > 0 && paymentAmount < (invoice.total - (invoice.paidAmount || 0)))}
                   className="flex-1 bg-gradient-to-r from-amber-500 to-amber-400 text-gray-950 py-3 rounded-xl font-semibold hover:from-amber-400 hover:to-amber-300 disabled:opacity-50 transition-all duration-200 shadow-lg shadow-amber-500/20 hover:shadow-xl hover:shadow-amber-500/30 btn-press"
                 >
-                  {markingPaid ? "Saving..." : "Confirm Payment"}
+                  {markingPaid ? t('saving') : t('confirmPayment')}
                 </button>
                 <button
                   onClick={() => setShowPaidModal(false)}
