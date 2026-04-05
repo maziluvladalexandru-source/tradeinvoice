@@ -456,7 +456,30 @@
     "exportData": "Export All Data",
     "logoutAll": "Log Out All Sessions",
     "language": "Language",
-    "languageDescription": "Choose your preferred language for the dashboard"
+    "languageDescription": "Choose your preferred language for the dashboard",
+    "account": "Account",
+    "accountMenu": "ACCOUNT",
+    "businessInformation": "Business Information",
+    "invoicing": "INVOICING",
+    "taxRegistration": "Tax & Registration",
+    "paymentDetails": "Payment Details",
+    "latePaymentFees": "Late Payment Fees",
+    "communication": "COMMUNICATION",
+    "emailTemplates": "Email Templates",
+    "paymentReminders": "Payment Reminders",
+    "notifications": "Notifications",
+    "securityData": "SECURITY & DATA",
+    "security": "Security",
+    "teamMembers": "Team Members",
+    "dataExport": "Data Export",
+    "invoiceLogo": "Invoice Logo",
+    "yourName": "Your Name",
+    "yourFullName": "Your full name",
+    "yourBusinessName": "Your business name",
+    "countryCode": "Include country code, e.g. +31 6 12345678 (NL) or +40 712 345 678 (RO)",
+    "unlimitedInvoices": "Unlimited invoices per month",
+    "active": "Active",
+    "proplan": "Pro Plan"
   },
   "common": {
     "loading": "Loading...",
@@ -547,5 +570,27 @@
     "alsoAvailable": "Also available in:",
     "copyright": "© 2026 TradeInvoice. Operated by Vlad Mazilu Alexandru, Netherlands.",
     "simpleInvoicing": "Simple invoicing for tradespeople"
+  },
+  "onboarding": {
+    "title": "Get Started",
+    "stepsDone": "{count} steps completed",
+    "step1": "Add your business details",
+    "step1Desc": "Your name, address, and bank details appear on invoices",
+    "step2": "Create your first invoice",
+    "step2Desc": "Send professional invoices in under a minute",
+    "step3": "Share your invoice link with a client",
+    "step3Desc": "Email an invoice directly to your client"
+  },
+  "services": {
+    "title": "Service Library",
+    "subtitle": "Save commonly used items to quickly add them to invoices",
+    "addItem": "Add Item",
+    "noItems": "No saved items yet",
+    "noItemsDesc": "Add your commonly used services and materials to speed up invoice creation.",
+    "addFirstItem": "Add your first item",
+    "saving": "Saving...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "update": "Update"
   }
 }

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 interface OnboardingChecklistProps {
   hasBusinessName: boolean;
@@ -14,6 +15,7 @@ export default function OnboardingChecklist({
   invoiceCount,
   hasSentInvoice,
 }: OnboardingChecklistProps) {
+  const t = useTranslations('onboarding');
   const [dismissed, setDismissed] = useState(true); // start hidden to avoid flash
 
   useEffect(() => {
@@ -22,22 +24,22 @@ export default function OnboardingChecklist({
 
   const steps = [
     {
-      label: "Add your business details",
+      label: t('step1'),
       done: hasBusinessName,
       href: "/settings",
-      description: "Your name, address, and bank details appear on invoices",
+      description: t('step1Desc'),
     },
     {
-      label: "Create your first invoice",
+      label: t('step2'),
       done: invoiceCount > 0,
       href: "/invoices/new",
-      description: "Send professional invoices in under a minute",
+      description: t('step2Desc'),
     },
     {
-      label: "Share your invoice link with a client",
+      label: t('step3'),
       done: hasSentInvoice,
       href: invoiceCount > 0 ? undefined : "/invoices/new",
-      description: "Email an invoice directly to your client",
+      description: t('step3Desc'),
     },
   ];
 

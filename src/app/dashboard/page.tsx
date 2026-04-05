@@ -285,7 +285,7 @@ export default function DashboardPage() {
                       transition={{ delay: 0.5 }}
                     >
                       {stats.revenueChange >= 0 ? "\u2191" : "\u2193"}{" "}
-                      {Math.abs(Math.round(stats.revenueChange))}% {t('dashboard.vsLastMonth')}
+                      {Math.abs(Math.round(stats.revenueChange))}% {t('vsLastMonth')}
                     </motion.p>
                   )}
                 </div>
@@ -293,8 +293,8 @@ export default function DashboardPage() {
               {/* Collection progress bar */}
               <div className="relative mt-6">
                 <div className="flex justify-between text-xs text-gray-500 mb-1.5 font-medium">
-                  <span>{t('dashboard.collectionProgress')}</span>
-                  <span className="tabular-nums">{Math.round(paidPercent)}% {t('dashboard.collected')}</span>
+                  <span>{t('collectionProgress')}</span>
+                  <span className="tabular-nums">{Math.round(paidPercent)}% {t('collected')}</span>
                 </div>
                 <div className="w-full h-2 bg-white/5 rounded-full overflow-hidden">
                   <motion.div
@@ -479,7 +479,7 @@ export default function DashboardPage() {
                     className="bg-[#111827] rounded-2xl border border-gray-700/50 hover:border-amber-500/20 p-5 transition-all duration-300 shadow-lg shadow-black/10"
                     whileHover={{ y: -2 }}
                   >
-                    <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">{t('dashboard.invoiceStatus')}</h3>
+                    <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">{t('invoiceStatus')}</h3>
                     <div className="flex justify-center">
                       <DonutChart
                         segments={[

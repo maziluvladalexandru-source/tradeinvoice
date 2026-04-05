@@ -429,7 +429,7 @@
     "email": "E-mail",
     "businessName": "Bedrijfsnaam",
     "businessAddress": "Bedrijfsadres",
-    "businessPhone": "Bedrijfstelefoon",
+    "businessPhone": "Bedrijfstelefo on",
     "kvkNumber": "KVK-nummer",
     "vatNumber": "BTW-nummer",
     "bankDetails": "Bankgegevens",
@@ -456,7 +456,30 @@
     "exportData": "Alle gegevens exporteren",
     "logoutAll": "Alle sessies uitloggen",
     "language": "Taal",
-    "languageDescription": "Kies uw voorkeurstaal voor het dashboard"
+    "languageDescription": "Kies uw voorkeurstaal voor het dashboard",
+    "account": "Account",
+    "accountMenu": "ACCOUNT",
+    "businessInformation": "Bedrijfsgegevens",
+    "invoicing": "FACTURERING",
+    "taxRegistration": "Belasting & Registratie",
+    "paymentDetails": "Betalingsgegevens",
+    "latePaymentFees": "Late Betalingskosten",
+    "communication": "COMMUNICATIE",
+    "emailTemplates": "E-mailsjablonen",
+    "paymentReminders": "Betalingsherinneringen",
+    "notifications": "Meldingen",
+    "securityData": "BEVEILIGING & GEGEVENS",
+    "security": "Beveiliging",
+    "teamMembers": "Teamleden",
+    "dataExport": "Gegevensexport",
+    "invoiceLogo": "Factuurlogo",
+    "yourName": "Uw naam",
+    "yourFullName": "Uw volledige naam",
+    "yourBusinessName": "Uw bedrijfsnaam",
+    "countryCode": "Inclusief landcode, b.v. +31 6 12345678 (NL) of +40 712 345 678 (RO)",
+    "unlimitedInvoices": "Onbeperkte facturen per maand",
+    "active": "Actief",
+    "proplan": "Pro Plan"
   },
   "common": {
     "loading": "Laden...",
@@ -547,5 +570,27 @@
     "alsoAvailable": "Ook beschikbaar in:",
     "copyright": "© 2026 TradeInvoice. Beheerd door Vlad Mazilu Alexandru, Nederland.",
     "simpleInvoicing": "Eenvoudige facturatie voor vakmensen"
+  },
+  "onboarding": {
+    "title": "Aan de slag",
+    "stepsDone": "{count} stappen voltooid",
+    "step1": "Voeg uw bedrijfsgegevens toe",
+    "step1Desc": "Uw naam, adres en bankgegevens verschijnen op facturen",
+    "step2": "Maak uw eerste factuur",
+    "step2Desc": "Stuur professionele facturen in minder dan een minuut",
+    "step3": "Deel uw factuurl ink met een klant",
+    "step3Desc": "E-mail een factuur direct naar uw klant"
+  },
+  "services": {
+    "title": "Servicebibliotheek",
+    "subtitle": "Sla veelgebruikte items op voor snelle toevoeging aan facturen",
+    "addItem": "Item toevoegen",
+    "noItems": "Nog geen items opgeslagen",
+    "noItemsDesc": "Voeg uw veelgebruikte diensten en materialen toe om factuuraanmaak sneller te maken.",
+    "addFirstItem": "Voeg uw eerste item toe",
+    "saving": "Bezig met opslaan...",
+    "save": "Opslaan",
+    "cancel": "Annuleren",
+    "update": "Bijwerken"
   }
 }
