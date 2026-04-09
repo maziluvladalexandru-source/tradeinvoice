@@ -31,12 +31,12 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "TradeInvoice" }],
   alternates: {
-    canonical: "/",
+    canonical: "https://tradeinvoice.app/",
     languages: {
-      en: "/",
-      nl: "/nl",
-      de: "/de",
-      "x-default": "/",
+      en: "https://tradeinvoice.app/",
+      nl: "https://tradeinvoice.app/nl",
+      de: "https://tradeinvoice.app/de",
+      "x-default": "https://tradeinvoice.app/",
     },
   },
   openGraph: {
